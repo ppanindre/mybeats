@@ -1,20 +1,39 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { View } from "react-native";
+import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
+import React from "react";
+import { Provider } from "react-redux";
+import { TourGuideProvider } from "rn-tourguide";
+import * as Sentry from "@sentry/react-native";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+import Router from "./routers/Router";
+import { store } from "./store/store";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    text: "#4a4a4a",
   },
-});
+};
+
+const App = () => {
+  const backgroundStyle = {
+    flex: 1,
+  };
+
+  return (
+    <Sentry.TouchEventBoundary>
+      <Provider store={store}>
+        <PaperProvider theme={theme}>
+          <TourGuideProvider androidStatusBarVisible={true}>
+            <View style={backgroundStyle}>
+              <Router />
+            </View>
+          </TourGuideProvider>
+        </PaperProvider>
+      </Provider>
+    </Sentry.TouchEventBoundary>
+  );
+};
+
+export default App;

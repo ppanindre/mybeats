@@ -1,0 +1,4 @@
+export const UserActionTypes = {
+  SET_LISTENER_USER_DATA: "SET_LISTENER_USER_DATA",
+  EMPTY_USER_DATA: "EMPTY_USER_DATA",
+}

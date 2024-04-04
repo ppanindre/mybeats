@@ -1,0 +1,4 @@
+export const SleepActionTypes = {
+  SET_NEW_SLEEP_DATA: "SET_NEW_SLEEP_DATA",
+  EMPTY_SLEEP_DATA: "EMPTY_SLEEP_DATA"
+}
