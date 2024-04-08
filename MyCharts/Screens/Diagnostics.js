@@ -22,13 +22,13 @@ const Diagnostics = () => {
         {
             name: "Boca Biolteics LAB",
             rating: "4.5",
-            storyCount: "+400",
+            labStoryCount: "(+400 Patient Story)",
             logoUrl: "../../assets/doc1.webp",
         },
         {
             name: "Momentum Technology",
             rating: "3",
-            storyCount: "+500",
+            labStoryCount: "(+500 Patient Story)",
             logoUrl: "../../assets/doc1.webp",
         },
     ];
@@ -103,11 +103,10 @@ const Diagnostics = () => {
                 {Array.from({ length }).map((_, index) => (
                     <View
                         key={index}
-                        className={`h-2 w-2 rounded-full mx-1 ${
-                            currentIndex === index
+                        className={`h-2 w-2 rounded-full mx-1 ${currentIndex === index
                                 ? "bg-blue-600"
                                 : "bg-gray-300"
-                        }`}
+                            }`}
                         style={{ opacity: currentIndex === index ? 1 : 0.5 }}
                     />
                 ))}
@@ -174,7 +173,7 @@ const Diagnostics = () => {
         );
     };
 
-    handleUploadPress = () => {};
+    handleUploadPress = () => { };
 
     const CheckupData = [
         {
@@ -292,7 +291,7 @@ const Diagnostics = () => {
                     onScroll={({ nativeEvent }) => {
                         const slide = Math.ceil(
                             nativeEvent.contentOffset.x /
-                                nativeEvent.layoutMeasurement.width
+                            nativeEvent.layoutMeasurement.width
                         );
                         if (slide !== currentIndex) {
                             setCurrentIndex(slide);
@@ -385,43 +384,48 @@ const Diagnostics = () => {
             </View>
 
             <View className="px-4 space-y-3">
-                {/* Show 5 of them based on zipcode */}
+                {/* Show labs based on a certain condition (e.g., zipcode) */}
                 {labs.map((lab, index) => (
-                    <View
+                    <TouchableOpacity
                         key={index}
-                        className="flex-row items-center justify-between rounded-lg shadow-lg bg-white p-5"
+                        onPress={() => navigation.navigate('LabInfo', lab)}
+                        className="rounded-lg shadow-lg bg-white"
                     >
-                        <Image
-                            source={require("../../assets/doc1.webp")}
-                            className="w-20 h-20 mr-4 rounded-full"
-                        />
-                        <View className="flex-1">
-                            <Text className="text-base font-[appfont-semi]">
-                                {lab.name}
-                            </Text>
-                            <View className="flex-row items-center">
-                                {renderStars(lab.rating)}
-                                <Text className="text-sm ml-1">
-                                    {lab.rating}
-                                </Text>
-                            </View>
-                            <Text className="text-sm font-[appfont]">{` (${lab.storyCount} Patient Story)`}</Text>
-                        </View>
-                        <TouchableOpacity
-                            onPress={() => {
-                                /* logic to handle phone call */
-                            }}
-                            className="bg-green-500 rounded-full p-3 shadow-lg"
-                        >
-                            <Ionicons
-                                name="call-outline"
-                                size={24}
-                                color="white"
+                        <View className="flex-row items-center justify-between p-5">
+                            <Image
+                                source={require("../../assets/doc1.webp")}
+                                className="w-20 h-20 mr-4 rounded-full"
                             />
-                        </TouchableOpacity>
-                    </View>
+                            <View className="flex-1">
+                                <Text className="text-base font-[appfont-semi]">
+                                    {lab.name}
+                                </Text>
+                                <View className="flex-row items-center">
+                                    {renderStars(lab.rating)}
+                                    <Text className="text-sm ml-1">
+                                        {lab.rating}
+                                    </Text>
+                                </View>
+                                <Text className="text-sm font-[appfont]">{` ${lab.labStoryCount} `}</Text>
+                            </View>
+                            {/* This could be another touchable area for a different action, e.g., making a phone call */}
+                            <TouchableOpacity
+                                onPress={() => {
+                                    /* logic to handle phone call */
+                                }}
+                                className="bg-green-500 rounded-full p-3 shadow-lg"
+                            >
+                                <Ionicons
+                                    name="call-outline"
+                                    size={24}
+                                    color="white"
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </TouchableOpacity>
                 ))}
             </View>
+
         </ScrollView>
     );
 };

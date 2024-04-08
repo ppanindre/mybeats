@@ -12,7 +12,7 @@ const colors = {
     LIGHT_GRAY: '#e6e8eb',
     GRAY: '#a6a4a4',
   };
-export default function ActionButton() {
+export default function ActionButton({ excludeId3 = false }) {
     const [callModalVisible, setCallModalVisible] = useState(false);
     const [micOn, setMicOn] = useState(true);
     const [cameraOn, setCameraOn] = useState(true);
@@ -31,8 +31,8 @@ export default function ActionButton() {
         {
             id: 3,
             name: 'Payment',
-            icon: 'videocam',
-            action: () => setCallModalVisible(true),
+            icon: 'cash',
+            // action: () => setCallModalVisible(true),
         },
         {
             id: 4,
@@ -45,6 +45,10 @@ export default function ActionButton() {
             icon: 'earth',
         },
     ];
+
+    // Filter out the item based on the excludeId3 prop
+    const visibleActions = excludeId3 ? actionButtonList.filter(item => item.id !== 3) : actionButtonList;
+
 
     const handlePress = (itemName) => {
         switch (itemName) {
@@ -64,7 +68,7 @@ export default function ActionButton() {
     return (
         <View style={{ marginTop: 5 }}>
             <FlatList
-                data={actionButtonList}
+                data={visibleActions}
                 columnWrapperStyle={{
                     flex: 1,
                     justifyContent: 'space-between',

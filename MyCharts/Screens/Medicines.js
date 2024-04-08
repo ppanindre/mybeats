@@ -15,6 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import { customTheme } from "../../constants/themeConstants";
 import { pharmacyData } from "../../constants/pharmacyConstants";
 import PharmacyCard from "../../components/Cards/PharmacyCard";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Medicines = () => {
     const WellnessData = [
@@ -38,7 +39,7 @@ const Medicines = () => {
         },
     ];
 
-    const WellnessCard = ({ testName, testPrice, originalPrice }) => {
+    const WellnessCard = ({id, testName, testPrice, originalPrice }) => {
         return (
             <View className="bg-white space-y-3 p-5 rounded-lg shadow w-[200]">
                 <View className="w-[100%] items-center justify-center">
@@ -71,15 +72,44 @@ const Medicines = () => {
                         name="add-circle-outline"
                         size={20}
                         color="#808080"
-                        onPress={addclick}
+                        onPress={() => addclick({
+                            id: id,
+                            name: testName,
+                            price: testPrice.replace('$', ''),
+                            quantity: 1
+                          })}
                     />
                 </View>
             </View>
         );
     };
 
-    addclick = () => {
-        console.log("Add button clicked");
+    const addclick = async (itemData) => {
+        try {
+            // Retrieve the existing cart items
+            const existingCartRaw = await AsyncStorage.getItem('cartItems');
+            const existingCart = existingCartRaw ? JSON.parse(existingCartRaw) : [];
+    
+            // Check if the item already exists and update quantity if it does
+            let updated = false;
+            const updatedCart = existingCart.map((item) => {
+                if (item.id === itemData.id) {
+                    updated = true;
+                    return { ...item, quantity: item.quantity + 1 };
+                }
+                return item;
+            });
+    
+            if (!updated) {
+                updatedCart.push({ ...itemData, quantity: 1 });
+            }
+            alert("Added to cart")
+    
+            // Save the updated cart back to AsyncStorage
+            await AsyncStorage.setItem('cartItems', JSON.stringify(updatedCart));
+        } catch (error) {
+            console.error('Error adding item to cart:', error);
+        }
     };
 
     const cardData = [
@@ -108,7 +138,7 @@ const Medicines = () => {
 
     const categories = [
         "Baby Care",
-        "Fitness & Wellness",
+        "Fitness and Wellness",
         "Personal Care",
         "Sexual",
         "Alternate",
@@ -173,7 +203,7 @@ const Medicines = () => {
                             key={index}
                             className="bg-cyan-100 items-center justify-center rounded-lg shadow-md h-[80]"
                             style={{ width: categoryWidth }}
-                            onPress={() => {}}
+                            onPress={() => navigation.navigate("searchMedicines")}
                         >
                             <Text className="text-sm font-[appfont-semi] text-center">
                                 {category}
@@ -190,7 +220,7 @@ const Medicines = () => {
                         key={index}
                         className="bg-cyan-100 h-[80] rounded-lg shadow-md items-center justify-center"
                         style={{ width: categoryWidth }}
-                        onPress={() => {}}
+                        onPress={() => navigation.navigate("searchMedicines")}
                     >
                         <Text className="text-sm font-[appfont-semi]">
                             {category}
@@ -221,7 +251,15 @@ const Medicines = () => {
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => <WellnessCard {...item} />}
+                    renderItem={({ item }) =>
+                        <WellnessCard
+                            id={item.id}
+                            testName={item.testName}
+                            testPrice={item.testPrice}
+                            originalPrice={item.originalPrice}
+                            addclick={addclick} 
+                        />
+                    }
                     contentContainerStyle={{ padding: 20, gap: 10 }}
                 />
             </View>
@@ -250,10 +288,13 @@ const Medicines = () => {
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={{ padding: 20, gap: 10 }}
                     renderItem={({ item: pharmacy }) => (
-                        <PharmacyCard
-                            pharmacyLabel={pharmacy.name}
-                            pharmacyRating={pharmacy.rating}
-                        />
+                        <TouchableOpacity onPress={() => navigation.navigate('PharmacyInfo', pharmacy)}>
+                            <PharmacyCard
+                                pharmacyLabel={pharmacy.name}
+                                pharmacyRating={pharmacy.rating}
+                            // pharmacyZipcode={pharmacy.zipcode}
+                            />
+                        </TouchableOpacity>
                     )}
                 />
             </View>

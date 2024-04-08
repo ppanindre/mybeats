@@ -269,13 +269,15 @@ const ConsultDoctor = () => {
                 showsHorizontalScrollIndicator={false}
                 renderItem={({ item: doctor }) => (
                     <View className="w-[300]">
-                        <DoctorCard
-                            doctorName={doctor.name}
-                            doctorHospital={doctor.hospital}
-                            doctorRating={doctor.rating}
-                            doctorExperience={doctor.experience}
-                            doctorSpecialist={doctor.specialization}
-                        />
+                        <TouchableOpacity onPress={() => navigation.navigate('AppointmentPage', doctor)}>
+                            <DoctorCard
+                                doctorName={doctor.name}
+                                doctorHospital={doctor.hospital}
+                                doctorRating={doctor.rating}
+                                doctorExperience={doctor.experience}
+                                doctorSpecialist={doctor.specialization}
+                            />
+                        </TouchableOpacity>
                     </View>
                 )}
                 contentContainerStyle={{ padding: 20, gap: 10 }}

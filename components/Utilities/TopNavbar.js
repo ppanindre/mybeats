@@ -1,5 +1,5 @@
 import { View, Text, Image, Platform, TouchableOpacity } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
@@ -8,10 +8,58 @@ import { TourGuideZone, useTourGuideController } from "rn-tourguide";
 import SyncButton from "../SyncButton";
 import { userAuthActionTypes } from "../../store/UserAuthReducer/UserAuthActionTypes";
 import { customTheme } from "../../constants/themeConstants";
+import Modal from 'react-native-modal';
+import { CheckBox } from 'react-native-elements';
+import { Ionicons } from "@expo/vector-icons";
 
 const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
     // Get profile data from the user reducer
     const user = useSelector((state) => state.UserReducer);
+
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [selectedRole, setSelectedRole] = useState('');
+
+    const handleSelectRole = (role) => {
+        setSelectedRole(role);
+    };
+
+    // Handle continue for change role 
+    const handleContinue = () => {
+        console.log('Selected Role:', selectedRole);
+        setModalVisible(false);
+
+        let screenName = '';
+        switch (selectedRole) {
+            case 'Doctor':
+                screenName = 'DoctorRole';
+                break;
+            case 'Patient':
+                screenName = 'MychartsDashboard';
+                break;
+            case 'Pharmacy Manager':
+                screenName = 'PharmacyManager';
+                break;
+            case 'Lab Manager':
+                screenName = 'LabManager';
+                break;
+            default:
+                console.error('Unknown role selected');
+                return;
+        }
+
+        navigation.navigate('RolesNav', {
+            screen: screenName,
+            params: { isLoading: true },
+        });
+
+        setSelectedRole('');
+    };
+
+
+    const closeModal = () => {
+        setModalVisible(false)
+        setSelectedRole('')
+    }
 
     // get the flag for start tour guide, if start tour guide is true, start the tour guide
     const { startTourGuide } = useSelector((state) => state.UserAuthReducer);
@@ -137,7 +185,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                         className="font-[appfont]"
                         style={{ fontSize: 10, color: customTheme.colors.dark }}
                     >
-                        {getLastSyncTime()}
+                        Last Active: April 06, 2024 {getLastSyncTime()}
                     </Text>
                 </View>
             </View>
@@ -148,7 +196,8 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                 >
                     <TouchableOpacity
                         sentry-label="sync-btn"
-                        onPress={() => navigation.navigate("confirmAddress")}
+                        // onPress={() => navigation.navigate("confirmAddress")}
+                        onPress={() => setModalVisible(true)}
                     >
                         <Text
                             style={{ color: customTheme.colors.primary }}
@@ -159,6 +208,56 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                     </TouchableOpacity>
                 </View>
             )}
+
+            {/* Modal for Role Selection */}
+            <Modal
+                isVisible={isModalVisible}
+                onBackdropPress={() => setModalVisible(false)}
+                style={{ margin: 0 }} 
+                swipeDirection={['down']} 
+                propagateSwipe={true} 
+            >
+                <View className="absolute bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
+                    {/* Modal Header */}
+                    <View className="flex-row items-center justify-between">
+                        <Text className="text-lg font-[appfont-bold]">Select Your Role</Text>
+                        <TouchableOpacity
+                              onPress={() => setModalVisible(false)}
+                          >
+                              <Ionicons
+                                  name="close"
+                                  size={20}
+                                  color={customTheme.colors.primary}
+                              />
+                          </TouchableOpacity>
+                    </View>
+
+                    {/* Checkboxes for Role Selection */}
+                    {["Doctor", "Patient", "Pharmacy Manager", "Lab Manager"].map((role) => (
+                        <CheckBox
+                            key={role}
+                            title={role}
+                            checked={selectedRole === role}
+                            onPress={() => handleSelectRole(role)}
+                            textStyle={{
+                                fontFamily: 'appfont-bold'
+                            }}
+                            containerStyle={{
+                                marginTop: 10,
+                                marginLeft: 0
+                            }}
+                        />
+                    ))}
+
+                    {/* Continue Button */}
+                    <View className="flex justify-center items-center mt-4 mb-5">
+                        <TouchableOpacity onPress={handleContinue} className="bg-blue-500 w-full p-4 rounded-lg">
+                            <Text className="text-center text-white text-md font-[appfont-bold]">Continue</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+
 
             {/* if to sync button, render sync button */}
             {showSync && (

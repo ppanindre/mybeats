@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     View,
     Text,
@@ -10,56 +10,134 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import HorizontalLine from "../Components/HorizontalLine";
 import { customTheme } from "../../constants/themeConstants";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 const CartScreen = () => {
-    const [cartItems, setCartItems] = useState([
-        {
-            id: 1,
-            name: "Dietary Supplement Health Products",
-            price: "6.99",
-            quantity: 1,
-        },
-        {
-            id: 2,
-            name: "Pediacare Super Immuno Plus",
-            price: "15.99",
-            quantity: 1,
-        },
-        {
-            id: 3,
-            name: "Alcohol Pad Covid-19 Essentials",
-            price: "6.99",
-            quantity: 1,
-        },
-    ]);
+    const route = useRoute();
+    const [cartItems, setCartItems] = useState([]);
     const [promoCode, setPromoCode] = useState("");
 
-    const handleRemoveItem = (id, decrement) => {
-        const updatedItems = cartItems.map((item) =>
-            item.id === id
-                ? { ...item, quantity: item.quantity - decrement }
-                : item
-        );
+    useEffect(() => {
+        const loadCartItems = async () => {
+            try {
+                const cartItemsRaw = await AsyncStorage.getItem('cartItems');
+                const cartItems = cartItemsRaw ? JSON.parse(cartItemsRaw) : [];
+                setCartItems(cartItems);
+            } catch (error) {
+                console.error('Failed to load cart items:', error);
+            }
+        };
 
-        const filteredItems = updatedItems.filter((item) => item.quantity > 0);
+        loadCartItems();
+    }, []);
 
-        setCartItems(filteredItems);
+    const handleRemoveItem = async (id) => {
+        let itemExists = false;
+        const updatedItems = cartItems.map((item) => {
+            if (item.id === id) {
+                itemExists = true; // Mark that we found the item
+                if (item.quantity > 1) {
+                    return { ...item, quantity: item.quantity - 1 }; // Decrement quantity
+                }
+                return null; // Mark item for removal
+            }
+            return item;
+        }).filter(item => item !== null); // Remove null items (those marked for removal)
+
+        if (!itemExists) {
+            console.error("Item not found");
+            return; // Exit if we didn't find the item to avoid unnecessary state update
+        }
+
+        setCartItems(updatedItems);
+
+        // Also update AsyncStorage
+        await AsyncStorage.setItem('cartItems', JSON.stringify(updatedItems));
     };
+
+
+    const handleQuantityChange = async (id, increment) => {
+        const updatedItems = cartItems.map((item) => {
+            if (item.id === id) {
+                return { ...item, quantity: item.quantity + increment };
+            }
+            return item;
+        });
+        setCartItems(updatedItems);
+
+        // Also update AsyncStorage
+        await AsyncStorage.setItem('cartItems', JSON.stringify(updatedItems));
+    };
+
+
+
+    // useEffect(() => {
+    //     if (route.params?.newItem) {
+    //         const newItem = route.params.newItem;
+    //         // Check if the item already exists in the cart
+    //         const existingItemIndex = cartItems.findIndex(item => item.id === newItem.id);
+    //         if (existingItemIndex > -1) {
+    //             // If item exists, update its quantity
+    //             const updatedCartItems = [...cartItems];
+    //             updatedCartItems[existingItemIndex].quantity += 1;
+    //             setCartItems(updatedCartItems);
+    //         } else {
+    //             // If item does not exist, add it to the cart
+    //             setCartItems(prevItems => [...prevItems, newItem]);
+    //         }
+    //     }
+    // }, [route.params?.newItem]);
+
+    // const [cartItems, setCartItems] = useState([
+    //     {
+    //         id: 1,
+    //         name: "Dietary Supplement Health Products",
+    //         price: "6.99",
+    //         quantity: 1,
+    //     },
+    //     {
+    //         id: 2,
+    //         name: "Pediacare Super Immuno Plus",
+    //         price: "15.99",
+    //         quantity: 1,
+    //     },
+    //     {
+    //         id: 3,
+    //         name: "Alcohol Pad Covid-19 Essentials",
+    //         price: "6.99",
+    //         quantity: 1,
+    //     },
+    // ]);
+
+    // const handleRemoveItem = (id, decrement) => {
+    //     const updatedItems = cartItems.map((item) =>
+    //         item.id === id
+    //             ? { ...item, quantity: item.quantity - decrement }
+    //             : item
+    //     );
+
+    //     const filteredItems = updatedItems.filter((item) => item.quantity > 0);
+
+    //     setCartItems(filteredItems);
+    // };
+
+    // const handleQuantityChange = (id, increment) => {
+    //     setCartItems(
+    //         cartItems.map((item) =>
+    //             item.id === id
+    //                 ? { ...item, quantity: item.quantity + increment }
+    //                 : item
+    //         )
+    //     );
+    // };
 
     const handleApplyPromo = () => {
         alert(`Promo code ${promoCode} applied!`);
     };
 
-    const handleQuantityChange = (id, increment) => {
-        setCartItems(
-            cartItems.map((item) =>
-                item.id === id
-                    ? { ...item, quantity: item.quantity + increment }
-                    : item
-            )
-        );
-    };
 
     const totalPrice = cartItems
         .reduce((acc, item) => acc + item.quantity * parseFloat(item.price), 0)
@@ -73,8 +151,16 @@ const CartScreen = () => {
 
             <View className="flex-row items-center justify-between p-2 m-2">
                 <Ionicons name="cart" size={24} color="#4F8EF7" />
-                <Text className="flex-1 text-lg font-[appfont-semi] ml-2">Order From Wellbeing</Text>
-                <Text className="text-lg font-semibold">$25.97</Text>
+                {cartItems.length > 0 ? (
+                    <Text className="flex-1 text-lg font-[appfont-semi] ml-2">
+                        Order From Wellness 
+                    </Text>
+                ) : (
+                    <Text className="flex-1 text-lg font-[appfont-semi] ml-2">
+                        Cart Empty
+                    </Text>
+                )}
+                <Text className="text-lg font-semibold">${totalPrice}</Text>
             </View>
 
             <HorizontalLine />

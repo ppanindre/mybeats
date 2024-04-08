@@ -4,6 +4,9 @@ import React from "react";
 import { Provider } from "react-redux";
 import { TourGuideProvider } from "rn-tourguide";
 import * as Sentry from "@sentry/react-native";
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed container instead.']);
+import { useFonts } from 'expo-font'
 
 import Router from "./routers/Router";
 import { store } from "./store/store";
@@ -17,6 +20,16 @@ const theme = {
 };
 
 const App = () => {
+  const [fontsLoaded] = useFonts({
+    'appfont': require('./assets/fonts/Nunito-Regular.ttf'),
+    'appfont-bold': require('./assets/fonts/Nunito-Bold.ttf'),
+    'appfont-semi': require('./assets/fonts/Nunito-Bold.ttf'),
+
+  });
+  if(!fontsLoaded)
+  {
+    return null;
+  }
   const backgroundStyle = {
     flex: 1,
   };

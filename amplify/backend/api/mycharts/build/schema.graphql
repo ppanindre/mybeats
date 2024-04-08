@@ -201,6 +201,8 @@ input ModelDoctorFilterInput {
   address: ModelStringInput
   zipcode: ModelStringInput
   availableSlots: ModelStringInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
   and: [ModelDoctorFilterInput]
   or: [ModelDoctorFilterInput]
   not: ModelDoctorFilterInput
@@ -227,6 +229,8 @@ input ModelDoctorConditionInput {
   and: [ModelDoctorConditionInput]
   or: [ModelDoctorConditionInput]
   not: ModelDoctorConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
 }
 
 input CreateDoctorInput {
@@ -279,8 +283,11 @@ input ModelSubscriptionDoctorFilterInput {
   address: ModelSubscriptionStringInput
   zipcode: ModelSubscriptionStringInput
   availableSlots: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
   and: [ModelSubscriptionDoctorFilterInput]
   or: [ModelSubscriptionDoctorFilterInput]
+  doctorAppointmentsId: ModelSubscriptionIDInput
 }
 
 type Subscription {
@@ -306,6 +313,8 @@ input ModelPatientFilterInput {
   lastname: ModelStringInput
   email: ModelStringInput
   phoneNumber: ModelStringInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
   and: [ModelPatientFilterInput]
   or: [ModelPatientFilterInput]
   not: ModelPatientFilterInput
@@ -319,6 +328,8 @@ input ModelPatientConditionInput {
   and: [ModelPatientConditionInput]
   or: [ModelPatientConditionInput]
   not: ModelPatientConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
 }
 
 input CreatePatientInput {
@@ -347,8 +358,11 @@ input ModelSubscriptionPatientFilterInput {
   lastname: ModelSubscriptionStringInput
   email: ModelSubscriptionStringInput
   phoneNumber: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
   and: [ModelSubscriptionPatientFilterInput]
   or: [ModelSubscriptionPatientFilterInput]
+  patientAppointmentsId: ModelSubscriptionIDInput
 }
 
 type ModelAppointmentConnection @aws_iam @aws_api_key {
@@ -360,6 +374,8 @@ input ModelAppointmentFilterInput {
   id: ModelIDInput
   chosenSlot: ModelStringInput
   date: ModelStringInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
   and: [ModelAppointmentFilterInput]
   or: [ModelAppointmentFilterInput]
   not: ModelAppointmentFilterInput
@@ -373,6 +389,8 @@ input ModelAppointmentConditionInput {
   and: [ModelAppointmentConditionInput]
   or: [ModelAppointmentConditionInput]
   not: ModelAppointmentConditionInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
   doctorAppointmentsId: ModelIDInput
   patientAppointmentsId: ModelIDInput
 }
@@ -401,6 +419,8 @@ input ModelSubscriptionAppointmentFilterInput {
   id: ModelSubscriptionIDInput
   chosenSlot: ModelSubscriptionStringInput
   date: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
   and: [ModelSubscriptionAppointmentFilterInput]
   or: [ModelSubscriptionAppointmentFilterInput]
 }

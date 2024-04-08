@@ -7,7 +7,6 @@ import MychartsDashboard from "../MyCharts/Screens/mychartsDashboard";
 import { customTheme } from "../constants/themeConstants";
 import ConsultDoctor from "../MyCharts/Screens/ConsultDoctor";
 import Diagnostics from "../MyCharts/Screens/Diagnostics";
-import Medicines from "../MyCharts/Screens/Medicines";
 import SearchDoctors from "../MyCharts/Screens/SearchDoctors";
 import AppointmentPage from "../MyCharts/Screens/AppointmentPage";
 import CartScreen from "../MyCharts/Screens/CartScreen";
@@ -16,8 +15,16 @@ import Payment from "../MyCharts/Screens/Payment";
 import SearchMedicines from "../MyCharts/Screens/SearchMedicines";
 import UploadPrescription from "../MyCharts/Screens/UploadPrescription";
 import ConfirmAddress from "../MyCharts/Screens/ConfirmAddress";
-import ImageAnalyzeDisplay from "../MyCharts/Components/ImageAnalyzeDisplay";import EditAddress from "../MyCharts/Screens/EditAddress";
+import ImageAnalyzeDisplay from "../MyCharts/Components/ImageAnalyzeDisplay"; import EditAddress from "../MyCharts/Screens/EditAddress";
 import ShippingAddress from "../MyCharts/Screens/ShippingAddress";
+import DoctorRole from "../MyCharts/Screens/DoctorRole";
+import PatientRole from "../MyCharts/Screens/PatientRole";
+import PharmacyManger from "../MyCharts/Screens/PharmacyManger";
+import LabManager from "../MyCharts/Screens/LabManager";
+import RolesNav from "./RolesNav"
+import PharmacyInfo from "../MyCharts/Screens/PharmacyInfo";
+import LabInfo from "../MyCharts/Screens/LabInfo";
+import Medicines from "../MyCharts/Screens/Medicines"
 
 // Declare icon size
 const ICON_SIZE = 24;
@@ -77,11 +84,19 @@ export const MyChartsStack = () => {
     const Stack = createStackNavigator();
 
     return (
-        <Stack.Navigator initialRouteName="MychartsDashboard">
+        <Stack.Navigator initialRouteName="Rolesnav">
             {/* Initial Route */}
-            <Stack.Screen
+            {/* <Stack.Screen
                 name="MychartsDashboard"
                 component={MychartsDashboard}
+                options={{
+                    headerShown: false,
+                }}
+            /> */}
+
+            <Stack.Screen
+                name="RolesNav"
+                component={RolesNav}
                 options={{
                     headerShown: false,
                 }}
@@ -158,7 +173,7 @@ export const MyChartsStack = () => {
                     headerRight: () => (
                         <View className="flex-row mr-4 space-x-4">
                             <TouchableOpacity>
-                                <RightIconButton onPress={()=>navigation.navigate("CartScreen")} icon={icons.cartIcon} />
+                                <RightIconButton onPress={() => navigation.navigate("CartScreen")} icon={icons.cartIcon} />
                             </TouchableOpacity>
                         </View>
                     ),
@@ -173,6 +188,12 @@ export const MyChartsStack = () => {
             <Stack.Screen
                 name="searchDoctors"
                 component={SearchDoctors}
+                options={{ headerShown: false }}
+            />
+
+            <Stack.Screen
+                name="searchMedicines"
+                component={SearchMedicines}
                 options={{ headerShown: false }}
             />
 
@@ -205,6 +226,67 @@ export const MyChartsStack = () => {
                     },
                 })}
             />
+
+            {/* Pharmacy Page */}
+            <Stack.Screen
+                name="PharmacyInfo"
+                component={PharmacyInfo}
+                options={({ navigation }) => ({
+                    headerTitle: "Pharmacy",
+                    headerTitleAlign: "left",
+                    headerLeft: () => (
+                        <View className="ml-4">
+                            <GoBackButton onPress={() => navigation.goBack()} />
+                        </View>
+                    ),
+                    headerRight: () => (
+                        <View className="mr-4">
+                            <RightIconButton
+                                onPress={() => { }}
+                                icon={icons.starIcon}
+                            />
+                        </View>
+                    ),
+                    headerTitleStyle: {
+                        fontFamily: "appfont-bold",
+                        fontSize: customTheme.text.header,
+                    },
+                    headerStyle: {
+                        backgroundColor: "#F1F1F1",
+                    },
+                })}
+            />
+
+            {/* Lab Info Page */}
+            <Stack.Screen
+                name="LabInfo"
+                component={LabInfo}
+                options={({ navigation }) => ({
+                    headerTitle: "Pharmacy",
+                    headerTitleAlign: "left",
+                    headerLeft: () => (
+                        <View className="ml-4">
+                            <GoBackButton onPress={() => navigation.goBack()} />
+                        </View>
+                    ),
+                    headerRight: () => (
+                        <View className="mr-4">
+                            <RightIconButton
+                                onPress={() => { }}
+                                icon={icons.starIcon}
+                            />
+                        </View>
+                    ),
+                    headerTitleStyle: {
+                        fontFamily: "appfont-bold",
+                        fontSize: customTheme.text.header,
+                    },
+                    headerStyle: {
+                        backgroundColor: "#F1F1F1",
+                    },
+                })}
+            />
+
 
             <Stack.Screen
                 name="confirmAddress"
