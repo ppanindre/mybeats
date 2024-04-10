@@ -41,13 +41,13 @@ const Medicines = () => {
 
     const WellnessCard = ({id, testName, testPrice, originalPrice }) => {
         return (
-            <View className="bg-white space-y-3 p-5 rounded-lg shadow w-[200]">
+            <View style={{backgroundColor: customTheme.colors.light}} className="space-y-3 p-5 rounded-lg shadow w-[200]">
                 <View className="w-[100%] items-center justify-center">
                     <Image
                         source={require("../../assets/wellness_product.jpeg")}
                         className="h-32 w-40 rounded"
                     />
-                    <View className="absolute top-1.5 left-1.5 bg-white bg-opacity-80 py-1 px-1 rounded-md">
+                    <View style={{backgroundColor: customTheme.colors.light}} className="absolute top-1.5 left-1.5 bg-opacity-80 py-1 px-1 rounded-md">
                         <Text className="text-xs text-blue-600 font-bold">
                             25% OFF
                         </Text>
@@ -64,7 +64,7 @@ const Medicines = () => {
                         <Text className="text-mg font-[appfont-semi] text-left mr-2">
                             {testPrice}
                         </Text>
-                        <Text className="text-s line-through text-gray-500">
+                        <Text style={{color: customTheme.colors.dark}} className="text-s line-through">
                             {originalPrice}
                         </Text>
                     </View>

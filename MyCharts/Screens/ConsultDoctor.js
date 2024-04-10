@@ -123,8 +123,8 @@ const ConsultDoctor = () => {
                 <Text className="text-sm font-[appfont] mb-4 text-center">
                     {description}
                 </Text>
-                <TouchableOpacity className="bg-blue-500 py-2 px-4 rounded-md">
-                    <Text className="text-white text-sm font-[appfont-semi]">
+                <TouchableOpacity style={{backgroundColor: customTheme.colors.primary}} className="py-2 px-4 rounded-md">
+                    <Text style={{color: customTheme.colors.light}} className="text-sm font-[appfont-semi]">
                         {buttonText}
                     </Text>
                 </TouchableOpacity>
@@ -245,8 +245,8 @@ const ConsultDoctor = () => {
                     }}
                     renderItem={({ item }) => (
                         <TouchableOpacity
-                            className="p-4 bg-white rounded-lg shadow-md justify-end"
-                            style={{ width: 160, height: 200 }}
+                            className="p-4 rounded-lg shadow-md justify-end"
+                            style={{ width: 160, height: 200, backgroundColor: customTheme.colors.light }}
                         >
                             <Text className="text-lg font-[appfont-semi]">
                                 {item.title}

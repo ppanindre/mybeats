@@ -24,12 +24,14 @@ const Diagnostics = () => {
             rating: "4.5",
             labStoryCount: "(+400 Patient Story)",
             logoUrl: "../../assets/doc1.webp",
+            zipcode: "11111"
         },
         {
             name: "Momentum Technology",
             rating: "3",
             labStoryCount: "(+500 Patient Story)",
             logoUrl: "../../assets/doc1.webp",
+            zipcode: "22222"
         },
     ];
 
@@ -88,8 +90,8 @@ const Diagnostics = () => {
                 <Text className="text-sm font-[appfont] mb-4 text-center">
                     {description}
                 </Text>
-                <TouchableOpacity className="bg-blue-500 py-2 px-4 rounded-md">
-                    <Text className="text-white text-sm font-[appfont-semi]">
+                <TouchableOpacity style={{backgroundColor: customTheme.colors.primary}} className="py-2 px-4 rounded-md">
+                    <Text style={{color: customTheme.colors.light}} className="text-sm font-[appfont-semi]">
                         {buttonText}
                     </Text>
                 </TouchableOpacity>
@@ -145,7 +147,7 @@ const Diagnostics = () => {
         buttonText,
     }) => {
         return (
-            <View className="bg-white w-[100%] p-5 rounded-lg shadow-md space-y-3">
+            <View style={{backgroundColor: customTheme.colors.light}} className="w-[100%] p-5 rounded-lg shadow-md space-y-3">
                 <View className="w-[100%] items-center justify-center">
                     <Image
                         source={require("../../assets/doc1.webp")}
@@ -156,14 +158,14 @@ const Diagnostics = () => {
                     <Text className="text-lg font-[appfont-semi] mb-2 text-left">
                         {testName}
                     </Text>
-                    <Text className="text-xs text-gray-500 font-[appfont] text-left">
+                    <Text style={{color: customTheme.colors.dark}} className="text-xs font-[appfont] text-left">
                         {testDescription}
                     </Text>
                 </View>
                 <Text className="text-xl font-[appfont-semi] text-left">
                     {testPrice}
                 </Text>
-                <TouchableOpacity className="bg-blue-500 py-2 px-4 rounded-md">
+                <TouchableOpacity style={{backgroundColor: customTheme.colors.primary}} className=" py-2 px-4 rounded-md">
                     <Text className="text-white text-sm font-[appfont-semi] text-center">
                         {buttonText}
                     </Text>
@@ -232,7 +234,7 @@ const Diagnostics = () => {
                         <Text className="text-lg font-[appfont-semi] mb-2 text-left">
                             {testName}
                         </Text>
-                        <Text className="text-xs text-gray-500 font-[appfont] text-left">
+                        <Text style={{color: customTheme.colors.dark}} className="text-xs font-[appfont] text-left">
                             {testDescription}
                         </Text>
                     </View>
@@ -241,12 +243,12 @@ const Diagnostics = () => {
                         <Text className="text-xl font-[appfont-semi] text-left mr-2">
                             {testPrice}
                         </Text>
-                        <Text className="text-md line-through text-gray-500">
+                        <Text style={{color: customTheme.colors.dark}} className="text-md line-through">
                             {originalPrice}
                         </Text>
                     </View>
-                    <TouchableOpacity className="bg-blue-500 py-2 px-4 rounded-md">
-                        <Text className="text-white text-sm font-[appfont-semi] text-center">
+                    <TouchableOpacity style={{backgroundColor: customTheme.colors.primary}}  className="py-2 px-4 rounded-md">
+                        <Text style={{color: customTheme.colors.light}} className="text-sm font-[appfont-semi] text-center">
                             {buttonText}
                         </Text>
                     </TouchableOpacity>
@@ -310,7 +312,7 @@ const Diagnostics = () => {
                         Top Diagnostic Test
                     </Text>
                     <TouchableOpacity className="mt-2">
-                        <Text className="text-sm font-semibold text-blue-500 text-left">
+                        <Text style={{color: customTheme.colors.primary}} className="text-sm font-semibold text-left">
                             View All
                         </Text>
                     </TouchableOpacity>
@@ -359,10 +361,10 @@ const Diagnostics = () => {
                     className="mt-4 flex-row items-center justify-between p-5 rounded-lg shadow-lg"
                 >
                     <View className="flex-1">
-                        <Text className="text-lg font-[appfont-bold] text-white">
+                        <Text style={{color: customTheme.colors.light}} className="text-lg font-[appfont-bold]">
                             Need help with booking your test
                         </Text>
-                        <Text className="text-sm text-white font-[appfont-semi]">
+                        <Text style={{color: customTheme.colors.light}} className="text-sm font-[appfont-semi]">
                             Our experts are here to help you
                         </Text>
                     </View>
@@ -388,8 +390,9 @@ const Diagnostics = () => {
                 {labs.map((lab, index) => (
                     <TouchableOpacity
                         key={index}
-                        onPress={() => navigation.navigate('LabInfo', lab)}
-                        className="rounded-lg shadow-lg bg-white"
+                        onPress={() => navigation.navigate('LabInfo', lab,)}
+                        style={{backgroundColor: customTheme.colors.light}}
+                        className="rounded-lg shadow-lg"
                     >
                         <View className="flex-row items-center justify-between p-5">
                             <Image
@@ -418,7 +421,7 @@ const Diagnostics = () => {
                                 <Ionicons
                                     name="call-outline"
                                     size={24}
-                                    color="white"
+                                    style={{color: customTheme.colors.light}}
                                 />
                             </TouchableOpacity>
                         </View>

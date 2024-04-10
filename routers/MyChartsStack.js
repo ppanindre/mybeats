@@ -262,7 +262,7 @@ export const MyChartsStack = () => {
                 name="LabInfo"
                 component={LabInfo}
                 options={({ navigation }) => ({
-                    headerTitle: "Pharmacy",
+                    headerTitle: "Lab",
                     headerTitleAlign: "left",
                     headerLeft: () => (
                         <View className="ml-4">

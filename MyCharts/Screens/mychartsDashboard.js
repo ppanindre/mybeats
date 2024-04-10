@@ -135,7 +135,8 @@ const MychartsDashboard = () => {
                         {/* Upload Prescription */}
                         <TouchableOpacity
                             onPress={() => navigation.navigate("UploadPrescription")}
-                            className="bg-white py-3 px-6 rounded-full shadow-md"
+                            style={{backgroundColor: customTheme.colors.light}}
+                            className="py-3 px-6 rounded-full shadow-md"
                         >
                             <Text className="text-black font-[appfont-semi]">
                                 Upload
