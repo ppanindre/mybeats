@@ -1,7 +1,7 @@
 import { View, Text, Image, Platform, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native";
 import moment from "moment";
 import { TourGuideZone, useTourGuideController } from "rn-tourguide";
 
@@ -18,6 +18,18 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
 
     const [isModalVisible, setModalVisible] = useState(false);
     const [selectedRole, setSelectedRole] = useState('');
+    const isFocused = useIsFocused();
+    const route = useRoute();
+    const [displayedRole, setDisplayedRole] = useState('Patient');
+
+    useEffect(() => {
+        if (isFocused) {
+          // Check for params in the current route
+          if (route.params?.selectedRole) {
+            setDisplayedRole(route.params.selectedRole);
+          }
+        }
+      }, [isFocused, route]);
 
     const handleSelectRole = (role) => {
         setSelectedRole(role);
@@ -36,7 +48,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
             case 'Patient':
                 screenName = 'MychartsDashboard';
                 break;
-            case 'Pharmacy Manager':
+            case 'Pharma Manager':
                 screenName = 'PharmacyManager';
                 break;
             case 'Lab Manager':
@@ -51,15 +63,12 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
             screen: screenName,
             params: { isLoading: true },
         });
+        // Use setParams to update the parameters of the current route
+        navigation.setParams({ selectedRole: selectedRole });
 
         setSelectedRole('');
     };
 
-
-    const closeModal = () => {
-        setModalVisible(false)
-        setSelectedRole('')
-    }
 
     // get the flag for start tour guide, if start tour guide is true, start the tour guide
     const { startTourGuide } = useSelector((state) => state.UserAuthReducer);
@@ -185,7 +194,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                         className="font-[appfont]"
                         style={{ fontSize: 10, color: customTheme.colors.dark }}
                     >
-                        Last Active: April 06, 2024 {getLastSyncTime()}
+                    Last active as {displayedRole}: April 06, 2024 6:55PM {getLastSyncTime()}
                     </Text>
                 </View>
             </View>
@@ -213,27 +222,27 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
             <Modal
                 isVisible={isModalVisible}
                 onBackdropPress={() => setModalVisible(false)}
-                style={{ margin: 0 }} 
-                swipeDirection={['down']} 
-                propagateSwipe={true} 
+                style={{ margin: 0 }}
+                swipeDirection={['down']}
+                propagateSwipe={true}
             >
                 <View className="absolute bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
                     {/* Modal Header */}
                     <View className="flex-row items-center justify-between">
                         <Text className="text-lg font-[appfont-bold]">Select Your Role</Text>
                         <TouchableOpacity
-                              onPress={() => setModalVisible(false)}
-                          >
-                              <Ionicons
-                                  name="close"
-                                  size={20}
-                                  color={customTheme.colors.primary}
-                              />
-                          </TouchableOpacity>
+                            onPress={() => setModalVisible(false)}
+                        >
+                            <Ionicons
+                                name="close"
+                                size={20}
+                                color={customTheme.colors.primary}
+                            />
+                        </TouchableOpacity>
                     </View>
 
                     {/* Checkboxes for Role Selection */}
-                    {["Doctor", "Patient", "Pharmacy Manager", "Lab Manager"].map((role) => (
+                    {["Doctor", "Patient", "Pharma Manager", "Lab Manager"].map((role) => (
                         <CheckBox
                             key={role}
                             title={role}
