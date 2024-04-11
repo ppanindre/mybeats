@@ -23,11 +23,11 @@
             }
           ],
           "defaultAuthentication": {
+            "authenticationType": "API_KEY",
             "apiKeyConfig": {
               "apiKeyExpirationDays": 30,
               "description": "api key description"
-            },
-            "authenticationType": "API_KEY"
+            }
           }
         },
         "GraphQLAPIIdOutput": "zastiiekybcslemz3my4opkcpy",
@@ -36,11 +36,12 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync",
-      "lastPushTimeStamp": "2024-03-21T21:25:04.832Z",
+      "lastPushTimeStamp": "2024-04-06T21:45:04.557Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-mycharts-dev-182209-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apimycharts"
-      }
+      },
+      "lastPushDirHash": "Uxliaf1IuDu7sIYQKWPw7ikS478="
     }
   },
   "auth": {
@@ -76,7 +77,7 @@
         "IdentityPoolName": "mycharts1ff09fda_identitypool_1ff09fda__dev",
         "UserPoolName": "mycharts1ff09fda_userpool_1ff09fda"
       },
-      "lastPushTimeStamp": "2024-03-21T21:25:04.834Z",
+      "lastPushTimeStamp": "2024-04-06T21:45:04.562Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-mycharts-dev-182209-deployment/amplify-cfn-templates/auth/mycharts1ff09fda-cloudformation-template.json",
         "logicalId": "authmycharts1ff09fda"
@@ -92,7 +93,7 @@
         "BucketName": "firebeats182209-dev",
         "Region": "us-east-1"
       },
-      "lastPushTimeStamp": "2024-03-21T21:25:05.931Z",
+      "lastPushTimeStamp": "2024-04-06T21:45:05.731Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-mycharts-dev-182209-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
         "logicalId": "storagemyCharts"

@@ -52,7 +52,7 @@ const UploadPrescription = () => {
 
 
     return (
-        <View>
+        <ScrollView>
             <View className="bg-gray-100 p-4">
                 <View className="relative bg-blue-600 rounded-lg p-5 mx-10 my-6 mb-12 max-w-xs min-h-lg shadow-lg">
                     <View className="absolute top-0 right-0 bg-gray-100 w-16 h-16 transform rotate-115  translate-x-8 -translate-y-8 z-0"></View>
@@ -135,7 +135,7 @@ const UploadPrescription = () => {
                 )}
             </View>
 
-        </View>
+        </ScrollView>
     );
 
 

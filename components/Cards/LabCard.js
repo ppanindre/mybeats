@@ -9,15 +9,15 @@ const LabCard = ({ labName, labRating, labStoryCount }) => {
         <View className="flex-row items-center justify-between rounded-lg shadow-lg bg-white p-5">
             <Image
                 source={require("../../assets/doc1.webp")}
-                className="w-20 h-20 mr-4 rounded-full"
+                className="w-20 h-20 mr-3 rounded-full"
             />
             <View className="flex-1">
                 <Text className="text-base font-[appfont-semi]">
-                    Boca Biolteics LAB
+                   {labName}
                 </Text>
                 <View className="flex-row items-center space-x-1">
                     <Ionicons name="star" color={customTheme.colors.primary} />
-                    <Text className="text-xs font-[appfont]">4.5 (500+ ratings)</Text>
+                    <Text className="text-xs font-[appfont]">{labRating} {labStoryCount}</Text>
                 </View>
             </View>
             <TouchableOpacity

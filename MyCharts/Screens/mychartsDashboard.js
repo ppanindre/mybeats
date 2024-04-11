@@ -17,6 +17,7 @@ import DoctorCard from "../../components/Cards/DoctorCard";
 import PharmacyCard from "../../components/Cards/PharmacyCard";
 import { doctorData } from "../../constants/doctorConstants";
 import { pharmacyData } from "../../constants/pharmacyConstants";
+import { LabData } from "../../constants/LabConstants"
 import { customTheme } from "../../constants/themeConstants";
 import LabCard from "../../components/Cards/LabCard";
 
@@ -28,7 +29,7 @@ const MychartsDashboard = () => {
     return (
         <CustomSafeView>
             {/* Top navbar */}
-            <TopNavbar isMyBeats={true} showSync={false} />
+            {/* <TopNavbar isMyBeats={true} showSync={false} /> */}
 
             <ScrollView
                 className="py-4 bg-gray-100"
@@ -89,7 +90,7 @@ const MychartsDashboard = () => {
 
                 {/* Cards VIew */}
                 <View className="flex-row justify-around space-x-5 px-4 mb-4">
-                    {/* First Card: Diagnostics */}
+                    {/* First Card: Telehealth */}
                     <View className="flex-1">
                         <NavigationCard
                             cardTitle="Telehealth"
@@ -98,7 +99,7 @@ const MychartsDashboard = () => {
                     </View>
 
                     <View className="flex-1">
-                        {/* Second Card: Pharma */}
+                        {/* Second Card: Diagnostics */}
                         <NavigationCard
                             cardTitle="Diagnostics"
                             cardContent="Request a lab test"
@@ -107,6 +108,7 @@ const MychartsDashboard = () => {
                     </View>
                 </View>
 
+                {/* Pharma card */}
                 <View className="px-4 mb-4">
                     <TouchableOpacity
                         style={{
@@ -129,9 +131,12 @@ const MychartsDashboard = () => {
                                 Order via uploading prescription
                             </Text>
                         </View>
+
+                        {/* Upload Prescription */}
                         <TouchableOpacity
                             onPress={() => navigation.navigate("UploadPrescription")}
-                            className="bg-white py-3 px-6 rounded-full shadow-md"
+                            style={{backgroundColor: customTheme.colors.light}}
+                            className="py-3 px-6 rounded-full shadow-md"
                         >
                             <Text className="text-black font-[appfont-semi]">
                                 Upload
@@ -140,7 +145,7 @@ const MychartsDashboard = () => {
                     </TouchableOpacity>
                 </View>
 
-                {/*  */}
+                {/* Doctors based on zipcode */}
                 <View className="flex-row justify-between items-center px-4">
                     <Text className="text-lg font-[appfont-semi]">
                         {" "}
@@ -155,7 +160,8 @@ const MychartsDashboard = () => {
                         </Text>
                     </TouchableOpacity>
                 </View>
-
+                
+                {/* Doctor data */}
                 <FlatList
                     data={doctorData}
                     keyExtractor={(item, index) =>
@@ -169,17 +175,20 @@ const MychartsDashboard = () => {
                     }}
                     renderItem={({ item: doctor }) => (
                         <View id={doctor.id} className="w-[300]">
-                            <DoctorCard
-                                doctorName={doctor.name}
-                                doctorHospital={doctor.hospital}
-                                doctorRating={doctor.rating}
-                                doctorExperience={doctor.experience}
-                                doctorSpecialist={doctor.specialization}
-                            />
+                            <TouchableOpacity onPress={() => navigation.navigate('AppointmentPage', doctor)}>
+                                <DoctorCard
+                                    doctorName={doctor.name}
+                                    doctorHospital={doctor.hospital}
+                                    doctorRating={doctor.rating}
+                                    doctorExperience={doctor.experience}
+                                    doctorSpecialist={doctor.specialization}
+                                />
+                            </TouchableOpacity>
                         </View>
                     )}
                 />
 
+                {/* Pharmacy based on the zip codes */}
                 <View className="flex-row justify-between items-center px-4">
                     <Text className="text-lg font-[appfont-semi]">
                         Pharmacy near you
@@ -194,6 +203,7 @@ const MychartsDashboard = () => {
                     </TouchableOpacity>
                 </View>
 
+                {/* Pharmacy Data */}
                 <FlatList
                     data={pharmacyData}
                     keyExtractor={(item, index) =>
@@ -203,15 +213,19 @@ const MychartsDashboard = () => {
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item: pharmacy }) => (
                         <View id={pharmacy.id} className="w-[300]">
-                            <PharmacyCard
-                                pharmacyLabel={pharmacy.name}
-                                pharmacyRating={pharmacy.rating}
-                            />
+                            <TouchableOpacity onPress={() => navigation.navigate('PharmacyInfo', pharmacy)}>
+                                <PharmacyCard
+                                    pharmacyLabel={pharmacy.name}
+                                    pharmacyRating={pharmacy.rating}
+                                 // pharmacyZipcode={pharmacy.zipcode}
+                                />
+                            </TouchableOpacity>
                         </View>
                     )}
                     contentContainerStyle={{ padding: 20, gap: 10 }}
                 />
 
+                {/* Labs based on the zipcode */}
                 <View className="flex-row justify-between items-center px-4">
                     <Text className="text-lg font-[appfont-semi]">
                         Labs near you
@@ -226,16 +240,25 @@ const MychartsDashboard = () => {
                     </TouchableOpacity>
                 </View>
 
+                {/* Lab Data */}
                 <FlatList
-                    data={doctorData}
+                    data={LabData}
                     keyExtractor={(item, index) =>
                         item.id.toString() || index.toString()
                     }
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
-                    renderItem={({ item: doctor }) => (
-                        <View className="w-[300]">
-                            <LabCard />
+                    renderItem={({ item: lab }) => (
+                        <View id={lab.id} className="w-[300]">
+                            <TouchableOpacity
+                                onPress={() => navigation.navigate('LabInfo', lab)}>
+                                <LabCard
+                                    labName={lab.name}
+                                    labRating={lab.rating}
+                                    labStoryCount={lab.labStoryCount}
+                                    labzipcode={lab.zipcode}
+                                />
+                            </TouchableOpacity>
                         </View>
                     )}
                     contentContainerStyle={{ padding: 20, gap: 10 }}

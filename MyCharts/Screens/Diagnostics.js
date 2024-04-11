@@ -22,14 +22,16 @@ const Diagnostics = () => {
         {
             name: "Boca Biolteics LAB",
             rating: "4.5",
-            storyCount: "+400",
+            labStoryCount: "(+400 Patient Story)",
             logoUrl: "../../assets/doc1.webp",
+            zipcode: "11111"
         },
         {
             name: "Momentum Technology",
             rating: "3",
-            storyCount: "+500",
+            labStoryCount: "(+500 Patient Story)",
             logoUrl: "../../assets/doc1.webp",
+            zipcode: "22222"
         },
     ];
 
@@ -88,8 +90,8 @@ const Diagnostics = () => {
                 <Text className="text-sm font-[appfont] mb-4 text-center">
                     {description}
                 </Text>
-                <TouchableOpacity className="bg-blue-500 py-2 px-4 rounded-md">
-                    <Text className="text-white text-sm font-[appfont-semi]">
+                <TouchableOpacity style={{backgroundColor: customTheme.colors.primary}} className="py-2 px-4 rounded-md">
+                    <Text style={{color: customTheme.colors.light}} className="text-sm font-[appfont-semi]">
                         {buttonText}
                     </Text>
                 </TouchableOpacity>
@@ -103,11 +105,10 @@ const Diagnostics = () => {
                 {Array.from({ length }).map((_, index) => (
                     <View
                         key={index}
-                        className={`h-2 w-2 rounded-full mx-1 ${
-                            currentIndex === index
+                        className={`h-2 w-2 rounded-full mx-1 ${currentIndex === index
                                 ? "bg-blue-600"
                                 : "bg-gray-300"
-                        }`}
+                            }`}
                         style={{ opacity: currentIndex === index ? 1 : 0.5 }}
                     />
                 ))}
@@ -146,7 +147,7 @@ const Diagnostics = () => {
         buttonText,
     }) => {
         return (
-            <View className="bg-white w-[100%] p-5 rounded-lg shadow-md space-y-3">
+            <View style={{backgroundColor: customTheme.colors.light}} className="w-[100%] p-5 rounded-lg shadow-md space-y-3">
                 <View className="w-[100%] items-center justify-center">
                     <Image
                         source={require("../../assets/doc1.webp")}
@@ -157,14 +158,14 @@ const Diagnostics = () => {
                     <Text className="text-lg font-[appfont-semi] mb-2 text-left">
                         {testName}
                     </Text>
-                    <Text className="text-xs text-gray-500 font-[appfont] text-left">
+                    <Text style={{color: customTheme.colors.dark}} className="text-xs font-[appfont] text-left">
                         {testDescription}
                     </Text>
                 </View>
                 <Text className="text-xl font-[appfont-semi] text-left">
                     {testPrice}
                 </Text>
-                <TouchableOpacity className="bg-blue-500 py-2 px-4 rounded-md">
+                <TouchableOpacity style={{backgroundColor: customTheme.colors.primary}} className=" py-2 px-4 rounded-md">
                     <Text className="text-white text-sm font-[appfont-semi] text-center">
                         {buttonText}
                     </Text>
@@ -174,7 +175,7 @@ const Diagnostics = () => {
         );
     };
 
-    handleUploadPress = () => {};
+    handleUploadPress = () => { };
 
     const CheckupData = [
         {
@@ -233,7 +234,7 @@ const Diagnostics = () => {
                         <Text className="text-lg font-[appfont-semi] mb-2 text-left">
                             {testName}
                         </Text>
-                        <Text className="text-xs text-gray-500 font-[appfont] text-left">
+                        <Text style={{color: customTheme.colors.dark}} className="text-xs font-[appfont] text-left">
                             {testDescription}
                         </Text>
                     </View>
@@ -242,12 +243,12 @@ const Diagnostics = () => {
                         <Text className="text-xl font-[appfont-semi] text-left mr-2">
                             {testPrice}
                         </Text>
-                        <Text className="text-md line-through text-gray-500">
+                        <Text style={{color: customTheme.colors.dark}} className="text-md line-through">
                             {originalPrice}
                         </Text>
                     </View>
-                    <TouchableOpacity className="bg-blue-500 py-2 px-4 rounded-md">
-                        <Text className="text-white text-sm font-[appfont-semi] text-center">
+                    <TouchableOpacity style={{backgroundColor: customTheme.colors.primary}}  className="py-2 px-4 rounded-md">
+                        <Text style={{color: customTheme.colors.light}} className="text-sm font-[appfont-semi] text-center">
                             {buttonText}
                         </Text>
                     </TouchableOpacity>
@@ -292,7 +293,7 @@ const Diagnostics = () => {
                     onScroll={({ nativeEvent }) => {
                         const slide = Math.ceil(
                             nativeEvent.contentOffset.x /
-                                nativeEvent.layoutMeasurement.width
+                            nativeEvent.layoutMeasurement.width
                         );
                         if (slide !== currentIndex) {
                             setCurrentIndex(slide);
@@ -311,7 +312,7 @@ const Diagnostics = () => {
                         Top Diagnostic Test
                     </Text>
                     <TouchableOpacity className="mt-2">
-                        <Text className="text-sm font-semibold text-blue-500 text-left">
+                        <Text style={{color: customTheme.colors.primary}} className="text-sm font-semibold text-left">
                             View All
                         </Text>
                     </TouchableOpacity>
@@ -360,10 +361,10 @@ const Diagnostics = () => {
                     className="mt-4 flex-row items-center justify-between p-5 rounded-lg shadow-lg"
                 >
                     <View className="flex-1">
-                        <Text className="text-lg font-[appfont-bold] text-white">
+                        <Text style={{color: customTheme.colors.light}} className="text-lg font-[appfont-bold]">
                             Need help with booking your test
                         </Text>
-                        <Text className="text-sm text-white font-[appfont-semi]">
+                        <Text style={{color: customTheme.colors.light}} className="text-sm font-[appfont-semi]">
                             Our experts are here to help you
                         </Text>
                     </View>
@@ -385,43 +386,49 @@ const Diagnostics = () => {
             </View>
 
             <View className="px-4 space-y-3">
-                {/* Show 5 of them based on zipcode */}
+                {/* Show labs based on a certain condition (e.g., zipcode) */}
                 {labs.map((lab, index) => (
-                    <View
+                    <TouchableOpacity
                         key={index}
-                        className="flex-row items-center justify-between rounded-lg shadow-lg bg-white p-5"
+                        onPress={() => navigation.navigate('LabInfo', lab,)}
+                        style={{backgroundColor: customTheme.colors.light}}
+                        className="rounded-lg shadow-lg"
                     >
-                        <Image
-                            source={require("../../assets/doc1.webp")}
-                            className="w-20 h-20 mr-4 rounded-full"
-                        />
-                        <View className="flex-1">
-                            <Text className="text-base font-[appfont-semi]">
-                                {lab.name}
-                            </Text>
-                            <View className="flex-row items-center">
-                                {renderStars(lab.rating)}
-                                <Text className="text-sm ml-1">
-                                    {lab.rating}
-                                </Text>
-                            </View>
-                            <Text className="text-sm font-[appfont]">{` (${lab.storyCount} Patient Story)`}</Text>
-                        </View>
-                        <TouchableOpacity
-                            onPress={() => {
-                                /* logic to handle phone call */
-                            }}
-                            className="bg-green-500 rounded-full p-3 shadow-lg"
-                        >
-                            <Ionicons
-                                name="call-outline"
-                                size={24}
-                                color="white"
+                        <View className="flex-row items-center justify-between p-5">
+                            <Image
+                                source={require("../../assets/doc1.webp")}
+                                className="w-20 h-20 mr-4 rounded-full"
                             />
-                        </TouchableOpacity>
-                    </View>
+                            <View className="flex-1">
+                                <Text className="text-base font-[appfont-semi]">
+                                    {lab.name}
+                                </Text>
+                                <View className="flex-row items-center">
+                                    {renderStars(lab.rating)}
+                                    <Text className="text-sm ml-1">
+                                        {lab.rating}
+                                    </Text>
+                                </View>
+                                <Text className="text-sm font-[appfont]">{` ${lab.labStoryCount} `}</Text>
+                            </View>
+                            {/* This could be another touchable area for a different action, e.g., making a phone call */}
+                            <TouchableOpacity
+                                onPress={() => {
+                                    /* logic to handle phone call */
+                                }}
+                                className="bg-green-500 rounded-full p-3 shadow-lg"
+                            >
+                                <Ionicons
+                                    name="call-outline"
+                                    size={24}
+                                    style={{color: customTheme.colors.light}}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </TouchableOpacity>
                 ))}
             </View>
+
         </ScrollView>
     );
 };

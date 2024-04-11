@@ -1154,6 +1154,8 @@ PODS:
   - react-native-image-picker (7.1.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
+  - react-native-maps (1.13.0):
+    - React-Core
   - react-native-netinfo (11.2.0):
     - React-Core
   - react-native-pager-view (6.2.1):
@@ -1383,6 +1385,7 @@ DEPENDENCIES:
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
+  - react-native-maps (from `../node_modules/react-native-maps`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -1542,6 +1545,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-get-random-values"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
+  react-native-maps:
+    :path: "../node_modules/react-native-maps"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-pager-view:
@@ -1688,6 +1693,7 @@ SPEC CHECKSUMS:
   react-native-date-picker: 1d61c76315098a6ad4c643a356f005916c7d4875
   react-native-get-random-values: 384787fd76976f5aec9465aff6fa9e9129af1e74
   react-native-image-picker: be000cd54f1b1bd71dba9677b36847827f9cc012
+  react-native-maps: fa054512735831f232e822ee6bdb0afcdd88de4a
   react-native-netinfo: 25c87e28495d955b30aeca9c22594691668c907a
   react-native-pager-view: d211379f61895b6349bd7e571b44a26d005c2975
   react-native-safe-area-context: 36cc67648134e89465663b8172336a19eeda493d

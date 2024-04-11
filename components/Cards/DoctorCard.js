@@ -1,4 +1,4 @@
-import { View, Text, Touchable } from "react-native";
+import { View, Text, Touchable, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { customTheme } from "../../constants/themeConstants";
@@ -18,20 +18,10 @@ const DoctorCard = ({
                 {/* Doctor Information */}
                 <View className="flex-row items-center space-x-3">
                     {/* Doctor Image */}
-                    <View
-                        style={{
-                            borderWidth: 1,
-                            borderColor: customTheme.colors.dark,
-                        }}
-                        className="p-2 rounded-full"
-                    >
-                        <Ionicons
-                            name="person-outline"
-                            color={customTheme.colors.dark}
-                            size={40}
-                        />
-                    </View>
-
+                    <Image
+                        source={require("../../assets/doc1.webp")}
+                        className="w-20 h-20 mr-1 rounded-full"
+                    />
                     {/* Doctor Name */}
                     <View>
                         <Text className="text-black text-lg font-[appfont-bold]">
