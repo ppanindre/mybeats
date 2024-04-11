@@ -5,6 +5,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { TrashIcon } from "react-native-heroicons/outline";
+import { customTheme } from "../constants/themeConstants";
 
 const CARD_VALUE_SIZE = 12;
 const ARROW_SIZE = 13;
@@ -33,7 +34,8 @@ const TrendCardComponent = ({
 
   return (
     <Card
-      className="px-5, py-4 mt-5 bg-white mb-5 border-2 border-orange-400 shadow-none"
+      className="px-5, py-4 mt-5 bg-white mb-5 border-2"
+      style={{borderColor: customTheme.colors.primary}}
       onPress={onEdit}
     >
       <Card.Title
