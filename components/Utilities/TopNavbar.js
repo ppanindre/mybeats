@@ -194,7 +194,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                         className="font-[appfont]"
                         style={{ fontSize: 10, color: customTheme.colors.dark }}
                     >
-                    Last active as {displayedRole}: April 06, 2024 6:55PM {getLastSyncTime()}
+                    Last active as {displayedRole}
                     </Text>
                 </View>
             </View>

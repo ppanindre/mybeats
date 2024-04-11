@@ -1,3 +1,6 @@
+
+// Required in the future
+
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, Text, StyleSheet, Button, Dimensions } from 'react-native';
 import { listDoctors } from '../../src/graphql/queries';
