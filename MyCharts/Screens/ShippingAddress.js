@@ -21,35 +21,35 @@ import { Checkbox } from "react-native-paper";
 
 const addressData = [
   {
-      id: 1,
+      id: "1",
       type: "home",
       address:
           "W3-092 9th Floor, Welington Estate, Near DLF Phase 5 Club, Opposite...",
       phone: "999 999 9999",
   },
   {
-      id: 2,
+      id: "2",
       type: "home",
       address:
           "W3-092 9th Floor, Welington Estate, Near DLF Phase 5 Club, Opposite...",
       phone: "999 999 9999",
   },
   {
-      id: 3,
+      id: "3",
       type: "home",
       address:
           "W3-092 9th Floor, Welington Estate, Near DLF Phase 5 Club, Opposite...",
       phone: "999 999 9999",
   },
   {
-      id: 4,
+      id: "4",
       type: "home",
       address:
           "W3-092 9th Floor, Welington Estate, Near DLF Phase 5 Club, Opposite...",
       phone: "999 999 9999",
   },
   {
-      id: 5,
+      id: "5",
       type: "home",
       address:
           "W3-092 9th Floor, Welington Estate, Near DLF Phase 5 Club, Opposite...",

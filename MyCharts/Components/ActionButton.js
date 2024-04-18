@@ -19,28 +19,28 @@ export default function ActionButton({ excludeId3 = false }) {
 
     const actionButtonList = [
         {
-            id: 1,
+            id: "1",
             name: 'Message',
             icon: 'chatbubble-ellipses',
         },
         {
-            id: 2,
+            id: "2",
             name: 'Phone',
             icon: 'call',
         },
         {
-            id: 3,
+            id: "3",
             name: 'Payment',
             icon: 'cash',
             // action: () => setCallModalVisible(true),
         },
         {
-            id: 4,
+            id: "4",
             name: 'Share',
             icon: 'share',
         },
         {
-            id: 5,
+            id: "5",
             name: 'Website',
             icon: 'earth',
         },
