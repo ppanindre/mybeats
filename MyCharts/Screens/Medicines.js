@@ -253,7 +253,7 @@ const Medicines = () => {
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) =>
                         <WellnessCard
-                            id={item.id}
+                            key={item.id}
                             testName={item.testName}
                             testPrice={item.testPrice}
                             originalPrice={item.originalPrice}

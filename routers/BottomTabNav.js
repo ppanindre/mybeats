@@ -154,7 +154,7 @@ const BottomTabNav = () => {
                         }}
                     >
                         {tabsData.map((tab) => (
-                            <Tab.Screen
+                            <Tab.Screen                                
                                 component={tab.component}
                                 name={tab.label}
                                 options={{

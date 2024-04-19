@@ -196,7 +196,7 @@ const DoctorDashboard = ({ route }) => {
                         padding: 20,
                     }}
                     renderItem={({ item: doctor }) => (
-                        <View id={doctor.id} className="w-[300]">
+                        <View key={doctor.id} className="w-[300]">
                             <TouchableOpacity
                                 onPress={() =>
                                     navigation.navigate(
@@ -241,7 +241,7 @@ const DoctorDashboard = ({ route }) => {
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item: pharmacy }) => (
-                        <View id={pharmacy.id} className="w-[300]">
+                        <View key={pharmacy.id} className="w-[300]">
                             <TouchableOpacity
                                 onPress={() =>
                                     navigation.navigate(
@@ -285,7 +285,7 @@ const DoctorDashboard = ({ route }) => {
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item: lab }) => (
-                        <View id={lab.id} className="w-[300]">
+                        <View key={lab.id} className="w-[300]">
                             <TouchableOpacity
                                 onPress={() =>
                                     navigation.navigate("LabInfo", lab)
