@@ -201,8 +201,8 @@ const Medicines = () => {
                     {categories.slice(0, 3).map((category, index) => (
                         <TouchableOpacity
                             key={index}
-                            className="bg-cyan-100 items-center justify-center rounded-lg shadow-md h-[80]"
-                            style={{ width: categoryWidth }}
+                            className="items-center justify-center rounded-lg shadow-md h-[80]"
+                            style={{ width: categoryWidth, backgroundColor: customTheme.colors.lightPrimary }}
                             onPress={() => navigation.navigate("searchMedicines")}
                         >
                             <Text className="text-sm font-[appfont-semi] text-center">
@@ -219,7 +219,7 @@ const Medicines = () => {
                     <TouchableOpacity
                         key={index}
                         className="bg-cyan-100 h-[80] rounded-lg shadow-md items-center justify-center"
-                        style={{ width: categoryWidth }}
+                        style={{ width: categoryWidth, backgroundColor: customTheme.colors.lightPrimary }}
                         onPress={() => navigation.navigate("searchMedicines")}
                     >
                         <Text className="text-sm font-[appfont-semi]">

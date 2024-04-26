@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import moment from 'moment';
 import SubHeading from './SubHeading';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { customTheme } from '../../constants/themeConstants';
 
 const colors = {
     white: '#fff',
@@ -83,11 +84,6 @@ export default function BookingSection({
 
     return (
         <View>
-            {/* <Text style={{
-                fontSize: 18,
-                color: 'gray'
-            }}>Book Appointment</Text> */}
-
             <SubHeading subHeadingTitle={'Day'} seelAll={false} />
 
             <FlatList
@@ -98,7 +94,7 @@ export default function BookingSection({
                     <TouchableOpacity style={
                         [styles.dayButton,
                         selectedDate == item.date
-                            ? { backgroundColor: colors.PRIMARY }
+                            ? { backgroundColor: customTheme.colors.primary }
                             : null
                         ]
                     }
@@ -138,7 +134,7 @@ export default function BookingSection({
                                 },
                                 !selectedDate && { opacity: 0.5 },
                                 selectedTime == item.time
-                                    ? { backgroundColor: colors.PRIMARY }
+                                    ? { backgroundColor: customTheme.colors.primary }
                                     : null
                                 ]
                             }

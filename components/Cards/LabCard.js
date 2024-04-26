@@ -24,7 +24,7 @@ const LabCard = ({ labName, labRating, labStoryCount }) => {
                 onPress={() => {
                     /* logic to handle phone call */
                 }}
-                className="bg-green-500 rounded-full p-3 shadow-lg"
+                className="rounded-full p-3 shadow-lg" style={{backgroundColor: customTheme.colors.lightPrimary}}
             >
                 <Ionicons name="call-outline" size={24} color="white" />
             </TouchableOpacity>

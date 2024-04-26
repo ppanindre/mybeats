@@ -260,7 +260,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
 
                     {/* Continue Button */}
                     <View className="flex justify-center items-center mt-4 mb-5">
-                        <TouchableOpacity onPress={handleContinue} className="bg-blue-500 w-full p-4 rounded-lg">
+                        <TouchableOpacity onPress={handleContinue} style={{backgroundColor: customTheme.colors.primary}} className="w-full p-4 rounded-lg">
                             <Text className="text-center text-white text-md font-[appfont-bold]">Continue</Text>
                         </TouchableOpacity>
                     </View>

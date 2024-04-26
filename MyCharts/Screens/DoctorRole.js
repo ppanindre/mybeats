@@ -82,7 +82,7 @@ const DoctorRole = ({route}) => {
           >
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("consultdoctors")
+                navigation.navigate("AppointmentList")
               }
               className="h-[100%] justify-end"
             >
@@ -92,7 +92,7 @@ const DoctorRole = ({route}) => {
                   color: customTheme.colors.light,
                 }}
               >
-                Consult Doctors
+                Appointments
               </Text>
               <Text
                 className="font-[appfont] text-lg"
@@ -100,7 +100,7 @@ const DoctorRole = ({route}) => {
                   color: customTheme.colors.light,
                 }}
               >
-                Book an appointment
+                Manage Your Appointments
               </Text>
             </TouchableOpacity>
           </View>
@@ -117,11 +117,11 @@ const DoctorRole = ({route}) => {
           </View>
 
           <View className="flex-1">
-            {/* Second Card: Diagnostics */}
+            {/* Second Card: Patients */}
             <NavigationCard
-              cardTitle="Diagnostics"
-              cardContent="Request a lab test"
-              onPress={() => navigation.navigate("diagnostics")}
+              cardTitle="Patients"
+              cardContent="Know your patients"
+              onPress={() => navigation.navigate("Patients")}
             />
           </View>
         </View>
