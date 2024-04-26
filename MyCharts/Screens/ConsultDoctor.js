@@ -262,9 +262,7 @@ const ConsultDoctor = () => {
             </Text>
             <FlatList
                 data={doctorData}
-                keyExtractor={(item, index) =>
-                    item.id.toString() || index.toString()
-                }
+                
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 renderItem={({ item: doctor }) => (

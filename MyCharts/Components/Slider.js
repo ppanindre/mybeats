@@ -10,11 +10,11 @@ import React from 'react';
 export function Slider() {
   // Array of 5 dummy local images
   const dummyImages = [
-    { id: '1', source: image1 },
-    { id: '2', source: image2 },
-    { id: '3', source: image3 },
-    { id: '4', source: image4 },
-    { id: '5', source: image5 },
+    { id: "1", source: image1 },
+    { id: "2", source: image2 },
+    { id: "3", source: image3 },
+    { id: "4", source: image4 },
+    { id: "5", source: image5 },
   ];
 
   return (

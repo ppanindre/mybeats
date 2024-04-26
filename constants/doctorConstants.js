@@ -1,6 +1,6 @@
 export const doctorData = [
   {
-      id: 1,
+      id: "1",
       name: "John Doe",
       specialization: "Cardiology",
       hospital: "Southern California Hospital",
@@ -9,7 +9,7 @@ export const doctorData = [
       experience: 5,
   },
   {
-      id: 2,
+      id: "2",
       name: "Jane Smith",
       specialization: "Neurology",
       hospital: "Northern California Hospital",
@@ -18,7 +18,7 @@ export const doctorData = [
       experience: 2,
   },
   {
-      id: 3,
+      id: "3",
       name: "Jane Doe",
       hospital: "New York Hospital",
       specialization: "Neurology",

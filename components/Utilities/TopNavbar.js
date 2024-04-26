@@ -37,7 +37,6 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
 
     // Handle continue for change role 
     const handleContinue = () => {
-        console.log('Selected Role:', selectedRole);
         setModalVisible(false);
 
         let screenName = '';
@@ -58,13 +57,6 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                 console.error('Unknown role selected');
                 return;
         }
-
-        navigation.navigate('RolesNav', {
-            screen: screenName,
-            params: { isLoading: true },
-        });
-        // Use setParams to update the parameters of the current route
-        navigation.setParams({ selectedRole: selectedRole });
 
         setSelectedRole('');
     };
@@ -205,7 +197,6 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                 >
                     <TouchableOpacity
                         sentry-label="sync-btn"
-                        // onPress={() => navigation.navigate("confirmAddress")}
                         onPress={() => setModalVisible(true)}
                     >
                         <Text
@@ -242,7 +233,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                     </View>
 
                     {/* Checkboxes for Role Selection */}
-                    {["Doctor", "Patient", "Pharma Manager", "Lab Manager"].map((role) => (
+                    {/* {["Doctor", "Patient", "Pharma Manager", "Lab Manager"].map((role) => (
                         <CheckBox
                             key={role}
                             title={role}
@@ -256,7 +247,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                                 marginLeft: 0
                             }}
                         />
-                    ))}
+                    ))} */}
 
                     {/* Continue Button */}
                     <View className="flex justify-center items-center mt-4 mb-5">

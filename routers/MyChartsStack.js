@@ -16,16 +16,13 @@ import Payment from "../MyCharts/Screens/Payment";
 import SearchMedicines from "../MyCharts/Screens/SearchMedicines";
 import UploadPrescription from "../MyCharts/Screens/UploadPrescription";
 import ConfirmAddress from "../MyCharts/Screens/ConfirmAddress";
-import ImageAnalyzeDisplay from "../MyCharts/Components/ImageAnalyzeDisplay"; import EditAddress from "../MyCharts/Screens/EditAddress";
+import ImageAnalyzeDisplay from "../MyCharts/Components/ImageAnalyzeDisplay";
+import EditAddress from "../MyCharts/Screens/EditAddress";
 import ShippingAddress from "../MyCharts/Screens/ShippingAddress";
-import DoctorRole from "../MyCharts/Screens/DoctorRole";
-import PatientRole from "../MyCharts/Screens/PatientRole";
-import PharmacyManger from "../MyCharts/Screens/PharmacyManger";
-import LabManager from "../MyCharts/Screens/LabManager";
-import RolesNav from "./RolesNav"
 import PharmacyInfo from "../MyCharts/Screens/PharmacyInfo";
 import LabInfo from "../MyCharts/Screens/LabInfo";
-import Medicines from "../MyCharts/Screens/Medicines"
+import Medicines from "../MyCharts/Screens/Medicines";
+import DoctorDashboard from "../MyCharts/Screens/DoctorDashboard";
 import AppointmentList from "../MyCharts/Screens/AppointmentList";
 import Patients from "../MyCharts/Screens/Patients";
 import PatientInfo from "../MyCharts/Screens/PatientInfo";
@@ -76,7 +73,6 @@ const GoBackButton = ({ onPress }) => (
     </TouchableOpacity>
 );
 
-
 // Right Icon Button
 const RightIconButton = ({ icon, onPress }) => (
     <TouchableOpacity onPress={onPress}>
@@ -92,22 +88,13 @@ export const MyChartsStack = () => {
     return (
         <Stack.Navigator initialRouteName="Rolesnav">
             {/* Initial Route */}
-            {/* <Stack.Screen
+            <Stack.Screen
                 name="MychartsDashboard"
                 component={MychartsDashboard}
                 options={{
                     headerShown: false,
                 }}
-            /> */}
-
-            <Stack.Screen
-                name="RolesNav"
-                component={RolesNav}
-                options={{
-                    headerShown: false,
-                }}
             />
-
             {/* Consult Doctors */}
             <Stack.Screen
                 name="consultdoctors"
@@ -123,7 +110,7 @@ export const MyChartsStack = () => {
                     headerRight: () => (
                         <View className="mr-4">
                             <RightIconButton
-                                onPress={() => { }}
+                                onPress={() => {}}
                                 icon={icons.searchIcon}
                             />
                         </View>
@@ -179,7 +166,12 @@ export const MyChartsStack = () => {
                     headerRight: () => (
                         <View className="flex-row mr-4 space-x-4">
                             <TouchableOpacity>
-                                <RightIconButton onPress={() => navigation.navigate("CartScreen")} icon={icons.cartIcon} />
+                                <RightIconButton
+                                    onPress={() =>
+                                        navigation.navigate("CartScreen")
+                                    }
+                                    icon={icons.cartIcon}
+                                />
                             </TouchableOpacity>
                         </View>
                     ),
@@ -218,7 +210,7 @@ export const MyChartsStack = () => {
                     headerRight: () => (
                         <View className="mr-4">
                             <RightIconButton
-                                onPress={() => { }}
+                                onPress={() => {}}
                                 icon={icons.starIcon}
                             />
                         </View>
@@ -248,7 +240,7 @@ export const MyChartsStack = () => {
                     headerRight: () => (
                         <View className="mr-4">
                             <RightIconButton
-                                onPress={() => { }}
+                                onPress={() => {}}
                                 icon={icons.starIcon}
                             />
                         </View>
@@ -278,7 +270,7 @@ export const MyChartsStack = () => {
                     headerRight: () => (
                         <View className="mr-4">
                             <RightIconButton
-                                onPress={() => { }}
+                                onPress={() => {}}
                                 icon={icons.starIcon}
                             />
                         </View>
@@ -292,7 +284,6 @@ export const MyChartsStack = () => {
                     },
                 })}
             />
-
 
             <Stack.Screen
                 name="confirmAddress"
@@ -455,6 +446,8 @@ export const MyChartsStack = () => {
                 component={ShippingAddress}
                 options={{ headerShown: false }}
             />
+
+            <Stack.Screen name="doctorDashboard" component={DoctorDashboard} />
 
             <Stack.Group screenOptions={{ presentation: "modal" }}>
                 <Stack.Screen
