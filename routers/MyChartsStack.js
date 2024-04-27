@@ -28,6 +28,7 @@ import Patients from "../MyCharts/Screens/Patients";
 import PatientInfo from "../MyCharts/Screens/PatientInfo";
 import DoctorPrescription from "../MyCharts/Screens/DoctorPrescription";
 import DoctorAvailability from "../MyCharts/Screens/DoctorAvailability";
+import RolesNav from "./RolesNav";
 
 // Declare icon size
 const ICON_SIZE = 24;
@@ -89,12 +90,13 @@ export const MyChartsStack = () => {
         <Stack.Navigator initialRouteName="Rolesnav">
             {/* Initial Route */}
             <Stack.Screen
-                name="MychartsDashboard"
-                component={MychartsDashboard}
+                name="RolesNav"
+                component={RolesNav}
                 options={{
                     headerShown: false,
                 }}
             />
+
             {/* Consult Doctors */}
             <Stack.Screen
                 name="consultdoctors"

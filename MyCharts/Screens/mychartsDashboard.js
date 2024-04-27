@@ -29,7 +29,7 @@ const MychartsDashboard = () => {
     return (
         <CustomSafeView>
             {/* Top navbar */}
-            <TopNavbar isMyBeats={true} showSync={false} />
+            {/* <TopNavbar isMyBeats={true} showSync={false} /> */}
 
             <ScrollView
                 className="py-4 bg-gray-100"
