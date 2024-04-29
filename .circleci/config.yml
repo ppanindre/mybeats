@@ -13,7 +13,7 @@ jobs:
           command: npm test
       - run:
           name: Check Formatting
-          command: npx prettier --check "src/*/.js"
+          command: npx prettier --check src*/.js
       # - run:
       #     name: Run Lint Check
       #     command: npx eslint "src/*/.{js,jsx}" --fix
