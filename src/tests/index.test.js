@@ -1,3 +1,4 @@
-test("Basic Arithmetic", () => {
-    expect(2 + 2).to(4)
-})
+
+test('adds 1 + 2 to equal 3', () => {
+    expect(1 + 2).toBe(3);
+});
