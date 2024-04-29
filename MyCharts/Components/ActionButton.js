@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, SafeAreaView } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { customTheme } from '../../constants/themeConstants';
 
 const colors = {
     white: '#fff',
@@ -80,13 +81,13 @@ export default function ActionButton({ excludeId3 = false }) {
                             style={{
                                 marginLeft: 10,
                                 marginRight: 10,
-                                backgroundColor: colors.SECONDARY,
+                                backgroundColor: customTheme.colors.lightPrimary,
                                 padding: 13,
                                 borderRadius: 99,
                                 alignItems: 'center',
                                 width: 55,
                             }}>
-                            <Ionicons name={item.icon} size={24} color={colors.PRIMARY} />
+                            <Ionicons name={item.icon} size={24} color={customTheme.colors.light} />
                         </View>
                         <Text
                             style={{

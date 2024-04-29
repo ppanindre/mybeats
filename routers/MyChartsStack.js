@@ -2,6 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { View, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { Text, Image } from 'react-native';
 
 import MychartsDashboard from "../MyCharts/Screens/mychartsDashboard";
 import { customTheme } from "../constants/themeConstants";
@@ -22,6 +23,12 @@ import PharmacyInfo from "../MyCharts/Screens/PharmacyInfo";
 import LabInfo from "../MyCharts/Screens/LabInfo";
 import Medicines from "../MyCharts/Screens/Medicines";
 import DoctorDashboard from "../MyCharts/Screens/DoctorDashboard";
+import AppointmentList from "../MyCharts/Screens/AppointmentList";
+import Patients from "../MyCharts/Screens/Patients";
+import PatientInfo from "../MyCharts/Screens/PatientInfo";
+import DoctorPrescription from "../MyCharts/Screens/DoctorPrescription";
+import DoctorAvailability from "../MyCharts/Screens/DoctorAvailability";
+import RolesNav from "./RolesNav";
 
 // Declare icon size
 const ICON_SIZE = 24;
@@ -83,12 +90,13 @@ export const MyChartsStack = () => {
         <Stack.Navigator initialRouteName="Rolesnav">
             {/* Initial Route */}
             <Stack.Screen
-                name="MychartsDashboard"
-                component={MychartsDashboard}
+                name="RolesNav"
+                component={RolesNav}
                 options={{
                     headerShown: false,
                 }}
             />
+
             {/* Consult Doctors */}
             <Stack.Screen
                 name="consultdoctors"
@@ -332,6 +340,96 @@ export const MyChartsStack = () => {
                 component={ImageAnalyzeDisplay}
                 options={({ navigation }) => ({
                     headerTitle: "Upload Prescription",
+                    headerTitleAlign: "left",
+                    headerLeft: () => (
+                        <View className="ml-4">
+                            <GoBackButton onPress={() => navigation.goBack()} />
+                        </View>
+                    ),
+                    headerTitleStyle: {
+                        fontFamily: "appfont-bold",
+                        fontSize: customTheme.text.header,
+                    },
+                })}
+            />
+
+            <Stack.Screen
+                name="AppointmentList"
+                component={AppointmentList}
+                options={({ navigation }) => ({
+                    headerTitle: "Appointments",
+                    headerTitleAlign: "left",
+                    headerLeft: () => (
+                        <View className="ml-4">
+                            <GoBackButton onPress={() => navigation.goBack()} />
+                        </View>
+                    ),
+                    headerTitleStyle: {
+                        fontFamily: "appfont-bold",
+                        fontSize: customTheme.text.header,
+                    },
+                })}
+            />
+
+            <Stack.Screen
+                name="Patients"
+                component={Patients}
+                options={({ navigation }) => ({
+                    headerTitle: "Patients",
+                    headerTitleAlign: "left",
+                    headerLeft: () => (
+                        <View className="ml-4">
+                            <GoBackButton onPress={() => navigation.goBack()} />
+                        </View>
+                    ),
+                    headerTitleStyle: {
+                        fontFamily: "appfont-bold",
+                        fontSize: customTheme.text.header,
+                    },
+                })}
+            />
+
+            <Stack.Screen
+                name="PatientInfo"
+                component={PatientInfo}
+                options={({ navigation }) => ({
+                    headerTitle: "Patient Info",
+                    headerTitleAlign: "left",
+                    headerLeft: () => (
+                        <View className="ml-4">
+                            <GoBackButton onPress={() => navigation.goBack()} />
+                        </View>
+                    ),
+                    headerTitleStyle: {
+                        fontFamily: "appfont-bold",
+                        fontSize: customTheme.text.header,
+                    },
+                })}
+            />
+
+            <Stack.Screen
+                name="DoctorPrescription"
+                component={DoctorPrescription}
+                options={({ navigation }) => ({
+                    headerTitle: "Prescription",
+                    headerTitleAlign: "left",
+                    headerLeft: () => (
+                        <View className="ml-4">
+                            <GoBackButton onPress={() => navigation.goBack()} />
+                        </View>
+                    ),
+                    headerTitleStyle: {
+                        fontFamily: "appfont-bold",
+                        fontSize: customTheme.text.header,
+                    },
+                })}
+            />
+
+            <Stack.Screen
+                name="DoctorAvailability"
+                component={DoctorAvailability}
+                options={({ navigation }) => ({
+                    headerTitle: "Availability",
                     headerTitleAlign: "left",
                     headerLeft: () => (
                         <View className="ml-4">

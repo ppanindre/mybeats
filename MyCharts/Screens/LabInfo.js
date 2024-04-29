@@ -97,12 +97,12 @@ export default LabInfo = ({ route, navigation }) => {
                 </View>
 
                 {/* Clinic Appointment Section */}
-                <View className="flex-row justify-between items-center mt-5 bg-cyan-100 p-5 rounded-lg shadow mx-4">
+                <View className="flex-row justify-between items-center mt-5 bg-cyan-100 p-5 rounded-lg shadow mx-4" style={{backgroundColor: customTheme.colors.lightPrimary}}>
                     <View className="flex-row items-center">
-                        <Ionicons name="business" size={24} color="#3b82f6" className="bg-blue-100 p-1 rounded-full" />
-                        <Text className="text-black-600 text-sm ml-2 font-[appfont-semi]">Lab Appointment</Text>
+                        <Ionicons name="business" size={24} style={{color: customTheme.colors.light}} className="bg-blue-100 p-1 rounded-full" />
+                        <Text className="text-black-600 text-sm ml-2 font-[appfont-semi]" style={{color: customTheme.colors.light}}>Lab Appointment</Text>
                     </View>
-                    <Text className="text-lg font-[appfont-semi] text-gray-800">{`$50 Fee`}</Text>
+                    <Text className="text-lg font-[appfont-semi] text-gray-800" style={{color: customTheme.colors.light}}>{`$50 Fee`}</Text>
                 </View>
 
                 {/* Clinic Appointment Time Slots */}
