@@ -1,0 +1,25 @@
+version: 2.1
+orbs:
+  node: circleci/node@4.1.0
+jobs:
+  build:
+    docker:
+      - image: 'cimg/node:current'
+    steps:
+      - checkout
+      - node/install-packages
+      - run:
+          name: Run Tests
+          command: npm test
+      - run:
+          name: Check Formatting
+          command: npx prettier --check "src/*/.js"
+      # - run:
+      #     name: Run Lint Check
+      #     command: npx eslint "src/*/.{js,jsx}" --fix
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
