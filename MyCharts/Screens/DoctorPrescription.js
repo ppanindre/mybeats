@@ -4,8 +4,10 @@ import { customTheme } from '../../constants/themeConstants';
 import { CheckBox } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
+import { useNavigation } from "@react-navigation/native";
 
 const DoctorPrescription = () => {
+    const navigation = useNavigation()
     const [searchInput, setSearchInput] = useState('');
     const [selectedPeriod, setSelectedPeriod] = useState(null);
     const [selectedDays, setSelectedDays] = useState(new Set());
@@ -82,7 +84,7 @@ const DoctorPrescription = () => {
         }
         setSelectedDays(newSelectedDays);
     };
-    
+
     const toggleMeal = meal => {
         const newSelectedMeals = new Set(selectedMeals);
         if (newSelectedMeals.has(meal)) {
@@ -119,18 +121,31 @@ const DoctorPrescription = () => {
 
                 {/* Display search results */}
                 {!selectedMedicine && (
-                    <FlatList
-                        data={filteredMedicines}
-                        keyExtractor={(item) => item.id.toString()}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity
-                                onPress={() => selectMedicine(item)}
-                                className="flex-row items-center p-2 border-b border-gray-200 bg-white rounded-md"
-                            >
-                                <Text className="ml-2 text-lg text-gray-800 font-[appfont-semi]">{item.name}</Text>
-                            </TouchableOpacity>
-                        )}
-                    />
+                    <View className="">
+                        <View className="bg-white rounded-lg shadow-lg">
+                            <FlatList
+                                data={filteredMedicines}
+                                keyExtractor={(item) => item.id.toString()}
+                                renderItem={({ item }) => (
+                                    <TouchableOpacity
+                                        onPress={() => selectMedicine(item)}
+                                        className="p-4 border-b border-gray-100"
+                                    >
+                                         <View className="flex-row items-center space-x-3">
+                                            <Ionicons
+                                                size={16}
+                                                name="search-outline"
+                                                color={customTheme.colors.dark}
+                                            />
+                                            <Text className="font-[appfont]">
+                                                {item.name}
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                )}
+                            />
+                        </View>
+                    </View>
                 )}
 
 
@@ -262,6 +277,7 @@ const DoctorPrescription = () => {
                     </>
                 ) : (
                     <TouchableOpacity
+                        onPress={() => navigation.navigate('UploadPrescription')}
                         style={{ backgroundColor: customTheme.colors.primary }}
                         className="flex-1 m-1 mx-5 py-4 rounded-lg flex-row justify-center items-center mr-4">
                         <Text style={{ color: customTheme.colors.light }} className="ml-2 font-[appfont-semi]">Upload Prescription</Text>
