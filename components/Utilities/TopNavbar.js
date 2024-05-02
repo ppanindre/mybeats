@@ -246,6 +246,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                         <CheckBox
                             key={role}
                             title={role}
+                            checkedColor={customTheme.colors.primary}
                             checked={selectedRole === role}
                             onPress={() => handleSelectRole(role)}
                             textStyle={{

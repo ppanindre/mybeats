@@ -29,6 +29,7 @@ import PatientInfo from "../MyCharts/Screens/PatientInfo";
 import DoctorPrescription from "../MyCharts/Screens/DoctorPrescription";
 import DoctorAvailability from "../MyCharts/Screens/DoctorAvailability";
 import RolesNav from "./RolesNav";
+import DoctorProfile from "../MyCharts/Screens/DoctorProfile";
 
 // Declare icon size
 const ICON_SIZE = 24;
@@ -112,7 +113,7 @@ export const MyChartsStack = () => {
                     headerRight: () => (
                         <View className="mr-4">
                             <RightIconButton
-                                onPress={() => {}}
+                                onPress={() => { }}
                                 icon={icons.searchIcon}
                             />
                         </View>
@@ -212,7 +213,7 @@ export const MyChartsStack = () => {
                     headerRight: () => (
                         <View className="mr-4">
                             <RightIconButton
-                                onPress={() => {}}
+                                onPress={() => { }}
                                 icon={icons.starIcon}
                             />
                         </View>
@@ -242,7 +243,7 @@ export const MyChartsStack = () => {
                     headerRight: () => (
                         <View className="mr-4">
                             <RightIconButton
-                                onPress={() => {}}
+                                onPress={() => { }}
                                 icon={icons.starIcon}
                             />
                         </View>
@@ -272,7 +273,7 @@ export const MyChartsStack = () => {
                     headerRight: () => (
                         <View className="mr-4">
                             <RightIconButton
-                                onPress={() => {}}
+                                onPress={() => { }}
                                 icon={icons.starIcon}
                             />
                         </View>
@@ -458,6 +459,24 @@ export const MyChartsStack = () => {
                     options={{ headerShown: false }}
                 />
             </Stack.Group>
+
+            <Stack.Screen
+                name="DoctorProfile"
+                component={DoctorProfile}
+                options={({ navigation }) => ({
+                    headerTitle: "Your Profile",
+                    headerTitleAlign: "left",
+                    headerLeft: () => (
+                        <View className="ml-4">
+                            <GoBackButton onPress={() => navigation.goBack()} />
+                        </View>
+                    ),
+                    headerTitleStyle: {
+                        fontFamily: "appfont-bold",
+                        fontSize: customTheme.text.header,
+                    },
+                })}
+            />
         </Stack.Navigator>
     );
 };

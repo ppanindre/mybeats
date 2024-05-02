@@ -48,6 +48,25 @@ const DoctorPrescription = () => {
 
     };
 
+    // Form  Completion Update
+    const isFormComplete = () => {
+        return selectedMedicine && selectedType && selectedPeriod && selectedDays.size > 0 && Object.values(mealDosage).some(dosage => dosage);
+    };
+    
+    // AnotherPrescriptionButton
+    const AnotherPrescriptionButton = (isEnabled) => ({
+        backgroundColor: isEnabled ? customTheme.colors.primary : customTheme.colors.primary,
+        opacity: isEnabled ? 1 : 0.5,
+        cursor: isEnabled ? 'pointer' : 'not-allowed'
+    });
+
+    // SubmitButton
+    const SubmitButton = (isEnabled) => ({
+        backgroundColor: isEnabled ? customTheme.colors.lightPrimary : customTheme.colors.lightPrimary,
+        opacity: isEnabled ? 1 : 0.5,
+        cursor: isEnabled ? 'pointer' : 'not-allowed'
+    });
+
     const handleMealSelect = (meal) => {
         setCurrentMeal(meal);
         setModalVisible(true);
@@ -131,7 +150,7 @@ const DoctorPrescription = () => {
                                         onPress={() => selectMedicine(item)}
                                         className="p-4 border-b border-gray-100"
                                     >
-                                         <View className="flex-row items-center space-x-3">
+                                        <View className="flex-row items-center space-x-3">
                                             <Ionicons
                                                 size={16}
                                                 name="search-outline"
@@ -266,11 +285,16 @@ const DoctorPrescription = () => {
             <View className="absolute bottom-0 left-0 right-0 flex-row justify-between py-3 bg-white">
                 {selectedMedicine ? (
                     <>
-                        <TouchableOpacity style={{ backgroundColor: customTheme.colors.primary }} className="flex-1 m-1 mx-5 py-4 rounded-lg flex-row justify-center items-center mr-2">
+                    {/* Buttons for add another prescription and submit*/}
+                        <TouchableOpacity
+                            disabled={!isFormComplete()}
+                            style={AnotherPrescriptionButton(isFormComplete())}
+                            className="flex-1 m-1 mx-5 py-4 rounded-lg flex-row justify-center items-center mr-2">
                             <Text style={{ color: customTheme.colors.light }} className=" ml-2 font-[appfont-semi]">Add another Prescription</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            style={{ backgroundColor: customTheme.colors.lightPrimary }}
+                            disabled={!isFormComplete()}
+                            style={SubmitButton(isFormComplete())}
                             className="flex-1 m-1 mx-2 py-4 rounded-lg flex-row justify-center items-center mr-4">
                             <Text style={{ color: customTheme.colors.light }} className="ml-2 font-[appfont-semi]">Submit</Text>
                         </TouchableOpacity>

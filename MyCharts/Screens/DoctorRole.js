@@ -111,8 +111,9 @@ const DoctorRole = ({route}) => {
           {/* First Card: Telehealth */}
           <View className="flex-1">
             <NavigationCard
-              cardTitle="Telehealth"
-              cardContent="Video consultation"
+              cardTitle="Profile"
+              cardContent="Upate your Information"
+              onPress={() => navigation.navigate("DoctorProfile")}
             />
           </View>
 
