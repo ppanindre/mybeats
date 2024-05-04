@@ -32,7 +32,7 @@ const CustomInput = ({
       }}
       style={{
         height: 55,
-        width: 325,
+        // width: 325,
         backgroundColor: customTheme.colors.light,
         fontSize: 16,
       }}
