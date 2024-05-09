@@ -13,7 +13,7 @@ import AddAvatar from "../screens/AddAvatar";
 import LoginOtp from "../screens/LoginOtp";
 import EnterOtp from "../screens/EnterOtp";
 import AddDevice from "../screens/AddDevice";
-import FoodEditComponent from "../../../screens/FoodEdit";
+import FoodEditComponent from "../screens/firebeatsScreens/FoodEdit";
 import SignInWithGfit from "../screens/SignInWithGfit";
 import SignInWithGarmin from "../screens/SignInWithGarmin";
 import WelcomeScreens from "../screens/WelcomeScreens";

@@ -4,19 +4,19 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import * as Sentry from "@sentry/react-native";
 
-import { WEEK_LABELS, YEAR_LABLES } from "../constants/dateConstants";
+import { WEEK_LABELS, YEAR_LABLES } from "../../../../constants/dateConstants";
 import {
   getActivityIntraday,
   getActivityTrendCardData,
   getActivityTrendChartData,
-} from "../apis/activityQueries";
+} from "../../../../apis/activityQueries";
 
-import { customTheme } from "../constants/themeConstants";
-import ActivityLineChart from "../components/ActivityLineChart";
-import ActivityTrends from "../components/ActivityTrends";
-import CustomDayChartComponent from "../components/CustomDayChartComponent";
-import CustomTrendDatePicker from "../components/CustomTrendDatePicker";
-import TrendCardComponent from "../components/TrendCardComponent";
+import { customTheme } from "../../../../constants/themeConstants";
+import ActivityLineChart from "../../../../components/ActivityLineChart";
+import ActivityTrends from "../../../../components/ActivityTrends";
+import CustomDayChartComponent from "../../../../components/CustomDayChartComponent";
+import CustomTrendDatePicker from "../../../../components/CustomTrendDatePicker";
+import TrendCardComponent from "../../../../components/TrendCardComponent";
 
 const NewActivity = () => {
   // define dispatch instance

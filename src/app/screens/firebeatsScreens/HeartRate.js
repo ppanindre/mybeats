@@ -4,18 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import * as Sentry from "@sentry/react-native";
 
-import HeartRateDayChart from "../components/HeartRateDayChart";
-import TrendCardComponent from "../components/TrendCardComponent";
-import CustomDayChartComponent from "../components/CustomDayChartComponent";
-import CustomTrendDatePicker from "../components/CustomTrendDatePicker";
-import HeartRateTrend from "../components/HeartRateTrend";
+import HeartRateDayChart from "../../../../components/HeartRateDayChart";
+import TrendCardComponent from "../../../../components/TrendCardComponent";
+import CustomDayChartComponent from "../../../../components/CustomDayChartComponent";
+import CustomTrendDatePicker from "../../../../components/CustomTrendDatePicker";
+import HeartRateTrend from "../../../../components/HeartRateTrend";
 
 import {
   getHeartRateIntraday,
   getHeartRateTrendCardData,
   getHeartRateTrendChartData,
-} from "../apis/heartRateQueries";
-import { WEEK_LABELS, YEAR_LABLES } from "../constants/dateConstants";
+} from "../../../../apis/heartRateQueries";
+import { WEEK_LABELS, YEAR_LABLES } from "../../../../constants/dateConstants";
 
 const HeartRate = () => {
   // define dispatch instance

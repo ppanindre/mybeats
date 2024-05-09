@@ -16,14 +16,14 @@ import { TourGuideZone } from "rn-tourguide";
 import {
   getHeartRate,
   getHeartRateTrendCardData,
-} from "../apis/heartRateQueries";
-import { getSleepData, getSleepTrendCardData } from "../apis/sleepQueries";
-import { ActivityActionCreators } from "../store/ActivityReducer/ActivityActionCreators";
-import { FoodActionCreators } from "../store/FoodReducer/FoodActionCreators";
-import { dashboardActionTypes } from "../store/DashboardReducer/DashboardActionTypes";
-import CustomDayChartComponent from "../components/CustomDayChartComponent";
-import SummaryChart from "../components/SummaryChart";
-import TrendCardComponent from "../components/TrendCardComponent";
+} from "../../../../apis/heartRateQueries";
+import { getSleepData, getSleepTrendCardData } from "../../../../apis/sleepQueries";
+import { ActivityActionCreators } from "../../../../store/ActivityReducer/ActivityActionCreators";
+import { FoodActionCreators } from "../../../../store/FoodReducer/FoodActionCreators";
+import { dashboardActionTypes } from "../../../../store/DashboardReducer/DashboardActionTypes";
+import CustomDayChartComponent from "../../../../components/CustomDayChartComponent";
+import SummaryChart from "../../../../components/SummaryChart";
+import TrendCardComponent from "../../../../components/TrendCardComponent";
 
 const Dashboard = () => {
   // Declare navigation & dispatch instance

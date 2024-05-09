@@ -6,13 +6,13 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import Dashboard from "../../../../screens/DashBoard";
+import Dashboard from "../../screens/firebeatsScreens/DashBoard";
 import CustomSafeView from "../../../../components/CustomSafeView";
-import Food from "../../../../screens/Food";
-import Sleep from "../../../../screens/Sleep";
+import Food from "../../screens/firebeatsScreens/Food";
+import Sleep from "../../screens/firebeatsScreens/Sleep";
 import { customTheme } from "../../../../constants/themeConstants";
-import HeartRate from "../../../../screens/HeartRate";
-import NewActivity from "../../../../screens/NewActivity";
+import HeartRate from "../../screens/firebeatsScreens/HeartRate";
+import NewActivity from "../../screens/firebeatsScreens/NewActivity";
 import TopNavbar from "../../../../components/Utilities/TopNavbar";
 
 

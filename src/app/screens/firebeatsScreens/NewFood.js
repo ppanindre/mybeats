@@ -1,20 +1,20 @@
 import { View, Text, ScrollView, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
-import CustomDayChartComponent from "../components/CustomDayChartComponent";
-import FoodPieChart from "../components/FoodPieChart";
-import TrendCardComponent from "../components/TrendCardComponent";
-import CustomTrendDatePicker from "../components/CustomTrendDatePicker";
-import FoodTrends from "../components/FoodTrends";
+import CustomDayChartComponent from "../../../../components/CustomDayChartComponent";
+import FoodPieChart from "../../../../components/FoodPieChart";
+import TrendCardComponent from "../../../../components/TrendCardComponent";
+import CustomTrendDatePicker from "../../../../components/CustomTrendDatePicker";
+import FoodTrends from "../../../../components/FoodTrends";
 import { useDispatch, useSelector } from "react-redux";
-import { WEEK_LABELS, YEAR_LABLES } from "../constants/dateConstants";
+import { WEEK_LABELS, YEAR_LABLES } from "../../../../constants/dateConstants";
 import * as Sentry from "@sentry/react-native";
 import moment from "moment";
 import {
   getFoodData,
   getFoodTrendCard,
   getFoodTrendChartData,
-} from "../apis/foodQueries";
-import { customTheme } from "../constants/themeConstants";
+} from "../../../../apis/foodQueries";
+import { customTheme } from "../../../../constants/themeConstants";
 import FoodEditComponent from "./FoodEdit";
 
 const NewFood = () => {

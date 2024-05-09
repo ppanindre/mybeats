@@ -10,9 +10,9 @@ import {
   Platform,
 } from "react-native";
 import { TextInput } from "react-native-paper";
-import getUser from "../cache/userCache";
+import getUser from "../../../../cache/userCache";
 import moment from "moment";
-import TrendCardComponent from "../components/TrendCardComponent";
+import TrendCardComponent from "../../../../components/TrendCardComponent";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -20,11 +20,11 @@ import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { FoodListner } from "../listeners/FoodListner";
+import { FoodListner } from "../../../../listeners/FoodListner";
 import { useDispatch } from "react-redux";
-import { FoodActionCreators } from "../store/FoodReducer/FoodActionCreators";
-import { foodActionTypes } from "../store/FoodReducer/FoodActionTypes";
-import { dashboardActionTypes } from "../store/DashboardReducer/DashboardActionTypes";
+import { FoodActionCreators } from "../../../../store/FoodReducer/FoodActionCreators";
+import { foodActionTypes } from "../../../../store/FoodReducer/FoodActionTypes";
+import { dashboardActionTypes } from "../../../../store/DashboardReducer/DashboardActionTypes";
 import {
   MinusCircleIcon,
   PlusCircleIcon,

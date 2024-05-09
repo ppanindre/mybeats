@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import * as Sentry from "@sentry/react-native";
 
-import CustomDayChartComponent from "../components/CustomDayChartComponent";
-import CustomTrendDatePicker from "../components/CustomTrendDatePicker";
-import SleepChart from "../components/SleepLineChart";
-import TrendCardComponent from "../components/TrendCardComponent";
-import SleepTrend from "../components/SleepTrend";
+import CustomDayChartComponent from "../../../../components/CustomDayChartComponent";
+import CustomTrendDatePicker from "../../../../components/CustomTrendDatePicker";
+import SleepChart from "../../../../components/SleepLineChart";
+import TrendCardComponent from "../../../../components/TrendCardComponent";
+import SleepTrend from "../../../../components/SleepTrend";
 
 import {
   getFitbitSleepDisplayData,
@@ -16,8 +16,8 @@ import {
   getSleepDisplayData,
   getSleepTrendCardData,
   getSleepTrendChartData,
-} from "../apis/sleepQueries";
-import { WEEK_LABELS, YEAR_LABLES } from "../constants/dateConstants";
+} from "../../../../apis/sleepQueries";
+import { WEEK_LABELS, YEAR_LABLES } from "../../../../constants/dateConstants";
 
 const Sleep = () => {
   // declare dispatch instance

@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   ScrollView,
-  Dimensions,
   Text,
   TouchableOpacity,
-  RefreshControl,
   ActivityIndicator,
 } from "react-native";
 
@@ -16,30 +14,23 @@ import {
   YEAR,
   WEEK_LABELS,
   YEAR_LABLES,
-} from "../constants/dateConstants";
+} from "../../../../constants/dateConstants";
 
-import getUser from "../cache/userCache";
-import { CustomDateComponent } from "../components/CustomDateComponent";
-import TrendCardComponent from "../components/TrendCardComponent";
-import FoodTrends from "../components/FoodTrends";
-import FoodPieChart from "../components/FoodPieChart";
-import { useNavigation } from "@react-navigation/native";
+import getUser from "../../../../cache/userCache";
+import TrendCardComponent from "../../../../components/TrendCardComponent";
+import FoodTrends from "../../../../components/FoodTrends";
+import FoodPieChart from "../../../../components/FoodPieChart";
 import FoodEditComponent from "./FoodEdit";
 import moment from "moment";
-import { FontAwesome } from "@expo/vector-icons";
 import auth from "@react-native-firebase/auth";
-import { getDataForFoodTrendCard } from "../utils/trendCardUtils";
-import CustomDateComponentForFood from "../components/CustomDateComponentForFood";
-import { fetchMultipleDcoumentsById } from "../utils/firestoreUtils";
-import CustomTrendsDateComponent from "../components/CustomTrendsDateComponent";
+import CustomDateComponentForFood from "../../../../components/CustomDateComponentForFood";
+import { fetchMultipleDcoumentsById } from "../../../../utils/firestoreUtils";
+import CustomTrendsDateComponent from "../../../../components/CustomTrendsDateComponent";
 
-import { USER_TABLE } from "../constants/firebaseCollections";
-import getFood, { addPrevListener } from "../cache/foodCache";
+import { USER_TABLE } from "../../../../constants/firebaseCollections";
 import { useDispatch, useSelector } from "react-redux";
-import { FoodActionCreators } from "../store/FoodReducer/FoodActionCreators";
-import { activityActionTypes } from "../store/ActivityReducer/ActivityActionTypes";
-import { foodActionTypes } from "../store/FoodReducer/FoodActionTypes";
-import { FoodListner } from "../listeners/FoodListner";
+import { FoodActionCreators } from "../../../../store/FoodReducer/FoodActionCreators";
+import { foodActionTypes } from "../../../../store/FoodReducer/FoodActionTypes";
 
 const dateRender = (date) => {
   return moment(date).format("MMM DD, YYYY").toString();
@@ -49,15 +40,8 @@ const INCREMENT_WEEK = WEEK;
 const INCREMENT_MONTH = MONTH;
 const INCREMENT_YEAR = YEAR;
 
-function useForceUpdate() {
-  const [value, setValue] = useState(0); // integer state
-  return () => setValue((value) => value + 1); // update the state to force render
-}
-
 const Food = () => {
   const dispatch = useDispatch();
-
-  const user = useSelector((state) => state.UserReducer);
 
   const { foodCache, foodTrendCard } = useSelector(
     (state) => state.FoodReducer
@@ -460,7 +444,7 @@ const Food = () => {
                       borderWidth: 0.6,
                       marginTop: 20,
                     }}
-                    icon={require("../assets/back.png")}
+                    icon={require("../../assets/back.png")}
                   />
                 </TouchableOpacity>
               </View>
