@@ -14,8 +14,8 @@ import {
 import { customTheme } from "./themeConstants";
 import Chat from "../screens/Chat";
 import Notifications from "../screens/Notifications";
-import DashboardStack from "../routers/DashboardStack";
-import { MyChartsStack } from "../routers/MyChartsStack";
+import MybeatsStack from "../src/app/configs/MybeatsConfig/MybeatsStack";
+import FirebeatsDashboardStack from "../src/app/configs/FirebeatsConfig/FirebeatsDashboardStack";
 
 // Unfocused icon size of the bottom tab nav icons
 const ICON_SIZE = 30;
@@ -34,7 +34,7 @@ export const bottomTabData = [
   // My Beats Tab Data
   {
     label: "MyBeats",
-    component: DashboardStack,
+    component: FirebeatsDashboardStack,
     icon: <FireIcon size={ICON_SIZE} color={ICON_COLOR} />,
     focusedIcon: (
       <FireIconSolid
@@ -45,7 +45,7 @@ export const bottomTabData = [
   },
   {
     label: "MyHealth",
-    component: MyChartsStack,
+    component: MybeatsStack,
     icon: <HeartIcon size={ICON_SIZE} color={ICON_COLOR} />,
     focusedIcon: (
       <HeartIconSolid

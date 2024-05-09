@@ -6,21 +6,21 @@ import firestore from "@react-native-firebase/firestore";
 import { useTourGuideController } from "rn-tourguide";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import CustomSafeView from "../components/CustomSafeView";
+import CustomSafeView from "../../../components/CustomSafeView";
 
-import { UserAuthActionCreators } from "../store/UserAuthReducer/UserAuthActionCreators";
-import { userAuthActionTypes } from "../store/UserAuthReducer/UserAuthActionTypes";
-import { UserActionTypes } from "../store/UserReducer/UserActionTypes";
-import { firebaseCollections } from "../constants/firebaseCollections";
-import { deviceActionTypes } from "../store/DeviceReducer/DeviceActionTypes";
-import { customTheme } from "../constants/themeConstants";
-import { userQueries } from "../apis/userQueries";
-import { bottomTabData } from "../constants/bottomTabConstants";
+import { UserAuthActionCreators } from "../../../store/UserAuthReducer/UserAuthActionCreators";
+import { userAuthActionTypes } from "../../../store/UserAuthReducer/UserAuthActionTypes";
+import { UserActionTypes } from "../../../store/UserReducer/UserActionTypes";
+import { firebaseCollections } from "../../../constants/firebaseCollections";
+import { deviceActionTypes } from "../../../store/DeviceReducer/DeviceActionTypes";
+import { customTheme } from "../../../constants/themeConstants";
+import { userQueries } from "../../../apis/userQueries";
+import { bottomTabData } from "../../../constants/bottomTabConstants";
 
 // Creating Bottom Tab navigator
 const Tab = createBottomTabNavigator();
 
-const BottomTabNav = () => {
+const BottomTabNavigator = () => {
     // Get user data from useSelector
     const { user } = useSelector((state) => state.UserAuthReducer);
 
@@ -214,4 +214,4 @@ const BottomTabNav = () => {
     );
 };
 
-export default BottomTabNav;
+export default BottomTabNavigator;

@@ -6,17 +6,17 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import Dashboard from "../screens/DashBoard";
-import CustomSafeView from "../components/CustomSafeView";
-import Food from "../screens/Food";
-import Sleep from "../screens/Sleep";
-import { customTheme } from "../constants/themeConstants";
-import HeartRate from "../screens/HeartRate";
-import NewActivity from "../screens/NewActivity";
-import TopNavbar from "../components/Utilities/TopNavbar";
+import Dashboard from "../../../../screens/DashBoard";
+import CustomSafeView from "../../../../components/CustomSafeView";
+import Food from "../../../../screens/Food";
+import Sleep from "../../../../screens/Sleep";
+import { customTheme } from "../../../../constants/themeConstants";
+import HeartRate from "../../../../screens/HeartRate";
+import NewActivity from "../../../../screens/NewActivity";
+import TopNavbar from "../../../../components/Utilities/TopNavbar";
 
 
-const DashboardStack = () => {
+const FirebeatsDashboardStack = () => {
   // Create an instance of MaterialTopNavNavigator
   const Tab = createMaterialTopTabNavigator();
 
@@ -123,4 +123,4 @@ const DashboardStack = () => {
   );
 };
 
-export default DashboardStack;
+export default FirebeatsDashboardStack;

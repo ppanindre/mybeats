@@ -2,35 +2,31 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { View, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, Image } from 'react-native';
-
-import MychartsDashboard from "../MyCharts/Screens/mychartsDashboard";
-import { customTheme } from "../constants/themeConstants";
-import ConsultDoctor from "../MyCharts/Screens/ConsultDoctor";
-import Diagnostics from "../MyCharts/Screens/Diagnostics";
-import SearchDoctors from "../MyCharts/Screens/SearchDoctors";
-import AppointmentPage from "../MyCharts/Screens/AppointmentPage";
-import CartScreen from "../MyCharts/Screens/CartScreen";
-import SearchDiagnostics from "../MyCharts/Screens/SearchDiagnostics";
-import Payment from "../MyCharts/Screens/Payment";
-import SearchMedicines from "../MyCharts/Screens/SearchMedicines";
-import UploadPrescription from "../MyCharts/Screens/UploadPrescription";
-import ConfirmAddress from "../MyCharts/Screens/ConfirmAddress";
-import ImageAnalyzeDisplay from "../MyCharts/Components/ImageAnalyzeDisplay";
-import EditAddress from "../MyCharts/Screens/EditAddress";
-import ShippingAddress from "../MyCharts/Screens/ShippingAddress";
-import PharmacyInfo from "../MyCharts/Screens/PharmacyInfo";
-import LabInfo from "../MyCharts/Screens/LabInfo";
-import Medicines from "../MyCharts/Screens/Medicines";
-import DoctorDashboard from "../MyCharts/Screens/DoctorDashboard";
-import AppointmentList from "../MyCharts/Screens/AppointmentList";
-import Patients from "../MyCharts/Screens/Patients";
-import PatientInfo from "../MyCharts/Screens/PatientInfo";
-import DoctorPrescription from "../MyCharts/Screens/DoctorPrescription";
-import DoctorAvailability from "../MyCharts/Screens/DoctorAvailability";
+import { customTheme } from "../../../../constants/themeConstants";
+import ConsultDoctor from "../../../../MyCharts/Screens/ConsultDoctor";
+import Diagnostics from "../../../../MyCharts/Screens/Diagnostics";
+import SearchDoctors from "../../../../MyCharts/Screens/SearchDoctors";
+import AppointmentPage from "../../../../MyCharts/Screens/AppointmentPage";
+import CartScreen from "../../../../MyCharts/Screens/CartScreen";
+import Payment from "../../../../MyCharts/Screens/Payment";
+import SearchMedicines from "../../../../MyCharts/Screens/SearchMedicines";
+import UploadPrescription from "../../../../MyCharts/Screens/UploadPrescription";
+import ConfirmAddress from "../../../../MyCharts/Screens/ConfirmAddress";
+import ImageAnalyzeDisplay from "../../../../MyCharts/Components/ImageAnalyzeDisplay";
+import EditAddress from "../../../../MyCharts/Screens/EditAddress";
+import ShippingAddress from "../../../../MyCharts/Screens/ShippingAddress";
+import PharmacyInfo from "../../../../MyCharts/Screens/PharmacyInfo";
+import LabInfo from "../../../../MyCharts/Screens/LabInfo";
+import Medicines from "../../../../MyCharts/Screens/Medicines";
+import DoctorDashboard from "../../../../MyCharts/Screens/DoctorDashboard";
+import AppointmentList from "../../../../MyCharts/Screens/AppointmentList";
+import Patients from "../../../../MyCharts/Screens/Patients";
+import PatientInfo from "../../../../MyCharts/Screens/PatientInfo";
+import DoctorPrescription from "../../../../MyCharts/Screens/DoctorPrescription";
+import DoctorAvailability from "../../../../MyCharts/Screens/DoctorAvailability";
 import RolesNav from "./RolesNav";
-import DoctorProfile from "../MyCharts/Screens/DoctorProfile";
-import DoctorMedicine from "../MyCharts/Screens/DoctorMedicine";
+import DoctorProfile from "../../../../MyCharts/Screens/DoctorProfile";
+import DoctorMedicine from "../../../../MyCharts/Screens/DoctorMedicine";
 
 // Declare icon size
 const ICON_SIZE = 24;
@@ -84,7 +80,7 @@ const RightIconButton = ({ icon, onPress }) => (
     </TouchableOpacity>
 );
 
-export const MyChartsStack = () => {
+const MybeatsStack = () => {
     // Define Stack Navigator
     const Stack = createStackNavigator();
 
@@ -500,3 +496,5 @@ export const MyChartsStack = () => {
         </Stack.Navigator>
     );
 };
+
+export default MybeatsStack;
