@@ -104,7 +104,8 @@ const UploadPrescription = () => {
                  </TouchableOpacity>
                  <TouchableOpacity className="flex flex-row text-sm px-16 rounded-lg items-center"
                      style={{ backgroundColor: customTheme.colors.primary }}
-                     onPress={() => navigation.navigate('ImageAnalyzeDisplay', { imageUri: selectedImage.uri })}
+                    //  onPress={() => navigation.navigate('ImageAnalyzeDisplay', { imageUri: selectedImage.uri })}
+                    onPress={() => navigation.navigate('DoctorMedicine')}
                  >
                      <Text className="ml-2 font-[appfont-bold]" style={{ color: customTheme.colors.light }}>Analyze</Text>
                  </TouchableOpacity>

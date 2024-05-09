@@ -30,6 +30,7 @@ import DoctorPrescription from "../MyCharts/Screens/DoctorPrescription";
 import DoctorAvailability from "../MyCharts/Screens/DoctorAvailability";
 import RolesNav from "./RolesNav";
 import DoctorProfile from "../MyCharts/Screens/DoctorProfile";
+import DoctorMedicine from "../MyCharts/Screens/DoctorMedicine";
 
 // Declare icon size
 const ICON_SIZE = 24;
@@ -477,6 +478,25 @@ export const MyChartsStack = () => {
                     },
                 })}
             />
+
+            <Stack.Screen
+                name="DoctorMedicine"
+                component={DoctorMedicine}
+                options={({ navigation }) => ({
+                    headerTitle: "Analysed Medicines",
+                    headerTitleAlign: "left",
+                    headerLeft: () => (
+                        <View className="ml-4">
+                            <GoBackButton onPress={() => navigation.goBack()} />
+                        </View>
+                    ),
+                    headerTitleStyle: {
+                        fontFamily: "appfont-bold",
+                        fontSize: customTheme.text.header,
+                    },
+                })}
+            />
+
         </Stack.Navigator>
     );
 };

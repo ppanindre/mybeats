@@ -295,6 +295,7 @@ const DoctorPrescription = () => {
                         <TouchableOpacity
                             disabled={!isFormComplete()}
                             style={SubmitButton(isFormComplete())}
+                            onPress={()=> navigation.navigate('DoctorMedicine')}
                             className="flex-1 m-1 mx-2 py-4 rounded-lg flex-row justify-center items-center mr-4">
                             <Text style={{ color: customTheme.colors.light }} className="ml-2 font-[appfont-semi]">Submit</Text>
                         </TouchableOpacity>
