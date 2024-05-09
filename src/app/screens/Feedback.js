@@ -12,11 +12,11 @@ import React, { useState } from "react";
 import { ChevronLeftIcon } from "react-native-heroicons/outline";
 import auth from "@react-native-firebase/auth";
 
-import CustomSafeView from "../components/CustomSafeView";
-import CustomButton from "../components/CustomButton";
+import CustomSafeView from "../../../components/CustomSafeView";
+import CustomButton from "../../../components/CustomButton";
 import { useNavigation } from "@react-navigation/native";
-import { userQueries } from "../apis/userQueries";
-import { customTheme } from "../constants/themeConstants";
+import { userQueries } from "../../../apis/userQueries";
+import { customTheme } from "../../../constants/themeConstants";
 
 const Feedback = () => {
   // define navigation instance

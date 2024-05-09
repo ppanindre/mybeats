@@ -16,13 +16,13 @@ import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import * as Sentry from "@sentry/react-native";
 
-import { firebaseCollections } from "../constants/firebaseCollections";
+import { firebaseCollections } from "../../../constants/firebaseCollections";
 
-import CustomSafeView from "../components/CustomSafeView";
-import CustomInput from "../components/CustomInput";
-import DatePicker from "../components/DatePicker";
-import CustomButton from "../components/CustomButton";
-import MultiSelect from "../components/MultiSelect";
+import CustomSafeView from "../../../components/CustomSafeView";
+import CustomInput from "../../../components/CustomInput";
+import DatePicker from "../../../components/DatePicker";
+import CustomButton from "../../../components/CustomButton";
+import MultiSelect from "../../../components/MultiSelect";
 
 const EditProfile = () => {
   const user = useSelector((state) => state.UserReducer); // get user listener

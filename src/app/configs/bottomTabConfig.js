@@ -11,11 +11,11 @@ import {
   HeartIcon as HeartIconSolid,
   ChatBubbleBottomCenterIcon as ChatBubbleBottomCenterIconSolid,
 } from "react-native-heroicons/solid";
-import { customTheme } from "./themeConstants";
+import { customTheme } from "../../../constants/themeConstants";
 import Chat from "../screens/Chat";
 import Notifications from "../screens/Notifications";
-import MybeatsStack from "../src/app/configs/MybeatsConfig/MybeatsStack";
-import FirebeatsDashboardStack from "../src/app/configs/FirebeatsConfig/FirebeatsDashboardStack";
+import MybeatsStack from "./MybeatsConfig/MybeatsStack";
+import FirebeatsDashboardStack from "./FirebeatsConfig/FirebeatsDashboardStack";
 
 // Unfocused icon size of the bottom tab nav icons
 const ICON_SIZE = 30;
@@ -29,7 +29,7 @@ const ICON_COLOR = customTheme.colors.dark;
 // Focused Icon color
 const FOCUSED_ICON_COLOR = customTheme.colors.primary;
 
-export const bottomTabData = [
+export const bottomTabConfig = [
 
   // My Beats Tab Data
   {

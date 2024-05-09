@@ -4,11 +4,11 @@ import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { ChevronLeftIcon } from "react-native-heroicons/solid";
 
-import CustomSafeView from "../components/CustomSafeView";
-import FitbitButton from "../components/FitbitButton";
-import AppleButton from "../components/AppleButton";
-import AddDeviceButton from "../components/AddDeviceButton";
-import { customTheme } from "../constants/themeConstants";
+import CustomSafeView from "../../../components/CustomSafeView";
+import FitbitButton from "../../../components/FitbitButton";
+import AppleButton from "../../../components/AppleButton";
+import AddDeviceButton from "../../../components/AddDeviceButton";
+import { customTheme } from "../../../constants/themeConstants";
 
 const AddDevice = () => {
   // if new user, show skip button

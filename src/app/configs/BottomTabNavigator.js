@@ -15,7 +15,7 @@ import { firebaseCollections } from "../../../constants/firebaseCollections";
 import { deviceActionTypes } from "../../../store/DeviceReducer/DeviceActionTypes";
 import { customTheme } from "../../../constants/themeConstants";
 import { userQueries } from "../../../apis/userQueries";
-import { bottomTabData } from "../../../constants/bottomTabConstants";
+import { bottomTabConfig } from "./bottomTabConfig";
 
 // Creating Bottom Tab navigator
 const Tab = createBottomTabNavigator();
@@ -29,7 +29,7 @@ const BottomTabNavigator = () => {
 
     const [userIsloading, setIsLoading] = useState(true); // for loading user
     const [notificationCount, setNotificationCount] = useState(0); // notification bubble
-    const [tabsData, setTabsData] = useState(bottomTabData);
+    const [tabsData, setTabsData] = useState(bottomTabConfig);
 
     // define dispatch instance
     const dispatch = useDispatch();
@@ -154,7 +154,7 @@ const BottomTabNavigator = () => {
                         }}
                     >
                         {tabsData.map((tab) => (
-                            <Tab.Screen                                
+                            <Tab.Screen
                                 component={tab.component}
                                 name={tab.label}
                                 options={{

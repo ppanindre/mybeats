@@ -11,13 +11,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 
-import CustomSafeView from "../components/CustomSafeView";
-import CustomInput from "../components/CustomInput";
-import DatePicker from "../components/DatePicker";
-import CustomButton from "../components/CustomButton";
-import MultiSelect from "../components/MultiSelect";
+import CustomSafeView from "../../../components/CustomSafeView";
+import CustomInput from "../../../components/CustomInput";
+import DatePicker from "../../../components/DatePicker";
+import CustomButton from "../../../components/CustomButton";
+import MultiSelect from "../../../components/MultiSelect";
 
-import { userQueries } from "../apis/userQueries";
+import { userQueries } from "../../../apis/userQueries";
 
 const ProfileCreation = () => {
   const { selectedAvatar } = useSelector((state) => state.ProfileReducer); // get selected avatar from reducer

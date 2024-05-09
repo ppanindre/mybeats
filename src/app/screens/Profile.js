@@ -20,15 +20,15 @@ import auth from "@react-native-firebase/auth";
 import * as Sentry from "@sentry/react-native";
 import CryptoJS from 'react-native-crypto-js';
 
-import CustomSafeView from "../components/CustomSafeView";
-import CustomButton from "../components/CustomButton";
+import CustomSafeView from "../../../components/CustomSafeView";
+import CustomButton from "../../../components/CustomButton";
 
-import { DeviceActionCreators } from "../store/DeviceReducer/DeviceActionCreators";
-import { deviceActionTypes } from "../store/DeviceReducer/DeviceActionTypes";
-import { deviceQueries } from "../apis/deviceQueries";
-import { userAuthActionTypes } from "../store/UserAuthReducer/UserAuthActionTypes";
-import { userQueries } from "../apis/userQueries";
-import { customTheme } from "../constants/themeConstants";
+import { DeviceActionCreators } from "../../../store/DeviceReducer/DeviceActionCreators";
+import { deviceActionTypes } from "../../../store/DeviceReducer/DeviceActionTypes";
+import { deviceQueries } from "../../../apis/deviceQueries";
+import { userAuthActionTypes } from "../../../store/UserAuthReducer/UserAuthActionTypes";
+import { userQueries } from "../../../apis/userQueries";
+import { customTheme } from "../../../constants/themeConstants";
 
 // route data
 const profileData = [

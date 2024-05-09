@@ -4,12 +4,12 @@ import { ChevronLeftIcon } from "react-native-heroicons/outline";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 
-import CustomButton from "../components/CustomButton";
-import CustomSafeView from "../components/CustomSafeView";
+import CustomButton from "../../../components/CustomButton";
+import CustomSafeView from "../../../components/CustomSafeView";
 
-import { avatarList } from "../constants/avatarConstants";
-import { userQueries } from "../apis/userQueries";
-import { customTheme } from "../constants/themeConstants";
+import { avatarList } from "../../../constants/avatarConstants";
+import { userQueries } from "../../../apis/userQueries";
+import { customTheme } from "../../../constants/themeConstants";
 
 const AddAvatar = () => {
   // get user listener

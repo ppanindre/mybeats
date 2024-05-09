@@ -13,11 +13,11 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import * as Sentry from "@sentry/react-native";
 
-import CustomSafeView from "../components/CustomSafeView";
-import MessageInput from "../components/MessageInput";
-import ChatBubble from "../components/ChatBubble";
-import { firebaseCollections } from "../constants/firebaseCollections";
-import TopNavbar from "../components/Utilities/TopNavbar";
+import CustomSafeView from "../../../components/CustomSafeView";
+import MessageInput from "../../../components/MessageInput";
+import ChatBubble from "../../../components/ChatBubble";
+import { firebaseCollections } from "../../../constants/firebaseCollections";
+import TopNavbar from "../../../components/Utilities/TopNavbar";
 
 /**
  * Generate a random string for id

@@ -1,12 +1,12 @@
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import React, { useState } from "react";
-import CustomSafeView from "../components/CustomSafeView";
+import CustomSafeView from "../../../components/CustomSafeView";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "react-native-heroicons/solid";
 import { useNavigation } from "@react-navigation/native";
-import CustomButton from "../components/CustomButton";
+import CustomButton from "../../../components/CustomButton";
 
 const surveyData = [
   {

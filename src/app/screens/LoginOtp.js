@@ -12,10 +12,10 @@ import { useNavigation } from "@react-navigation/native";
 import * as Sentry from "@sentry/react-native";
 import axios from "axios";
 
-import CustomSafeView from "../components/CustomSafeView";
-import CustomInput from "../components/CustomInput";
-import CustomButton from "../components/CustomButton";
-import { userAuthActionTypes } from "../store/UserAuthReducer/UserAuthActionTypes";
+import CustomSafeView from "../../../components/CustomSafeView";
+import CustomInput from "../../../components/CustomInput";
+import CustomButton from "../../../components/CustomButton";
+import { userAuthActionTypes } from "../../../store/UserAuthReducer/UserAuthActionTypes";
 
 const LoginOtp = () => {
   // define states

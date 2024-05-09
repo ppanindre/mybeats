@@ -15,10 +15,10 @@ import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import database from "@react-native-firebase/database";
 import { useSelector } from "react-redux";
-import CustomButton from "./CustomButton";
-import CustomSafeView from "./CustomSafeView";
+import CustomButton from "../../../components/CustomButton";
+import CustomSafeView from "../../../components/CustomSafeView";
 import { ChevronLeftIcon } from "react-native-heroicons/solid";
-import { incrementNotificationUnread } from "../apis/notificationQueries";
+import { incrementNotificationUnread } from "../../../apis/notificationQueries";
 
 const USER_TABLE = "user";
 

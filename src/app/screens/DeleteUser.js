@@ -14,11 +14,11 @@ import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import * as Sentry from "@sentry/react-native";
 
-import { firebaseCollections } from "../constants/firebaseCollections";
+import { firebaseCollections } from "../../../constants/firebaseCollections";
 
-import CustomSafeView from "../components/CustomSafeView";
-import CustomButton from "../components/CustomButton";
-import OTPTextInput from "../components/OTPTextInput";
+import CustomSafeView from "../../../components/CustomSafeView";
+import CustomButton from "../../../components/CustomButton";
+import OTPTextInput from "../../../components/OTPTextInput";
 
 const DeleteUser = () => {
   // get user listener

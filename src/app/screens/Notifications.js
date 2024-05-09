@@ -17,12 +17,12 @@ import { useIsFocused } from "@react-navigation/native";
 import firestore from "@react-native-firebase/firestore";
 import moment from "moment";
 
-import { notificationQueries } from "../apis/notificationQueries";
-import { customTheme } from "../constants/themeConstants";
-import { firebaseCollections } from "../constants/firebaseCollections";
-import CustomSafeView from "../components/CustomSafeView";
-import NotificationGraph from "../components/NotificationGraph";
-import TopNavbar from "../components/Utilities/TopNavbar";
+import { notificationQueries } from "../../../apis/notificationQueries";
+import { customTheme } from "../../../constants/themeConstants";
+import { firebaseCollections } from "../../../constants/firebaseCollections";
+import CustomSafeView from "../../../components/CustomSafeView";
+import NotificationGraph from "../../../components/NotificationGraph";
+import TopNavbar from "../../../components/Utilities/TopNavbar";
 
 
 const Notifications = () => {

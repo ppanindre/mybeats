@@ -11,12 +11,12 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import * as Sentry from "@sentry/react-native";
 
-import CustomSafeView from "../components/CustomSafeView";
-import CustomButton from "../components/CustomButton";
-import OTPTextInput from "../components/OTPTextInput";
+import CustomSafeView from "../../../components/CustomSafeView";
+import CustomButton from "../../../components/CustomButton";
+import OTPTextInput from "../../../components/OTPTextInput";
 
-import { userQueries } from "../apis/userQueries";
-import { customTheme } from "../constants/themeConstants";
+import { userQueries } from "../../../apis/userQueries";
+import { customTheme } from "../../../constants/themeConstants";
 
 const EnterOtp = () => {
   // get the email that the user entered to submit otp

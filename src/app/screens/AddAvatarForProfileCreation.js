@@ -4,12 +4,12 @@ import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { ChevronLeftIcon } from "react-native-heroicons/outline";
 
-import CustomButton from "../components/CustomButton";
-import CustomSafeView from "../components/CustomSafeView";
+import CustomButton from "../../../components/CustomButton";
+import CustomSafeView from "../../../components/CustomSafeView";
 
-import { profileActionTypes } from "../store/ProfileReducer/ProfileActionTypes";
-import { avatarList } from "../constants/avatarConstants";
-import { customTheme } from "../constants/themeConstants";
+import { profileActionTypes } from "../../../store/ProfileReducer/ProfileActionTypes";
+import { avatarList } from "../../../constants/avatarConstants";
+import { customTheme } from "../../../constants/themeConstants";
 
 const AddAvatarForProfileCreation = () => {
   // define dispatch & navigation instance

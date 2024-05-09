@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React from "react";
-import CustomSafeView from "../components/CustomSafeView";
+import CustomSafeView from "../../../components/CustomSafeView";
 import { ChevronLeftIcon } from "react-native-heroicons/solid";
 import { useNavigation } from "@react-navigation/native";
 

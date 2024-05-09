@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, Image, Dimensions } from "react-native";
 import React, { useRef, useState } from "react";
-import CustomSafeView from "../components/CustomSafeView";
+import CustomSafeView from "../../../components/CustomSafeView";
 import { List } from "react-native-paper";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -12,12 +12,12 @@ import {
   InformationCircleIcon,
   UserIcon,
 } from "react-native-heroicons/solid";
-import TrendCardComponent from "../components/TrendCardComponent";
-import CustomButton from "../components/CustomButton";
+import TrendCardComponent from "../../../components/TrendCardComponent";
+import CustomButton from "../../../components/CustomButton";
 import { useDispatch } from "react-redux";
-import { userAuthActionTypes } from "../store/UserAuthReducer/UserAuthActionTypes";
+import { userAuthActionTypes } from "../../../store/UserAuthReducer/UserAuthActionTypes";
 import { useNavigation } from "@react-navigation/native";
-import { customTheme } from "../constants/themeConstants";
+import { customTheme } from "../../../constants/themeConstants";
 
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;

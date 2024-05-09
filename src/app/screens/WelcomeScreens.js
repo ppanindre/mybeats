@@ -2,8 +2,8 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 
-import CustomSafeView from "../components/CustomSafeView";
-import Onboarding from "../components/Onboarding";
+import CustomSafeView from "../../../components/CustomSafeView";
+import Onboarding from "../../../components/Onboarding";
 
 const WelcomeScreens = () => {
   // define navigation

@@ -5,8 +5,8 @@ import auth from "@react-native-firebase/auth";
 import * as Sentry from "@sentry/react-native";
 import * as Notifications from "expo-notifications";
 
-import CustomSafeView from "../components/CustomSafeView";
-import CustomButton from "../components/CustomButton";
+import CustomSafeView from "../../../components/CustomSafeView";
+import CustomButton from "../../../components/CustomButton";
 
 // Register push notifications
 const registerForPushNotifications = async () => {

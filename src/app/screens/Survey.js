@@ -6,14 +6,14 @@ import {
   Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import CustomSafeView from "../components/CustomSafeView";
+import CustomSafeView from "../../../components/CustomSafeView";
 import { useNavigation } from "@react-navigation/native";
 import {
   ChevronLeftIcon,
 } from "react-native-heroicons/outline";
-import CustomButton from "../components/CustomButton";
+import CustomButton from "../../../components/CustomButton";
 import { RadioButton } from "react-native-paper";
-import { sendSurveyAnswers } from "../apis/surveyQueries";
+import { sendSurveyAnswers } from "../../../apis/surveyQueries";
 
 const surveyQuestions = [
   "The goals, purpose, and objectives of the app and the overall project were explained in detail at the beginning of participation.",
@@ -43,7 +43,7 @@ const questionCategory = [
 
 const radioButtonValues = [1, 2, 3, 4, 5];
 
-const NewSurvey = () => {
+const Survey = () => {
   const [questionIndex, setQuestionIndex] = useState(null);
   const [isSurveyFinished, setIsSurveyFinished] = useState(false);
   const [answers, setAnswers] = useState({});
@@ -170,4 +170,4 @@ const NewSurvey = () => {
   );
 };
 
-export default NewSurvey;
+export default Survey;
