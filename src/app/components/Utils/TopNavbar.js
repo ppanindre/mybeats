@@ -32,7 +32,12 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
             if (route.params?.selectedRole) {
                 setDisplayedRole(route.params.selectedRole);
             }
+            // Check for params in the current route
+            if (route.params?.selectedRole) {
+                setDisplayedRole(route.params.selectedRole);
+            }
         }
+    }, [isFocused, route]);
     }, [isFocused, route]);
 
     const handleSelectRole = (role) => {

@@ -1,5 +1,5 @@
 {
-  "Description": "Root Stack for AWS Amplify Console",
+  "Description": "Root Stack for AWS Amplify CLI",
   "AWSTemplateFormatVersion": "2010-09-09",
   "Parameters": {
     "DeploymentBucketName": {
@@ -155,7 +155,7 @@
     "apimycharts": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-mycharts-dev-182209-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "TemplateURL": "https://s3.amazonaws.com/amplify-mycharts-mybeatsdev-155649-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "Parameters": {
           "AppSyncApiName": "mycharts",
           "DynamoDBBillingMode": "PAY_PER_REQUEST",
@@ -166,16 +166,16 @@
           "unauthRoleName": {
             "Ref": "UnauthRoleName"
           },
-          "S3DeploymentBucket": "amplify-mycharts-dev-182209-deployment",
-          "S3DeploymentRootKey": "amplify-appsync-files/a13ec993930e4ded153256fa1a4c27662096e8db",
-          "env": "dev"
+          "S3DeploymentBucket": "amplify-mycharts-mybeatsdev-155649-deployment",
+          "S3DeploymentRootKey": "amplify-appsync-files/898ae7cf9c7f6643c7338261514d85ebded3738c",
+          "env": "mybeatsdev"
         }
       }
     },
     "authmycharts1ff09fda": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-mycharts-dev-182209-deployment/amplify-cfn-templates/auth/mycharts1ff09fda-cloudformation-template.json",
+        "TemplateURL": "https://s3.amazonaws.com/amplify-mycharts-mybeatsdev-155649-deployment/amplify-cfn-templates/auth/mycharts1ff09fda-cloudformation-template.json",
         "Parameters": {
           "identityPoolName": "mycharts1ff09fda_identitypool_1ff09fda",
           "allowUnauthenticatedIdentities": true,
@@ -221,14 +221,14 @@
           },
           "breakCircularDependency": true,
           "dependsOn": "",
-          "env": "dev"
+          "env": "mybeatsdev"
         }
       }
     },
     "storagemyCharts": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-mycharts-dev-182209-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "TemplateURL": "https://s3.amazonaws.com/amplify-mycharts-mybeatsdev-155649-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
         "Parameters": {
           "bucketName": "firebeats",
           "selectedGuestPermissions": "s3:PutObject,s3:GetObject,s3:ListBucket,s3:DeleteObject",
@@ -254,7 +254,7 @@
           "s3PermissionsAuthenticatedUploads": "s3:PutObject",
           "s3PermissionsGuestPublic": "s3:PutObject,s3:GetObject,s3:DeleteObject",
           "s3PermissionsGuestUploads": "s3:PutObject",
-          "env": "dev"
+          "env": "mybeatsdev"
         }
       }
     },
@@ -310,8 +310,6 @@
                 "            try {",
                 "                delete authParamsJson.Statement[0].Condition;",
                 "                delete unauthParamsJson.Statement[0].Condition;",
-                "                authParamsJson.Statement[0].Effect = 'Deny'",
-                "                unauthParamsJson.Statement[0].Effect = 'Deny'",
                 "                let authParams = {PolicyDocument: JSON.stringify(authParamsJson), RoleName: authRoleName};",
                 "                let unauthParams = {PolicyDocument: JSON.stringify(unauthParamsJson), RoleName: unauthRoleName};",
                 "                const iam = new IAMClient({region: event.ResourceProperties.region});",
@@ -319,10 +317,12 @@
                 "                    iam.send(new GetRoleCommand({RoleName: authParams.RoleName})),",
                 "                    iam.send(new GetRoleCommand({RoleName: unauthParams.RoleName}))",
                 "                ]);",
+                "                console.log('in res', res);",
                 "                res = await Promise.all([",
                 "                    iam.send(new UpdateAssumeRolePolicyCommand(authParams)),",
                 "                    iam.send(new UpdateAssumeRolePolicyCommand(unauthParams))",
                 "                ]);",
+                "                console.log('delete response data' + JSON.stringify(res));",
                 "                response.send(event, context, response.SUCCESS, {});",
                 "            } catch (err) {",
                 "                console.log(err.stack);",
@@ -336,6 +336,8 @@
                 "                iam.send(new UpdateAssumeRolePolicyCommand(authParams)),",
                 "                iam.send(new UpdateAssumeRolePolicyCommand(unauthParams))",
                 "            ]);",
+                "            console.log('createORupdate' + res);",
+                "            console.log('response data' + JSON.stringify(res));",
                 "            response.send(event, context, response.SUCCESS, {});",
                 "        }",
                 "    } catch (err) {",

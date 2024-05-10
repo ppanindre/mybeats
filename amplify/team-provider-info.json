@@ -22,5 +22,53 @@
         "myCharts": {}
       }
     }
+  },
+  "mybeats": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-mycharts-mybeats-c60a1-authRole",
+      "UnauthRoleArn": "arn:aws:iam::185329004895:role/amplify-mycharts-mybeats-c60a1-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::185329004895:role/amplify-mycharts-mybeats-c60a1-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-mycharts-mybeats-c60a1-deployment",
+      "UnauthRoleName": "amplify-mycharts-mybeats-c60a1-unauthRole",
+      "StackName": "amplify-mycharts-mybeats-c60a1",
+      "StackId": "arn:aws:cloudformation:us-east-1:185329004895:stack/amplify-mycharts-mybeats-c60a1/c0cb8b20-0d7e-11ef-909d-12000a6e250b",
+      "AmplifyAppId": "dp0y02ukls9iy"
+    },
+    "categories": {
+      "auth": {
+        "mycharts1ff09fda": {}
+      },
+      "api": {
+        "mycharts": {}
+      },
+      "storage": {
+        "myCharts": {}
+      }
+    }
+  },
+  "mybeatsdev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-mycharts-mybeatsdev-155649-authRole",
+      "UnauthRoleArn": "arn:aws:iam::185329004895:role/amplify-mycharts-mybeatsdev-155649-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::185329004895:role/amplify-mycharts-mybeatsdev-155649-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-mycharts-mybeatsdev-155649-deployment",
+      "UnauthRoleName": "amplify-mycharts-mybeatsdev-155649-unauthRole",
+      "StackName": "amplify-mycharts-mybeatsdev-155649",
+      "StackId": "arn:aws:cloudformation:us-east-1:185329004895:stack/amplify-mycharts-mybeatsdev-155649/703eb440-0f07-11ef-9634-125646cbad59",
+      "AmplifyAppId": "ddm2mcfjjdp49"
+    },
+    "categories": {
+      "auth": {
+        "mycharts1ff09fda": {}
+      },
+      "api": {
+        "mycharts": {}
+      },
+      "storage": {
+        "myCharts": {}
+      }
+    }
   }
 }

@@ -33,3 +33,6 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+amplify/mock-data
+amplify/mock-api-resources

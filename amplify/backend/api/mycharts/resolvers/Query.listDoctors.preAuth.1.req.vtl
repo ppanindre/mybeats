@@ -1,0 +1,62 @@
+## [Start] Set query expression for key **
+#if( $util.isNull($ctx.args.doctorID) && !$util.isNull($ctx.args.sortDirection) )
+  $util.error("When providing argument 'sortDirection' you must also provide argument 'doctorID'.", "InvalidArgumentsError")
+#end
+#set( $modelQueryExpression = {} )
+## [Start] Validate key arguments. **
+#if( !$util.isNull($ctx.args.zipcode) && $util.isNull($ctx.args.doctorID) )
+  $util.error("When providing argument 'zipcode' you must also provide arguments doctorID", "InvalidArgumentsError")
+#end
+## [End] Validate key arguments. **
+#if( !$util.isNull($ctx.args.doctorID) )
+  #set( $modelQueryExpression.expression = "#doctorID = :doctorID" )
+  #set( $modelQueryExpression.expressionNames = {
+  "#doctorID": "doctorID"
+} )
+  #set( $modelQueryExpression.expressionValues = {
+  ":doctorID": {
+      "S": "$ctx.args.doctorID"
+  }
+} )
+#end
+## [Start] Applying Key Condition **
+#if( !$util.isNull($ctx.args.zipcode) && !$util.isNull($ctx.args.zipcode.beginsWith) )
+  #set( $modelQueryExpression.expression = "$modelQueryExpression.expression AND begins_with(#sortKey, :sortKey)" )
+  $util.qr($modelQueryExpression.expressionNames.put("#sortKey", "zipcode"))
+  $util.qr($modelQueryExpression.expressionValues.put(":sortKey", { "S": "$ctx.args.zipcode.beginsWith" }))
+#end
+#if( !$util.isNull($ctx.args.zipcode) && !$util.isNull($ctx.args.zipcode.between) )
+  #set( $modelQueryExpression.expression = "$modelQueryExpression.expression AND #sortKey BETWEEN :sortKey0 AND :sortKey1" )
+  $util.qr($modelQueryExpression.expressionNames.put("#sortKey", "zipcode"))
+  $util.qr($modelQueryExpression.expressionValues.put(":sortKey0", { "S": "$ctx.args.zipcode.between[0]" }))
+  $util.qr($modelQueryExpression.expressionValues.put(":sortKey1", { "S": "$ctx.args.zipcode.between[1]" }))
+#end
+#if( !$util.isNull($ctx.args.zipcode) && !$util.isNull($ctx.args.zipcode.eq) )
+  #set( $modelQueryExpression.expression = "$modelQueryExpression.expression AND #sortKey = :sortKey" )
+  $util.qr($modelQueryExpression.expressionNames.put("#sortKey", "zipcode"))
+  $util.qr($modelQueryExpression.expressionValues.put(":sortKey", { "S": "$ctx.args.zipcode.eq" }))
+#end
+#if( !$util.isNull($ctx.args.zipcode) && !$util.isNull($ctx.args.zipcode.lt) )
+  #set( $modelQueryExpression.expression = "$modelQueryExpression.expression AND #sortKey < :sortKey" )
+  $util.qr($modelQueryExpression.expressionNames.put("#sortKey", "zipcode"))
+  $util.qr($modelQueryExpression.expressionValues.put(":sortKey", { "S": "$ctx.args.zipcode.lt" }))
+#end
+#if( !$util.isNull($ctx.args.zipcode) && !$util.isNull($ctx.args.zipcode.le) )
+  #set( $modelQueryExpression.expression = "$modelQueryExpression.expression AND #sortKey <= :sortKey" )
+  $util.qr($modelQueryExpression.expressionNames.put("#sortKey", "zipcode"))
+  $util.qr($modelQueryExpression.expressionValues.put(":sortKey", { "S": "$ctx.args.zipcode.le" }))
+#end
+#if( !$util.isNull($ctx.args.zipcode) && !$util.isNull($ctx.args.zipcode.gt) )
+  #set( $modelQueryExpression.expression = "$modelQueryExpression.expression AND #sortKey > :sortKey" )
+  $util.qr($modelQueryExpression.expressionNames.put("#sortKey", "zipcode"))
+  $util.qr($modelQueryExpression.expressionValues.put(":sortKey", { "S": "$ctx.args.zipcode.gt" }))
+#end
+#if( !$util.isNull($ctx.args.zipcode) && !$util.isNull($ctx.args.zipcode.ge) )
+  #set( $modelQueryExpression.expression = "$modelQueryExpression.expression AND #sortKey >= :sortKey" )
+  $util.qr($modelQueryExpression.expressionNames.put("#sortKey", "zipcode"))
+  $util.qr($modelQueryExpression.expressionValues.put(":sortKey", { "S": "$ctx.args.zipcode.ge" }))
+#end
+## [End] Applying Key Condition **
+## [End] Set query expression for key **
+$util.qr($ctx.stash.put("modelQueryExpression", $modelQueryExpression))
+{}
