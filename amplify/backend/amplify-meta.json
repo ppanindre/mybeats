@@ -36,7 +36,7 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync",
-      "lastPushTimeStamp": "2024-05-10T20:18:40.502Z",
+      "lastPushTimeStamp": "2024-05-10T21:24:49.187Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-mycharts-mybeatsdev-155649-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apimycharts"
@@ -72,7 +72,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-mycharts-mybeatsdev-155649-deployment/amplify-cfn-templates/auth/mycharts1ff09fda-cloudformation-template.json",
         "logicalId": "authmycharts1ff09fda"
       },
-      "lastPushTimeStamp": "2024-05-10T20:18:40.502Z",
+      "lastPushTimeStamp": "2024-05-10T21:24:49.189Z",
       "output": {
         "UserPoolId": "us-east-1_aL8A6SwZz",
         "AppClientIDWeb": "2ptgtn65j2tmq6nmm4fudq0946",
@@ -90,7 +90,7 @@
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3",
-      "lastPushTimeStamp": "2024-05-10T20:18:40.502Z",
+      "lastPushTimeStamp": "2024-05-10T21:24:50.854Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-mycharts-mybeatsdev-155649-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
         "logicalId": "storagemyCharts"

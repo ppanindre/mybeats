@@ -1,5 +1,4 @@
-
-type Doctor {
+type Doctor @aws_iam @aws_api_key {
   doctorID: ID!
   firstname: String!
   lastname: String!
@@ -18,7 +17,7 @@ type Doctor {
   _lastChangedAt: AWSTimestamp!
 }
 
-type Specialty {
+type Specialty @aws_iam @aws_api_key {
   id: ID!
   name: String!
   doctors(filter: ModelDoctorSpecialtiesFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelDoctorSpecialtiesConnection
@@ -29,7 +28,7 @@ type Specialty {
   _lastChangedAt: AWSTimestamp!
 }
 
-type Patient {
+type Patient @aws_iam @aws_api_key {
   id: ID!
   firstname: String!
   lastname: String!
@@ -45,7 +44,7 @@ type Patient {
   _lastChangedAt: AWSTimestamp!
 }
 
-type AppointmentSlot {
+type AppointmentSlot @aws_iam @aws_api_key {
   id: ID!
   doctorId: ID!
   patientId: ID!
@@ -61,7 +60,7 @@ type AppointmentSlot {
   _lastChangedAt: AWSTimestamp!
 }
 
-type DoctorSpecialties {
+type DoctorSpecialties @aws_iam @aws_api_key {
   id: ID!
   doctorDoctorID: ID!
   specialtyId: ID!
@@ -224,7 +223,7 @@ enum ModelSortDirection {
   DESC
 }
 
-type ModelDoctorConnection {
+type ModelDoctorConnection @aws_api_key @aws_iam {
   items: [Doctor]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -243,30 +242,31 @@ input ModelDoctorFilterInput {
   and: [ModelDoctorFilterInput]
   or: [ModelDoctorFilterInput]
   not: ModelDoctorFilterInput
+  _deleted: ModelBooleanInput
 }
 
 type Query {
-  getDoctor(doctorID: ID!): Doctor
-  listDoctors(doctorID: ID, filter: ModelDoctorFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelDoctorConnection
-  syncDoctors(filter: ModelDoctorFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelDoctorConnection
-  getSpecialty(id: ID!): Specialty
-  listSpecialties(filter: ModelSpecialtyFilterInput, limit: Int, nextToken: String): ModelSpecialtyConnection
-  syncSpecialties(filter: ModelSpecialtyFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelSpecialtyConnection
-  getPatient(id: ID!): Patient
-  listPatients(filter: ModelPatientFilterInput, limit: Int, nextToken: String): ModelPatientConnection
-  syncPatients(filter: ModelPatientFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPatientConnection
-  getAppointmentSlot(id: ID!): AppointmentSlot
-  listAppointmentSlots(filter: ModelAppointmentSlotFilterInput, limit: Int, nextToken: String): ModelAppointmentSlotConnection
-  syncAppointmentSlots(filter: ModelAppointmentSlotFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelAppointmentSlotConnection
-  getDoctorSpecialties(id: ID!): DoctorSpecialties
-  listDoctorSpecialties(filter: ModelDoctorSpecialtiesFilterInput, limit: Int, nextToken: String): ModelDoctorSpecialtiesConnection
-  syncDoctorSpecialties(filter: ModelDoctorSpecialtiesFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelDoctorSpecialtiesConnection
-  doctorByZipcode(zipcode: String!, sortDirection: ModelSortDirection, filter: ModelDoctorFilterInput, limit: Int, nextToken: String): ModelDoctorConnection
-  specialtyByName(name: String!, sortDirection: ModelSortDirection, filter: ModelSpecialtyFilterInput, limit: Int, nextToken: String): ModelSpecialtyConnection
-  slotsByDoctor(doctorId: ID!, sortDirection: ModelSortDirection, filter: ModelAppointmentSlotFilterInput, limit: Int, nextToken: String): ModelAppointmentSlotConnection
-  slotsByPatient(patientId: ID!, sortDirection: ModelSortDirection, filter: ModelAppointmentSlotFilterInput, limit: Int, nextToken: String): ModelAppointmentSlotConnection
-  doctorSpecialtiesByDoctorDoctorID(doctorDoctorID: ID!, sortDirection: ModelSortDirection, filter: ModelDoctorSpecialtiesFilterInput, limit: Int, nextToken: String): ModelDoctorSpecialtiesConnection
-  doctorSpecialtiesBySpecialtyId(specialtyId: ID!, sortDirection: ModelSortDirection, filter: ModelDoctorSpecialtiesFilterInput, limit: Int, nextToken: String): ModelDoctorSpecialtiesConnection
+  getDoctor(doctorID: ID!): Doctor @aws_api_key @aws_iam
+  listDoctors(doctorID: ID, filter: ModelDoctorFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelDoctorConnection @aws_api_key @aws_iam
+  syncDoctors(filter: ModelDoctorFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelDoctorConnection @aws_api_key @aws_iam
+  doctorByZipcode(zipcode: String!, sortDirection: ModelSortDirection, filter: ModelDoctorFilterInput, limit: Int, nextToken: String): ModelDoctorConnection @aws_api_key @aws_iam
+  getSpecialty(id: ID!): Specialty @aws_api_key @aws_iam
+  listSpecialties(filter: ModelSpecialtyFilterInput, limit: Int, nextToken: String): ModelSpecialtyConnection @aws_api_key @aws_iam
+  syncSpecialties(filter: ModelSpecialtyFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelSpecialtyConnection @aws_api_key @aws_iam
+  specialtyByName(name: String!, sortDirection: ModelSortDirection, filter: ModelSpecialtyFilterInput, limit: Int, nextToken: String): ModelSpecialtyConnection @aws_api_key @aws_iam
+  getPatient(id: ID!): Patient @aws_api_key @aws_iam
+  listPatients(filter: ModelPatientFilterInput, limit: Int, nextToken: String): ModelPatientConnection @aws_api_key @aws_iam
+  syncPatients(filter: ModelPatientFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPatientConnection @aws_api_key @aws_iam
+  getAppointmentSlot(id: ID!): AppointmentSlot @aws_api_key @aws_iam
+  listAppointmentSlots(filter: ModelAppointmentSlotFilterInput, limit: Int, nextToken: String): ModelAppointmentSlotConnection @aws_api_key @aws_iam
+  syncAppointmentSlots(filter: ModelAppointmentSlotFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelAppointmentSlotConnection @aws_api_key @aws_iam
+  slotsByDoctor(doctorId: ID!, sortDirection: ModelSortDirection, filter: ModelAppointmentSlotFilterInput, limit: Int, nextToken: String): ModelAppointmentSlotConnection @aws_api_key @aws_iam
+  slotsByPatient(patientId: ID!, sortDirection: ModelSortDirection, filter: ModelAppointmentSlotFilterInput, limit: Int, nextToken: String): ModelAppointmentSlotConnection @aws_api_key @aws_iam
+  getDoctorSpecialties(id: ID!): DoctorSpecialties @aws_api_key @aws_iam
+  listDoctorSpecialties(filter: ModelDoctorSpecialtiesFilterInput, limit: Int, nextToken: String): ModelDoctorSpecialtiesConnection @aws_api_key @aws_iam
+  syncDoctorSpecialties(filter: ModelDoctorSpecialtiesFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelDoctorSpecialtiesConnection @aws_api_key @aws_iam
+  doctorSpecialtiesByDoctorDoctorID(doctorDoctorID: ID!, sortDirection: ModelSortDirection, filter: ModelDoctorSpecialtiesFilterInput, limit: Int, nextToken: String): ModelDoctorSpecialtiesConnection @aws_api_key @aws_iam
+  doctorSpecialtiesBySpecialtyId(specialtyId: ID!, sortDirection: ModelSortDirection, filter: ModelDoctorSpecialtiesFilterInput, limit: Int, nextToken: String): ModelDoctorSpecialtiesConnection @aws_api_key @aws_iam
 }
 
 input ModelDoctorConditionInput {
@@ -281,6 +281,7 @@ input ModelDoctorConditionInput {
   and: [ModelDoctorConditionInput]
   or: [ModelDoctorConditionInput]
   not: ModelDoctorConditionInput
+  _deleted: ModelBooleanInput
 }
 
 input CreateDoctorInput {
@@ -315,21 +316,21 @@ input DeleteDoctorInput {
 }
 
 type Mutation {
-  createDoctor(input: CreateDoctorInput!, condition: ModelDoctorConditionInput): Doctor
-  updateDoctor(input: UpdateDoctorInput!, condition: ModelDoctorConditionInput): Doctor
-  deleteDoctor(input: DeleteDoctorInput!, condition: ModelDoctorConditionInput): Doctor
-  createSpecialty(input: CreateSpecialtyInput!, condition: ModelSpecialtyConditionInput): Specialty
-  updateSpecialty(input: UpdateSpecialtyInput!, condition: ModelSpecialtyConditionInput): Specialty
-  deleteSpecialty(input: DeleteSpecialtyInput!, condition: ModelSpecialtyConditionInput): Specialty
-  createPatient(input: CreatePatientInput!, condition: ModelPatientConditionInput): Patient
-  updatePatient(input: UpdatePatientInput!, condition: ModelPatientConditionInput): Patient
-  deletePatient(input: DeletePatientInput!, condition: ModelPatientConditionInput): Patient
-  createAppointmentSlot(input: CreateAppointmentSlotInput!, condition: ModelAppointmentSlotConditionInput): AppointmentSlot
-  updateAppointmentSlot(input: UpdateAppointmentSlotInput!, condition: ModelAppointmentSlotConditionInput): AppointmentSlot
-  deleteAppointmentSlot(input: DeleteAppointmentSlotInput!, condition: ModelAppointmentSlotConditionInput): AppointmentSlot
-  createDoctorSpecialties(input: CreateDoctorSpecialtiesInput!, condition: ModelDoctorSpecialtiesConditionInput): DoctorSpecialties
-  updateDoctorSpecialties(input: UpdateDoctorSpecialtiesInput!, condition: ModelDoctorSpecialtiesConditionInput): DoctorSpecialties
-  deleteDoctorSpecialties(input: DeleteDoctorSpecialtiesInput!, condition: ModelDoctorSpecialtiesConditionInput): DoctorSpecialties
+  createDoctor(input: CreateDoctorInput!, condition: ModelDoctorConditionInput): Doctor @aws_api_key @aws_iam
+  updateDoctor(input: UpdateDoctorInput!, condition: ModelDoctorConditionInput): Doctor @aws_api_key @aws_iam
+  deleteDoctor(input: DeleteDoctorInput!, condition: ModelDoctorConditionInput): Doctor @aws_api_key @aws_iam
+  createSpecialty(input: CreateSpecialtyInput!, condition: ModelSpecialtyConditionInput): Specialty @aws_api_key @aws_iam
+  updateSpecialty(input: UpdateSpecialtyInput!, condition: ModelSpecialtyConditionInput): Specialty @aws_api_key @aws_iam
+  deleteSpecialty(input: DeleteSpecialtyInput!, condition: ModelSpecialtyConditionInput): Specialty @aws_api_key @aws_iam
+  createPatient(input: CreatePatientInput!, condition: ModelPatientConditionInput): Patient @aws_api_key @aws_iam
+  updatePatient(input: UpdatePatientInput!, condition: ModelPatientConditionInput): Patient @aws_api_key @aws_iam
+  deletePatient(input: DeletePatientInput!, condition: ModelPatientConditionInput): Patient @aws_api_key @aws_iam
+  createAppointmentSlot(input: CreateAppointmentSlotInput!, condition: ModelAppointmentSlotConditionInput): AppointmentSlot @aws_api_key @aws_iam
+  updateAppointmentSlot(input: UpdateAppointmentSlotInput!, condition: ModelAppointmentSlotConditionInput): AppointmentSlot @aws_api_key @aws_iam
+  deleteAppointmentSlot(input: DeleteAppointmentSlotInput!, condition: ModelAppointmentSlotConditionInput): AppointmentSlot @aws_api_key @aws_iam
+  createDoctorSpecialties(input: CreateDoctorSpecialtiesInput!, condition: ModelDoctorSpecialtiesConditionInput): DoctorSpecialties @aws_api_key @aws_iam
+  updateDoctorSpecialties(input: UpdateDoctorSpecialtiesInput!, condition: ModelDoctorSpecialtiesConditionInput): DoctorSpecialties @aws_api_key @aws_iam
+  deleteDoctorSpecialties(input: DeleteDoctorSpecialtiesInput!, condition: ModelDoctorSpecialtiesConditionInput): DoctorSpecialties @aws_api_key @aws_iam
 }
 
 input ModelSubscriptionDoctorFilterInput {
@@ -344,27 +345,28 @@ input ModelSubscriptionDoctorFilterInput {
   zipcode: ModelSubscriptionStringInput
   and: [ModelSubscriptionDoctorFilterInput]
   or: [ModelSubscriptionDoctorFilterInput]
+  _deleted: ModelBooleanInput
 }
 
 type Subscription {
-  onCreateDoctor(filter: ModelSubscriptionDoctorFilterInput): Doctor @aws_subscribe(mutations: ["createDoctor"])
-  onUpdateDoctor(filter: ModelSubscriptionDoctorFilterInput): Doctor @aws_subscribe(mutations: ["updateDoctor"])
-  onDeleteDoctor(filter: ModelSubscriptionDoctorFilterInput): Doctor @aws_subscribe(mutations: ["deleteDoctor"])
-  onCreateSpecialty(filter: ModelSubscriptionSpecialtyFilterInput): Specialty @aws_subscribe(mutations: ["createSpecialty"])
-  onUpdateSpecialty(filter: ModelSubscriptionSpecialtyFilterInput): Specialty @aws_subscribe(mutations: ["updateSpecialty"])
-  onDeleteSpecialty(filter: ModelSubscriptionSpecialtyFilterInput): Specialty @aws_subscribe(mutations: ["deleteSpecialty"])
-  onCreatePatient(filter: ModelSubscriptionPatientFilterInput): Patient @aws_subscribe(mutations: ["createPatient"])
-  onUpdatePatient(filter: ModelSubscriptionPatientFilterInput): Patient @aws_subscribe(mutations: ["updatePatient"])
-  onDeletePatient(filter: ModelSubscriptionPatientFilterInput): Patient @aws_subscribe(mutations: ["deletePatient"])
-  onCreateAppointmentSlot(filter: ModelSubscriptionAppointmentSlotFilterInput): AppointmentSlot @aws_subscribe(mutations: ["createAppointmentSlot"])
-  onUpdateAppointmentSlot(filter: ModelSubscriptionAppointmentSlotFilterInput): AppointmentSlot @aws_subscribe(mutations: ["updateAppointmentSlot"])
-  onDeleteAppointmentSlot(filter: ModelSubscriptionAppointmentSlotFilterInput): AppointmentSlot @aws_subscribe(mutations: ["deleteAppointmentSlot"])
-  onCreateDoctorSpecialties(filter: ModelSubscriptionDoctorSpecialtiesFilterInput): DoctorSpecialties @aws_subscribe(mutations: ["createDoctorSpecialties"])
-  onUpdateDoctorSpecialties(filter: ModelSubscriptionDoctorSpecialtiesFilterInput): DoctorSpecialties @aws_subscribe(mutations: ["updateDoctorSpecialties"])
-  onDeleteDoctorSpecialties(filter: ModelSubscriptionDoctorSpecialtiesFilterInput): DoctorSpecialties @aws_subscribe(mutations: ["deleteDoctorSpecialties"])
+  onCreateDoctor(filter: ModelSubscriptionDoctorFilterInput): Doctor @aws_subscribe(mutations: ["createDoctor"]) @aws_api_key @aws_iam
+  onUpdateDoctor(filter: ModelSubscriptionDoctorFilterInput): Doctor @aws_subscribe(mutations: ["updateDoctor"]) @aws_api_key @aws_iam
+  onDeleteDoctor(filter: ModelSubscriptionDoctorFilterInput): Doctor @aws_subscribe(mutations: ["deleteDoctor"]) @aws_api_key @aws_iam
+  onCreateSpecialty(filter: ModelSubscriptionSpecialtyFilterInput): Specialty @aws_subscribe(mutations: ["createSpecialty"]) @aws_api_key @aws_iam
+  onUpdateSpecialty(filter: ModelSubscriptionSpecialtyFilterInput): Specialty @aws_subscribe(mutations: ["updateSpecialty"]) @aws_api_key @aws_iam
+  onDeleteSpecialty(filter: ModelSubscriptionSpecialtyFilterInput): Specialty @aws_subscribe(mutations: ["deleteSpecialty"]) @aws_api_key @aws_iam
+  onCreatePatient(filter: ModelSubscriptionPatientFilterInput): Patient @aws_subscribe(mutations: ["createPatient"]) @aws_api_key @aws_iam
+  onUpdatePatient(filter: ModelSubscriptionPatientFilterInput): Patient @aws_subscribe(mutations: ["updatePatient"]) @aws_api_key @aws_iam
+  onDeletePatient(filter: ModelSubscriptionPatientFilterInput): Patient @aws_subscribe(mutations: ["deletePatient"]) @aws_api_key @aws_iam
+  onCreateAppointmentSlot(filter: ModelSubscriptionAppointmentSlotFilterInput): AppointmentSlot @aws_subscribe(mutations: ["createAppointmentSlot"]) @aws_api_key @aws_iam
+  onUpdateAppointmentSlot(filter: ModelSubscriptionAppointmentSlotFilterInput): AppointmentSlot @aws_subscribe(mutations: ["updateAppointmentSlot"]) @aws_api_key @aws_iam
+  onDeleteAppointmentSlot(filter: ModelSubscriptionAppointmentSlotFilterInput): AppointmentSlot @aws_subscribe(mutations: ["deleteAppointmentSlot"]) @aws_api_key @aws_iam
+  onCreateDoctorSpecialties(filter: ModelSubscriptionDoctorSpecialtiesFilterInput): DoctorSpecialties @aws_subscribe(mutations: ["createDoctorSpecialties"]) @aws_api_key @aws_iam
+  onUpdateDoctorSpecialties(filter: ModelSubscriptionDoctorSpecialtiesFilterInput): DoctorSpecialties @aws_subscribe(mutations: ["updateDoctorSpecialties"]) @aws_api_key @aws_iam
+  onDeleteDoctorSpecialties(filter: ModelSubscriptionDoctorSpecialtiesFilterInput): DoctorSpecialties @aws_subscribe(mutations: ["deleteDoctorSpecialties"]) @aws_api_key @aws_iam
 }
 
-type ModelSpecialtyConnection {
+type ModelSpecialtyConnection @aws_api_key @aws_iam {
   items: [Specialty]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -376,6 +378,7 @@ input ModelSpecialtyFilterInput {
   and: [ModelSpecialtyFilterInput]
   or: [ModelSpecialtyFilterInput]
   not: ModelSpecialtyFilterInput
+  _deleted: ModelBooleanInput
 }
 
 input ModelSpecialtyConditionInput {
@@ -383,6 +386,7 @@ input ModelSpecialtyConditionInput {
   and: [ModelSpecialtyConditionInput]
   or: [ModelSpecialtyConditionInput]
   not: ModelSpecialtyConditionInput
+  _deleted: ModelBooleanInput
 }
 
 input CreateSpecialtyInput {
@@ -407,9 +411,10 @@ input ModelSubscriptionSpecialtyFilterInput {
   name: ModelSubscriptionStringInput
   and: [ModelSubscriptionSpecialtyFilterInput]
   or: [ModelSubscriptionSpecialtyFilterInput]
+  _deleted: ModelBooleanInput
 }
 
-type ModelPatientConnection {
+type ModelPatientConnection @aws_api_key @aws_iam {
   items: [Patient]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -426,6 +431,7 @@ input ModelPatientFilterInput {
   and: [ModelPatientFilterInput]
   or: [ModelPatientFilterInput]
   not: ModelPatientFilterInput
+  _deleted: ModelBooleanInput
 }
 
 input ModelPatientConditionInput {
@@ -438,6 +444,7 @@ input ModelPatientConditionInput {
   and: [ModelPatientConditionInput]
   or: [ModelPatientConditionInput]
   not: ModelPatientConditionInput
+  _deleted: ModelBooleanInput
 }
 
 input CreatePatientInput {
@@ -477,9 +484,10 @@ input ModelSubscriptionPatientFilterInput {
   zipcode: ModelSubscriptionStringInput
   and: [ModelSubscriptionPatientFilterInput]
   or: [ModelSubscriptionPatientFilterInput]
+  _deleted: ModelBooleanInput
 }
 
-type ModelAppointmentSlotConnection {
+type ModelAppointmentSlotConnection @aws_iam @aws_api_key {
   items: [AppointmentSlot]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -495,6 +503,7 @@ input ModelAppointmentSlotFilterInput {
   and: [ModelAppointmentSlotFilterInput]
   or: [ModelAppointmentSlotFilterInput]
   not: ModelAppointmentSlotFilterInput
+  _deleted: ModelBooleanInput
 }
 
 input ModelAppointmentSlotConditionInput {
@@ -506,6 +515,7 @@ input ModelAppointmentSlotConditionInput {
   and: [ModelAppointmentSlotConditionInput]
   or: [ModelAppointmentSlotConditionInput]
   not: ModelAppointmentSlotConditionInput
+  _deleted: ModelBooleanInput
 }
 
 input CreateAppointmentSlotInput {
@@ -542,9 +552,10 @@ input ModelSubscriptionAppointmentSlotFilterInput {
   isBooked: ModelSubscriptionBooleanInput
   and: [ModelSubscriptionAppointmentSlotFilterInput]
   or: [ModelSubscriptionAppointmentSlotFilterInput]
+  _deleted: ModelBooleanInput
 }
 
-type ModelDoctorSpecialtiesConnection {
+type ModelDoctorSpecialtiesConnection @aws_iam @aws_api_key {
   items: [DoctorSpecialties]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -557,6 +568,7 @@ input ModelDoctorSpecialtiesFilterInput {
   and: [ModelDoctorSpecialtiesFilterInput]
   or: [ModelDoctorSpecialtiesFilterInput]
   not: ModelDoctorSpecialtiesFilterInput
+  _deleted: ModelBooleanInput
 }
 
 input ModelDoctorSpecialtiesConditionInput {
@@ -565,6 +577,7 @@ input ModelDoctorSpecialtiesConditionInput {
   and: [ModelDoctorSpecialtiesConditionInput]
   or: [ModelDoctorSpecialtiesConditionInput]
   not: ModelDoctorSpecialtiesConditionInput
+  _deleted: ModelBooleanInput
 }
 
 input CreateDoctorSpecialtiesInput {
@@ -592,5 +605,5 @@ input ModelSubscriptionDoctorSpecialtiesFilterInput {
   specialtyId: ModelSubscriptionIDInput
   and: [ModelSubscriptionDoctorSpecialtiesFilterInput]
   or: [ModelSubscriptionDoctorSpecialtiesFilterInput]
+  _deleted: ModelBooleanInput
 }
-

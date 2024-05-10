@@ -61,6 +61,9 @@
     "referencetotransformerrootstackunauthRoleName49F3C1FERef": {
       "Type": "String"
     },
+    "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
+      "Type": "String"
+    },
     "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorMutationcreateDoctorinit0FunctionMutationcreateDoctorinit0FunctionAppSyncFunction554BB0B7FunctionId": {
       "Type": "String"
     },
@@ -74,6 +77,12 @@
       "Type": "String"
     },
     "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorSubscriptionOnCreateDoctorDataResolverFnSubscriptionOnCreateDoctorDataResolverFnAppSyncFunction5308068BFunctionId": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackPatientNestedStackPatientNestedStackResource261E9B60OutputstransformerrootstackPatientQuerygetPatientauth0FunctionQuerygetPatientauth0FunctionAppSyncFunction42E3B4BCFunctionId": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorQuerydoctorByZipcodepostAuth1FunctionQuerydoctorByZipcodepostAuth1FunctionAppSyncFunctionE005DE47FunctionId": {
       "Type": "String"
     }
   },
@@ -581,7 +590,7 @@
               {
                 "Ref": "SpecialtyTable"
               },
-              "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
+              "\"))\n$util.qr($ctx.stash.put(\"deltaSyncTableTtl\", 30))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
               {
                 "Ref": "AWS::AccountId"
               },
@@ -597,7 +606,7 @@
               {
                 "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
               },
-              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
+              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"us-east-1:8a25f978-80f4-44e0-a6b1-55550d55fc8a\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"us-east-1_F6W9xsrCu_Full-access/CognitoIdentityCredentials\",\"us-east-1_F6W9xsrCu_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },
@@ -696,7 +705,7 @@
               {
                 "Ref": "SpecialtyTable"
               },
-              "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
+              "\"))\n$util.qr($ctx.stash.put(\"deltaSyncTableTtl\", 30))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
               {
                 "Ref": "AWS::AccountId"
               },
@@ -712,7 +721,7 @@
               {
                 "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
               },
-              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
+              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"us-east-1:8a25f978-80f4-44e0-a6b1-55550d55fc8a\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"us-east-1_F6W9xsrCu_Full-access/CognitoIdentityCredentials\",\"us-east-1_F6W9xsrCu_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },
@@ -726,10 +735,7 @@
           "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
         },
         "DataSourceName": {
-          "Fn::GetAtt": [
-            "SpecialtyDataSource",
-            "Name"
-          ]
+          "Ref": "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name"
         },
         "Name": "QuerysyncSpecialtiespreAuth0Function",
         "FunctionVersion": "2018-05-29",
@@ -750,10 +756,7 @@
           ]
         },
         "ResponseMappingTemplate": "$util.toJson({})"
-      },
-      "DependsOn": [
-        "SpecialtyDataSource"
-      ]
+      }
     },
     "QuerySyncSpecialtiesDataResolverFnQuerySyncSpecialtiesDataResolverFnAppSyncFunctionEB4C8295": {
       "Type": "AWS::AppSync::FunctionConfiguration",
@@ -853,7 +856,7 @@
               {
                 "Ref": "SpecialtyTable"
               },
-              "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
+              "\"))\n$util.qr($ctx.stash.put(\"deltaSyncTableTtl\", 30))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
               {
                 "Ref": "AWS::AccountId"
               },
@@ -869,7 +872,7 @@
               {
                 "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
               },
-              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
+              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"us-east-1:8a25f978-80f4-44e0-a6b1-55550d55fc8a\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"us-east-1_F6W9xsrCu_Full-access/CognitoIdentityCredentials\",\"us-east-1_F6W9xsrCu_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },
@@ -971,7 +974,7 @@
               {
                 "Ref": "SpecialtyTable"
               },
-              "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
+              "\"))\n$util.qr($ctx.stash.put(\"deltaSyncTableTtl\", 30))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
               {
                 "Ref": "AWS::AccountId"
               },
@@ -987,7 +990,7 @@
               {
                 "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
               },
-              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
+              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"us-east-1:8a25f978-80f4-44e0-a6b1-55550d55fc8a\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"us-east-1_F6W9xsrCu_Full-access/CognitoIdentityCredentials\",\"us-east-1_F6W9xsrCu_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },
@@ -1143,7 +1146,7 @@
               {
                 "Ref": "SpecialtyTable"
               },
-              "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
+              "\"))\n$util.qr($ctx.stash.put(\"deltaSyncTableTtl\", 30))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
               {
                 "Ref": "AWS::AccountId"
               },
@@ -1159,7 +1162,7 @@
               {
                 "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
               },
-              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
+              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"us-east-1:8a25f978-80f4-44e0-a6b1-55550d55fc8a\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"us-east-1_F6W9xsrCu_Full-access/CognitoIdentityCredentials\",\"us-east-1_F6W9xsrCu_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },
@@ -1312,7 +1315,7 @@
               {
                 "Ref": "SpecialtyTable"
               },
-              "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
+              "\"))\n$util.qr($ctx.stash.put(\"deltaSyncTableTtl\", 30))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
               {
                 "Ref": "AWS::AccountId"
               },
@@ -1328,7 +1331,7 @@
               {
                 "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
               },
-              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
+              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"us-east-1:8a25f978-80f4-44e0-a6b1-55550d55fc8a\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"us-east-1_F6W9xsrCu_Full-access/CognitoIdentityCredentials\",\"us-east-1_F6W9xsrCu_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },
@@ -1381,7 +1384,7 @@
               {
                 "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
               },
-              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
+              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"us-east-1:8a25f978-80f4-44e0-a6b1-55550d55fc8a\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"us-east-1_F6W9xsrCu_Full-access/CognitoIdentityCredentials\",\"us-east-1_F6W9xsrCu_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },
@@ -1434,7 +1437,7 @@
               {
                 "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
               },
-              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
+              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"us-east-1:8a25f978-80f4-44e0-a6b1-55550d55fc8a\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"us-east-1_F6W9xsrCu_Full-access/CognitoIdentityCredentials\",\"us-east-1_F6W9xsrCu_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },
@@ -1487,7 +1490,7 @@
               {
                 "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
               },
-              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
+              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"us-east-1:8a25f978-80f4-44e0-a6b1-55550d55fc8a\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"us-east-1_F6W9xsrCu_Full-access/CognitoIdentityCredentials\",\"us-east-1_F6W9xsrCu_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },
@@ -1561,10 +1564,13 @@
         "PipelineConfig": {
           "Functions": [
             {
-              "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorQuerygetDoctorauth0FunctionQuerygetDoctorauth0FunctionAppSyncFunction5E09CEC2FunctionId"
+              "Ref": "referencetotransformerrootstackPatientNestedStackPatientNestedStackResource261E9B60OutputstransformerrootstackPatientQuerygetPatientauth0FunctionQuerygetPatientauth0FunctionAppSyncFunction42E3B4BCFunctionId"
             },
             {
               "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorQuerygetDoctorpostAuth0FunctionQuerygetDoctorpostAuth0FunctionAppSyncFunction336DC72DFunctionId"
+            },
+            {
+              "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorQuerydoctorByZipcodepostAuth1FunctionQuerydoctorByZipcodepostAuth1FunctionAppSyncFunctionE005DE47FunctionId"
             },
             {
               "Fn::GetAtt": [
@@ -1586,7 +1592,7 @@
               {
                 "Ref": "SpecialtyTable"
               },
-              "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
+              "\"))\n$util.qr($ctx.stash.put(\"deltaSyncTableTtl\", 30))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
               {
                 "Ref": "AWS::AccountId"
               },
@@ -1602,7 +1608,7 @@
               {
                 "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
               },
-              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
+              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"us-east-1:8a25f978-80f4-44e0-a6b1-55550d55fc8a\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"us-east-1_F6W9xsrCu_Full-access/CognitoIdentityCredentials\",\"us-east-1_F6W9xsrCu_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
             ]
           ]
         },

@@ -2,12 +2,7 @@
     "AppSyncApiName": "mycharts",
     "DynamoDBBillingMode": "PAY_PER_REQUEST",
     "DynamoDBEnableServerSideEncryption": false,
-    "authRoleName": {
-        "Ref": "AuthRoleName"
-    },
-    "unauthRoleName": {
-        "Ref": "UnauthRoleName"
-    },
+    "AuthModeLastUpdated": "2024-02-20T23:04:12.716Z",
     "S3DeploymentBucket": "amplify-mycharts-mybeatsdev-155649-deployment",
     "S3DeploymentRootKey": "amplify-appsync-files/898ae7cf9c7f6643c7338261514d85ebded3738c"
 }

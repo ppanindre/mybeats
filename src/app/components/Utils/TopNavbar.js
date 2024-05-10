@@ -38,8 +38,6 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
             }
         }
     }, [isFocused, route]);
-    }, [isFocused, route]);
-
     const handleSelectRole = (role) => {
         setSelectedRole(role);
     };

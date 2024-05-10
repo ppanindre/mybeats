@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { Amplify } from 'aws-amplify';
+import config from "../../../amplifyconfiguration.json";
+import { generateClient } from 'aws-amplify/api';
+import { createDoctor } from '../../../graphql/mutations';
 import { View, Text, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
-import { CheckBox } from 'react-native-elements';
-import TextInputBoxWithIcon from '../../../../components/Utilities/TextInputBoxWithIcon';
 import { customTheme } from '../../../../constants/themeConstants';
-import { Ionicons } from "@expo/vector-icons";
 import CustomInput from "../../../../components/CustomInput";
 import MultiSelect from '../../../../components/MultiSelect';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -12,8 +13,12 @@ import PhoneNumberInput from 'react-native-phone-number-input';
 import { useSelector } from 'react-redux';
 import { isValidNumber } from 'react-native-phone-number-input';
 
+
+Amplify.configure(config)
 function DoctorProfile() {
 
+    
+    const client = generateClient();
     const user = useSelector((state) => state.UserReducer);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -246,8 +251,33 @@ function DoctorProfile() {
         });
     };
 
-    const handleSubmit = () => {
-        Alert.alert("Profile updated")
+    const handleSubmit = async () => {
+
+        // add doctor
+        const doctorDetails = {
+            input: {
+            doctorID: 1,
+              firstname: firstName,
+              lastname: lastName,
+              email: email,
+              phoneNumber: phoneNumber,
+              registrationNumber: licenseNo,
+              upiId: upiID,
+              address: addressfield,
+              zipcode: zipcode
+            }
+          };
+        
+          try {
+            const response = await client.graphql({
+                query: createDoctor,
+                variables: doctorDetails
+              });
+              console.log("response", response);
+          } catch (error) {
+            console.error('Error creating doctor:', error);
+          }
+
     };
 
     const renderButton = () => {
