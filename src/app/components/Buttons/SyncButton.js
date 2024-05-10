@@ -6,10 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Localization from "expo-localization";
 import * as Sentry from "@sentry/react-native";
 
-import { getAppleData } from "../apis/appleQueries";
+import { getAppleData } from "../../../../apis/appleQueries";
 
 import axios from "axios";
-import { customTheme } from "../constants/themeConstants";
+import { customTheme } from "../../../../constants/themeConstants";
 
 const SyncButton = () => {
     const { user } = useSelector((state) => state.UserAuthReducer); //  get user

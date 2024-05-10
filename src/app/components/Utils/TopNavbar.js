@@ -9,7 +9,7 @@ import {
 import moment from "moment";
 import { TourGuideZone, useTourGuideController } from "rn-tourguide";
 
-import SyncButton from "../../../../components/SyncButton";
+import SyncButton from "../Buttons/SyncButton";
 import { userAuthActionTypes } from "../../../../store/UserAuthReducer/UserAuthActionTypes";
 import { customTheme } from "../../../../constants/themeConstants";
 import Modal from "react-native-modal";

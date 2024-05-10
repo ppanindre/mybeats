@@ -9,7 +9,6 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-import TopNavbar from "../../components/Utils/TopNavbar";
 import CustomSafeView from "../../../../components/CustomSafeView";
 import TextInputBoxWithIcon from "../../../../components/Utilities/TextInputBoxWithIcon";
 import NavigationCard from "../../../../components/Cards/NavigationCard";
@@ -29,8 +28,6 @@ const PatientDashboard = () => {
     return (
         <CustomSafeView>
             {/* Top navbar */}
-            {/* <TopNavbar isMyBeats={true} showSync={false} /> */}
-
             <ScrollView
                 className="py-4 bg-gray-100"
                 showsVerticalScrollIndicator={false}

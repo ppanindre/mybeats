@@ -45,9 +45,6 @@ const PharmacyManager = ({route}) => {
 
   return (
     <CustomSafeView>
-      {/* Top navbar */}
-      {/* <TopNavbar isMyBeats={true} showSync={false} /> */}
-
       <ScrollView
         className="py-4 bg-gray-100"
         showsVerticalScrollIndicator={false}
