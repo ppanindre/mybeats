@@ -4,16 +4,6 @@
       "Type": "String",
       "Default": "NONE"
     },
-    "AppSyncApiName": {
-      "Type": "String",
-      "Default": "AppSyncSimpleTransform"
-    },
-    "authRoleName": {
-      "Type": "String"
-    },
-    "unauthRoleName": {
-      "Type": "String"
-    },
     "DynamoDBModelTableReadIOPS": {
       "Type": "Number",
       "Default": 5,
@@ -50,6 +40,16 @@
         "false"
       ],
       "Description": "Enable server side encryption powered by KMS."
+    },
+    "AppSyncApiName": {
+      "Type": "String",
+      "Default": "AppSyncSimpleTransform"
+    },
+    "authRoleName": {
+      "Type": "String"
+    },
+    "unauthRoleName": {
+      "Type": "String"
     },
     "S3DeploymentBucket": {
       "Type": "String",
@@ -123,7 +123,7 @@
           ]
         },
         "Description": "api key description",
-        "Expires": 1711062259
+        "Expires": 1717964248
       }
     },
     "GraphQLAPINONEDS95A13CF0": {
@@ -385,7 +385,7 @@
         "GraphQLAPITransformerSchema3CB2AE18"
       ]
     },
-    "Patient": {
+    "Specialty": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
         "TemplateURL": {
@@ -408,7 +408,7 @@
               {
                 "Ref": "S3DeploymentRootKey"
               },
-              "/stacks/Patient.json"
+              "/stacks/Specialty.json"
             ]
           ]
         },
@@ -497,7 +497,7 @@
         "GraphQLAPITransformerSchema3CB2AE18"
       ]
     },
-    "Appointment": {
+    "Patient": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
         "TemplateURL": {
@@ -520,7 +520,107 @@
               {
                 "Ref": "S3DeploymentRootKey"
               },
-              "/stacks/Appointment.json"
+              "/stacks/Patient.json"
+            ]
+          ]
+        },
+        "Parameters": {
+          "DynamoDBModelTableReadIOPS": {
+            "Ref": "DynamoDBModelTableReadIOPS"
+          },
+          "DynamoDBModelTableWriteIOPS": {
+            "Ref": "DynamoDBModelTableWriteIOPS"
+          },
+          "DynamoDBBillingMode": {
+            "Ref": "DynamoDBBillingMode"
+          },
+          "DynamoDBEnablePointInTimeRecovery": {
+            "Ref": "DynamoDBEnablePointInTimeRecovery"
+          },
+          "DynamoDBEnableServerSideEncryption": {
+            "Ref": "DynamoDBEnableServerSideEncryption"
+          },
+          "referencetotransformerrootstackenv10C5A902Ref": {
+            "Ref": "env"
+          },
+          "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+            "Fn::GetAtt": [
+              "GraphQLAPI",
+              "ApiId"
+            ]
+          },
+          "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
+            "Fn::GetAtt": [
+              "GraphQLAPINONEDS95A13CF0",
+              "Name"
+            ]
+          },
+          "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+            "Ref": "S3DeploymentBucket"
+          },
+          "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+            "Ref": "S3DeploymentRootKey"
+          },
+          "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorQuerygetDoctorpostAuth0FunctionQuerygetDoctorpostAuth0FunctionAppSyncFunction336DC72DFunctionId": {
+            "Fn::GetAtt": [
+              "Doctor",
+              "Outputs.transformerrootstackDoctorQuerygetDoctorpostAuth0FunctionQuerygetDoctorpostAuth0FunctionAppSyncFunction336DC72DFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackauthRoleNameFB872D50Ref": {
+            "Ref": "authRoleName"
+          },
+          "referencetotransformerrootstackunauthRoleName49F3C1FERef": {
+            "Ref": "unauthRoleName"
+          },
+          "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorMutationcreateDoctorinit0FunctionMutationcreateDoctorinit0FunctionAppSyncFunction554BB0B7FunctionId": {
+            "Fn::GetAtt": [
+              "Doctor",
+              "Outputs.transformerrootstackDoctorMutationcreateDoctorinit0FunctionMutationcreateDoctorinit0FunctionAppSyncFunction554BB0B7FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorMutationupdateDoctorinit0FunctionMutationupdateDoctorinit0FunctionAppSyncFunction2C848707FunctionId": {
+            "Fn::GetAtt": [
+              "Doctor",
+              "Outputs.transformerrootstackDoctorMutationupdateDoctorinit0FunctionMutationupdateDoctorinit0FunctionAppSyncFunction2C848707FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorSubscriptionOnCreateDoctorDataResolverFnSubscriptionOnCreateDoctorDataResolverFnAppSyncFunction5308068BFunctionId": {
+            "Fn::GetAtt": [
+              "Doctor",
+              "Outputs.transformerrootstackDoctorSubscriptionOnCreateDoctorDataResolverFnSubscriptionOnCreateDoctorDataResolverFnAppSyncFunction5308068BFunctionId"
+            ]
+          }
+        }
+      },
+      "DependsOn": [
+        "GraphQLAPITransformerSchema3CB2AE18"
+      ]
+    },
+    "AppointmentSlot": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "",
+            [
+              "https://s3.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentBucket"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "/stacks/AppointmentSlot.json"
             ]
           ]
         },
@@ -601,6 +701,130 @@
             "Fn::GetAtt": [
               "Doctor",
               "Outputs.transformerrootstackDoctorSubscriptionOnCreateDoctorDataResolverFnSubscriptionOnCreateDoctorDataResolverFnAppSyncFunction5308068BFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackPatientNestedStackPatientNestedStackResource261E9B60OutputstransformerrootstackPatientQuerygetPatientauth0FunctionQuerygetPatientauth0FunctionAppSyncFunction42E3B4BCFunctionId": {
+            "Fn::GetAtt": [
+              "Patient",
+              "Outputs.transformerrootstackPatientQuerygetPatientauth0FunctionQuerygetPatientauth0FunctionAppSyncFunction42E3B4BCFunctionId"
+            ]
+          }
+        }
+      },
+      "DependsOn": [
+        "GraphQLAPITransformerSchema3CB2AE18"
+      ]
+    },
+    "DoctorSpecialties": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "",
+            [
+              "https://s3.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentBucket"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "/stacks/DoctorSpecialties.json"
+            ]
+          ]
+        },
+        "Parameters": {
+          "DynamoDBModelTableReadIOPS": {
+            "Ref": "DynamoDBModelTableReadIOPS"
+          },
+          "DynamoDBModelTableWriteIOPS": {
+            "Ref": "DynamoDBModelTableWriteIOPS"
+          },
+          "DynamoDBBillingMode": {
+            "Ref": "DynamoDBBillingMode"
+          },
+          "DynamoDBEnablePointInTimeRecovery": {
+            "Ref": "DynamoDBEnablePointInTimeRecovery"
+          },
+          "DynamoDBEnableServerSideEncryption": {
+            "Ref": "DynamoDBEnableServerSideEncryption"
+          },
+          "referencetotransformerrootstackenv10C5A902Ref": {
+            "Ref": "env"
+          },
+          "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+            "Fn::GetAtt": [
+              "GraphQLAPI",
+              "ApiId"
+            ]
+          },
+          "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+            "Ref": "S3DeploymentBucket"
+          },
+          "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+            "Ref": "S3DeploymentRootKey"
+          },
+          "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorQuerygetDoctorauth0FunctionQuerygetDoctorauth0FunctionAppSyncFunction5E09CEC2FunctionId": {
+            "Fn::GetAtt": [
+              "Doctor",
+              "Outputs.transformerrootstackDoctorQuerygetDoctorauth0FunctionQuerygetDoctorauth0FunctionAppSyncFunction5E09CEC2FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorQuerygetDoctorpostAuth0FunctionQuerygetDoctorpostAuth0FunctionAppSyncFunction336DC72DFunctionId": {
+            "Fn::GetAtt": [
+              "Doctor",
+              "Outputs.transformerrootstackDoctorQuerygetDoctorpostAuth0FunctionQuerygetDoctorpostAuth0FunctionAppSyncFunction336DC72DFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackauthRoleNameFB872D50Ref": {
+            "Ref": "authRoleName"
+          },
+          "referencetotransformerrootstackunauthRoleName49F3C1FERef": {
+            "Ref": "unauthRoleName"
+          },
+          "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorMutationcreateDoctorinit0FunctionMutationcreateDoctorinit0FunctionAppSyncFunction554BB0B7FunctionId": {
+            "Fn::GetAtt": [
+              "Doctor",
+              "Outputs.transformerrootstackDoctorMutationcreateDoctorinit0FunctionMutationcreateDoctorinit0FunctionAppSyncFunction554BB0B7FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorMutationcreateDoctorauth0FunctionMutationcreateDoctorauth0FunctionAppSyncFunction3BF57368FunctionId": {
+            "Fn::GetAtt": [
+              "Doctor",
+              "Outputs.transformerrootstackDoctorMutationcreateDoctorauth0FunctionMutationcreateDoctorauth0FunctionAppSyncFunction3BF57368FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorMutationupdateDoctorinit0FunctionMutationupdateDoctorinit0FunctionAppSyncFunction2C848707FunctionId": {
+            "Fn::GetAtt": [
+              "Doctor",
+              "Outputs.transformerrootstackDoctorMutationupdateDoctorinit0FunctionMutationupdateDoctorinit0FunctionAppSyncFunction2C848707FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorSubscriptiononCreateDoctorauth0FunctionSubscriptiononCreateDoctorauth0FunctionAppSyncFunction2D80849EFunctionId": {
+            "Fn::GetAtt": [
+              "Doctor",
+              "Outputs.transformerrootstackDoctorSubscriptiononCreateDoctorauth0FunctionSubscriptiononCreateDoctorauth0FunctionAppSyncFunction2D80849EFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorSubscriptionOnCreateDoctorDataResolverFnSubscriptionOnCreateDoctorDataResolverFnAppSyncFunction5308068BFunctionId": {
+            "Fn::GetAtt": [
+              "Doctor",
+              "Outputs.transformerrootstackDoctorSubscriptionOnCreateDoctorDataResolverFnSubscriptionOnCreateDoctorDataResolverFnAppSyncFunction5308068BFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackPatientNestedStackPatientNestedStackResource261E9B60OutputstransformerrootstackPatientQuerygetPatientauth0FunctionQuerygetPatientauth0FunctionAppSyncFunction42E3B4BCFunctionId": {
+            "Fn::GetAtt": [
+              "Patient",
+              "Outputs.transformerrootstackPatientQuerygetPatientauth0FunctionQuerygetPatientauth0FunctionAppSyncFunction42E3B4BCFunctionId"
             ]
           }
         }
@@ -655,16 +879,16 @@
           "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
             "Ref": "S3DeploymentRootKey"
           },
-          "referencetotransformerrootstackAppointmentNestedStackAppointmentNestedStackResource66D0B543OutputstransformerrootstackAppointmentAppointmentDataSource0C2DCDC3Name": {
+          "referencetotransformerrootstackAppointmentSlotNestedStackAppointmentSlotNestedStackResourceFEA8089COutputstransformerrootstackAppointmentSlotAppointmentSlotDataSourceE3DC0DF4Name": {
             "Fn::GetAtt": [
-              "Appointment",
-              "Outputs.transformerrootstackAppointmentAppointmentDataSource0C2DCDC3Name"
+              "AppointmentSlot",
+              "Outputs.transformerrootstackAppointmentSlotAppointmentSlotDataSourceE3DC0DF4Name"
             ]
           },
-          "referencetotransformerrootstackAppointmentNestedStackAppointmentNestedStackResource66D0B543OutputstransformerrootstackAppointmentAppointmentTable0F838664Ref": {
+          "referencetotransformerrootstackAppointmentSlotNestedStackAppointmentSlotNestedStackResourceFEA8089COutputstransformerrootstackAppointmentSlotAppointmentSlotTable72ECC27DRef": {
             "Fn::GetAtt": [
-              "Appointment",
-              "Outputs.transformerrootstackAppointmentAppointmentTable0F838664Ref"
+              "AppointmentSlot",
+              "Outputs.transformerrootstackAppointmentSlotAppointmentSlotTable72ECC27DRef"
             ]
           },
           "referencetotransformerrootstackauthRoleNameFB872D50Ref": {
@@ -685,6 +909,30 @@
               "Outputs.transformerrootstackDoctorDoctorTable7394F4FERef"
             ]
           },
+          "referencetotransformerrootstackSpecialtyNestedStackSpecialtyNestedStackResource01F1A8EDOutputstransformerrootstackSpecialtySpecialtyDataSource3948F194Name": {
+            "Fn::GetAtt": [
+              "Specialty",
+              "Outputs.transformerrootstackSpecialtySpecialtyDataSource3948F194Name"
+            ]
+          },
+          "referencetotransformerrootstackSpecialtyNestedStackSpecialtyNestedStackResource01F1A8EDOutputstransformerrootstackSpecialtySpecialtyTableE4F05B75Ref": {
+            "Fn::GetAtt": [
+              "Specialty",
+              "Outputs.transformerrootstackSpecialtySpecialtyTableE4F05B75Ref"
+            ]
+          },
+          "referencetotransformerrootstackDoctorSpecialtiesNestedStackDoctorSpecialtiesNestedStackResource02E164C4OutputstransformerrootstackDoctorSpecialtiesDoctorSpecialtiesDataSourceF83C5487Name": {
+            "Fn::GetAtt": [
+              "DoctorSpecialties",
+              "Outputs.transformerrootstackDoctorSpecialtiesDoctorSpecialtiesDataSourceF83C5487Name"
+            ]
+          },
+          "referencetotransformerrootstackDoctorSpecialtiesNestedStackDoctorSpecialtiesNestedStackResource02E164C4OutputstransformerrootstackDoctorSpecialtiesDoctorSpecialtiesTable0E430E21Ref": {
+            "Fn::GetAtt": [
+              "DoctorSpecialties",
+              "Outputs.transformerrootstackDoctorSpecialtiesDoctorSpecialtiesTable0E430E21Ref"
+            ]
+          },
           "referencetotransformerrootstackPatientNestedStackPatientNestedStackResource261E9B60OutputstransformerrootstackPatientPatientDataSource10DD68A7Name": {
             "Fn::GetAtt": [
               "Patient",
@@ -700,10 +948,12 @@
         }
       },
       "DependsOn": [
-        "Appointment",
+        "AppointmentSlot",
         "Doctor",
+        "DoctorSpecialties",
         "GraphQLAPITransformerSchema3CB2AE18",
-        "Patient"
+        "Patient",
+        "Specialty"
       ]
     },
     "CustomResourcesjson": {
@@ -750,8 +1000,10 @@
         "GraphQLAPI",
         "GraphQLAPITransformerSchema3CB2AE18",
         "Doctor",
+        "Specialty",
         "Patient",
-        "Appointment",
+        "AppointmentSlot",
+        "DoctorSpecialties",
         "ConnectionStack"
       ]
     }
@@ -823,5 +1075,6 @@
         }
       }
     }
-  }
+  },
+  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.0.0\",\"stackType\":\"api-AppSync\",\"metadata\":{}}"
 }

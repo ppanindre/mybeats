@@ -43,13 +43,13 @@
     "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
       "Type": "String"
     },
+    "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
+      "Type": "String"
+    },
     "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
       "Type": "String"
     },
     "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
-      "Type": "String"
-    },
-    "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorQuerygetDoctorauth0FunctionQuerygetDoctorauth0FunctionAppSyncFunction5E09CEC2FunctionId": {
       "Type": "String"
     },
     "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorQuerygetDoctorpostAuth0FunctionQuerygetDoctorpostAuth0FunctionAppSyncFunction336DC72DFunctionId": {
@@ -64,13 +64,7 @@
     "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorMutationcreateDoctorinit0FunctionMutationcreateDoctorinit0FunctionAppSyncFunction554BB0B7FunctionId": {
       "Type": "String"
     },
-    "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorMutationcreateDoctorauth0FunctionMutationcreateDoctorauth0FunctionAppSyncFunction3BF57368FunctionId": {
-      "Type": "String"
-    },
     "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorMutationupdateDoctorinit0FunctionMutationupdateDoctorinit0FunctionAppSyncFunction2C848707FunctionId": {
-      "Type": "String"
-    },
-    "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorSubscriptiononCreateDoctorauth0FunctionSubscriptiononCreateDoctorauth0FunctionAppSyncFunction2D80849EFunctionId": {
       "Type": "String"
     },
     "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorSubscriptionOnCreateDoctorDataResolverFnSubscriptionOnCreateDoctorDataResolverFnAppSyncFunction5308068BFunctionId": {
@@ -193,6 +187,10 @@
               }
             ]
           ]
+        },
+        "TimeToLiveSpecification": {
+          "AttributeName": "_ttl",
+          "Enabled": true
         }
       },
       "UpdateReplacePolicy": "Delete",
@@ -335,6 +333,50 @@
                       }
                     }
                   ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}",
+                    {
+                      "tablename": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "AmplifyDataStore-",
+                            {
+                              "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+                            },
+                            "-",
+                            {
+                              "Ref": "referencetotransformerrootstackenv10C5A902Ref"
+                            }
+                          ]
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}/*",
+                    {
+                      "tablename": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "AmplifyDataStore-",
+                            {
+                              "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+                            },
+                            "-",
+                            {
+                              "Ref": "referencetotransformerrootstackenv10C5A902Ref"
+                            }
+                          ]
+                        ]
+                      }
+                    }
+                  ]
                 }
               ]
             }
@@ -361,9 +403,29 @@
           "AwsRegion": {
             "Ref": "AWS::Region"
           },
+          "DeltaSyncConfig": {
+            "BaseTableTTL": "43200",
+            "DeltaSyncTableName": {
+              "Fn::Join": [
+                "",
+                [
+                  "AmplifyDataStore-",
+                  {
+                    "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+                  },
+                  "-",
+                  {
+                    "Ref": "referencetotransformerrootstackenv10C5A902Ref"
+                  }
+                ]
+              ]
+            },
+            "DeltaSyncTableTTL": "30"
+          },
           "TableName": {
             "Ref": "PatientTable"
-          }
+          },
+          "Versioned": true
         },
         "ServiceRoleArn": {
           "Fn::GetAtt": [
@@ -375,6 +437,36 @@
       "DependsOn": [
         "PatientIAMRoleF96FD722"
       ]
+    },
+    "QuerygetPatientauth0FunctionQuerygetPatientauth0FunctionAppSyncFunction36192A1C": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name"
+        },
+        "Name": "QuerygetPatientauth0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Query.getPatient.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson({})"
+      }
     },
     "QueryGetPatientDataResolverFnQueryGetPatientDataResolverFnAppSyncFunction63361816": {
       "Type": "AWS::AppSync::FunctionConfiguration",
@@ -421,6 +513,10 @@
               "/resolvers/Query.getPatient.res.vtl"
             ]
           ]
+        },
+        "SyncConfig": {
+          "ConflictDetection": "VERSION",
+          "ConflictHandler": "OPTIMISTIC_CONCURRENCY"
         }
       },
       "DependsOn": [
@@ -439,7 +535,10 @@
         "PipelineConfig": {
           "Functions": [
             {
-              "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorQuerygetDoctorauth0FunctionQuerygetDoctorauth0FunctionAppSyncFunction5E09CEC2FunctionId"
+              "Fn::GetAtt": [
+                "QuerygetPatientauth0FunctionQuerygetPatientauth0FunctionAppSyncFunction36192A1C",
+                "FunctionId"
+              ]
             },
             {
               "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorQuerygetDoctorpostAuth0FunctionQuerygetDoctorpostAuth0FunctionAppSyncFunction336DC72DFunctionId"
@@ -480,7 +579,7 @@
               {
                 "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
               },
-              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"us-east-1:b9e5aba8-0a85-4c91-8dec-ab207ee01023\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"us-east-1_XI3GcoUkI_Full-access/CognitoIdentityCredentials\",\"us-east-1_XI3GcoUkI_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
+              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
             ]
           ]
         },
@@ -532,6 +631,10 @@
               "/resolvers/Query.listPatients.res.vtl"
             ]
           ]
+        },
+        "SyncConfig": {
+          "ConflictDetection": "VERSION",
+          "ConflictHandler": "OPTIMISTIC_CONCURRENCY"
         }
       },
       "DependsOn": [
@@ -550,7 +653,10 @@
         "PipelineConfig": {
           "Functions": [
             {
-              "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorQuerygetDoctorauth0FunctionQuerygetDoctorauth0FunctionAppSyncFunction5E09CEC2FunctionId"
+              "Fn::GetAtt": [
+                "QuerygetPatientauth0FunctionQuerygetPatientauth0FunctionAppSyncFunction36192A1C",
+                "FunctionId"
+              ]
             },
             {
               "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorQuerygetDoctorpostAuth0FunctionQuerygetDoctorpostAuth0FunctionAppSyncFunction336DC72DFunctionId"
@@ -591,11 +697,159 @@
               {
                 "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
               },
-              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"us-east-1:b9e5aba8-0a85-4c91-8dec-ab207ee01023\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"us-east-1_XI3GcoUkI_Full-access/CognitoIdentityCredentials\",\"us-east-1_XI3GcoUkI_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
+              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
             ]
           ]
         },
         "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "QuerySyncPatientsDataResolverFnQuerySyncPatientsDataResolverFnAppSyncFunction1878436A": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Fn::GetAtt": [
+            "PatientDataSource",
+            "Name"
+          ]
+        },
+        "Name": "QuerySyncPatientsDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Query.syncPatients.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Query.syncPatients.res.vtl"
+            ]
+          ]
+        },
+        "SyncConfig": {
+          "ConflictDetection": "VERSION",
+          "ConflictHandler": "OPTIMISTIC_CONCURRENCY"
+        }
+      },
+      "DependsOn": [
+        "PatientDataSource"
+      ]
+    },
+    "SyncPatientResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "syncPatients",
+        "TypeName": "Query",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "QuerygetPatientauth0FunctionQuerygetPatientauth0FunctionAppSyncFunction36192A1C",
+                "FunctionId"
+              ]
+            },
+            {
+              "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorQuerygetDoctorpostAuth0FunctionQuerygetDoctorpostAuth0FunctionAppSyncFunction336DC72DFunctionId"
+            },
+            {
+              "Fn::GetAtt": [
+                "QuerySyncPatientsDataResolverFnQuerySyncPatientsDataResolverFnAppSyncFunction1878436A",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Query\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"syncPatients\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "PatientTable"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"authRole\", \"arn:aws:sts::",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":assumed-role/",
+              {
+                "Ref": "referencetotransformerrootstackauthRoleNameFB872D50Ref"
+              },
+              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"unauthRole\", \"arn:aws:sts::",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":assumed-role/",
+              {
+                "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
+              },
+              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "MutationcreatePatientauth0FunctionMutationcreatePatientauth0FunctionAppSyncFunction4B518D1A": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name"
+        },
+        "Name": "MutationcreatePatientauth0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Mutation.createPatient.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson({})"
       }
     },
     "MutationCreatePatientDataResolverFnMutationCreatePatientDataResolverFnAppSyncFunction571019B0": {
@@ -643,6 +897,10 @@
               "/resolvers/Mutation.createPatient.res.vtl"
             ]
           ]
+        },
+        "SyncConfig": {
+          "ConflictDetection": "VERSION",
+          "ConflictHandler": "OPTIMISTIC_CONCURRENCY"
         }
       },
       "DependsOn": [
@@ -664,7 +922,10 @@
               "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorMutationcreateDoctorinit0FunctionMutationcreateDoctorinit0FunctionAppSyncFunction554BB0B7FunctionId"
             },
             {
-              "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorMutationcreateDoctorauth0FunctionMutationcreateDoctorauth0FunctionAppSyncFunction3BF57368FunctionId"
+              "Fn::GetAtt": [
+                "MutationcreatePatientauth0FunctionMutationcreatePatientauth0FunctionAppSyncFunction4B518D1A",
+                "FunctionId"
+              ]
             },
             {
               "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorQuerygetDoctorpostAuth0FunctionQuerygetDoctorpostAuth0FunctionAppSyncFunction336DC72DFunctionId"
@@ -705,7 +966,7 @@
               {
                 "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
               },
-              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"us-east-1:b9e5aba8-0a85-4c91-8dec-ab207ee01023\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"us-east-1_XI3GcoUkI_Full-access/CognitoIdentityCredentials\",\"us-east-1_XI3GcoUkI_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
+              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
             ]
           ]
         },
@@ -808,6 +1069,10 @@
               "/resolvers/Mutation.updatePatient.res.vtl"
             ]
           ]
+        },
+        "SyncConfig": {
+          "ConflictDetection": "VERSION",
+          "ConflictHandler": "OPTIMISTIC_CONCURRENCY"
         }
       },
       "DependsOn": [
@@ -873,7 +1138,7 @@
               {
                 "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
               },
-              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"us-east-1:b9e5aba8-0a85-4c91-8dec-ab207ee01023\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"us-east-1_XI3GcoUkI_Full-access/CognitoIdentityCredentials\",\"us-east-1_XI3GcoUkI_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
+              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
             ]
           ]
         },
@@ -976,6 +1241,10 @@
               "/resolvers/Mutation.deletePatient.res.vtl"
             ]
           ]
+        },
+        "SyncConfig": {
+          "ConflictDetection": "VERSION",
+          "ConflictHandler": "OPTIMISTIC_CONCURRENCY"
         }
       },
       "DependsOn": [
@@ -1038,11 +1307,41 @@
               {
                 "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
               },
-              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"us-east-1:b9e5aba8-0a85-4c91-8dec-ab207ee01023\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"us-east-1_XI3GcoUkI_Full-access/CognitoIdentityCredentials\",\"us-east-1_XI3GcoUkI_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
+              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
             ]
           ]
         },
         "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "SubscriptiononCreatePatientauth0FunctionSubscriptiononCreatePatientauth0FunctionAppSyncFunction7BC63B56": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name"
+        },
+        "Name": "SubscriptiononCreatePatientauth0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Subscription.onCreatePatient.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson({})"
       }
     },
     "SubscriptiononCreatePatientResolver": {
@@ -1057,7 +1356,10 @@
         "PipelineConfig": {
           "Functions": [
             {
-              "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorSubscriptiononCreateDoctorauth0FunctionSubscriptiononCreateDoctorauth0FunctionAppSyncFunction2D80849EFunctionId"
+              "Fn::GetAtt": [
+                "SubscriptiononCreatePatientauth0FunctionSubscriptiononCreatePatientauth0FunctionAppSyncFunction7BC63B56",
+                "FunctionId"
+              ]
             },
             {
               "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorQuerygetDoctorpostAuth0FunctionQuerygetDoctorpostAuth0FunctionAppSyncFunction336DC72DFunctionId"
@@ -1091,7 +1393,7 @@
               {
                 "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
               },
-              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"us-east-1:b9e5aba8-0a85-4c91-8dec-ab207ee01023\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"us-east-1_XI3GcoUkI_Full-access/CognitoIdentityCredentials\",\"us-east-1_XI3GcoUkI_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
+              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
             ]
           ]
         },
@@ -1110,7 +1412,10 @@
         "PipelineConfig": {
           "Functions": [
             {
-              "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorSubscriptiononCreateDoctorauth0FunctionSubscriptiononCreateDoctorauth0FunctionAppSyncFunction2D80849EFunctionId"
+              "Fn::GetAtt": [
+                "SubscriptiononCreatePatientauth0FunctionSubscriptiononCreatePatientauth0FunctionAppSyncFunction7BC63B56",
+                "FunctionId"
+              ]
             },
             {
               "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorQuerygetDoctorpostAuth0FunctionQuerygetDoctorpostAuth0FunctionAppSyncFunction336DC72DFunctionId"
@@ -1144,7 +1449,7 @@
               {
                 "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
               },
-              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"us-east-1:b9e5aba8-0a85-4c91-8dec-ab207ee01023\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"us-east-1_XI3GcoUkI_Full-access/CognitoIdentityCredentials\",\"us-east-1_XI3GcoUkI_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
+              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
             ]
           ]
         },
@@ -1163,7 +1468,10 @@
         "PipelineConfig": {
           "Functions": [
             {
-              "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorSubscriptiononCreateDoctorauth0FunctionSubscriptiononCreateDoctorauth0FunctionAppSyncFunction2D80849EFunctionId"
+              "Fn::GetAtt": [
+                "SubscriptiononCreatePatientauth0FunctionSubscriptiononCreatePatientauth0FunctionAppSyncFunction7BC63B56",
+                "FunctionId"
+              ]
             },
             {
               "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorQuerygetDoctorpostAuth0FunctionQuerygetDoctorpostAuth0FunctionAppSyncFunction336DC72DFunctionId"
@@ -1197,7 +1505,7 @@
               {
                 "Ref": "referencetotransformerrootstackunauthRoleName49F3C1FERef"
               },
-              "/CognitoIdentityCredentials\"))\n$util.qr($ctx.stash.put(\"identityPoolId\", \"us-east-1:b9e5aba8-0a85-4c91-8dec-ab207ee01023\"))\n$util.qr($ctx.stash.put(\"adminRoles\", [\"us-east-1_XI3GcoUkI_Full-access/CognitoIdentityCredentials\",\"us-east-1_XI3GcoUkI_Manage-only/CognitoIdentityCredentials\"]))\n$util.toJson({})"
+              "/CognitoIdentityCredentials\"))\n$util.toJson({})"
             ]
           ]
         },
@@ -1267,6 +1575,14 @@
             ]
           ]
         }
+      }
+    },
+    "transformerrootstackPatientQuerygetPatientauth0FunctionQuerygetPatientauth0FunctionAppSyncFunction42E3B4BCFunctionId": {
+      "Value": {
+        "Fn::GetAtt": [
+          "QuerygetPatientauth0FunctionQuerygetPatientauth0FunctionAppSyncFunction36192A1C",
+          "FunctionId"
+        ]
       }
     },
     "transformerrootstackPatientPatientDataSource10DD68A7Name": {

@@ -24,12 +24,12 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
 
     useEffect(() => {
         if (isFocused) {
-          // Check for params in the current route
-          if (route.params?.selectedRole) {
-            setDisplayedRole(route.params.selectedRole);
-          }
+            // Check for params in the current route
+            if (route.params?.selectedRole) {
+                setDisplayedRole(route.params.selectedRole);
+            }
         }
-      }, [isFocused, route]);
+    }, [isFocused, route]);
 
     const handleSelectRole = (role) => {
         setSelectedRole(role);
@@ -194,7 +194,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                         className="font-[appfont]"
                         style={{ fontSize: 10, color: customTheme.colors.dark }}
                     >
-                    Last active as {displayedRole}: April 06, 2024 6:55PM {getLastSyncTime()}
+                        Last active as {displayedRole}: {getLastSyncTime()}
                     </Text>
                 </View>
             </View>
@@ -261,7 +261,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
 
                     {/* Continue Button */}
                     <View className="flex justify-center items-center mt-4 mb-5">
-                        <TouchableOpacity onPress={handleContinue} className="w-full p-4 rounded-lg" style={{backgroundColor: customTheme.colors.primary}}>
+                        <TouchableOpacity onPress={handleContinue} className="w-full p-4 rounded-lg" style={{ backgroundColor: customTheme.colors.primary }}>
                             <Text className="text-center text-white text-md font-[appfont-bold]">Continue</Text>
                         </TouchableOpacity>
                     </View>

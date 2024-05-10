@@ -1,30 +1,43 @@
-type Doctor @model @auth(rules: [{allow: public}]) {
+type Doctor @model @auth(rules: [{ allow: public }]) {
+  doctorID: ID! @primaryKey
+  firstname: String!
+  lastname: String!
+  email: String
+  phoneNumber: String
+  registrationNumber: String
+  upiId: String
+  specialties: [Specialty] @manyToMany(relationName: "DoctorSpecialties")
+  address: String
+  zipcode: String! @index(name: "byzipcode", queryField: "doctorByZipcode")
+  appointmentSlots: [AppointmentSlot]
+    @hasMany(indexName: "byDoctor", fields: ["doctorID"])
+}
+
+type Specialty @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  name: String! @index(name: "byName", queryField: "specialtyByName")
+  doctors: [Doctor] @manyToMany(relationName: "DoctorSpecialties")
+}
+
+type Patient @model @auth(rules: [{ allow: public }]) {
   id: ID!
   firstname: String!
   lastname: String!
   email: String
-  specialization: String!
   phoneNumber: String
   address: String
   zipcode: String
-  availableSlots: AWSJSON
-  appointments: [Appointment] @hasMany
+  appointmentSlots: [AppointmentSlot]
+    @hasMany(indexName: "byPatient", fields: ["id"])
 }
 
-type Patient @model @auth(rules: [{allow: public}]) {
+type AppointmentSlot @model @auth(rules: [{ allow: public }]) {
   id: ID!
-  firstname: String!
-  lastname: String!
-  email: String
-  phoneNumber: String
-  appointments: [Appointment] @hasMany
+  doctorId: ID! @index(name: "byDoctor", queryField: "slotsByDoctor")
+  patientId: ID! @index(name: "byPatient", queryField: "slotsByPatient") # Added patient ID reference
+  startTime: String!
+  endTime: String!
+  isBooked: Boolean!
+  doctor: Doctor @belongsTo(fields: ["doctorId"])
+  patient: Patient @belongsTo(fields: ["patientId"]) # Added patient relationship
 }
-
-type Appointment @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  doctor: Doctor @belongsTo
-  patient: Patient @belongsTo
-  chosenSlot: String
-  date: String!
-}
- 
