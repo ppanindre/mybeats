@@ -13,7 +13,7 @@ import Sleep from "../../screens/firebeatsScreens/Sleep";
 import { customTheme } from "../../../../constants/themeConstants";
 import HeartRate from "../../screens/firebeatsScreens/HeartRate";
 import NewActivity from "../../screens/firebeatsScreens/NewActivity";
-import TopNavbar from "../../../../components/Utilities/TopNavbar";
+import TopNavbar from "../../components/Utils/TopNavbar";
 
 
 const FirebeatsDashboardStack = () => {

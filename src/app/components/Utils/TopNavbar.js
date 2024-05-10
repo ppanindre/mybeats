@@ -1,15 +1,19 @@
 import { View, Text, Image, Platform, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigation, useRoute, useIsFocused } from "@react-navigation/native";
+import {
+    useNavigation,
+    useRoute,
+    useIsFocused,
+} from "@react-navigation/native";
 import moment from "moment";
 import { TourGuideZone, useTourGuideController } from "rn-tourguide";
 
-import SyncButton from "../SyncButton";
-import { userAuthActionTypes } from "../../store/UserAuthReducer/UserAuthActionTypes";
-import { customTheme } from "../../constants/themeConstants";
-import Modal from 'react-native-modal';
-import { CheckBox } from 'react-native-elements';
+import SyncButton from "../../../../components/SyncButton";
+import { userAuthActionTypes } from "../../../../store/UserAuthReducer/UserAuthActionTypes";
+import { customTheme } from "../../../../constants/themeConstants";
+import Modal from "react-native-modal";
+import { CheckBox } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
 
 const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
@@ -17,58 +21,57 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
     const user = useSelector((state) => state.UserReducer);
 
     const [isModalVisible, setModalVisible] = useState(false);
-    const [selectedRole, setSelectedRole] = useState('');
+    const [selectedRole, setSelectedRole] = useState("");
     const isFocused = useIsFocused();
     const route = useRoute();
-    const [displayedRole, setDisplayedRole] = useState('Patient');
+    const [displayedRole, setDisplayedRole] = useState("Patient");
 
     useEffect(() => {
         if (isFocused) {
-          // Check for params in the current route
-          if (route.params?.selectedRole) {
-            setDisplayedRole(route.params.selectedRole);
-          }
+            // Check for params in the current route
+            if (route.params?.selectedRole) {
+                setDisplayedRole(route.params.selectedRole);
+            }
         }
-      }, [isFocused, route]);
+    }, [isFocused, route]);
 
     const handleSelectRole = (role) => {
         setSelectedRole(role);
     };
 
-    // Handle continue for change role 
+    // Handle continue for change role
     const handleContinue = () => {
-        console.log('Selected Role:', selectedRole);
+        console.log("Selected Role:", selectedRole);
         setModalVisible(false);
 
-        let screenName = '';
+        let screenName = "";
         switch (selectedRole) {
-            case 'Doctor':
-                screenName = 'DoctorRole';
+            case "Doctor":
+                screenName = "DoctorRole";
                 break;
-            case 'Patient':
-                screenName = 'MychartsDashboard';
+            case "Patient":
+                screenName = "MychartsDashboard";
                 break;
-            case 'Pharma Manager':
-                screenName = 'PharmacyManager';
+            case "Pharma Manager":
+                screenName = "PharmacyManager";
                 break;
-            case 'Lab Manager':
-                screenName = 'LabManager';
+            case "Lab Manager":
+                screenName = "LabManager";
                 break;
             default:
-                console.error('Unknown role selected');
+                console.error("Unknown role selected");
                 return;
         }
 
-        navigation.navigate('RolesNav', {
+        navigation.navigate("RolesNav", {
             screen: screenName,
             params: { isLoading: true },
         });
         // Use setParams to update the parameters of the current route
         navigation.setParams({ selectedRole: selectedRole });
 
-        setSelectedRole('');
+        setSelectedRole("");
     };
-
 
     // get the flag for start tour guide, if start tour guide is true, start the tour guide
     const { startTourGuide } = useSelector((state) => state.UserAuthReducer);
@@ -194,7 +197,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                         className="font-[appfont]"
                         style={{ fontSize: 10, color: customTheme.colors.dark }}
                     >
-                    Last active as {displayedRole}: April 06, 2024 6:55PM {getLastSyncTime()}
+                        {getLastSyncTime()}
                     </Text>
                 </View>
             </View>
@@ -223,13 +226,15 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                 isVisible={isModalVisible}
                 onBackdropPress={() => setModalVisible(false)}
                 style={{ margin: 0 }}
-                swipeDirection={['down']}
+                swipeDirection={["down"]}
                 propagateSwipe={true}
             >
                 <View className="absolute bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
                     {/* Modal Header */}
                     <View className="flex-row items-center justify-between">
-                        <Text className="text-lg font-[appfont-bold]">Select Your Role</Text>
+                        <Text className="text-lg font-[appfont-bold]">
+                            Select Your Role
+                        </Text>
                         <TouchableOpacity
                             onPress={() => setModalVisible(false)}
                         >
@@ -242,32 +247,41 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                     </View>
 
                     {/* Checkboxes for Role Selection */}
-                    {["Doctor", "Patient", "Pharma Manager", "Lab Manager"].map((role) => (
-                        <CheckBox
-                            key={role}
-                            title={role}
-                            checkedColor={customTheme.colors.primary}
-                            checked={selectedRole === role}
-                            onPress={() => handleSelectRole(role)}
-                            textStyle={{
-                                fontFamily: 'appfont-bold'
-                            }}
-                            containerStyle={{
-                                marginTop: 10,
-                                marginLeft: 0
-                            }}
-                        />
-                    ))}
+                    {["Doctor", "Patient", "Pharma Manager", "Lab Manager"].map(
+                        (role) => (
+                            <CheckBox
+                                key={role}
+                                title={role}
+                                checkedColor={customTheme.colors.primary}
+                                checked={selectedRole === role}
+                                onPress={() => handleSelectRole(role)}
+                                textStyle={{
+                                    fontFamily: "appfont-bold",
+                                }}
+                                containerStyle={{
+                                    marginTop: 10,
+                                    marginLeft: 0,
+                                }}
+                            />
+                        )
+                    )}
 
                     {/* Continue Button */}
                     <View className="flex justify-center items-center mt-4 mb-5">
-                        <TouchableOpacity onPress={handleContinue} className="w-full p-4 rounded-lg" style={{backgroundColor: customTheme.colors.primary}}>
-                            <Text className="text-center text-white text-md font-[appfont-bold]">Continue</Text>
+                        <TouchableOpacity
+                            onPress={handleContinue}
+                            className="w-full p-4 rounded-lg"
+                            style={{
+                                backgroundColor: customTheme.colors.primary,
+                            }}
+                        >
+                            <Text className="text-center text-white text-md font-[appfont-bold]">
+                                Continue
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 </View>
             </Modal>
-
 
             {/* if to sync button, render sync button */}
             {showSync && (

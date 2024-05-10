@@ -9,7 +9,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-import TopNavbar from "../../../../components/Utilities/TopNavbar";
+import TopNavbar from "../../components/Utils/TopNavbar";
 import CustomSafeView from "../../../../components/CustomSafeView";
 import TextInputBoxWithIcon from "../../../../components/Utilities/TextInputBoxWithIcon";
 import NavigationCard from "../../../../components/Cards/NavigationCard";
@@ -21,7 +21,7 @@ import { LabData } from "../../../../constants/LabConstants"
 import { customTheme } from "../../../../constants/themeConstants";
 import LabCard from "../../../../components/Cards/LabCard";
 
-const MychartsDashboard = () => {
+const PatientDashboard = () => {
     // Declare navigation instance
     const navigation = useNavigation();
 
@@ -268,4 +268,4 @@ const MychartsDashboard = () => {
     );
 };
 
-export default MychartsDashboard;
+export default PatientDashboard;

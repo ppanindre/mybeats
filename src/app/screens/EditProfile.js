@@ -190,7 +190,7 @@ const EditProfile = () => {
               {/* User Form */}
               <View className="items-center justify-center">
                 {/* Email */}
-                <View className="mb-3">
+                <View className="mb-3 w-[325]">
                   <CustomInput
                     sentry-label="edit-profile-email"
                     placeholder="Email"
@@ -200,7 +200,7 @@ const EditProfile = () => {
                 </View>
 
                 {/* First Name */}
-                <View className="mb-3">
+                <View className="mb-3 w-[325]">
                   <CustomInput
                     placeholder="First Name"
                     value={firstName}
@@ -209,7 +209,7 @@ const EditProfile = () => {
                 </View>
 
                 {/* Last Name */}
-                <View className="mb-3">
+                <View className="mb-3 w-[325]">
                   <CustomInput
                     placeholder="Last Name"
                     value={lastName}
@@ -243,7 +243,7 @@ const EditProfile = () => {
                 </View>
 
                 {/* Weight */}
-                <View className="mb-3">
+                <View className="mb-3 w-[325]">
                   <CustomInput
                     placeholder="Weight (lb)"
                     keyboardType="numeric"
@@ -253,7 +253,7 @@ const EditProfile = () => {
                 </View>
 
                 {/* Height */}
-                <View className="mb-3">
+                <View className="mb-3 w-[325]">
                   <CustomInput
                     placeholder="Height (inch)"
                     keyboardType="numeric"
@@ -303,7 +303,7 @@ const EditProfile = () => {
                 </View>
 
                 {toggleOthers && (
-                  <View className="mb-3">
+                  <View className="mb-3 w-[325]">
                     <CustomInput
                       placeholder="If other, please specify"
                       value={otherCondition}

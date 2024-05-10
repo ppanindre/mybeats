@@ -17,7 +17,7 @@ import CustomSafeView from "../../../components/CustomSafeView";
 import MessageInput from "../../../components/MessageInput";
 import ChatBubble from "../../../components/ChatBubble";
 import { firebaseCollections } from "../../../constants/firebaseCollections";
-import TopNavbar from "../../../components/Utilities/TopNavbar";
+import TopNavbar from "../components/Utils/TopNavbar";
 
 /**
  * Generate a random string for id

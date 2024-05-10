@@ -22,7 +22,7 @@ import { customTheme } from "../../../constants/themeConstants";
 import { firebaseCollections } from "../../../constants/firebaseCollections";
 import CustomSafeView from "../../../components/CustomSafeView";
 import NotificationGraph from "../../../components/NotificationGraph";
-import TopNavbar from "../../../components/Utilities/TopNavbar";
+import TopNavbar from "../components/Utils/TopNavbar";
 
 
 const Notifications = () => {

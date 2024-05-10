@@ -3,9 +3,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import DoctorRole from '../../screens/mybeatsScreens/DoctorRole';
 import LabManager from '../../screens/mybeatsScreens/LabManager';
 import CustomSafeView from '../../../../components/CustomSafeView';
-import TopNavbar from '../../../../components/Utilities/TopNavbar';
-import MychartsDashboard from '../../screens/mybeatsScreens/mychartsDashboard';
+import TopNavbar from '../../components/Utils/TopNavbar';
 import PharmacyManager from '../../screens/mybeatsScreens/PharmacyManger';
+import PatientDashboard from '../../screens/mybeatsScreens/PatientDashboard';
 
 const Stack = createStackNavigator();
 
@@ -27,8 +27,8 @@ export class RolesNav extends Component {
                     
                     {/* PatientRole */}
                     <Stack.Screen
-                        name="MychartsDashboard"
-                        component={MychartsDashboard}
+                        name="PatientDashboard"
+                        component={PatientDashboard}
                         options={{
                             headerShown: false
                         }}
