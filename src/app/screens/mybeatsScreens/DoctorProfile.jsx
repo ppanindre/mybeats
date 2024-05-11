@@ -233,30 +233,6 @@ function DoctorProfile() {
         }
     };
 
-    const getNextButtonStyle = () => ({
-        backgroundColor:
-            (currentPage === 1 && !isFirstPageFieldsFilled) ||
-            (currentPage === 2 && !isSecondPageFieldsFilled)
-                ? customTheme.colors.lightPrimary
-                : customTheme.colors.primary,
-        opacity:
-            (currentPage === 1 && !isFirstPageFieldsFilled) ||
-            (currentPage === 2 && !isSecondPageFieldsFilled)
-                ? 0.5
-                : 1,
-        cursor:
-            (currentPage === 1 && !isFirstPageFieldsFilled) ||
-            (currentPage === 2 && !isSecondPageFieldsFilled)
-                ? "not-allowed"
-                : "pointer",
-    });
-
-    const handleBack = () => {
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
-
     const handleSecondarySelection = (value) => {
         setSecondarySpecialization({
             ...secondarySpecialization,
@@ -332,314 +308,30 @@ function DoctorProfile() {
         setPageIndex(pageIndex + 1);
     };
 
+    /**
+     * funtion to go back to the previous form
+     */
+    const goToPreviousForm = () => {
+        setPageIndex(pageIndex - 1);
+    };
+
     return (
         <ScreenContainer>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                {pageIndex === 0 && <DoctorProfileForm1 />}
-                {pageIndex === 1 && <DoctorProfileForm2 />}
-                {pageIndex === 2 && <DoctorProfileForm3 />}
-            </ScrollView>
-
-            {/* Overlay button */}
-            <View>
-                <AppButton
-                    variant="primary"
-                    onPress={pageIndex !== 2 ? goToNextForm : handleSubmit}
-                    btnLabel={pageIndex !== 2 ? "Next" : "Submit"}
+            {pageIndex === 0 && (
+                <DoctorProfileForm1 onPressNext={goToNextForm} />
+            )}
+            {pageIndex === 1 && (
+                <DoctorProfileForm2
+                    handlePressNext={goToNextForm}
+                    handlePressBack={goToPreviousForm}
                 />
-            </View>
-
-            {/* <ScrollView
-                className="p-4"
-                contentContainerStyle={{ paddingBottom: 150 }}
-            >
-                {currentPage === 1 && (
-                    <>
-                        <View className="mb-5 items-center">
-                            <Image
-                                source={
-                                    imageUri
-                                        ? { uri: imageUri }
-                                        : require("../../assets/doc1.webp")
-                                }
-                                className="w-28 h-28 rounded-full mb-2 bg-gray-300"
-                            />
-                            <TouchableOpacity
-                                onPress={selectImage}
-                                className="py-2 px-4 rounded-xl shadow-md"
-                                style={{
-                                    backgroundColor: customTheme.colors.primary,
-                                }}
-                            >
-                                <Text className="text-white text-center font-[appfont-bold]">
-                                    Upload Image
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View className="space-y-6 mt-3">
-                            <View className="h-[50]">
-                                <CustomInput
-                                    placeholder="Email"
-                                    value={email}
-                                    onChangeText={setEmail}
-                                    error={emailError}
-                                    outlineColor={
-                                        emailError
-                                            ? customTheme.colors.error
-                                            : "gray"
-                                    }
-                                />
-                            </View>
-                            <View className="h-[50]">
-                                <CustomInput
-                                    placeholder="First Name"
-                                    value={firstName}
-                                    onChangeText={setFirstName}
-                                    error={firstNameError}
-                                    outlineColor={
-                                        firstNameError
-                                            ? customTheme.colors.error
-                                            : "gray"
-                                    }
-                                />
-                            </View>
-                            <View className="h-[50] mb-2">
-                                <CustomInput
-                                    placeholder="Last Name"
-                                    value={lastName}
-                                    onChangeText={setLastName}
-                                    error={lastNameError}
-                                    outlineColor={
-                                        lastNameError
-                                            ? customTheme.colors.error
-                                            : "gray"
-                                    }
-                                />
-                            </View>
-                            <View className="h-[50]">
-                                <PhoneNumberInput
-                                    defaultCode="US"
-                                    value={phoneNumber}
-                                    onChangeFormattedText={(text) => {
-                                        setPhoneNumber(text);
-                                        setPhoneNumberError(
-                                            !isValidNumber(text)
-                                        );
-                                    }}
-                                    containerStyle={{
-                                        width: "100%",
-                                        height: 60,
-                                        backgroundColor:
-                                            customTheme.colors.light,
-                                        borderWidth: phoneNumberError ? 2 : 1,
-                                        borderColor: phoneNumberError
-                                            ? "red"
-                                            : "gray",
-                                        borderRadius: 5,
-                                        padding: 1,
-                                    }}
-                                    textContainerStyle={{ paddingVertical: 10 }}
-                                    // autoFocus
-                                />
-                            </View>
-                            <View className="h-[50]">
-                                <CustomInput
-                                    placeholder="License No / Registration No"
-                                    value={licenseNo}
-                                    onChangeText={setLicenseNo}
-                                    error={licenseNoError}
-                                    outlineColor={
-                                        licenseNoError
-                                            ? customTheme.colors.error
-                                            : "gray"
-                                    }
-                                />
-                            </View>
-                            <View className="h-[50]">
-                                <CustomInput
-                                    placeholder="UPI ID"
-                                    value={upiID}
-                                    onChangeText={setupiID}
-                                    error={upiIDError}
-                                    outlineColor={
-                                        upiIDError
-                                            ? customTheme.colors.error
-                                            : "gray"
-                                    }
-                                />
-                            </View>
-                        </View>
-                    </>
-                )}
-                {currentPage === 2 && (
-                    <View className="flex-1 p-4 space-y-3">
-                        <View className="">
-                            <MultiSelect
-                                label="Primary Specialization"
-                                value={primarySpecialization.value}
-                                onSelection={(value) =>
-                                    setPrimarySpecialization({
-                                        ...primarySpecialization,
-                                        value: value.text,
-                                        selectedList: value.selectedList,
-                                    })
-                                }
-                                arrayList={primarySpecialization.list}
-                                selectedArrayList={
-                                    primarySpecialization.selectedList
-                                }
-                                multiEnable={false}
-                            />
-                        </View>
-                        <View className="">
-                            <MultiSelect
-                                label="Secondary Specialization (Optional)"
-                                value={secondarySpecialization.value}
-                                onSelection={handleSecondarySelection}
-                                arrayList={secondarySpecialization.list}
-                                selectedArrayList={
-                                    secondarySpecialization.selectedList
-                                }
-                                multiEnable={true}
-                            />
-                            {toggleOthers && (
-                                <View className="mt-2">
-                                    <CustomInput
-                                        placeholder="If other, please specify"
-                                        value={otherCondition}
-                                        onChangeText={setOtherCondition}
-                                    />
-                                </View>
-                            )}
-                        </View>
-
-                        <View className="h-[50] mb-4">
-                            <CustomInput
-                                placeholder="Address field 1"
-                                value={addressfield}
-                                onChangeText={setAddressfield}
-                            />
-                        </View>
-
-                        <View className="h-[50] mb-4">
-                            <CustomInput
-                                placeholder="City"
-                                value={city}
-                                onChangeText={setCity}
-                                error={cityError}
-                                outlineColor={
-                                    cityError
-                                        ? customTheme.colors.error
-                                        : "gray"
-                                }
-                            />
-                        </View>
-
-                        <View className="">
-                            <MultiSelect
-                                label="State"
-                                value={state.value}
-                                onSelection={(value) =>
-                                    setState({
-                                        ...state,
-                                        value: value.text,
-                                        selectedList: value.selectedList,
-                                    })
-                                }
-                                arrayList={state.list}
-                                selectedArrayList={state.selectedList}
-                                multiEnable={false}
-                            />
-                        </View>
-
-                        <View className="h-[50] mb-4">
-                            <CustomInput
-                                placeholder="Zipcode"
-                                value={zipcode}
-                                onChangeText={setZipcode}
-                                error={zipcodeError}
-                                outlineColor={
-                                    zipcodeError
-                                        ? customTheme.colors.error
-                                        : "gray"
-                                }
-                            />
-                        </View>
-
-                        <View className="h-[50] mb-3">
-                            <CustomInput
-                                placeholder="Website (Optional)"
-                                value={website}
-                                onChangeText={setWebsite}
-                                error={websiteError}
-                                outlineColor={
-                                    websiteError
-                                        ? customTheme.colors.error
-                                        : "gray"
-                                }
-                            />
-                        </View>
-                    </View>
-                )}
-                {currentPage === 3 && (
-                    <View className="flex-1 p-4 space-y-8">
-                        <TextInput
-                            placeholder="Education (Optional)"
-                            value={education}
-                            onChangeText={setEducation}
-                            onFocus={() => setFocusedInput("education")}
-                            onBlur={() => setFocusedInput("")}
-                            className="border-2 rounded-lg p-3 text-lg"
-                            style={{
-                                backgroundColor: customTheme.colors.light,
-                                height: 180,
-                                textAlignVertical: "top",
-                                borderColor:
-                                    focusedInput === "education"
-                                        ? customTheme.colors.primary
-                                        : customTheme.colors.darkSecondary,
-                            }}
-                            multiline={true}
-                        />
-                        <TextInput
-                            placeholder="Experience (Optional)"
-                            value={experience}
-                            onChangeText={setExperience}
-                            onFocus={() => setFocusedInput("experience")}
-                            onBlur={() => setFocusedInput("")}
-                            className="border-2 rounded-lg p-3 text-lg"
-                            style={{
-                                backgroundColor: customTheme.colors.light,
-                                height: 180,
-                                textAlignVertical: "top",
-                                borderColor:
-                                    focusedInput === "experience"
-                                        ? customTheme.colors.primary
-                                        : customTheme.colors.darkSecondary,
-                            }}
-                            multiline={true}
-                        />
-                        <TextInput
-                            placeholder="Awards and Recognition (Optional)"
-                            value={awards}
-                            onChangeText={setAwards}
-                            onFocus={() => setFocusedInput("awards")}
-                            onBlur={() => setFocusedInput("")}
-                            className="border-2 rounded-lg p-3 text-lg"
-                            style={{
-                                backgroundColor: customTheme.colors.light,
-                                height: 180,
-                                textAlignVertical: "top",
-                                borderColor:
-                                    focusedInput === "awards"
-                                        ? customTheme.colors.primary
-                                        : customTheme.colors.darkSecondary,
-                            }}
-                            multiline={true}
-                        />
-                    </View>
-                )}
-            </ScrollView> */}
+            )}
+            {pageIndex === 2 && (
+                <DoctorProfileForm3
+                    handlePressSubmit={handleSubmit}
+                    handlePressBack={goToPreviousForm}
+                />
+            )}
         </ScreenContainer>
     );
 }
