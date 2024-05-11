@@ -334,7 +334,10 @@ function DoctorProfile() {
 
             {/* Overlay button */}
             <View className="">
-                <AppButton variant="primary" btnLabel="Next" />
+                <AppButton
+                    variant="primary"
+                    btnLabel={pageIndex !== 2 ? "Next" : "Submit"}
+                />
             </View>
 
             {/* <ScrollView

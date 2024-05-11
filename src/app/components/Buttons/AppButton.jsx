@@ -12,8 +12,8 @@ const AppButton = ({
     <TouchableOpacity
       onPress={onPress}
       disabled={variant === "disabled"}
-      className={`${variant === "primary" && "bg-orange-400 shadow-lg"} ${
-        variant === "light" && "border-2 border-orange-400"
+      className={`${variant === "primary" && "bg-primary shadow-lg"} ${
+        variant === "light" && "border-2 border-primary"
       } p-5 rounded-md mb-5 flex-row items-center justify-center ${
         variant === "disabled" && "bg-gray-400 shadow-lg "
       } w-[100%]`}

@@ -4,7 +4,7 @@ import React from "react";
 const DoctorProfileForm1 = () => {
     return (
         <View>
-            <Text>DoctorProfileForm1</Text>
+            
         </View>
     );
 };
