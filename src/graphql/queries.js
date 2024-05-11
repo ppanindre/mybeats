@@ -138,6 +138,50 @@ export const syncDoctors = /* GraphQL */ `
     }
   }
 `;
+export const doctorByZipcode = /* GraphQL */ `
+  query DoctorByZipcode(
+    $zipcode: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelDoctorFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    doctorByZipcode(
+      zipcode: $zipcode
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        registrationNumber
+        upiId
+        specialties {
+          nextToken
+          startedAt
+        }
+        address
+        zipcode
+        appointmentSlots {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getSpecialty = /* GraphQL */ `
   query GetSpecialty($id: ID!) {
     getSpecialty(id: $id) {
@@ -202,6 +246,39 @@ export const syncSpecialties = /* GraphQL */ `
       limit: $limit
       nextToken: $nextToken
       lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        doctors {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const specialtyByName = /* GraphQL */ `
+  query SpecialtyByName(
+    $name: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelSpecialtyFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    specialtyByName(
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
     ) {
       items {
         id
@@ -501,6 +578,132 @@ export const syncAppointmentSlots = /* GraphQL */ `
     }
   }
 `;
+export const slotsByDoctor = /* GraphQL */ `
+  query SlotsByDoctor(
+    $doctorId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelAppointmentSlotFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    slotsByDoctor(
+      doctorId: $doctorId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        doctorId
+        patientId
+        startTime
+        endTime
+        isBooked
+        doctor {
+          doctorID
+          firstname
+          lastname
+          email
+          phoneNumber
+          registrationNumber
+          upiId
+          address
+          zipcode
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        patient {
+          id
+          firstname
+          lastname
+          email
+          phoneNumber
+          address
+          zipcode
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const slotsByPatient = /* GraphQL */ `
+  query SlotsByPatient(
+    $patientId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelAppointmentSlotFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    slotsByPatient(
+      patientId: $patientId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        doctorId
+        patientId
+        startTime
+        endTime
+        isBooked
+        doctor {
+          doctorID
+          firstname
+          lastname
+          email
+          phoneNumber
+          registrationNumber
+          upiId
+          address
+          zipcode
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        patient {
+          id
+          firstname
+          lastname
+          email
+          phoneNumber
+          address
+          zipcode
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getDoctorSpecialties = /* GraphQL */ `
   query GetDoctorSpecialties($id: ID!) {
     getDoctorSpecialties(id: $id) {
@@ -639,209 +842,6 @@ export const syncDoctorSpecialties = /* GraphQL */ `
         specialty {
           id
           name
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const doctorByZipcode = /* GraphQL */ `
-  query DoctorByZipcode(
-    $zipcode: String!
-    $sortDirection: ModelSortDirection
-    $filter: ModelDoctorFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    doctorByZipcode(
-      zipcode: $zipcode
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        doctorID
-        firstname
-        lastname
-        email
-        phoneNumber
-        registrationNumber
-        upiId
-        specialties {
-          nextToken
-          startedAt
-        }
-        address
-        zipcode
-        appointmentSlots {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const specialtyByName = /* GraphQL */ `
-  query SpecialtyByName(
-    $name: String!
-    $sortDirection: ModelSortDirection
-    $filter: ModelSpecialtyFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    specialtyByName(
-      name: $name
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        name
-        doctors {
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const slotsByDoctor = /* GraphQL */ `
-  query SlotsByDoctor(
-    $doctorId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelAppointmentSlotFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    slotsByDoctor(
-      doctorId: $doctorId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        doctorId
-        patientId
-        startTime
-        endTime
-        isBooked
-        doctor {
-          doctorID
-          firstname
-          lastname
-          email
-          phoneNumber
-          registrationNumber
-          upiId
-          address
-          zipcode
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
-        patient {
-          id
-          firstname
-          lastname
-          email
-          phoneNumber
-          address
-          zipcode
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const slotsByPatient = /* GraphQL */ `
-  query SlotsByPatient(
-    $patientId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelAppointmentSlotFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    slotsByPatient(
-      patientId: $patientId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        doctorId
-        patientId
-        startTime
-        endTime
-        isBooked
-        doctor {
-          doctorID
-          firstname
-          lastname
-          email
-          phoneNumber
-          registrationNumber
-          upiId
-          address
-          zipcode
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
-        patient {
-          id
-          firstname
-          lastname
-          email
-          phoneNumber
-          address
-          zipcode
           createdAt
           updatedAt
           _version

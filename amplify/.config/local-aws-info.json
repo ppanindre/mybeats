@@ -1,11 +1,5 @@
 {
   "dev": {
-    "configLevel": "amplifyAdmin"
-  },
-  "mybeats": {
-    "configLevel": "amplifyAdmin"
-  },
-  "mybeatsdev": {
     "configLevel": "project",
     "useProfile": true,
     "profileName": "Firebeats"
