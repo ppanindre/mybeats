@@ -1,8 +1,12 @@
-import { View} from "react-native";
+import { View } from "react-native";
 import React from "react";
 
 const ScreenContainer = ({ children }) => {
-    return <View className="relative p-5 h-full bg-white">{children}</View>;
+    return (
+        <View className="relative pt-5 px-5 h-full bg-light space-y-5">
+            {children}
+        </View>
+    );
 };
 
 export default ScreenContainer;

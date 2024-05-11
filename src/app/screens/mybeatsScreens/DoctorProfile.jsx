@@ -324,18 +324,27 @@ function DoctorProfile() {
         }
     };
 
+    /**
+     * function to handle when user clicks
+     * on next
+     */
+    const goToNextForm = () => {
+        setPageIndex(pageIndex + 1);
+    };
+
     return (
         <ScreenContainer>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 {pageIndex === 0 && <DoctorProfileForm1 />}
                 {pageIndex === 1 && <DoctorProfileForm2 />}
                 {pageIndex === 2 && <DoctorProfileForm3 />}
             </ScrollView>
 
             {/* Overlay button */}
-            <View className="">
+            <View>
                 <AppButton
                     variant="primary"
+                    onPress={pageIndex !== 2 ? goToNextForm : handleSubmit}
                     btnLabel={pageIndex !== 2 ? "Next" : "Submit"}
                 />
             </View>
