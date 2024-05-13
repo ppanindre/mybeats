@@ -44,7 +44,7 @@ const DoctorProfileForm3 = ({ handlePressSubmit, handlePressBack }) => {
                 <View className="flex-1">
                     <AppButton
                         variant="primary"
-                        btnLabel="Submit"
+                        btnLabel="Save"
                         onPress={onPressSubmit}
                     />
                 </View>

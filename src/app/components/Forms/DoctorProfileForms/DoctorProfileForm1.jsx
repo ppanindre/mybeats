@@ -1,34 +1,50 @@
 import { ScrollView, View } from "react-native";
-import React, { useState } from "react";
+import React from "react";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import ProfileImageButton from "../../Buttons/ProfileImageButton";
 import FormInput from "../../Inputs/FormInput";
 import PhoneInput from "../../Inputs/PhoneInput";
 import AppButton from "../../Buttons/AppButton";
 
-const DoctorProfileForm1 = ({ handlePressNext }) => {
-    // STATES
-    const [email, setEmail] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [licenseNumber, setLicenseNumber] = useState("");
-    const [upiId, setUpiId] = useState("");
+// Form Schema for validation
+const formSchema = z.object({
+    email: z.string().email("Please enter a valid email"),
+    firstName: z.string().min(3, "First name must be at least 3 characters"),
+    lastName: z.string().min(3, "Last must be at least 8 characters"),
+    phoneNumber: z
+        .string()
+        .min(10, "Phone number must be equal to 10 digits")
+        .max(10, "Phone number must be equal to 10 digits")
+        .regex(/^\+?[0-9]{10,15}$/, "Please enter a valid phone number"),
+    licenseNumber: z
+        .string()
+        .min(5, "License number must be at least 5 characters")
+        .max(20, "License number must not exceed 20 characters"),
+    upiId: z.string().email("Please enter a valid UPI ID"),
+});
 
+const DoctorProfileForm1 = ({ handlePressNext }) => {
     /**
      * function to handle when user presses next
      */
-    const onPressNext = () => {
-        const doctorProfileData1 = {
-            email: email,
-            firstName: firstName,
-            lastName: lastName,
-            phoneNumber: phoneNumber,
-            licenseNumber: licenseNumber,
-            upiId: upiId,
-        };
-
-        handlePressNext(doctorProfileData1);
+    const onSubmit = (data) => {
+        // send the form data to the parent component
+        handlePressNext(data);
     };
+
+    const { control, handleSubmit } = useForm({
+        defaultValues: {
+            email: "",
+            firstName: "",
+            lastName: "",
+            phoneNumber: "",
+            licenseNumber: "",
+            upiId: "",
+        },
+        resolver: zodResolver(formSchema),
+    });
 
     return (
         <View className="h-[100%] space-y-5">
@@ -43,54 +59,114 @@ const DoctorProfileForm1 = ({ handlePressNext }) => {
 
                     {/* Email */}
                     <View>
-                        <FormInput
-                            value={email}
-                            onChangeText={(text) => setEmail(text)}
-                            label="Email"
+                        <Controller
+                            control={control}
+                            name="email"
+                            render={({
+                                field: { value, onChange },
+                                fieldState: { error },
+                            }) => (
+                                <FormInput
+                                    value={value}
+                                    onChangeText={onChange}
+                                    label="Email"
+                                    error={error}
+                                />
+                            )}
                         />
                     </View>
 
                     {/* First Name */}
                     <View>
-                        <FormInput
-                            value={firstName}
-                            onChangeText={(text) => setFirstName(text)}
-                            label="First Name"
+                        <Controller
+                            control={control}
+                            name="firstName"
+                            render={({
+                                field: { value, onChange },
+                                fieldState: { error },
+                            }) => (
+                                <FormInput
+                                    value={value}
+                                    onChangeText={onChange}
+                                    label="First Name"
+                                    error={error}
+                                />
+                            )}
                         />
                     </View>
 
                     {/* Last Name */}
                     <View>
-                        <FormInput
-                            value={lastName}
-                            onChangeText={(text) => setLastName(text)}
-                            label="Last Name"
+                        <Controller
+                            control={control}
+                            name="lastName"
+                            render={({
+                                field: { value, onChange },
+                                fieldState: { error },
+                            }) => (
+                                <FormInput
+                                    value={value}
+                                    onChangeText={onChange}
+                                    label="Last Name"
+                                    error={error}
+                                />
+                            )}
                         />
                     </View>
 
                     {/* Phone Number */}
                     <View>
-                        <PhoneInput
-                            value={phoneNumber}
-                            onChangeText={(text) => setPhoneNumber(text)}
+                        <Controller
+                            control={control}
+                            name="phoneNumber"
+                            render={({
+                                field: { value, onChange },
+                                fieldState: { error },
+                            }) => (
+                                <PhoneInput
+                                    value={value}
+                                    onChangeText={onChange}
+                                    error={error}
+                                />
+                            )}
                         />
                     </View>
 
                     {/* License Number */}
                     <View>
-                        <FormInput
-                            value={licenseNumber}
-                            onChangeText={(text) => setLicenseNumber(text)}
-                            label="License No / Registration No"
+                        <Controller
+                            control={control}
+                            name="licenseNumber"
+                            render={({
+                                field: { value, onChange },
+                                fieldState: { error },
+                            }) => (
+                                <FormInput
+                                    value={value}
+                                    onChangeText={onChange}
+                                    label="License Number"
+                                    error={error}
+                                />
+                            )}
                         />
                     </View>
 
                     {/* UPI Id */}
                     <View>
-                        <FormInput
-                            value={upiId}
-                            onChangeText={(text) => setUpiId(text)}
-                            label="UPI ID"
+                        <Controller
+                            control={control}
+                            name="upiId"
+                            render={({
+                                field: { value, onChange },
+                                fieldState: { error },
+                            }) => (
+                                <FormInput
+                                    value={value}
+                                    onChangeText={onChange}
+                                    label="UPI ID"
+                                    error={error}
+                                />
+                            )}
                         />
                     </View>
                 </View>
@@ -101,7 +177,7 @@ const DoctorProfileForm1 = ({ handlePressNext }) => {
                 <AppButton
                     variant="primary"
                     btnLabel="Next"
-                    onPress={onPressNext}
+                    onPress={handleSubmit(onSubmit)}
                 />
             </View>
         </View>

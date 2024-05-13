@@ -6,10 +6,11 @@ module.exports = {
     ],
     theme: {
         colors: {
-            primary: "#fb923c",
-            light: "#ffffff",
-            dark: "#4a4a4a",
-            lightPrimary: "#fdbf60",
+            primary: "#FB923C",
+            light: "#FFFFFF",
+            dark: "#4A4A4A",
+            lightPrimary: "#FDBF60",
+            error: "#FF204E",
         },
     },
     plugins: [],
