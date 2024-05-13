@@ -1,8 +1,19 @@
 import { View, ScrollView } from "react-native";
 import React, { useState } from "react";
+import { z } from "zod";
 import MultiSelectInput from "../../Inputs/MultiSelectInput";
 import FormInput from "../../Inputs/FormInput";
 import AppButton from "../../Buttons/AppButton";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+// Form Schema for validation
+const formSchema = z.object({
+    address: z.string().min(1, "Please enter a valid address"),
+    city: z.string().min(1, "Please enter a valid city"),
+    zipcode: z.string().length(5, "Please enter a valid zipcode"),
+    website: z.string().optional(),
+});
 
 const DoctorProfileForm2 = ({ handlePressNext, handlePressBack }) => {
     // STATES
@@ -15,6 +26,10 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack }) => {
         ],
         selectedList: [],
     });
+    const [
+        primarySpecializationErrorMessage,
+        setPrimarySpecializationErrorMessage,
+    ] = useState(null);
     const [secondarySpecialization, setSecondarySpecialization] = useState({
         value: "",
         list: [
@@ -59,6 +74,18 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack }) => {
         ],
         selectedList: [],
     });
+    const [countryStateErrorMessage, setCountryStateErrorMessage] =
+        useState(null);
+
+    const { control, handleSubmit } = useForm({
+        defaultValues: {
+            address: "",
+            city: "",
+            zipcode: "",
+            website: "",
+        },
+        resolver: zodResolver(formSchema),
+    });
 
     const handlePrimarySelection = (value) => {
         setPrimarySpecialization({
@@ -66,6 +93,7 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack }) => {
             value: value.text,
             selectedList: value.selectedList,
         });
+        setPrimarySpecializationErrorMessage(null);
     };
 
     const handleSecondarySelection = (value) => {
@@ -82,10 +110,37 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack }) => {
             value: value.text,
             selectedList: value.selectedList,
         });
+        setCountryStateErrorMessage(null);
     };
 
-    const onPressNext = () => {
-        handlePressNext();
+    const onSubmit = (data) => {
+        // multi select error handling
+        if (primarySpecialization.selectedList.length === 0) {
+            setPrimarySpecializationErrorMessage(
+                "Please select a primary specialization"
+            );
+        }
+
+        if (countryStates.selectedList.length === 0) {
+            setCountryStateErrorMessage("Please select a state");
+        }
+
+        // If no multi select error
+        if (
+            primarySpecialization.selectedList.length !== 0 &&
+            countryStates.selectedList.length !== 0
+        ) {
+            // consolidate the doctor data into one object
+            const formData = {
+                primarySpecialization: primarySpecialization.value,
+                countryState: countryStates.value,
+                secondarySpecialization: secondarySpecialization.value,
+                ...data,
+            };
+
+            // send back the form data to the parent component
+            handlePressNext(formData);
+        }
     };
 
     const onPressBack = () => {
@@ -110,6 +165,7 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack }) => {
                             onSelection={(value) =>
                                 handlePrimarySelection(value)
                             }
+                            error={primarySpecializationErrorMessage}
                         />
                     </View>
 
@@ -130,11 +186,39 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack }) => {
 
                     {/* Address */}
                     <View>
-                        <FormInput label="Address" />
+                        <Controller
+                            control={control}
+                            name="address"
+                            render={({
+                                field: { value, onChange },
+                                fieldState: { error },
+                            }) => (
+                                <FormInput
+                                    value={value}
+                                    onChangeText={onChange}
+                                    label="Address"
+                                    error={error}
+                                />
+                            )}
+                        />
                     </View>
 
                     <View>
-                        <FormInput label="City" />
+                        <Controller
+                            control={control}
+                            name="city"
+                            render={({
+                                field: { value, onChange },
+                                fieldState: { error },
+                            }) => (
+                                <FormInput
+                                    value={value}
+                                    onChangeText={onChange}
+                                    label="City"
+                                    error={error}
+                                />
+                            )}
+                        />
                     </View>
 
                     <View>
@@ -146,15 +230,44 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack }) => {
                             onSelection={(value) =>
                                 handleCountryStateSelection(value)
                             }
+                            error={countryStateErrorMessage}
                         />
                     </View>
 
                     <View>
-                        <FormInput label="Zipcode" />
+                        <Controller
+                            control={control}
+                            name="zipcode"
+                            render={({
+                                field: { value, onChange },
+                                fieldState: { error },
+                            }) => (
+                                <FormInput
+                                    value={value}
+                                    onChangeText={onChange}
+                                    label="Zipcode"
+                                    error={error}
+                                />
+                            )}
+                        />
                     </View>
 
                     <View>
-                        <FormInput label="Website(Optional)" />
+                        <Controller
+                            control={control}
+                            name="website"
+                            render={({
+                                field: { value, onChange },
+                                fieldState: { error },
+                            }) => (
+                                <FormInput
+                                    value={value}
+                                    onChangeText={onChange}
+                                    label="Website(Optional)"
+                                    error={error}
+                                />
+                            )}
+                        />
                     </View>
                 </View>
             </ScrollView>
@@ -173,7 +286,7 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack }) => {
                     <AppButton
                         variant="primary"
                         btnLabel="Next"
-                        onPress={onPressNext}
+                        onPress={handleSubmit(onSubmit)}
                     />
                 </View>
             </View>
