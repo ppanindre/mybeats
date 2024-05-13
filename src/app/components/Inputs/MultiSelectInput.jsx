@@ -1,4 +1,3 @@
-import { View, Text } from "react-native";
 import React from "react";
 import { PaperSelect } from "react-native-paper-select";
 import { theme } from "../../../../tailwind.config";
@@ -23,13 +22,16 @@ const MultiSelectInput = ({
             multiEnable={multiEnable} // is user able to select multiple items
             hideSearchBox={hideSearchBox} // to hide the search box
             containerStyle={{
-                marginBottom: 0
+                marginBottom: 0,
             }}
             textInputStyle={{
                 height: 55,
             }}
             textInputOutlineStyle={{
                 borderWidth: 1,
+            }}
+            checkboxProps={{
+                checkboxColor: theme.colors.primary, // set color of checkbox colors
             }}
             theme={{
                 colors: {

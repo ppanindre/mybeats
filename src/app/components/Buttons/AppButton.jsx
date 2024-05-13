@@ -25,7 +25,7 @@ const AppButton = ({
       {/* Button Label */}
       <Text
         className={`${variant === "primary" && "text-light"} ${
-          variant === "light" && "text-orange-400"
+          variant === "light" && "text-primary"
         } ${variant === "disabled" && "text-light"} font-bold mx-3`}
       >
         {btnLabel}

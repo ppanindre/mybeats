@@ -1,17 +1,33 @@
 import { ScrollView, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import ProfileImageButton from "../../Buttons/ProfileImageButton";
 import FormInput from "../../Inputs/FormInput";
 import PhoneInput from "../../Inputs/PhoneInput";
 import AppButton from "../../Buttons/AppButton";
 
-const DoctorProfileForm1 = ({ onPressNext }) => {
+const DoctorProfileForm1 = ({ handlePressNext }) => {
+    // STATES
+    const [email, setEmail] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [licenseNumber, setLicenseNumber] = useState("");
+    const [upiId, setUpiId] = useState("");
 
     /**
      * function to handle when user presses next
      */
-    const handlePressNext = () => {
-        onPressNext();
+    const onPressNext = () => {
+        const doctorProfileData1 = {
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            phoneNumber: phoneNumber,
+            licenseNumber: licenseNumber,
+            upiId: upiId,
+        };
+
+        handlePressNext(doctorProfileData1);
     };
 
     return (
@@ -27,32 +43,55 @@ const DoctorProfileForm1 = ({ onPressNext }) => {
 
                     {/* Email */}
                     <View>
-                        <FormInput label="Email" />
+                        <FormInput
+                            value={email}
+                            onChangeText={(text) => setEmail(text)}
+                            label="Email"
+                        />
                     </View>
 
                     {/* First Name */}
                     <View>
-                        <FormInput label="First Name" />
+                        <FormInput
+                            value={firstName}
+                            onChangeText={(text) => setFirstName(text)}
+                            label="First Name"
+                        />
                     </View>
 
                     {/* Last Name */}
                     <View>
-                        <FormInput label="Last Name" />
+                        <FormInput
+                            value={lastName}
+                            onChangeText={(text) => setLastName(text)}
+                            label="Last Name"
+                        />
                     </View>
 
                     {/* Phone Number */}
                     <View>
-                        <PhoneInput />
+                        <PhoneInput
+                            value={phoneNumber}
+                            onChangeText={(text) => setPhoneNumber(text)}
+                        />
                     </View>
 
                     {/* License Number */}
                     <View>
-                        <FormInput label="License No / Registration No" />
+                        <FormInput
+                            value={licenseNumber}
+                            onChangeText={(text) => setLicenseNumber(text)}
+                            label="License No / Registration No"
+                        />
                     </View>
 
                     {/* UPI Id */}
                     <View>
-                        <FormInput label="UPI ID" />
+                        <FormInput
+                            value={upiId}
+                            onChangeText={(text) => setUpiId(text)}
+                            label="UPI ID"
+                        />
                     </View>
                 </View>
             </ScrollView>
@@ -62,7 +101,7 @@ const DoctorProfileForm1 = ({ onPressNext }) => {
                 <AppButton
                     variant="primary"
                     btnLabel="Next"
-                    onPress={handlePressNext}
+                    onPress={onPressNext}
                 />
             </View>
         </View>
