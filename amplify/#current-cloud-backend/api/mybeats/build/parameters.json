@@ -1,0 +1,7 @@
+{
+    "AppSyncApiName": "mybeats",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "S3DeploymentBucket": "amplify-mybeats-dev-152022-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/870a6c09c94529811871cedff10199677c04f198"
+}

@@ -3,6 +3,13 @@ export const schema = {
         "Doctor": {
             "name": "Doctor",
             "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "doctorID": {
                     "name": "doctorID",
                     "isArray": false,
@@ -121,14 +128,6 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "fields": [
-                            "doctorID"
-                        ]
-                    }
                 },
                 {
                     "type": "key",
@@ -363,8 +362,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "doctorId": {
-                    "name": "doctorId",
+                "doctorID": {
+                    "name": "doctorID",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
@@ -409,7 +408,7 @@ export const schema = {
                     "association": {
                         "connectionType": "BELONGS_TO",
                         "targetNames": [
-                            "doctorId"
+                            "doctorID"
                         ]
                     }
                 },
@@ -458,7 +457,7 @@ export const schema = {
                         "name": "byDoctor",
                         "queryField": "slotsByDoctor",
                         "fields": [
-                            "doctorId"
+                            "doctorID"
                         ]
                     }
                 },
@@ -500,8 +499,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "doctorDoctorID": {
-                    "name": "doctorDoctorID",
+                "doctorId": {
+                    "name": "doctorId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": false,
@@ -525,7 +524,7 @@ export const schema = {
                     "association": {
                         "connectionType": "BELONGS_TO",
                         "targetNames": [
-                            "doctorDoctorID"
+                            "doctorId"
                         ]
                     }
                 },
@@ -573,7 +572,7 @@ export const schema = {
                     "properties": {
                         "name": "byDoctor",
                         "fields": [
-                            "doctorDoctorID"
+                            "doctorId"
                         ]
                     }
                 },
@@ -608,5 +607,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "c22063b680123f4174b09a9c1648579a"
+    "version": "cf42495ad4205f23dd3076da3d469554"
 };

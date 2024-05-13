@@ -1,0 +1,822 @@
+{
+  "Resources": {
+    "DoctorappointmentSlotsauth0FunctionDoctorappointmentSlotsauth0FunctionAppSyncFunction96B5674F": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name"
+        },
+        "Name": "DoctorappointmentSlotsauth0Function",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Doctor.appointmentSlots.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson({})"
+      }
+    },
+    "DoctorAppointmentSlotsDataResolverFnDoctorAppointmentSlotsDataResolverFnAppSyncFunction475653A5": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackAppointmentSlotNestedStackAppointmentSlotNestedStackResourceFEA8089COutputstransformerrootstackAppointmentSlotAppointmentSlotDataSourceE3DC0DF4Name"
+        },
+        "Name": "DoctorAppointmentSlotsDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Doctor.appointmentSlots.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Doctor.appointmentSlots.res.vtl"
+            ]
+          ]
+        },
+        "SyncConfig": {
+          "ConflictDetection": "VERSION",
+          "ConflictHandler": "OPTIMISTIC_CONCURRENCY"
+        }
+      }
+    },
+    "DoctorappointmentSlotsResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "appointmentSlots",
+        "TypeName": "Doctor",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "DoctorappointmentSlotsauth0FunctionDoctorappointmentSlotsauth0FunctionAppSyncFunction96B5674F",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "DoctorAppointmentSlotsDataResolverFnDoctorAppointmentSlotsDataResolverFnAppSyncFunction475653A5",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Doctor\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"appointmentSlots\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackAppointmentSlotNestedStackAppointmentSlotNestedStackResourceFEA8089COutputstransformerrootstackAppointmentSlotAppointmentSlotTable72ECC27DRef"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "PatientAppointmentSlotsDataResolverFnPatientAppointmentSlotsDataResolverFnAppSyncFunctionCDE7A0BB": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackAppointmentSlotNestedStackAppointmentSlotNestedStackResourceFEA8089COutputstransformerrootstackAppointmentSlotAppointmentSlotDataSourceE3DC0DF4Name"
+        },
+        "Name": "PatientAppointmentSlotsDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Patient.appointmentSlots.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Patient.appointmentSlots.res.vtl"
+            ]
+          ]
+        },
+        "SyncConfig": {
+          "ConflictDetection": "VERSION",
+          "ConflictHandler": "OPTIMISTIC_CONCURRENCY"
+        }
+      }
+    },
+    "PatientappointmentSlotsResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "appointmentSlots",
+        "TypeName": "Patient",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "DoctorappointmentSlotsauth0FunctionDoctorappointmentSlotsauth0FunctionAppSyncFunction96B5674F",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "PatientAppointmentSlotsDataResolverFnPatientAppointmentSlotsDataResolverFnAppSyncFunctionCDE7A0BB",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Patient\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"appointmentSlots\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackAppointmentSlotNestedStackAppointmentSlotNestedStackResourceFEA8089COutputstransformerrootstackAppointmentSlotAppointmentSlotTable72ECC27DRef"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "DoctorSpecialtiesDoctorDataResolverFnDoctorSpecialtiesDoctorDataResolverFnAppSyncFunctionE5595FE9": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorDoctorDataSource9D881917Name"
+        },
+        "Name": "DoctorSpecialtiesDoctorDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/DoctorSpecialties.doctor.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/DoctorSpecialties.doctor.res.vtl"
+            ]
+          ]
+        },
+        "SyncConfig": {
+          "ConflictDetection": "VERSION",
+          "ConflictHandler": "OPTIMISTIC_CONCURRENCY"
+        }
+      }
+    },
+    "DoctorSpecialtiesdoctorResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "doctor",
+        "TypeName": "DoctorSpecialties",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "DoctorappointmentSlotsauth0FunctionDoctorappointmentSlotsauth0FunctionAppSyncFunction96B5674F",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "DoctorSpecialtiesDoctorDataResolverFnDoctorSpecialtiesDoctorDataResolverFnAppSyncFunctionE5595FE9",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"DoctorSpecialties\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"doctor\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorDoctorTable7394F4FERef"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "DoctorSpecialtiesSpecialtyDataResolverFnDoctorSpecialtiesSpecialtyDataResolverFnAppSyncFunction4678123A": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackSpecialtyNestedStackSpecialtyNestedStackResource01F1A8EDOutputstransformerrootstackSpecialtySpecialtyDataSource3948F194Name"
+        },
+        "Name": "DoctorSpecialtiesSpecialtyDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/DoctorSpecialties.specialty.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/DoctorSpecialties.specialty.res.vtl"
+            ]
+          ]
+        },
+        "SyncConfig": {
+          "ConflictDetection": "VERSION",
+          "ConflictHandler": "OPTIMISTIC_CONCURRENCY"
+        }
+      }
+    },
+    "DoctorSpecialtiesspecialtyResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "specialty",
+        "TypeName": "DoctorSpecialties",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "DoctorappointmentSlotsauth0FunctionDoctorappointmentSlotsauth0FunctionAppSyncFunction96B5674F",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "DoctorSpecialtiesSpecialtyDataResolverFnDoctorSpecialtiesSpecialtyDataResolverFnAppSyncFunction4678123A",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"DoctorSpecialties\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"specialty\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackSpecialtyNestedStackSpecialtyNestedStackResource01F1A8EDOutputstransformerrootstackSpecialtySpecialtyTableE4F05B75Ref"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "DoctorSpecialtiesDataResolverFnDoctorSpecialtiesDataResolverFnAppSyncFunction63035AD1": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackDoctorSpecialtiesNestedStackDoctorSpecialtiesNestedStackResource02E164C4OutputstransformerrootstackDoctorSpecialtiesDoctorSpecialtiesDataSourceF83C5487Name"
+        },
+        "Name": "DoctorSpecialtiesDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Doctor.specialties.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Doctor.specialties.res.vtl"
+            ]
+          ]
+        },
+        "SyncConfig": {
+          "ConflictDetection": "VERSION",
+          "ConflictHandler": "OPTIMISTIC_CONCURRENCY"
+        }
+      }
+    },
+    "DoctorspecialtiesResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "specialties",
+        "TypeName": "Doctor",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "DoctorappointmentSlotsauth0FunctionDoctorappointmentSlotsauth0FunctionAppSyncFunction96B5674F",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "DoctorSpecialtiesDataResolverFnDoctorSpecialtiesDataResolverFnAppSyncFunction63035AD1",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Doctor\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"specialties\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackDoctorSpecialtiesNestedStackDoctorSpecialtiesNestedStackResource02E164C4OutputstransformerrootstackDoctorSpecialtiesDoctorSpecialtiesTable0E430E21Ref"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "SpecialtyDoctorsDataResolverFnSpecialtyDoctorsDataResolverFnAppSyncFunctionE4FD3C25": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackDoctorSpecialtiesNestedStackDoctorSpecialtiesNestedStackResource02E164C4OutputstransformerrootstackDoctorSpecialtiesDoctorSpecialtiesDataSourceF83C5487Name"
+        },
+        "Name": "SpecialtyDoctorsDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Specialty.doctors.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Specialty.doctors.res.vtl"
+            ]
+          ]
+        },
+        "SyncConfig": {
+          "ConflictDetection": "VERSION",
+          "ConflictHandler": "OPTIMISTIC_CONCURRENCY"
+        }
+      }
+    },
+    "SpecialtydoctorsResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "doctors",
+        "TypeName": "Specialty",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "DoctorappointmentSlotsauth0FunctionDoctorappointmentSlotsauth0FunctionAppSyncFunction96B5674F",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "SpecialtyDoctorsDataResolverFnSpecialtyDoctorsDataResolverFnAppSyncFunctionE4FD3C25",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Specialty\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"doctors\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackDoctorSpecialtiesNestedStackDoctorSpecialtiesNestedStackResource02E164C4OutputstransformerrootstackDoctorSpecialtiesDoctorSpecialtiesTable0E430E21Ref"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "AppointmentSlotDoctorDataResolverFnAppointmentSlotDoctorDataResolverFnAppSyncFunction1AA90CD8": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorDoctorDataSource9D881917Name"
+        },
+        "Name": "AppointmentSlotDoctorDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/AppointmentSlot.doctor.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/AppointmentSlot.doctor.res.vtl"
+            ]
+          ]
+        },
+        "SyncConfig": {
+          "ConflictDetection": "VERSION",
+          "ConflictHandler": "OPTIMISTIC_CONCURRENCY"
+        }
+      }
+    },
+    "AppointmentSlotdoctorResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "doctor",
+        "TypeName": "AppointmentSlot",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "DoctorappointmentSlotsauth0FunctionDoctorappointmentSlotsauth0FunctionAppSyncFunction96B5674F",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "AppointmentSlotDoctorDataResolverFnAppointmentSlotDoctorDataResolverFnAppSyncFunction1AA90CD8",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"AppointmentSlot\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"doctor\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorDoctorTable7394F4FERef"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "AppointmentSlotPatientDataResolverFnAppointmentSlotPatientDataResolverFnAppSyncFunction98888340": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackPatientNestedStackPatientNestedStackResource261E9B60OutputstransformerrootstackPatientPatientDataSource10DD68A7Name"
+        },
+        "Name": "AppointmentSlotPatientDataResolverFn",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/AppointmentSlot.patient.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/AppointmentSlot.patient.res.vtl"
+            ]
+          ]
+        },
+        "SyncConfig": {
+          "ConflictDetection": "VERSION",
+          "ConflictHandler": "OPTIMISTIC_CONCURRENCY"
+        }
+      }
+    },
+    "AppointmentSlotpatientResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "patient",
+        "TypeName": "AppointmentSlot",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "DoctorappointmentSlotsauth0FunctionDoctorappointmentSlotsauth0FunctionAppSyncFunction96B5674F",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "AppointmentSlotPatientDataResolverFnAppointmentSlotPatientDataResolverFnAppSyncFunction98888340",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"AppointmentSlot\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"patient\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"connectionAttributes\", {}))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackPatientNestedStackPatientNestedStackResource261E9B60OutputstransformerrootstackPatientPatientTableD358B744Ref"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    }
+  },
+  "Parameters": {
+    "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackAppointmentSlotNestedStackAppointmentSlotNestedStackResourceFEA8089COutputstransformerrootstackAppointmentSlotAppointmentSlotDataSourceE3DC0DF4Name": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackAppointmentSlotNestedStackAppointmentSlotNestedStackResourceFEA8089COutputstransformerrootstackAppointmentSlotAppointmentSlotTable72ECC27DRef": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorDoctorDataSource9D881917Name": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackDoctorNestedStackDoctorNestedStackResource39D998A8OutputstransformerrootstackDoctorDoctorTable7394F4FERef": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackSpecialtyNestedStackSpecialtyNestedStackResource01F1A8EDOutputstransformerrootstackSpecialtySpecialtyDataSource3948F194Name": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackSpecialtyNestedStackSpecialtyNestedStackResource01F1A8EDOutputstransformerrootstackSpecialtySpecialtyTableE4F05B75Ref": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackDoctorSpecialtiesNestedStackDoctorSpecialtiesNestedStackResource02E164C4OutputstransformerrootstackDoctorSpecialtiesDoctorSpecialtiesDataSourceF83C5487Name": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackDoctorSpecialtiesNestedStackDoctorSpecialtiesNestedStackResource02E164C4OutputstransformerrootstackDoctorSpecialtiesDoctorSpecialtiesTable0E430E21Ref": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackPatientNestedStackPatientNestedStackResource261E9B60OutputstransformerrootstackPatientPatientDataSource10DD68A7Name": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackPatientNestedStackPatientNestedStackResource261E9B60OutputstransformerrootstackPatientPatientTableD358B744Ref": {
+      "Type": "String"
+    }
+  }
+}

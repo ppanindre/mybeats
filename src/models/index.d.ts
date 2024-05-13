@@ -1,4 +1,4 @@
-import { ModelInit, MutableModel, __modelMeta__, CustomIdentifier, ManagedIdentifier } from "@aws-amplify/datastore";
+import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-amplify/datastore";
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@aws-amplify/datastore";
 
@@ -8,9 +8,10 @@ import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@a
 
 type EagerDoctor = {
   readonly [__modelMeta__]: {
-    identifier: CustomIdentifier<Doctor, 'doctorID'>;
+    identifier: ManagedIdentifier<Doctor, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
+  readonly id: string;
   readonly doctorID: string;
   readonly firstname: string;
   readonly lastname: string;
@@ -28,9 +29,10 @@ type EagerDoctor = {
 
 type LazyDoctor = {
   readonly [__modelMeta__]: {
-    identifier: CustomIdentifier<Doctor, 'doctorID'>;
+    identifier: ManagedIdentifier<Doctor, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
+  readonly id: string;
   readonly doctorID: string;
   readonly firstname: string;
   readonly lastname: string;
@@ -128,7 +130,7 @@ type EagerAppointmentSlot = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly doctorId: string;
+  readonly doctorID: string;
   readonly patientId: string;
   readonly startTime: string;
   readonly endTime: string;
@@ -145,7 +147,7 @@ type LazyAppointmentSlot = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly doctorId: string;
+  readonly doctorID: string;
   readonly patientId: string;
   readonly startTime: string;
   readonly endTime: string;
@@ -168,7 +170,7 @@ type EagerDoctorSpecialties = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly doctorDoctorID?: string | null;
+  readonly doctorId?: string | null;
   readonly specialtyId?: string | null;
   readonly doctor: Doctor;
   readonly specialty: Specialty;
@@ -182,7 +184,7 @@ type LazyDoctorSpecialties = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly doctorDoctorID?: string | null;
+  readonly doctorId?: string | null;
   readonly specialtyId?: string | null;
   readonly doctor: AsyncItem<Doctor>;
   readonly specialty: AsyncItem<Specialty>;
