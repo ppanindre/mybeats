@@ -1,11 +1,17 @@
 module.exports = {
     content: [
-        './App/*.{js,ts,jsx,tsx}',
-        './components/**/*.{js,ts,jsx,tsx}',
-        './src/app/**/*.{js,ts,jsx,tsx}',
+        "./App/*.{js,ts,jsx,tsx}",
+        "./components/**/*.{js,ts,jsx,tsx}",
+        "./src/app/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
-        extend: {},
+        colors: {
+            primary: "#FB923C",
+            light: "#FFFFFF",
+            dark: "#4A4A4A",
+            lightPrimary: "#FDBF60",
+            error: "#FF204E",
+        },
     },
     plugins: [],
     // ...
