@@ -3,33 +3,11 @@
 
 const awsmobile = {
     "aws_project_region": "us-east-1",
-    "aws_appsync_graphqlEndpoint": "https://pct7bjkorngxjh53oirmrlvgga.appsync-api.us-east-1.amazonaws.com/graphql",
+    "aws_appsync_graphqlEndpoint": "http://192.168.161.1:20002/graphql",
     "aws_appsync_region": "us-east-1",
     "aws_appsync_authenticationType": "API_KEY",
-    "aws_appsync_apiKey": "da2-ozmnzdmgrbbvjiqep3nqihy3li",
-    "aws_cognito_identity_pool_id": "us-east-1:8a25f978-80f4-44e0-a6b1-55550d55fc8a",
-    "aws_cognito_region": "us-east-1",
-    "aws_user_pools_id": "us-east-1_aL8A6SwZz",
-    "aws_user_pools_web_client_id": "2ptgtn65j2tmq6nmm4fudq0946",
-    "oauth": {},
-    "aws_cognito_username_attributes": [],
-    "aws_cognito_social_providers": [],
-    "aws_cognito_signup_attributes": [
-        "EMAIL"
-    ],
-    "aws_cognito_mfa_configuration": "OFF",
-    "aws_cognito_mfa_types": [
-        "SMS"
-    ],
-    "aws_cognito_password_protection_settings": {
-        "passwordPolicyMinLength": 8,
-        "passwordPolicyCharacters": []
-    },
-    "aws_cognito_verification_mechanisms": [
-        "EMAIL"
-    ],
-    "aws_user_files_s3_bucket": "firebeats155649-mybeatsdev",
-    "aws_user_files_s3_bucket_region": "us-east-1"
+    "aws_appsync_apiKey": "da2-fakeApiId123456",
+    "aws_appsync_dangerously_connect_to_http_endpoint_for_testing": true
 };
 
 
