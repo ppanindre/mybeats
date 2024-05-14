@@ -4,10 +4,12 @@ import { Provider } from "react-redux";
 import { TourGuideProvider } from "rn-tourguide";
 import { useFonts } from "expo-font";
 import * as Sentry from "@sentry/react-native";
+import { Amplify } from "aws-amplify";
 
 import { store } from "./store/store";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import MainStack from "./src/app/configs/MainStack";
+import config from "./src/amplifyconfiguration.json";
 const theme = {
     ...DefaultTheme,
     colors: {
@@ -15,6 +17,8 @@ const theme = {
         text: "#4a4a4a",
     },
 };
+
+Amplify.configure(config);
 
 const App = () => {
     // Load Fonts

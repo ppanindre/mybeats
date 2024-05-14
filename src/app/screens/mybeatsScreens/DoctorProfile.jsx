@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { API, graphqlOperation } from "aws-amplify";
+import { generateClient } from "aws-amplify/api";
 
+import { createDoctor } from "../../../graphql/mutations";
 import DoctorProfileForm1 from "../../components/Forms/DoctorProfileForms/DoctorProfileForm1";
 import DoctorProfileForm2 from "../../components/Forms/DoctorProfileForms/DoctorProfileForm2";
 import DoctorProfileForm3 from "../../components/Forms/DoctorProfileForms/DoctorProfileForm3";
 import ScreenContainer from "../../components/Containers/ScreenContainer";
 
 function DoctorProfile() {
+    const client = generateClient();
+
     // Get user
     const user = useSelector((state) => state.UserReducer);
 
@@ -35,8 +40,27 @@ function DoctorProfile() {
         setPageIndex(pageIndex - 1);
     };
 
-    const handleSubmit = () => {
-        console.log('doctor data', doctorData);
+    const handleSubmit = async () => {
+        try {
+            console.log("doctor data", doctorData);
+            const response = await client.graphql({
+                query: createDoctor,
+                variables: {
+                    input: {
+                        doctorID: "4",
+                        email: doctorData.email,
+                        firstname: doctorData.firstName,
+                        lastname: doctorData.lastName,
+                        zipcode: doctorData.zipcode,
+                    },
+                },
+            });
+
+            console.log("response", response);
+
+        } catch (error) {
+            console.error("Error while creating doctor", error);
+        }
     };
 
     return (

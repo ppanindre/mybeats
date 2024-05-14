@@ -9,46 +9,27 @@ export const onCreateDoctor = /* GraphQL */ `
       lastname
       email
       phoneNumber
-      registrationNumber
+      licenseNumber
       upiId
       specialties {
-        items {
-          id
-          doctorDoctorID
-          specialtyId
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
         nextToken
         startedAt
+        __typename
       }
       address
+      city
       zipcode
       appointmentSlots {
-        items {
-          id
-          doctorId
-          patientId
-          startTime
-          endTime
-          isBooked
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
         nextToken
         startedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -60,46 +41,27 @@ export const onUpdateDoctor = /* GraphQL */ `
       lastname
       email
       phoneNumber
-      registrationNumber
+      licenseNumber
       upiId
       specialties {
-        items {
-          id
-          doctorDoctorID
-          specialtyId
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
         nextToken
         startedAt
+        __typename
       }
       address
+      city
       zipcode
       appointmentSlots {
-        items {
-          id
-          doctorId
-          patientId
-          startTime
-          endTime
-          isBooked
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
         nextToken
         startedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -111,46 +73,27 @@ export const onDeleteDoctor = /* GraphQL */ `
       lastname
       email
       phoneNumber
-      registrationNumber
+      licenseNumber
       upiId
       specialties {
-        items {
-          id
-          doctorDoctorID
-          specialtyId
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
         nextToken
         startedAt
+        __typename
       }
       address
+      city
       zipcode
       appointmentSlots {
-        items {
-          id
-          doctorId
-          patientId
-          startTime
-          endTime
-          isBooked
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
         nextToken
         startedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -162,24 +105,16 @@ export const onCreateSpecialty = /* GraphQL */ `
       id
       name
       doctors {
-        items {
-          id
-          doctorDoctorID
-          specialtyId
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
         nextToken
         startedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -191,24 +126,16 @@ export const onUpdateSpecialty = /* GraphQL */ `
       id
       name
       doctors {
-        items {
-          id
-          doctorDoctorID
-          specialtyId
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
         nextToken
         startedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -220,24 +147,16 @@ export const onDeleteSpecialty = /* GraphQL */ `
       id
       name
       doctors {
-        items {
-          id
-          doctorDoctorID
-          specialtyId
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
         nextToken
         startedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -252,27 +171,16 @@ export const onCreatePatient = /* GraphQL */ `
       address
       zipcode
       appointmentSlots {
-        items {
-          id
-          doctorId
-          patientId
-          startTime
-          endTime
-          isBooked
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
         nextToken
         startedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -287,27 +195,16 @@ export const onUpdatePatient = /* GraphQL */ `
       address
       zipcode
       appointmentSlots {
-        items {
-          id
-          doctorId
-          patientId
-          startTime
-          endTime
-          isBooked
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
         nextToken
         startedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -322,27 +219,16 @@ export const onDeletePatient = /* GraphQL */ `
       address
       zipcode
       appointmentSlots {
-        items {
-          id
-          doctorId
-          patientId
-          startTime
-          endTime
-          isBooked
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-        }
         nextToken
         startedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -352,7 +238,7 @@ export const onCreateAppointmentSlot = /* GraphQL */ `
   ) {
     onCreateAppointmentSlot(filter: $filter) {
       id
-      doctorId
+      doctorID
       patientId
       startTime
       endTime
@@ -363,23 +249,17 @@ export const onCreateAppointmentSlot = /* GraphQL */ `
         lastname
         email
         phoneNumber
-        registrationNumber
+        licenseNumber
         upiId
-        specialties {
-          nextToken
-          startedAt
-        }
         address
+        city
         zipcode
-        appointmentSlots {
-          nextToken
-          startedAt
-        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       patient {
         id
@@ -389,21 +269,19 @@ export const onCreateAppointmentSlot = /* GraphQL */ `
         phoneNumber
         address
         zipcode
-        appointmentSlots {
-          nextToken
-          startedAt
-        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -413,7 +291,7 @@ export const onUpdateAppointmentSlot = /* GraphQL */ `
   ) {
     onUpdateAppointmentSlot(filter: $filter) {
       id
-      doctorId
+      doctorID
       patientId
       startTime
       endTime
@@ -424,23 +302,17 @@ export const onUpdateAppointmentSlot = /* GraphQL */ `
         lastname
         email
         phoneNumber
-        registrationNumber
+        licenseNumber
         upiId
-        specialties {
-          nextToken
-          startedAt
-        }
         address
+        city
         zipcode
-        appointmentSlots {
-          nextToken
-          startedAt
-        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       patient {
         id
@@ -450,21 +322,19 @@ export const onUpdateAppointmentSlot = /* GraphQL */ `
         phoneNumber
         address
         zipcode
-        appointmentSlots {
-          nextToken
-          startedAt
-        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -474,7 +344,7 @@ export const onDeleteAppointmentSlot = /* GraphQL */ `
   ) {
     onDeleteAppointmentSlot(filter: $filter) {
       id
-      doctorId
+      doctorID
       patientId
       startTime
       endTime
@@ -485,23 +355,17 @@ export const onDeleteAppointmentSlot = /* GraphQL */ `
         lastname
         email
         phoneNumber
-        registrationNumber
+        licenseNumber
         upiId
-        specialties {
-          nextToken
-          startedAt
-        }
         address
+        city
         zipcode
-        appointmentSlots {
-          nextToken
-          startedAt
-        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       patient {
         id
@@ -511,21 +375,19 @@ export const onDeleteAppointmentSlot = /* GraphQL */ `
         phoneNumber
         address
         zipcode
-        appointmentSlots {
-          nextToken
-          startedAt
-        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -543,42 +405,34 @@ export const onCreateDoctorSpecialties = /* GraphQL */ `
         lastname
         email
         phoneNumber
-        registrationNumber
+        licenseNumber
         upiId
-        specialties {
-          nextToken
-          startedAt
-        }
         address
+        city
         zipcode
-        appointmentSlots {
-          nextToken
-          startedAt
-        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       specialty {
         id
         name
-        doctors {
-          nextToken
-          startedAt
-        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -596,42 +450,34 @@ export const onUpdateDoctorSpecialties = /* GraphQL */ `
         lastname
         email
         phoneNumber
-        registrationNumber
+        licenseNumber
         upiId
-        specialties {
-          nextToken
-          startedAt
-        }
         address
+        city
         zipcode
-        appointmentSlots {
-          nextToken
-          startedAt
-        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       specialty {
         id
         name
-        doctors {
-          nextToken
-          startedAt
-        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;
@@ -649,42 +495,34 @@ export const onDeleteDoctorSpecialties = /* GraphQL */ `
         lastname
         email
         phoneNumber
-        registrationNumber
+        licenseNumber
         upiId
-        specialties {
-          nextToken
-          startedAt
-        }
         address
+        city
         zipcode
-        appointmentSlots {
-          nextToken
-          startedAt
-        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       specialty {
         id
         name
-        doctors {
-          nextToken
-          startedAt
-        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      __typename
     }
   }
 `;

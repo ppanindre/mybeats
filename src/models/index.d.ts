@@ -1,4 +1,4 @@
-import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-amplify/datastore";
+import { ModelInit, MutableModel, __modelMeta__, CustomIdentifier, ManagedIdentifier } from "@aws-amplify/datastore";
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@aws-amplify/datastore";
 
@@ -8,19 +8,19 @@ import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@a
 
 type EagerDoctor = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Doctor, 'id'>;
+    identifier: CustomIdentifier<Doctor, 'doctorID'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
-  readonly id: string;
   readonly doctorID: string;
   readonly firstname: string;
   readonly lastname: string;
   readonly email?: string | null;
   readonly phoneNumber?: string | null;
-  readonly registrationNumber?: string | null;
+  readonly licenseNumber?: string | null;
   readonly upiId?: string | null;
   readonly specialties?: (DoctorSpecialties | null)[] | null;
   readonly address?: string | null;
+  readonly city?: string | null;
   readonly zipcode: string;
   readonly appointmentSlots?: (AppointmentSlot | null)[] | null;
   readonly createdAt?: string | null;
@@ -29,19 +29,19 @@ type EagerDoctor = {
 
 type LazyDoctor = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Doctor, 'id'>;
+    identifier: CustomIdentifier<Doctor, 'doctorID'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
-  readonly id: string;
   readonly doctorID: string;
   readonly firstname: string;
   readonly lastname: string;
   readonly email?: string | null;
   readonly phoneNumber?: string | null;
-  readonly registrationNumber?: string | null;
+  readonly licenseNumber?: string | null;
   readonly upiId?: string | null;
   readonly specialties: AsyncCollection<DoctorSpecialties>;
   readonly address?: string | null;
+  readonly city?: string | null;
   readonly zipcode: string;
   readonly appointmentSlots: AsyncCollection<AppointmentSlot>;
   readonly createdAt?: string | null;
@@ -170,7 +170,7 @@ type EagerDoctorSpecialties = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly doctorId?: string | null;
+  readonly doctorDoctorID?: string | null;
   readonly specialtyId?: string | null;
   readonly doctor: Doctor;
   readonly specialty: Specialty;
@@ -184,7 +184,7 @@ type LazyDoctorSpecialties = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly doctorId?: string | null;
+  readonly doctorDoctorID?: string | null;
   readonly specialtyId?: string | null;
   readonly doctor: AsyncItem<Doctor>;
   readonly specialty: AsyncItem<Specialty>;

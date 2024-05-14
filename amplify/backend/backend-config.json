@@ -1,6 +1,6 @@
 {
   "api": {
-    "mybeats": {
+    "mybeatsdev": {
       "dependsOn": [],
       "output": {
         "authConfig": {
