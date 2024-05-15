@@ -193,7 +193,7 @@ const DoctorAvailability = () => {
                     </View>
                     <View className="relative top-0 right-0">
                         {slots.map((slot, slotIndex) => (
-                            <View key={slotIndex} className="flex-row justify-between items-center p-2 border border-gray-300 rounded-lg my-1 bg-white">
+                            <View key={slotIndex} className="flex-row justify-between items-center p-2 border border-gray-300 rounded-lg my-1 bg-light">
                                 <Text className="flex-row items-center w-[136] text-center">
                                     {slot.unavailable ? 'Unavailable' :
                                         `${new Date(slot.start).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })} - ${new Date(slot.end).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}`}
@@ -229,7 +229,7 @@ const DoctorAvailability = () => {
                     bottom: 0,
                     backgroundColor: 'rgba(0,0,0,0.5)'
                 }} className="flex-1 justify-end">
-                    <View className="bg-white rounded-2xl p-5 min-h-60 shadow-default">
+                    <View className="bg-light rounded-2xl p-5 min-h-60 shadow-default">
                         {/* Conditionally render the unavailable switch only for date overrides */}
                         <View className="flex-row justify-between items-center mb-5">
                             <Text className="text-lg font-[appfont-semi]">Mark me as unavailable this day</Text>

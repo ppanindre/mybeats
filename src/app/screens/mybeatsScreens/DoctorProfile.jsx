@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { generateClient } from "aws-amplify/api";
+import * as Sentry from "@sentry/react-native";
 
 import { createDoctor } from "../../../graphql/mutations";
 import DoctorProfileForm1 from "../../components/Forms/DoctorProfileForms/DoctorProfileForm1";
@@ -54,8 +55,6 @@ function DoctorProfile() {
                     },
                 },
             });
-
-            console.log("response", response);
 
         } catch (error) {
             console.error("Error while creating doctor", error);

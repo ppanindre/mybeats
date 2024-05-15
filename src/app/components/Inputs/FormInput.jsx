@@ -22,7 +22,6 @@ const FormInput = ({ value, label, secureTextEntry, onChangeText, error }) => {
                 }}
                 className="h-[55] bg-light"
                 error={error}
-                left={<TextInput.Icon icon="search" />}
             />
 
             {/* Error Message */}

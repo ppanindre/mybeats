@@ -31,19 +31,6 @@ const PatientDashboard = () => {
 
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View className="p-5 space-y-5">
-                    {/* Modify the search input box */}
-                    {/* Search Input Box */}
-                    {/* <TextInputBoxWithIcon
-                    icon={
-                        <Ionicons
-                            name="search-outline"
-                            size={24}
-                            color={customTheme.colors.darkSecondary}
-                        />
-                    }
-                    onFocus={() => navigation.navigate("searchDoctors")}
-                    placeholder="Search Doctor, Health Condition, Pincode"
-                /> */}
 
                     <View>
                         <FormInput label="Search Doctor, Health Condition, Pincode"/>

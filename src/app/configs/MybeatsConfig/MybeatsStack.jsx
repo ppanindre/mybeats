@@ -12,7 +12,7 @@ const MybeatsStack = () => {
     const Stack = createStackNavigator();
 
     return (
-        <Stack.Navigator initialRouteName="patientDashboard">
+        <Stack.Navigator initialRouteName="doctorDashboard">
             {mybeatsStackConfig.screens.map((screen) => {
                 console.log(screen.name, screen.showHeader);
                 return (

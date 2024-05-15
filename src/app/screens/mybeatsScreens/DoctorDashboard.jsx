@@ -85,7 +85,7 @@ const DoctorDashboard = ({ route }) => {
                     >
                         <TouchableOpacity
                             onPress={() =>
-                                navigation.navigate("AppointmentList")
+                                navigation.navigate("appointments")
                             }
                             className="h-[100%] justify-end"
                         >
@@ -201,7 +201,7 @@ const DoctorDashboard = ({ route }) => {
                             <TouchableOpacity
                                 onPress={() =>
                                     navigation.navigate(
-                                        "AppointmentPage",
+                                        "appointment",
                                         doctor
                                     )
                                 }

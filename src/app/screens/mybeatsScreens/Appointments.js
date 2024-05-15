@@ -164,7 +164,7 @@ const Appointments = () => {
             <View className="absolute bottom-0 left-0 right-0 flex-row justify-between mx py-3"
                 style={{ backgroundColor: customTheme.colors.light }}>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('DoctorAvailability')}
+                    onPress={() => navigation.navigate('doctorAvailability')}
                     style={{ backgroundColor: customTheme.colors.primary }}
                     className="flex-1 mx-5 py-4 rounded-lg flex-row justify-center items-center">
                     <Text style={{ color: customTheme.colors.light }} className="ml-2 font-[appfont-semi]">Set your availabilty</Text>
