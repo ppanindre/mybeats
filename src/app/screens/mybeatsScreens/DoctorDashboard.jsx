@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
     View,
     FlatList,
     Text,
     TouchableOpacity,
     ScrollView,
+    ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-import TopNavbar from "../../components/Utils/TopNavbar";
 import CustomSafeView from "../../../../components/CustomSafeView";
 import TextInputBoxWithIcon from "../../../../components/Utilities/TextInputBoxWithIcon";
 import NavigationCard from "../../../../components/Cards/NavigationCard";
@@ -17,19 +17,40 @@ import DoctorCard from "../../../../components/Cards/DoctorCard";
 import PharmacyCard from "../../../../components/Cards/PharmacyCard";
 import { doctorData } from "../../../../constants/doctorConstants";
 import { pharmacyData } from "../../../../constants/pharmacyConstants";
-import { LabData } from "../../../../constants/LabConstants"
+import { LabData } from "../../../../constants/LabConstants";
 import { customTheme } from "../../../../constants/themeConstants";
 import LabCard from "../../../../components/Cards/LabCard";
+import TopNavbar from "../../components/Utils/TopNavbar";
 
-const PatientDashboard = () => {
+const DoctorDashboard = ({ route }) => {
     // Declare navigation instance
     const navigation = useNavigation();
+    const [isLoading, setIsLoading] = useState(
+        route.params?.isLoading || false
+    );
 
+    // timer for loading the screen
+    useEffect(() => {
+        if (isLoading) {
+            setTimeout(() => setIsLoading(false), 3000);
+        }
+    }, [isLoading]);
+
+    if (isLoading) {
+        return (
+            <View className="flex-1 justify-center items-center">
+                <ActivityIndicator
+                    size="large"
+                    color={customTheme.colors.primary}
+                />
+            </View>
+        );
+    }
 
     return (
         <CustomSafeView>
             {/* Top navbar */}
-            {/* <TopNavbar isMyBeats={true} showSync={false} /> */}
+            <TopNavbar isMyBeats={true} showSync={false} />
 
             <ScrollView
                 className="py-4 bg-gray-100"
@@ -64,7 +85,7 @@ const PatientDashboard = () => {
                     >
                         <TouchableOpacity
                             onPress={() =>
-                                navigation.navigate("consultdoctors")
+                                navigation.navigate("AppointmentList")
                             }
                             className="h-[100%] justify-end"
                         >
@@ -74,7 +95,7 @@ const PatientDashboard = () => {
                                     color: customTheme.colors.light,
                                 }}
                             >
-                                Consult Doctors
+                                Appointments
                             </Text>
                             <Text
                                 className="font-[appfont] text-lg"
@@ -82,7 +103,7 @@ const PatientDashboard = () => {
                                     color: customTheme.colors.light,
                                 }}
                             >
-                                Book an appointment
+                                Manage Your Appointments
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -93,17 +114,18 @@ const PatientDashboard = () => {
                     {/* First Card: Telehealth */}
                     <View className="flex-1">
                         <NavigationCard
-                            cardTitle="Telehealth"
-                            cardContent="Video consultation"
+                            cardTitle="Profile"
+                            cardContent="Upate your Information"
+                            onPress={() => navigation.navigate("doctorProfile")}
                         />
                     </View>
 
                     <View className="flex-1">
-                        {/* Second Card: Diagnostics */}
+                        {/* Second Card: Patients */}
                         <NavigationCard
-                            cardTitle="Diagnostics"
-                            cardContent="Request a lab test"
-                            onPress={() => navigation.navigate("diagnostics")}
+                            cardTitle="Patients"
+                            cardContent="Know your patients"
+                            onPress={() => navigation.navigate("Patients")}
                         />
                     </View>
                 </View>
@@ -134,9 +156,10 @@ const PatientDashboard = () => {
 
                         {/* Upload Prescription */}
                         <TouchableOpacity
-                            onPress={() => navigation.navigate("UploadPrescription")}
-                            style={{backgroundColor: customTheme.colors.light}}
-                            className="py-3 px-6 rounded-full shadow-md"
+                            onPress={() =>
+                                navigation.navigate("UploadPrescription")
+                            }
+                            className="bg-white py-3 px-6 rounded-full shadow-md"
                         >
                             <Text className="text-black font-[appfont-semi]">
                                 Upload
@@ -160,7 +183,7 @@ const PatientDashboard = () => {
                         </Text>
                     </TouchableOpacity>
                 </View>
-                
+
                 {/* Doctor data */}
                 <FlatList
                     data={doctorData}
@@ -174,8 +197,15 @@ const PatientDashboard = () => {
                         padding: 20,
                     }}
                     renderItem={({ item: doctor }) => (
-                        <View key={doctor.id} className="w-[300]">
-                            <TouchableOpacity onPress={() => navigation.navigate('AppointmentPage', doctor)}>
+                        <View id={doctor.id} className="w-[300]">
+                            <TouchableOpacity
+                                onPress={() =>
+                                    navigation.navigate(
+                                        "AppointmentPage",
+                                        doctor
+                                    )
+                                }
+                            >
                                 <DoctorCard
                                     doctorName={doctor.name}
                                     doctorHospital={doctor.hospital}
@@ -212,12 +242,19 @@ const PatientDashboard = () => {
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item: pharmacy }) => (
-                        <View key={pharmacy.id} className="w-[300]">
-                            <TouchableOpacity onPress={() => navigation.navigate('PharmacyInfo', pharmacy)}>
+                        <View id={pharmacy.id} className="w-[300]">
+                            <TouchableOpacity
+                                onPress={() =>
+                                    navigation.navigate(
+                                        "PharmacyInfo",
+                                        pharmacy
+                                    )
+                                }
+                            >
                                 <PharmacyCard
                                     pharmacyLabel={pharmacy.name}
                                     pharmacyRating={pharmacy.rating}
-                                 // pharmacyZipcode={pharmacy.zipcode}
+                                    // pharmacyZipcode={pharmacy.zipcode}
                                 />
                             </TouchableOpacity>
                         </View>
@@ -249,9 +286,12 @@ const PatientDashboard = () => {
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item: lab }) => (
-                        <View key={lab.id} className="w-[300]">
+                        <View id={lab.id} className="w-[300]">
                             <TouchableOpacity
-                                onPress={() => navigation.navigate('LabInfo', lab)}>
+                                onPress={() =>
+                                    navigation.navigate("LabInfo", lab)
+                                }
+                            >
                                 <LabCard
                                     labName={lab.name}
                                     labRating={lab.rating}
@@ -268,4 +308,4 @@ const PatientDashboard = () => {
     );
 };
 
-export default PatientDashboard;
+export default DoctorDashboard;

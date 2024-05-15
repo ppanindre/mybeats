@@ -6,8 +6,8 @@ import { customTheme } from "../../../../constants/themeConstants";
 import ConsultDoctor from "../../screens/mybeatsScreens/ConsultDoctor";
 import Diagnostics from "../../screens/mybeatsScreens/Diagnostics";
 import SearchDoctors from "../../screens/mybeatsScreens/SearchDoctors";
-import AppointmentPage from "../../screens/mybeatsScreens/AppointmentPage";
-import CartScreen from "../../screens/mybeatsScreens/CartScreen";
+import AppointmentPage from "../../screens/mybeatsScreens/Appointment";
+import CartScreen from "../../screens/mybeatsScreens/Cart";
 import Payment from "../../screens/mybeatsScreens/Payment";
 import SearchMedicines from "../../screens/mybeatsScreens/SearchMedicines";
 import UploadPrescription from "../../screens/mybeatsScreens/UploadPrescription";
@@ -15,13 +15,13 @@ import ConfirmAddress from "../../screens/mybeatsScreens/ConfirmAddress";
 import ImageAnalyzeDisplay from "../../../../MyCharts/Components/ImageAnalyzeDisplay";
 import EditAddress from "../../screens/mybeatsScreens/EditAddress";
 import ShippingAddress from "../../screens/mybeatsScreens/ShippingAddress";
-import PharmacyInfo from "../../screens/mybeatsScreens/PharmacyInfo";
-import LabInfo from "../../screens/mybeatsScreens/LabInfo";
+import PharmacyInfo from "../../screens/mybeatsScreens/Pharmacy";
+import LabInfo from "../../screens/mybeatsScreens/Lab";
 import Medicines from "../../screens/mybeatsScreens/Medicines";
-import DoctorDashboard from "../../screens/mybeatsScreens/DoctorDashboard";
-import AppointmentList from "../../screens/mybeatsScreens/AppointmentList";
+import DoctorDashboard from "../../screens/mybeatsScreens/DoctorDashboard2";
+import AppointmentList from "../../screens/mybeatsScreens/Appointments";
 import Patients from "../../screens/mybeatsScreens/Patients";
-import PatientInfo from "../../screens/mybeatsScreens/PatientInfo";
+import PatientInfo from "../../screens/mybeatsScreens/Patient";
 import DoctorPrescription from "../../screens/mybeatsScreens/DoctorPrescription";
 import DoctorAvailability from "../../screens/mybeatsScreens/DoctorAvailability";
 import RolesNav from "./RolesNav";
@@ -85,16 +85,7 @@ const MybeatsStack = () => {
     const Stack = createStackNavigator();
 
     return (
-        <Stack.Navigator initialRouteName="Rolesnav">
-            {/* Initial Route */}
-            <Stack.Screen
-                name="RolesNav"
-                component={RolesNav}
-                options={{
-                    headerShown: false,
-                }}
-            />
-
+        <Stack.Navigator>
             {/* Consult Doctors */}
             <Stack.Screen
                 name="consultdoctors"

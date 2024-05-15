@@ -22,7 +22,7 @@ const HistoryCard = ({ title, date, iconName, iconBgColor }) => {
     );
 };
 
-const PatientInfo = ({ route }) => {
+const Patient = ({ route }) => {
     const navigation = useNavigation();
     const { name, age, gender, bloodGroup, phoneNumber, bio } = route.params;
 
@@ -115,4 +115,4 @@ const PatientInfo = ({ route }) => {
     );
 };
 
-export default PatientInfo;
+export default Patient;

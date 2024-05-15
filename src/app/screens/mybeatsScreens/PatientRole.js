@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, ActivityIndicator, Text } from 'react-native';
 import { customTheme } from '../../../../constants/themeConstants';
 
+//  ?? what is this screen
+
 const PatientRole = ({ route }) => {
   const [isLoading, setIsLoading] = useState(route.params?.isLoading || false);
 

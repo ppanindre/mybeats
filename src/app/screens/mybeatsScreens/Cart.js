@@ -15,7 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-const CartScreen = () => {
+const Cart = () => {
     const route = useRoute();
     const [cartItems, setCartItems] = useState([]);
     const [promoCode, setPromoCode] = useState("");
@@ -289,4 +289,4 @@ const CartScreen = () => {
     );
 };
 
-export default CartScreen;
+export default Cart;

@@ -36,7 +36,7 @@ const PatientStory = ({ story }) => {
 
 
 
-export default LabInfo = ({ route, navigation }) => {
+export default Lab = ({ route, navigation }) => {
     const { name, rating, labStoryCount, zipcode } = route.params
 
     // State for clinic bookings

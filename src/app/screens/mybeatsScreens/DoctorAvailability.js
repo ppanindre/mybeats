@@ -7,7 +7,7 @@ import Modal from 'react-native-modal';
 import { customTheme } from '../../../../constants/themeConstants';
 import HorizontalLine from '../../../../MyCharts/Components/HorizontalLine';
 
-const WorkingHoursScreen = () => {
+const DoctorAvailability = () => {
     const [selectedDate, setSelectedDate] = useState('');
     const [markedDates, setMarkedDates] = useState({});
     const [isUnavailable, setIsUnavailable] = useState(false);
@@ -311,4 +311,4 @@ const WorkingHoursScreen = () => {
     );
 };
 
-export default WorkingHoursScreen;
+export default DoctorAvailability;

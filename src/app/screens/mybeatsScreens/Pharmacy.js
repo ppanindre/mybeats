@@ -35,7 +35,7 @@ const PatientStory = ({ story }) => {
 
 
 
-export default PharmacyInfo = ({ route, navigation }) => {
+export default Pharmacy = ({ route, navigation }) => {
     const { name, rating, zipcode } = route.params
 
     // State for clinic bookings

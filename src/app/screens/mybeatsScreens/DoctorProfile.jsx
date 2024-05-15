@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { API, graphqlOperation } from "aws-amplify";
 import { generateClient } from "aws-amplify/api";
 
 import { createDoctor } from "../../../graphql/mutations";

@@ -47,7 +47,7 @@ const AppointmentCard = ({ name, type, time }) => {
     );
 };
 
-const AppointmentList = () => {
+const Appointments = () => {
     const navigation = useNavigation();
     const [selectedTab, setSelectedTab] = useState('upcoming');
     
@@ -174,4 +174,4 @@ const AppointmentList = () => {
     );
 };
 
-export default AppointmentList;
+export default Appointments;

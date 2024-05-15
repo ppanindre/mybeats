@@ -2,6 +2,7 @@ import { View, Text } from "react-native";
 import React from "react";
 import { TextInput } from "react-native-paper";
 import { theme } from "../../../../tailwind.config";
+import { MagnifyingGlassIcon } from "react-native-heroicons/outline";
 
 const FormInput = ({ value, label, secureTextEntry, onChangeText, error }) => {
     return (
@@ -21,6 +22,7 @@ const FormInput = ({ value, label, secureTextEntry, onChangeText, error }) => {
                 }}
                 className="h-[55] bg-light"
                 error={error}
+                left={<TextInput.Icon icon="search" />}
             />
 
             {/* Error Message */}

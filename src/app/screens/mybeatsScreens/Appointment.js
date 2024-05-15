@@ -65,7 +65,7 @@ const CollapsibleItem = ({ title }) => {
 };
 
 
-export default AppointmentPage = ({ route, navigation }) => {
+export default Appointment = ({ route, navigation }) => {
     const { name, specialization, zipcode, rating, experience, hospital } = route.params;
     const { doctor } = route.params;
 

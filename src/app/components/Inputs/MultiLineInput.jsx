@@ -16,7 +16,7 @@ const MultiLineInput = ({ label, value, onChangeText }) => {
                     primary: theme.colors.primary
                 }
             }}
-            className="h-[200] bg-light"
+            className="h-[150] bg-light"
         />
     );
 };
