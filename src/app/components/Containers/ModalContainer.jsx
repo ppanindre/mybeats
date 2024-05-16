@@ -13,7 +13,7 @@ const ModalContainer = ({ children, visible, onClose }) => {
         <Modal
             isVisible={isModalVisible}
             onBackdropPress={onClose}
-            style={{ margin: 0 }}
+            style={{ margin: 0, gap: 0, padding: 0 }}
         >
             <View className="bg-light overflow-auto p-5 rounded-t-lg absolute bottom-0 w-[100%] space-y-2">
                 {children}

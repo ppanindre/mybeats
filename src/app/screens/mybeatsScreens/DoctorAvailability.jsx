@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, Switch, ScrollView } from "react-native";
-import { Calendar } from "react-native-calendars";
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { customTheme } from "../../../../constants/themeConstants";
-import HorizontalLine from "../../../../MyCharts/Components/HorizontalLine";
-import ScreenContainer from "../../components/Containers/ScreenContainer";
-import moment from "moment";
+
+import { createAppointmentSlot } from "../../../graphql/mutations";
 import { theme } from "../../../../tailwind.config";
+import ScreenContainer from "../../components/Containers/ScreenContainer";
 import ModalContainer from "../../components/Containers/ModalContainer";
 import AppButton from "../../components/Buttons/AppButton";
 import SwitchInput from "../../components/Inputs/SwitchInput";
 import CalendarInput from "../../components/Inputs/CalendarInput";
+import { generateClient } from "aws-amplify/api";
 
 const DoctorAvailability = () => {
+    const client = generateClient();
+
     // STATES
     const [showModal, setShowModal] = useState(false);
-
     const [selectedDate, setSelectedDate] = useState("");
     const [markedDates, setMarkedDates] = useState({});
     const [isUnavailable, setIsUnavailable] = useState(false);
@@ -27,44 +28,11 @@ const DoctorAvailability = () => {
     const [timeSlots, setTimeSlots] = useState({});
     const [dayOfWeek, setDayOfWeek] = useState("");
     const [applyScheduleToAllDays, setApplyScheduleToAllDays] = useState(false);
-    const [modalContext, setModalContext] = useState(null);
-
-    // function to format dates in a human-readable format
-    const formatDate = (dateString) => {
-        const options = {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-            timeZone: "UTC",
-        };
-        return new Date(dateString).toLocaleDateString(undefined, options);
-    };
 
     //  Check if any time slots apply to all days of the week
     const allDaysScheduled = Object.values(timeSlots)
         .flat()
         .some((slot) => slot.allDays && slot.dayLabel.includes(dayOfWeek));
-
-    useEffect(() => {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = today.getMonth() + 1; // Month is 0-indexed
-        const day = today.getDate();
-
-        // Mark all past days as disabled
-        const pastStyle = {
-            disabled: true,
-            disableTouchEvent: true,
-            textColor: "#CCCCCC",
-        };
-        for (let d = 1; d < day; d++) {
-            const pastDateString = `${year}-${
-                month < 10 ? `0${month}` : month
-            }-${d < 10 ? `0${d}` : d}`;
-            markedDates[pastDateString] = pastStyle;
-        }
-        setMarkedDates(markedDates);
-    }, []);
 
     // Function to handle adding a new time slot
     const addNewTimeSlot = (date) => {
@@ -88,28 +56,16 @@ const DoctorAvailability = () => {
 
     // Function to handle date selection from calendar
     const handleDatePress = (day) => {
-        const selectedDate = new Date(day.dateString);
-        // if (dateNow.toISOString().split('T')[0] > day.dateString) return; // disable past dates
-
         const date = new Date(day.dateString);
-        const days = [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday",
-        ];
-        const dayName = days[date.getDay()]; // Get the day name
+        const dayName = moment(day.dateString, "YYYY-MM-DD").format("dddd"); // Get the day name
 
         setDayOfWeek(dayName);
         // Update the markedDates state to only have the currently selected date marked
         const newMarkedDates = {
             [day.dateString]: {
                 selected: true,
-                selectedColor: customTheme.colors.primary,
-                selectedTextColor: "white",
+                selectedColor: theme.colors.primary,
+                selectedTextColor: theme.colors.light,
             },
         };
 
@@ -117,13 +73,13 @@ const DoctorAvailability = () => {
         setMarkedDates(newMarkedDates);
         setSelectedDate(day.dateString);
         setIsUnavailable(false); // reset availability switch
-        setEndTime(new Date(selectedDate.setHours(17, 0, 0, 0))); // default end time
-        setStartTime(new Date(selectedDate.setHours(9, 0, 0, 0))); // default start time
+        setEndTime(new Date(date.setHours(17, 0, 0, 0))); // default end time
+        setStartTime(new Date(date.setHours(9, 0, 0, 0))); // default start time
         setShowTimePicker(true);
     };
 
     // to save updated time slots
-    const handleSaveTime = () => {
+    const handleSaveTime = async () => {
         let updatedTimeSlots = { ...timeSlots };
         const selectedDay = new Date(selectedDate);
         const dayIndex = selectedDay.getDay();
@@ -192,8 +148,34 @@ const DoctorAvailability = () => {
 
         setTimeSlots(updatedTimeSlots);
         setShowTimePicker(false);
+
+        // CLose modal
+        setShowModal(false);
+
         setApplyScheduleToAllDays(false); // Reset after saving
         setIsUnavailable(false); // Also reset the unavailability toggle
+
+        // console.log("time slots", selectedDate, startTime, endTime);
+
+        // Create an appointment
+        try {
+            const response = await client.graphql({
+                query: createAppointmentSlot,
+                variables: {
+                    input: {
+                        doctorID: "4", // change the doctor id
+                        patientId: "1",
+                        startTime: startTime,
+                        endTime: endTime,
+                        isBooked: false,
+                    },
+                },
+            });
+
+            console.log("response", response);
+        } catch (error) {
+            console.error("Error while creating appointment", error);
+        }
     };
 
     // Function to remove a specific time slot
@@ -220,6 +202,8 @@ const DoctorAvailability = () => {
 
     /**
      * function to close the modal container
+     * @param {void}
+     * @returns {void}
      */
     const handleOnClose = () => {
         setShowModal(false);
@@ -259,65 +243,40 @@ const DoctorAvailability = () => {
                                 className="items-center"
                             >
                                 <Text
-                                    style={
-                                        isTimeStart
-                                            ? {
-                                                  color: theme,
-                                              }
-                                            : null
-                                    }
-                                    className="text-xl font-[appfont-semi]"
+                                    className={`text-lg font-[appfont-semi] ${
+                                        isTimeStart && "text-primary"
+                                    }`}
                                 >
-                                    {modalContext === "availableHours"
-                                        ? "Set Start time"
-                                        : "Start time"}
+                                    Start Time
                                 </Text>
                                 <Text
-                                    style={
-                                        isTimeStart
-                                            ? {
-                                                  color: customTheme.colors
-                                                      .primary,
-                                              }
-                                            : null
-                                    }
-                                    className="text-md font-[appfont-semi]"
+                                    className={`text-lg font-[appfont-semi] ${
+                                        isTimeStart && "text-primary"
+                                    }`}
                                 >
-                                    {startTime.toLocaleTimeString()}
+                                    {moment(startTime).format("h:mm a")}
                                 </Text>
                             </TouchableOpacity>
+
                             <Text>-</Text>
+
                             <TouchableOpacity
                                 onPress={() => setIsTimeStart(false)}
                                 className="items-center"
                             >
                                 <Text
-                                    style={
-                                        !isTimeStart
-                                            ? {
-                                                  color: customTheme.colors
-                                                      .primary,
-                                              }
-                                            : null
-                                    }
-                                    className="text-xl font-[appfont-semi]"
+                                    className={`text-lg font-[appfont-semi] ${
+                                        !isTimeStart && "text-primary"
+                                    }`}
                                 >
-                                    {modalContext === "availableHours"
-                                        ? "Set End time"
-                                        : "End time"}
+                                    End Time
                                 </Text>
                                 <Text
-                                    style={
-                                        !isTimeStart
-                                            ? {
-                                                  color: customTheme.colors
-                                                      .primary,
-                                              }
-                                            : null
-                                    }
-                                    className="text-md font-[appfont-semi]"
+                                    className={`text-lg font-[appfont-semi] ${
+                                        !isTimeStart && "text-primary"
+                                    }`}
                                 >
-                                    {endTime.toLocaleTimeString()}
+                                    {moment(endTime).format("h:mm a")}
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -325,12 +284,11 @@ const DoctorAvailability = () => {
                         {showTimePicker && (
                             <DateTimePicker
                                 testID="dateTimePicker"
+                                onChange={handleTimeChange}
                                 value={isTimeStart ? startTime : endTime}
                                 mode="time"
                                 is24Hour={true}
                                 display="spinner"
-                                onChange={handleTimeChange}
-                                className="w-full"
                             />
                         )}
                     </>
@@ -361,90 +319,64 @@ const DoctorAvailability = () => {
 
                 {/* displaying the selected days and time slots in UI */}
                 {Object.entries(timeSlots).map(([date, slots], dateIndex) => (
-                    <>
-                        <View key={dateIndex} className="flex-row mb-2 mt-3">
-                            <View className="flex-row justify-between items-center p-2">
-                                <Text className="text-base font-[appfont-semi] my-2 mx-1 w-28">
-                                    {slots[0].allDays
-                                        ? slots[0].dayLabel
-                                        : formatDate(date)}
-                                </Text>
-                                <TouchableOpacity
-                                    onPress={() => addNewTimeSlot(date)}
-                                    className="flex-row justify-center items-center p-2 my-1 mr-12"
-                                >
-                                    <Ionicons
-                                        name="add-circle"
-                                        size={20}
-                                        color="#000000"
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                            <View className="relative top-0 right-0">
-                                {slots.map((slot, slotIndex) => (
-                                    <View
-                                        key={slotIndex}
-                                        className="flex-row justify-between items-center p-2 border border-gray-300 rounded-lg my-1 bg-light"
-                                    >
-                                        <Text className="flex-row items-center w-[136] text-center">
-                                            {slot.unavailable
-                                                ? "Unavailable"
-                                                : `${new Date(
-                                                      slot.start
-                                                  ).toLocaleTimeString(
-                                                      "en-US",
-                                                      {
-                                                          hour: "numeric",
-                                                          minute: "numeric",
-                                                          hour12: true,
-                                                      }
-                                                  )} - ${new Date(
-                                                      slot.end
-                                                  ).toLocaleTimeString(
-                                                      "en-US",
-                                                      {
-                                                          hour: "numeric",
-                                                          minute: "numeric",
-                                                          hour12: true,
-                                                      }
-                                                  )}`}
-                                        </Text>
-                                        <TouchableOpacity
-                                            onPress={() =>
-                                                handleRemoveTimeSlot(
-                                                    date,
-                                                    slotIndex
-                                                )
-                                            }
-                                            className="p-2"
-                                        >
-                                            <Ionicons
-                                                name="close-circle"
-                                                size={22}
-                                                style={{
-                                                    color: customTheme.colors
-                                                        .dark,
-                                                    marginTop: 2,
-                                                }}
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                                ))}
-                            </View>
-                            <View
-                                style={{
-                                    borderBottomColor:
-                                        customTheme.colors.darkSecondary,
-                                    borderBottomWidth: 1,
-                                    marginVertical: 10,
-                                }}
-                            />
+                    <View
+                        key={dateIndex}
+                        className="flex-row items-center justify-between border-b border-dark py-5"
+                    >
+                        <View className="flex-row items-center space-x-2 flex-1">
+                            <Text className="font-[appfont-semi]">
+                                {slots[0].allDays
+                                    ? slots[0].dayLabel
+                                    : moment(date).format("ddd DD, YYYY")}
+                            </Text>
+                            <TouchableOpacity
+                                onPress={() => addNewTimeSlot(date)}
+                            >
+                                <Ionicons
+                                    name="add-circle"
+                                    size={20}
+                                    color={theme.colors.dark}
+                                />
+                            </TouchableOpacity>
                         </View>
-                        <HorizontalLine></HorizontalLine>
-                    </>
-                ))}
 
-                <View style={{ display: "none" }}></View>
+                        <View className="flex-1">
+                            {slots.map((slot, slotIndex) => (
+                                <View
+                                    key={slotIndex}
+                                    className="flex-row justify-between items-center border border-dark rounded-lg p-3"
+                                >
+                                    <Text className="flex-row items-center">
+                                        {slot.unavailable
+                                            ? "Unavailable"
+                                            : `${moment(slot.start).format(
+                                                  "h:mm A"
+                                              )} - ${moment(slot.end).format(
+                                                  "h:mm A"
+                                              )}`}
+                                    </Text>
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            handleRemoveTimeSlot(
+                                                date,
+                                                slotIndex
+                                            )
+                                        }
+                                    >
+                                        <Ionicons
+                                            name="close-circle"
+                                            size={22}
+                                            style={{
+                                                color: theme.colors.dark,
+                                            }}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            ))}
+                        </View>
+                        <View />
+                    </View>
+                ))}
             </ScrollView>
         </ScreenContainer>
     );

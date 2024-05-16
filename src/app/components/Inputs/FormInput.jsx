@@ -2,7 +2,6 @@ import { View, Text } from "react-native";
 import React from "react";
 import { TextInput } from "react-native-paper";
 import { theme } from "../../../../tailwind.config";
-import { MagnifyingGlassIcon } from "react-native-heroicons/outline";
 
 const FormInput = ({ value, label, secureTextEntry, onChangeText, error }) => {
     return (
