@@ -6,13 +6,13 @@ import {
     useRoute,
     useIsFocused,
 } from "@react-navigation/native";
+import Modal from "react-native-modal";
 import moment from "moment";
 import { TourGuideZone, useTourGuideController } from "rn-tourguide";
 
 import SyncButton from "../../../../components/SyncButton";
 import { userAuthActionTypes } from "../../../../store/UserAuthReducer/UserAuthActionTypes";
 import { customTheme } from "../../../../constants/themeConstants";
-import Modal from "react-native-modal";
 import { CheckBox } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -232,7 +232,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                 swipeDirection={["down"]}
                 propagateSwipe={true}
             >
-                <View className="absolute bottom-0 left-0 right-0 bg-white rounded-t-lg p-4">
+                <View className="absolute bottom-0 left-0 right-0 bg-light rounded-t-lg p-4">
                     {/* Modal Header */}
                     <View className="flex-row items-center justify-between">
                         <Text className="text-lg font-[appfont-bold]">
