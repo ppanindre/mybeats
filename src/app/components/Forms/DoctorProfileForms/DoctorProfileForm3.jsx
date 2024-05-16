@@ -1,15 +1,19 @@
 import { View, Text, ScrollView } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import MultiLineInput from "../../Inputs/MultiLineInput";
 import AppButton from "../../Buttons/AppButton";
+import FormInput from "../../Inputs/FormInput";
+import SwitchInput from "../../Inputs/SwitchInput";
 
 const DoctorProfileForm3 = ({ handlePressSubmit, handlePressBack }) => {
+    const [isAvailable, setIsAvailable] = useState(false);
+
     const onPressSubmit = () => {
-      handlePressSubmit();
+        handlePressSubmit();
     };
 
     const onPressBack = () => {
-      handlePressBack();
+        handlePressBack();
     };
 
     return (
@@ -17,8 +21,23 @@ const DoctorProfileForm3 = ({ handlePressSubmit, handlePressBack }) => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View className="space-y-5">
                     {/* Inputs */}
+
                     <View>
-                        <MultiLineInput label="Education (Optional)" />
+                        <SwitchInput
+                            label="Available for video consultations"
+                            onValueChange={() => setIsAvailable(!isAvailable)}
+                            value={isAvailable}
+                        />
+                    </View>
+
+                    {isAvailable && (
+                        <View>
+                            <FormInput label="Fee for video consultations" />
+                        </View>
+                    )}
+
+                    <View>
+                        <FormInput label="Years of experience" />
                     </View>
 
                     <View>

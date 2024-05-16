@@ -50,10 +50,10 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
         let screenName = "";
         switch (selectedRole) {
             case "Doctor":
-                screenName = "DoctorRole";
+                screenName = "doctorDashboard";
                 break;
             case "Patient":
-                screenName = "MychartsDashboard";
+                screenName = "patientDashboard";
                 break;
             case "Pharma Manager":
                 screenName = "PharmacyManager";
@@ -66,10 +66,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                 return;
         }
 
-        navigation.navigate("RolesNav", {
-            screen: screenName,
-            params: { isLoading: true },
-        });
+        navigation.navigate(screenName);
         // Use setParams to update the parameters of the current route
         navigation.setParams({ selectedRole: selectedRole });
 

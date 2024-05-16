@@ -168,40 +168,6 @@ const DoctorDashboard = ({ route }) => {
                     </TouchableOpacity>
                 </View>
 
-                {/* Doctor data */}
-                <FlatList
-                    data={doctorData}
-                    keyExtractor={(item, index) =>
-                        item.id.toString() || index.toString()
-                    }
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={{
-                        gap: 10,
-                        padding: 20,
-                    }}
-                    renderItem={({ item: doctor }) => (
-                        <View id={doctor.id} className="w-[300]">
-                            <TouchableOpacity
-                                onPress={() =>
-                                    navigation.navigate(
-                                        "appointment",
-                                        doctor
-                                    )
-                                }
-                            >
-                                <DoctorCard
-                                    doctorName={doctor.name}
-                                    doctorHospital={doctor.hospital}
-                                    doctorRating={doctor.rating}
-                                    doctorExperience={doctor.experience}
-                                    doctorSpecialist={doctor.specialization}
-                                />
-                            </TouchableOpacity>
-                        </View>
-                    )}
-                />
-
                 {/* Pharmacy based on the zip codes */}
                 <View className="flex-row justify-between items-center px-4">
                     <Text className="text-lg font-[appfont-semi]">

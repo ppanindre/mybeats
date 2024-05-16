@@ -256,10 +256,6 @@ export default Appointment = ({ route, navigation }) => {
                             Clinic Appointment
                         </Text>
                     </View>
-                    <Text
-                        className="text-lg font-[appfont-semi] text-gray-800"
-                        style={{ color: customTheme.colors.light }}
-                    >{`$50 Fee`}</Text>
                 </View>
 
                 <View>

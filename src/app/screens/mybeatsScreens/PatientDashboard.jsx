@@ -19,6 +19,7 @@ import LabCard from "../../../../components/Cards/LabCard";
 import FormInput from "../../components/Inputs/FormInput";
 import CustomSafeView from "../../../../components/CustomSafeView";
 import TopNavbar from "../../components/Utils/TopNavbar";
+import ScreenContainer from "../../components/Containers/ScreenContainer";
 
 const PatientDashboard = () => {
     // Declare navigation instance
@@ -26,233 +27,234 @@ const PatientDashboard = () => {
 
     return (
         // Replace with ScreenContainer
-        <CustomSafeView> 
+        <CustomSafeView>
             <TopNavbar showSync={false} isMyBeats={true} />
 
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View className="space-y-5">
+            <ScreenContainer>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <View className="space-y-5">
+                        <View>
+                            <FormInput label="Search Doctor, Health Condition, Pincode" />
+                        </View>
 
-                    <View>
-                        <FormInput label="Search Doctor, Health Condition, Pincode"/>
-                    </View>
-
-                    {/* Create a NavigationBanner */}
-                    <View>
-                        <View
-                            className="h-[150] rounded-lg shadow-lg p-5 bg-primary"
-                        >
-                            <TouchableOpacity
-                                onPress={() =>
-                                    navigation.navigate("consultDoctor")
-                                }
-                                className="h-[100%] justify-end"
-                            >
-                                <Text
-                                    className="font-[appfont-bold] text-xl text-light"
+                        {/* Create a NavigationBanner */}
+                        <View>
+                            <View className="h-[150] rounded-lg shadow-lg p-5 bg-primary">
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        navigation.navigate("consultDoctor")
+                                    }
+                                    className="h-[100%] justify-end"
                                 >
-                                    Consult Doctors
-                                </Text>
-                                <Text
-                                    className="font-[appfont] text-lg text-light"
-                                >
-                                    Book an appointment
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-
-                    {/* Cards VIew */}
-                    <View className="flex-row justify-around space-x-5">
-                        {/* First Card: Telehealth */}
-                        <View className="flex-1">
-                            <NavigationCard
-                                cardTitle="Telehealth"
-                                cardContent="Video consultation"
-                            />
+                                    <Text className="font-[appfont-bold] text-xl text-light">
+                                        Consult Doctors
+                                    </Text>
+                                    <Text className="font-[appfont] text-lg text-light">
+                                        Book an appointment
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
 
-                        <View className="flex-1">
-                            {/* Second Card: Diagnostics */}
-                            <NavigationCard
-                                cardTitle="Diagnostics"
-                                cardContent="Request a lab test"
-                                onPress={() =>
-                                    navigation.navigate("diagnostics")
-                                }
-                            />
-                        </View>
-                    </View>
-
-                    {/* Pharma card */}
-                    <View>
-                        <TouchableOpacity
-                            className="flex-row items-center justify-between p-5 rounded-lg shadow-md bg-primary"
-                            onPress={() => navigation.navigate("medicines")}
-                        >
+                        {/* Cards VIew */}
+                        <View className="flex-row justify-around space-x-5">
+                            {/* First Card: Telehealth */}
                             <View className="flex-1">
-                                <Text
-                                    className="text-lg font-[appfont-semi] text-light"
-                                >
-                                    Pharma
-                                </Text>
-                                <Text
-                                    className="text-sm font-[appfont-semi] text-light"
-                                >
-                                    Order via uploading prescription
-                                </Text>
+                                <NavigationCard
+                                    cardTitle="Telehealth"
+                                    cardContent="Video consultation"
+                                />
                             </View>
 
-                            {/* Upload Prescription */}
+                            <View className="flex-1">
+                                {/* Second Card: Diagnostics */}
+                                <NavigationCard
+                                    cardTitle="Diagnostics"
+                                    cardContent="Request a lab test"
+                                    onPress={() =>
+                                        navigation.navigate("diagnostics")
+                                    }
+                                />
+                            </View>
+                        </View>
+
+                        {/* Pharma card */}
+                        <View>
                             <TouchableOpacity
-                                onPress={() =>
-                                    navigation.navigate("UploadPrescription")
-                                }
-                                className="py-3 px-6 rounded-full shadow-md bg-light"
+                                className="flex-row items-center justify-between p-5 rounded-lg shadow-md bg-primary"
+                                onPress={() => navigation.navigate("medicines")}
                             >
-                                <Text className="font-[appfont-semi] text-dark">
-                                    Upload
+                                <View className="flex-1">
+                                    <Text className="text-lg font-[appfont-semi] text-light">
+                                        Pharma
+                                    </Text>
+                                    <Text className="text-sm font-[appfont-semi] text-light">
+                                        Order via uploading prescription
+                                    </Text>
+                                </View>
+
+                                {/* Upload Prescription */}
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        navigation.navigate(
+                                            "UploadPrescription"
+                                        )
+                                    }
+                                    className="py-3 px-6 rounded-full shadow-md bg-light"
+                                >
+                                    <Text className="font-[appfont-semi] text-dark">
+                                        Upload
+                                    </Text>
+                                </TouchableOpacity>
+                            </TouchableOpacity>
+                        </View>
+
+                        {/* Doctors based on zipcode */}
+                        <View className="flex-row justify-between items-center px-4">
+                            <Text className="text-lg font-[appfont-semi]">
+                                {" "}
+                                Doctors near You
+                            </Text>
+                            <TouchableOpacity onPress={() => toggleView()}>
+                                <Text
+                                    style={{
+                                        color: customTheme.colors.primary,
+                                    }}
+                                    className="font-[appfont-bold]"
+                                >
+                                    See all
                                 </Text>
                             </TouchableOpacity>
-                        </TouchableOpacity>
-                    </View>
+                        </View>
 
-                    {/* Doctors based on zipcode */}
-                    <View className="flex-row justify-between items-center px-4">
-                        <Text className="text-lg font-[appfont-semi]">
-                            {" "}
-                            Doctors near You
-                        </Text>
-                        <TouchableOpacity onPress={() => toggleView()}>
-                            <Text
-                                style={{ color: customTheme.colors.primary }}
-                                className="font-[appfont-bold]"
-                            >
-                                See all
+                        {/* Doctor data */}
+                        <FlatList
+                            data={doctorData}
+                            keyExtractor={(item, index) =>
+                                item.id.toString() || index.toString()
+                            }
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                            contentContainerStyle={{
+                                gap: 10,
+                                padding: 20,
+                            }}
+                            renderItem={({ item: doctor }) => (
+                                <View key={doctor.id} className="w-[300]">
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            navigation.navigate(
+                                                "appointment",
+                                                doctor
+                                            )
+                                        }
+                                    >
+                                        <DoctorCard
+                                            doctorName={doctor.name}
+                                            doctorHospital={doctor.hospital}
+                                            doctorRating={doctor.rating}
+                                            doctorExperience={doctor.experience}
+                                            doctorSpecialist={
+                                                doctor.specialization
+                                            }
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            )}
+                        />
+
+                        {/* Pharmacy based on the zip codes */}
+                        <View className="flex-row justify-between items-center px-4">
+                            <Text className="text-lg font-[appfont-semi]">
+                                Pharmacy near you
                             </Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    {/* Doctor data */}
-                    <FlatList
-                        data={doctorData}
-                        keyExtractor={(item, index) =>
-                            item.id.toString() || index.toString()
-                        }
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        contentContainerStyle={{
-                            gap: 10,
-                            padding: 20,
-                        }}
-                        renderItem={({ item: doctor }) => (
-                            <View key={doctor.id} className="w-[300]">
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        navigation.navigate(
-                                            "AppointmentPage",
-                                            doctor
-                                        )
-                                    }
+                            <TouchableOpacity onPress={() => toggleView()}>
+                                <Text
+                                    style={{
+                                        color: customTheme.colors.primary,
+                                    }}
+                                    className="font-[appfont-bold] text-primary"
                                 >
-                                    <DoctorCard
-                                        doctorName={doctor.name}
-                                        doctorHospital={doctor.hospital}
-                                        doctorRating={doctor.rating}
-                                        doctorExperience={doctor.experience}
-                                        doctorSpecialist={doctor.specialization}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                    />
+                                    See all
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
 
-                    {/* Pharmacy based on the zip codes */}
-                    <View className="flex-row justify-between items-center px-4">
-                        <Text className="text-lg font-[appfont-semi]">
-                            Pharmacy near you
-                        </Text>
-                        <TouchableOpacity onPress={() => toggleView()}>
-                            <Text
-                                style={{ color: customTheme.colors.primary }}
-                                className="font-[appfont-bold] text-primary"
-                            >
-                                See all
+                        {/* Pharmacy Data */}
+                        <FlatList
+                            data={pharmacyData}
+                            keyExtractor={(item, index) =>
+                                item.id.toString() || index.toString()
+                            }
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                            renderItem={({ item: pharmacy }) => (
+                                <View key={pharmacy.id} className="w-[300]">
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            navigation.navigate(
+                                                "PharmacyInfo",
+                                                pharmacy
+                                            )
+                                        }
+                                    >
+                                        <PharmacyCard
+                                            pharmacyLabel={pharmacy.name}
+                                            pharmacyRating={pharmacy.rating}
+                                            // pharmacyZipcode={pharmacy.zipcode}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            )}
+                            contentContainerStyle={{ padding: 20, gap: 10 }}
+                        />
+
+                        {/* Labs based on the zipcode */}
+                        <View className="flex-row justify-between items-center px-4">
+                            <Text className="text-lg font-[appfont-semi]">
+                                Labs near you
                             </Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    {/* Pharmacy Data */}
-                    <FlatList
-                        data={pharmacyData}
-                        keyExtractor={(item, index) =>
-                            item.id.toString() || index.toString()
-                        }
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        renderItem={({ item: pharmacy }) => (
-                            <View key={pharmacy.id} className="w-[300]">
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        navigation.navigate(
-                                            "PharmacyInfo",
-                                            pharmacy
-                                        )
-                                    }
+                            <TouchableOpacity onPress={() => toggleView()}>
+                                <Text
+                                    style={{
+                                        color: customTheme.colors.primary,
+                                    }}
+                                    className="font-[appfont-bold] text-primary"
                                 >
-                                    <PharmacyCard
-                                        pharmacyLabel={pharmacy.name}
-                                        pharmacyRating={pharmacy.rating}
-                                        // pharmacyZipcode={pharmacy.zipcode}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                        contentContainerStyle={{ padding: 20, gap: 10 }}
-                    />
+                                    See all
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
 
-                    {/* Labs based on the zipcode */}
-                    <View className="flex-row justify-between items-center px-4">
-                        <Text className="text-lg font-[appfont-semi]">
-                            Labs near you
-                        </Text>
-                        <TouchableOpacity onPress={() => toggleView()}>
-                            <Text
-                                style={{ color: customTheme.colors.primary }}
-                                className="font-[appfont-bold] text-primary"
-                            >
-                                See all
-                            </Text>
-                        </TouchableOpacity>
+                        {/* Lab Data */}
+                        <FlatList
+                            data={LabData}
+                            keyExtractor={(item, index) =>
+                                item.id.toString() || index.toString()
+                            }
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                            renderItem={({ item: lab }) => (
+                                <View key={lab.id} className="w-[300]">
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            navigation.navigate("LabInfo", lab)
+                                        }
+                                    >
+                                        <LabCard
+                                            labName={lab.name}
+                                            labRating={lab.rating}
+                                            labStoryCount={lab.labStoryCount}
+                                            labzipcode={lab.zipcode}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            )}
+                            contentContainerStyle={{ padding: 20, gap: 10 }}
+                        />
                     </View>
-
-                    {/* Lab Data */}
-                    <FlatList
-                        data={LabData}
-                        keyExtractor={(item, index) =>
-                            item.id.toString() || index.toString()
-                        }
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        renderItem={({ item: lab }) => (
-                            <View key={lab.id} className="w-[300]">
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        navigation.navigate("LabInfo", lab)
-                                    }
-                                >
-                                    <LabCard
-                                        labName={lab.name}
-                                        labRating={lab.rating}
-                                        labStoryCount={lab.labStoryCount}
-                                        labzipcode={lab.zipcode}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                        contentContainerStyle={{ padding: 20, gap: 10 }}
-                    />
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </ScreenContainer>
         </CustomSafeView>
     );
 };
