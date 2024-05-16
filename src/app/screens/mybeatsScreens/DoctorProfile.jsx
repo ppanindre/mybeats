@@ -34,20 +34,21 @@ function DoctorProfile() {
     };
 
     /**
-     * funtion to go back to the previous form
+     * function to go back to the previous form
+     * @param {void} 
      */
     const goToPreviousForm = () => {
         setPageIndex(pageIndex - 1);
     };
 
+    //** */
     const handleSubmit = async () => {
         try {
-            console.log("doctor data", doctorData);
             const response = await client.graphql({
                 query: createDoctor,
                 variables: {
                     input: {
-                        doctorID: "4",
+                        doctorID: "4", // change the doctor id
                         email: doctorData.email,
                         firstname: doctorData.firstName,
                         lastname: doctorData.lastName,

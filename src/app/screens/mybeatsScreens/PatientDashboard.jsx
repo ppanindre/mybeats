@@ -6,7 +6,6 @@ import {
     TouchableOpacity,
     ScrollView,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 import NavigationCard from "../../../../components/Cards/NavigationCard";
@@ -26,17 +25,18 @@ const PatientDashboard = () => {
     const navigation = useNavigation();
 
     return (
-        <CustomSafeView>
+        // Replace with ScreenContainer
+        <CustomSafeView> 
             <TopNavbar showSync={false} isMyBeats={true} />
 
             <ScrollView showsVerticalScrollIndicator={false}>
-                <View className="p-5 space-y-5">
+                <View className="space-y-5">
 
                     <View>
                         <FormInput label="Search Doctor, Health Condition, Pincode"/>
                     </View>
 
-                    {/* Image slider component */}
+                    {/* Create a NavigationBanner */}
                     <View>
                         <View
                             className="h-[150] rounded-lg shadow-lg p-5 bg-primary"
