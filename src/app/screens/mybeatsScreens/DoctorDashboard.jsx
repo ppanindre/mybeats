@@ -168,22 +168,6 @@ const DoctorDashboard = ({ route }) => {
                     </TouchableOpacity>
                 </View>
 
-                {/* Doctors based on zipcode */}
-                <View className="flex-row justify-between items-center px-4">
-                    <Text className="text-lg font-[appfont-semi]">
-                        {" "}
-                        Doctors near You
-                    </Text>
-                    <TouchableOpacity onPress={() => toggleView()}>
-                        <Text
-                            style={{ color: customTheme.colors.primary }}
-                            className="font-[appfont-bold]"
-                        >
-                            See all
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-
                 {/* Doctor data */}
                 <FlatList
                     data={doctorData}
