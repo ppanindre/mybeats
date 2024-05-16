@@ -10,7 +10,7 @@ const PatientCard = ({ name, age, gender, bloodGroup, totalAppointments, pnumber
     return (
         <View style={{ backgroundColor: customTheme.colors.light }} className="flex flex-row p-4 m-2 rounded-lg shadow justify-between items-center">
             <View className="flex flex-row items-center">
-                <Image source={require('../../assets/doc1.webp')} className="h-16 w-16 rounded-xl mr-4" />
+                <Image source={require('../../src/app/assets/doc1.webp')} className="h-16 w-16 rounded-xl mr-4" />
                 <View>
                     <Text className="text-lg font-[appfont-bold]">{name}</Text>
                     <View className="flex flex-row items-center">

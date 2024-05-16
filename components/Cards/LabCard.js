@@ -8,7 +8,7 @@ const LabCard = ({ labName, labRating, labStoryCount }) => {
     return (
         <View className="flex-row items-center justify-between rounded-lg shadow-lg bg-white p-5">
             <Image
-                source={require("../../assets/doc1.webp")}
+                source={require("../../src/app/assets/doc1.webp")}
                 className="w-20 h-20 mr-3 rounded-full"
             />
             <View className="flex-1">

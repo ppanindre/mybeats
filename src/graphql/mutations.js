@@ -7,21 +7,31 @@ export const createDoctor = /* GraphQL */ `
     $condition: ModelDoctorConditionInput
   ) {
     createDoctor(input: $input, condition: $condition) {
-      id
+      doctorID
       firstname
       lastname
       email
-      specialization
       phoneNumber
-      address
-      zipcode
-      availableSlots
-      appointments {
+      licenseNumber
+      upiId
+      specialties {
         nextToken
+        startedAt
+        __typename
+      }
+      address
+      city
+      zipcode
+      appointmentSlots {
+        nextToken
+        startedAt
         __typename
       }
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
@@ -32,21 +42,31 @@ export const updateDoctor = /* GraphQL */ `
     $condition: ModelDoctorConditionInput
   ) {
     updateDoctor(input: $input, condition: $condition) {
-      id
+      doctorID
       firstname
       lastname
       email
-      specialization
       phoneNumber
-      address
-      zipcode
-      availableSlots
-      appointments {
+      licenseNumber
+      upiId
+      specialties {
         nextToken
+        startedAt
+        __typename
+      }
+      address
+      city
+      zipcode
+      appointmentSlots {
+        nextToken
+        startedAt
         __typename
       }
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
@@ -57,21 +77,97 @@ export const deleteDoctor = /* GraphQL */ `
     $condition: ModelDoctorConditionInput
   ) {
     deleteDoctor(input: $input, condition: $condition) {
-      id
+      doctorID
       firstname
       lastname
       email
-      specialization
       phoneNumber
-      address
-      zipcode
-      availableSlots
-      appointments {
+      licenseNumber
+      upiId
+      specialties {
         nextToken
+        startedAt
+        __typename
+      }
+      address
+      city
+      zipcode
+      appointmentSlots {
+        nextToken
+        startedAt
         __typename
       }
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createSpecialty = /* GraphQL */ `
+  mutation CreateSpecialty(
+    $input: CreateSpecialtyInput!
+    $condition: ModelSpecialtyConditionInput
+  ) {
+    createSpecialty(input: $input, condition: $condition) {
+      id
+      name
+      doctors {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateSpecialty = /* GraphQL */ `
+  mutation UpdateSpecialty(
+    $input: UpdateSpecialtyInput!
+    $condition: ModelSpecialtyConditionInput
+  ) {
+    updateSpecialty(input: $input, condition: $condition) {
+      id
+      name
+      doctors {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteSpecialty = /* GraphQL */ `
+  mutation DeleteSpecialty(
+    $input: DeleteSpecialtyInput!
+    $condition: ModelSpecialtyConditionInput
+  ) {
+    deleteSpecialty(input: $input, condition: $condition) {
+      id
+      name
+      doctors {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
@@ -87,12 +183,18 @@ export const createPatient = /* GraphQL */ `
       lastname
       email
       phoneNumber
-      appointments {
+      address
+      zipcode
+      appointmentSlots {
         nextToken
+        startedAt
         __typename
       }
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
@@ -108,12 +210,18 @@ export const updatePatient = /* GraphQL */ `
       lastname
       email
       phoneNumber
-      appointments {
+      address
+      zipcode
+      appointmentSlots {
         nextToken
+        startedAt
         __typename
       }
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
@@ -129,35 +237,50 @@ export const deletePatient = /* GraphQL */ `
       lastname
       email
       phoneNumber
-      appointments {
+      address
+      zipcode
+      appointmentSlots {
         nextToken
+        startedAt
         __typename
       }
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
 `;
-export const createAppointment = /* GraphQL */ `
-  mutation CreateAppointment(
-    $input: CreateAppointmentInput!
-    $condition: ModelAppointmentConditionInput
+export const createAppointmentSlot = /* GraphQL */ `
+  mutation CreateAppointmentSlot(
+    $input: CreateAppointmentSlotInput!
+    $condition: ModelAppointmentSlotConditionInput
   ) {
-    createAppointment(input: $input, condition: $condition) {
+    createAppointmentSlot(input: $input, condition: $condition) {
       id
+      doctorID
+      patientId
+      startTime
+      endTime
+      isBooked
       doctor {
-        id
+        doctorID
         firstname
         lastname
         email
-        specialization
         phoneNumber
+        licenseNumber
+        upiId
         address
+        city
         zipcode
-        availableSlots
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
       patient {
@@ -166,39 +289,52 @@ export const createAppointment = /* GraphQL */ `
         lastname
         email
         phoneNumber
+        address
+        zipcode
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
-      chosenSlot
-      date
       createdAt
       updatedAt
-      doctorAppointmentsId
-      patientAppointmentsId
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
 `;
-export const updateAppointment = /* GraphQL */ `
-  mutation UpdateAppointment(
-    $input: UpdateAppointmentInput!
-    $condition: ModelAppointmentConditionInput
+export const updateAppointmentSlot = /* GraphQL */ `
+  mutation UpdateAppointmentSlot(
+    $input: UpdateAppointmentSlotInput!
+    $condition: ModelAppointmentSlotConditionInput
   ) {
-    updateAppointment(input: $input, condition: $condition) {
+    updateAppointmentSlot(input: $input, condition: $condition) {
       id
+      doctorID
+      patientId
+      startTime
+      endTime
+      isBooked
       doctor {
-        id
+        doctorID
         firstname
         lastname
         email
-        specialization
         phoneNumber
+        licenseNumber
+        upiId
         address
+        city
         zipcode
-        availableSlots
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
       patient {
@@ -207,39 +343,52 @@ export const updateAppointment = /* GraphQL */ `
         lastname
         email
         phoneNumber
+        address
+        zipcode
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
-      chosenSlot
-      date
       createdAt
       updatedAt
-      doctorAppointmentsId
-      patientAppointmentsId
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
 `;
-export const deleteAppointment = /* GraphQL */ `
-  mutation DeleteAppointment(
-    $input: DeleteAppointmentInput!
-    $condition: ModelAppointmentConditionInput
+export const deleteAppointmentSlot = /* GraphQL */ `
+  mutation DeleteAppointmentSlot(
+    $input: DeleteAppointmentSlotInput!
+    $condition: ModelAppointmentSlotConditionInput
   ) {
-    deleteAppointment(input: $input, condition: $condition) {
+    deleteAppointmentSlot(input: $input, condition: $condition) {
       id
+      doctorID
+      patientId
+      startTime
+      endTime
+      isBooked
       doctor {
-        id
+        doctorID
         firstname
         lastname
         email
-        specialization
         phoneNumber
+        licenseNumber
+        upiId
         address
+        city
         zipcode
-        availableSlots
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
       patient {
@@ -248,16 +397,158 @@ export const deleteAppointment = /* GraphQL */ `
         lastname
         email
         phoneNumber
+        address
+        zipcode
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
-      chosenSlot
-      date
       createdAt
       updatedAt
-      doctorAppointmentsId
-      patientAppointmentsId
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createDoctorSpecialties = /* GraphQL */ `
+  mutation CreateDoctorSpecialties(
+    $input: CreateDoctorSpecialtiesInput!
+    $condition: ModelDoctorSpecialtiesConditionInput
+  ) {
+    createDoctorSpecialties(input: $input, condition: $condition) {
+      id
+      doctorDoctorID
+      specialtyId
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        address
+        city
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateDoctorSpecialties = /* GraphQL */ `
+  mutation UpdateDoctorSpecialties(
+    $input: UpdateDoctorSpecialtiesInput!
+    $condition: ModelDoctorSpecialtiesConditionInput
+  ) {
+    updateDoctorSpecialties(input: $input, condition: $condition) {
+      id
+      doctorDoctorID
+      specialtyId
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        address
+        city
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteDoctorSpecialties = /* GraphQL */ `
+  mutation DeleteDoctorSpecialties(
+    $input: DeleteDoctorSpecialtiesInput!
+    $condition: ModelDoctorSpecialtiesConditionInput
+  ) {
+    deleteDoctorSpecialties(input: $input, condition: $condition) {
+      id
+      doctorDoctorID
+      specialtyId
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        address
+        city
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }

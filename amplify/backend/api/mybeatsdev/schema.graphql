@@ -1,0 +1,48 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+type Doctor @model @auth(rules: [{ allow: public }]) {
+  doctorID: ID! @primaryKey
+  firstname: String!
+  lastname: String!
+  email: String
+  phoneNumber: String
+  licenseNumber: String
+  upiId: String
+  specialties: [Specialty] @manyToMany(relationName: "DoctorSpecialties")
+  address: String
+  city: String
+  zipcode: String! @index(name: "byzipcode", queryField: "doctorByZipcode")
+appointmentSlots: [AppointmentSlot]
+    @hasMany(indexName: "byDoctor", fields: ["doctorID"])
+}
+
+type Specialty @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  name: String! @index(name: "byName", queryField: "specialtyByName")
+  doctors: [Doctor] @manyToMany(relationName: "DoctorSpecialties")
+}
+
+type Patient @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  firstname: String!
+  lastname: String!
+  email: String
+  phoneNumber: String
+  address: String
+  zipcode: String
+  appointmentSlots: [AppointmentSlot]
+    @hasMany(indexName: "byPatient", fields: ["id"])
+}
+
+type AppointmentSlot @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  doctorID: ID! @index(name: "byDoctor", queryField: "slotsByDoctor")
+  patientId: ID! @index(name: "byPatient", queryField: "slotsByPatient") # Added patient ID reference
+  startTime: String!
+  endTime: String!
+  isBooked: Boolean!
+  doctor: Doctor @belongsTo(fields: ["doctorID"])
+  patient: Patient @belongsTo(fields: ["patientId"]) # Added patient relationship
+}

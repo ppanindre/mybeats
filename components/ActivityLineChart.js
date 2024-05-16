@@ -13,7 +13,6 @@ import {
   VictoryTooltip,
 } from "victory-native";
 import moment from "moment";
-import { useSelector } from "react-redux";
 
 const DIMENSIONS = Dimensions.get("window");
 const CHART_HEIGHT = 300;

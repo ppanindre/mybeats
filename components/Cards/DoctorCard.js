@@ -5,7 +5,6 @@ import { customTheme } from "../../constants/themeConstants";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const DoctorCard = ({
-    doctorImage,
     doctorName,
     doctorSpecialist,
     doctorHospital,
@@ -19,7 +18,7 @@ const DoctorCard = ({
                 <View className="flex-row items-center space-x-3">
                     {/* Doctor Image */}
                     <Image
-                        source={require("../../assets/doc1.webp")}
+                        source={require("../../src/app/assets/doc1.webp")}
                         className="w-20 h-20 mr-1 rounded-full"
                     />
                     {/* Doctor Name */}

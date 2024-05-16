@@ -2,49 +2,180 @@
 // this is an auto generated file. This will be overwritten
 
 export const getDoctor = /* GraphQL */ `
-  query GetDoctor($id: ID!) {
-    getDoctor(id: $id) {
-      id
+  query GetDoctor($doctorID: ID!) {
+    getDoctor(doctorID: $doctorID) {
+      doctorID
       firstname
       lastname
       email
-      specialization
       phoneNumber
-      address
-      zipcode
-      availableSlots
-      appointments {
+      licenseNumber
+      upiId
+      specialties {
         nextToken
+        startedAt
+        __typename
+      }
+      address
+      city
+      zipcode
+      appointmentSlots {
+        nextToken
+        startedAt
         __typename
       }
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
 `;
 export const listDoctors = /* GraphQL */ `
   query ListDoctors(
+    $doctorID: ID
     $filter: ModelDoctorFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listDoctors(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listDoctors(
+      doctorID: $doctorID
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
-        id
+        doctorID
         firstname
         lastname
         email
-        specialization
         phoneNumber
+        licenseNumber
+        upiId
         address
+        city
         zipcode
-        availableSlots
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
       nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncDoctors = /* GraphQL */ `
+  query SyncDoctors(
+    $filter: ModelDoctorFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncDoctors(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        address
+        city
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const getSpecialty = /* GraphQL */ `
+  query GetSpecialty($id: ID!) {
+    getSpecialty(id: $id) {
+      id
+      name
+      doctors {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listSpecialties = /* GraphQL */ `
+  query ListSpecialties(
+    $filter: ModelSpecialtyFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSpecialties(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncSpecialties = /* GraphQL */ `
+  query SyncSpecialties(
+    $filter: ModelSpecialtyFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncSpecialties(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
       __typename
     }
   }
@@ -57,12 +188,18 @@ export const getPatient = /* GraphQL */ `
       lastname
       email
       phoneNumber
-      appointments {
+      address
+      zipcode
+      appointmentSlots {
         nextToken
+        startedAt
         __typename
       }
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
@@ -80,31 +217,80 @@ export const listPatients = /* GraphQL */ `
         lastname
         email
         phoneNumber
+        address
+        zipcode
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
       nextToken
+      startedAt
       __typename
     }
   }
 `;
-export const getAppointment = /* GraphQL */ `
-  query GetAppointment($id: ID!) {
-    getAppointment(id: $id) {
-      id
-      doctor {
+export const syncPatients = /* GraphQL */ `
+  query SyncPatients(
+    $filter: ModelPatientFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncPatients(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
         id
         firstname
         lastname
         email
-        specialization
         phoneNumber
         address
         zipcode
-        availableSlots
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const getAppointmentSlot = /* GraphQL */ `
+  query GetAppointmentSlot($id: ID!) {
+    getAppointmentSlot(id: $id) {
+      id
+      doctorID
+      patientId
+      startTime
+      endTime
+      isBooked
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        address
+        city
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
       patient {
@@ -113,38 +299,389 @@ export const getAppointment = /* GraphQL */ `
         lastname
         email
         phoneNumber
+        address
+        zipcode
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
-      chosenSlot
-      date
       createdAt
       updatedAt
-      doctorAppointmentsId
-      patientAppointmentsId
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
 `;
-export const listAppointments = /* GraphQL */ `
-  query ListAppointments(
-    $filter: ModelAppointmentFilterInput
+export const listAppointmentSlots = /* GraphQL */ `
+  query ListAppointmentSlots(
+    $filter: ModelAppointmentSlotFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listAppointments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listAppointmentSlots(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
-        chosenSlot
-        date
+        doctorID
+        patientId
+        startTime
+        endTime
+        isBooked
         createdAt
         updatedAt
-        doctorAppointmentsId
-        patientAppointmentsId
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
       nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncAppointmentSlots = /* GraphQL */ `
+  query SyncAppointmentSlots(
+    $filter: ModelAppointmentSlotFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncAppointmentSlots(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        doctorID
+        patientId
+        startTime
+        endTime
+        isBooked
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const getDoctorSpecialties = /* GraphQL */ `
+  query GetDoctorSpecialties($id: ID!) {
+    getDoctorSpecialties(id: $id) {
+      id
+      doctorDoctorID
+      specialtyId
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        address
+        city
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listDoctorSpecialties = /* GraphQL */ `
+  query ListDoctorSpecialties(
+    $filter: ModelDoctorSpecialtiesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listDoctorSpecialties(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        doctorDoctorID
+        specialtyId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncDoctorSpecialties = /* GraphQL */ `
+  query SyncDoctorSpecialties(
+    $filter: ModelDoctorSpecialtiesFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncDoctorSpecialties(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        doctorDoctorID
+        specialtyId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const doctorByZipcode = /* GraphQL */ `
+  query DoctorByZipcode(
+    $zipcode: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelDoctorFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    doctorByZipcode(
+      zipcode: $zipcode
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        address
+        city
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const specialtyByName = /* GraphQL */ `
+  query SpecialtyByName(
+    $name: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelSpecialtyFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    specialtyByName(
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const slotsByDoctor = /* GraphQL */ `
+  query SlotsByDoctor(
+    $doctorID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelAppointmentSlotFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    slotsByDoctor(
+      doctorID: $doctorID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        doctorID
+        patientId
+        startTime
+        endTime
+        isBooked
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const slotsByPatient = /* GraphQL */ `
+  query SlotsByPatient(
+    $patientId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelAppointmentSlotFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    slotsByPatient(
+      patientId: $patientId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        doctorID
+        patientId
+        startTime
+        endTime
+        isBooked
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const doctorSpecialtiesByDoctorDoctorID = /* GraphQL */ `
+  query DoctorSpecialtiesByDoctorDoctorID(
+    $doctorDoctorID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelDoctorSpecialtiesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    doctorSpecialtiesByDoctorDoctorID(
+      doctorDoctorID: $doctorDoctorID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        doctorDoctorID
+        specialtyId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const doctorSpecialtiesBySpecialtyId = /* GraphQL */ `
+  query DoctorSpecialtiesBySpecialtyId(
+    $specialtyId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelDoctorSpecialtiesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    doctorSpecialtiesBySpecialtyId(
+      specialtyId: $specialtyId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        doctorDoctorID
+        specialtyId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
       __typename
     }
   }

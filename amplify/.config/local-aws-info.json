@@ -1,5 +1,7 @@
 {
   "dev": {
-    "configLevel": "amplifyAdmin"
+    "configLevel": "project",
+    "useProfile": false,
+    "awsConfigFilePath": "/Users/tanmaymandal/.amplify/awscloudformation/Bfg7Cnmrhj"
   }
 }

@@ -4,21 +4,31 @@
 export const onCreateDoctor = /* GraphQL */ `
   subscription OnCreateDoctor($filter: ModelSubscriptionDoctorFilterInput) {
     onCreateDoctor(filter: $filter) {
-      id
+      doctorID
       firstname
       lastname
       email
-      specialization
       phoneNumber
-      address
-      zipcode
-      availableSlots
-      appointments {
+      licenseNumber
+      upiId
+      specialties {
         nextToken
+        startedAt
+        __typename
+      }
+      address
+      city
+      zipcode
+      appointmentSlots {
+        nextToken
+        startedAt
         __typename
       }
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
@@ -26,21 +36,31 @@ export const onCreateDoctor = /* GraphQL */ `
 export const onUpdateDoctor = /* GraphQL */ `
   subscription OnUpdateDoctor($filter: ModelSubscriptionDoctorFilterInput) {
     onUpdateDoctor(filter: $filter) {
-      id
+      doctorID
       firstname
       lastname
       email
-      specialization
       phoneNumber
-      address
-      zipcode
-      availableSlots
-      appointments {
+      licenseNumber
+      upiId
+      specialties {
         nextToken
+        startedAt
+        __typename
+      }
+      address
+      city
+      zipcode
+      appointmentSlots {
+        nextToken
+        startedAt
         __typename
       }
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
@@ -48,21 +68,94 @@ export const onUpdateDoctor = /* GraphQL */ `
 export const onDeleteDoctor = /* GraphQL */ `
   subscription OnDeleteDoctor($filter: ModelSubscriptionDoctorFilterInput) {
     onDeleteDoctor(filter: $filter) {
-      id
+      doctorID
       firstname
       lastname
       email
-      specialization
       phoneNumber
-      address
-      zipcode
-      availableSlots
-      appointments {
+      licenseNumber
+      upiId
+      specialties {
         nextToken
+        startedAt
+        __typename
+      }
+      address
+      city
+      zipcode
+      appointmentSlots {
+        nextToken
+        startedAt
         __typename
       }
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onCreateSpecialty = /* GraphQL */ `
+  subscription OnCreateSpecialty(
+    $filter: ModelSubscriptionSpecialtyFilterInput
+  ) {
+    onCreateSpecialty(filter: $filter) {
+      id
+      name
+      doctors {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateSpecialty = /* GraphQL */ `
+  subscription OnUpdateSpecialty(
+    $filter: ModelSubscriptionSpecialtyFilterInput
+  ) {
+    onUpdateSpecialty(filter: $filter) {
+      id
+      name
+      doctors {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteSpecialty = /* GraphQL */ `
+  subscription OnDeleteSpecialty(
+    $filter: ModelSubscriptionSpecialtyFilterInput
+  ) {
+    onDeleteSpecialty(filter: $filter) {
+      id
+      name
+      doctors {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
@@ -75,12 +168,18 @@ export const onCreatePatient = /* GraphQL */ `
       lastname
       email
       phoneNumber
-      appointments {
+      address
+      zipcode
+      appointmentSlots {
         nextToken
+        startedAt
         __typename
       }
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
@@ -93,12 +192,18 @@ export const onUpdatePatient = /* GraphQL */ `
       lastname
       email
       phoneNumber
-      appointments {
+      address
+      zipcode
+      appointmentSlots {
         nextToken
+        startedAt
         __typename
       }
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
@@ -111,34 +216,49 @@ export const onDeletePatient = /* GraphQL */ `
       lastname
       email
       phoneNumber
-      appointments {
+      address
+      zipcode
+      appointmentSlots {
         nextToken
+        startedAt
         __typename
       }
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
 `;
-export const onCreateAppointment = /* GraphQL */ `
-  subscription OnCreateAppointment(
-    $filter: ModelSubscriptionAppointmentFilterInput
+export const onCreateAppointmentSlot = /* GraphQL */ `
+  subscription OnCreateAppointmentSlot(
+    $filter: ModelSubscriptionAppointmentSlotFilterInput
   ) {
-    onCreateAppointment(filter: $filter) {
+    onCreateAppointmentSlot(filter: $filter) {
       id
+      doctorID
+      patientId
+      startTime
+      endTime
+      isBooked
       doctor {
-        id
+        doctorID
         firstname
         lastname
         email
-        specialization
         phoneNumber
+        licenseNumber
+        upiId
         address
+        city
         zipcode
-        availableSlots
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
       patient {
@@ -147,38 +267,51 @@ export const onCreateAppointment = /* GraphQL */ `
         lastname
         email
         phoneNumber
+        address
+        zipcode
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
-      chosenSlot
-      date
       createdAt
       updatedAt
-      doctorAppointmentsId
-      patientAppointmentsId
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
 `;
-export const onUpdateAppointment = /* GraphQL */ `
-  subscription OnUpdateAppointment(
-    $filter: ModelSubscriptionAppointmentFilterInput
+export const onUpdateAppointmentSlot = /* GraphQL */ `
+  subscription OnUpdateAppointmentSlot(
+    $filter: ModelSubscriptionAppointmentSlotFilterInput
   ) {
-    onUpdateAppointment(filter: $filter) {
+    onUpdateAppointmentSlot(filter: $filter) {
       id
+      doctorID
+      patientId
+      startTime
+      endTime
+      isBooked
       doctor {
-        id
+        doctorID
         firstname
         lastname
         email
-        specialization
         phoneNumber
+        licenseNumber
+        upiId
         address
+        city
         zipcode
-        availableSlots
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
       patient {
@@ -187,38 +320,51 @@ export const onUpdateAppointment = /* GraphQL */ `
         lastname
         email
         phoneNumber
+        address
+        zipcode
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
-      chosenSlot
-      date
       createdAt
       updatedAt
-      doctorAppointmentsId
-      patientAppointmentsId
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
 `;
-export const onDeleteAppointment = /* GraphQL */ `
-  subscription OnDeleteAppointment(
-    $filter: ModelSubscriptionAppointmentFilterInput
+export const onDeleteAppointmentSlot = /* GraphQL */ `
+  subscription OnDeleteAppointmentSlot(
+    $filter: ModelSubscriptionAppointmentSlotFilterInput
   ) {
-    onDeleteAppointment(filter: $filter) {
+    onDeleteAppointmentSlot(filter: $filter) {
       id
+      doctorID
+      patientId
+      startTime
+      endTime
+      isBooked
       doctor {
-        id
+        doctorID
         firstname
         lastname
         email
-        specialization
         phoneNumber
+        licenseNumber
+        upiId
         address
+        city
         zipcode
-        availableSlots
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
       patient {
@@ -227,16 +373,155 @@ export const onDeleteAppointment = /* GraphQL */ `
         lastname
         email
         phoneNumber
+        address
+        zipcode
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
-      chosenSlot
-      date
       createdAt
       updatedAt
-      doctorAppointmentsId
-      patientAppointmentsId
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onCreateDoctorSpecialties = /* GraphQL */ `
+  subscription OnCreateDoctorSpecialties(
+    $filter: ModelSubscriptionDoctorSpecialtiesFilterInput
+  ) {
+    onCreateDoctorSpecialties(filter: $filter) {
+      id
+      doctorDoctorID
+      specialtyId
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        address
+        city
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateDoctorSpecialties = /* GraphQL */ `
+  subscription OnUpdateDoctorSpecialties(
+    $filter: ModelSubscriptionDoctorSpecialtiesFilterInput
+  ) {
+    onUpdateDoctorSpecialties(filter: $filter) {
+      id
+      doctorDoctorID
+      specialtyId
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        address
+        city
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteDoctorSpecialties = /* GraphQL */ `
+  subscription OnDeleteDoctorSpecialties(
+    $filter: ModelSubscriptionDoctorSpecialtiesFilterInput
+  ) {
+    onDeleteDoctorSpecialties(filter: $filter) {
+      id
+      doctorDoctorID
+      specialtyId
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        address
+        city
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
