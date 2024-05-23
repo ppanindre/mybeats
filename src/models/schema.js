@@ -82,6 +82,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "experience": {
+                    "name": "experience",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "zipcode": {
                     "name": "zipcode",
                     "isArray": false,
@@ -615,5 +622,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "945198ddc04d666e6760f143b783789b"
+    "version": "7639c9bc8538faff64ba18778b2b6a23"
 };

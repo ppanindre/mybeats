@@ -21,6 +21,7 @@ export const createDoctor = /* GraphQL */ `
       }
       address
       city
+      experience
       zipcode
       appointmentSlots {
         nextToken
@@ -56,6 +57,7 @@ export const updateDoctor = /* GraphQL */ `
       }
       address
       city
+      experience
       zipcode
       appointmentSlots {
         nextToken
@@ -91,6 +93,7 @@ export const deleteDoctor = /* GraphQL */ `
       }
       address
       city
+      experience
       zipcode
       appointmentSlots {
         nextToken
@@ -275,6 +278,7 @@ export const createAppointmentSlot = /* GraphQL */ `
         upiId
         address
         city
+        experience
         zipcode
         createdAt
         updatedAt
@@ -329,6 +333,7 @@ export const updateAppointmentSlot = /* GraphQL */ `
         upiId
         address
         city
+        experience
         zipcode
         createdAt
         updatedAt
@@ -383,6 +388,7 @@ export const deleteAppointmentSlot = /* GraphQL */ `
         upiId
         address
         city
+        experience
         zipcode
         createdAt
         updatedAt
@@ -434,6 +440,7 @@ export const createDoctorSpecialties = /* GraphQL */ `
         upiId
         address
         city
+        experience
         zipcode
         createdAt
         updatedAt
@@ -480,6 +487,7 @@ export const updateDoctorSpecialties = /* GraphQL */ `
         upiId
         address
         city
+        experience
         zipcode
         createdAt
         updatedAt
@@ -526,6 +534,7 @@ export const deleteDoctorSpecialties = /* GraphQL */ `
         upiId
         address
         city
+        experience
         zipcode
         createdAt
         updatedAt

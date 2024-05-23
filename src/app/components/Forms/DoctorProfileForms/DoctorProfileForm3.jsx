@@ -1,5 +1,6 @@
 import { View, Text, ScrollView } from "react-native";
 import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import MultiLineInput from "../../Inputs/MultiLineInput";
 import AppButton from "../../Buttons/AppButton";
 import FormInput from "../../Inputs/FormInput";
@@ -8,8 +9,14 @@ import SwitchInput from "../../Inputs/SwitchInput";
 const DoctorProfileForm3 = ({ handlePressSubmit, handlePressBack }) => {
     const [isAvailable, setIsAvailable] = useState(false);
 
-    const onPressSubmit = () => {
-        handlePressSubmit();
+    const { control, handleSubmit } = useForm({
+        defaultValues: {
+            experience: "",
+        },
+    });
+
+    const onPressSubmit = (data) => {
+        handlePressSubmit(data);
     };
 
     const onPressBack = () => {
@@ -37,11 +44,25 @@ const DoctorProfileForm3 = ({ handlePressSubmit, handlePressBack }) => {
                     )}
 
                     <View>
-                        <FormInput label="Years of experience" />
+                        <Controller
+                            control={control}
+                            name="experience"
+                            render={({
+                                field: { value, onChange },
+                                fieldState: { error },
+                            }) => (
+                                <FormInput
+                                    value={value}
+                                    onChangeText={onChange}
+                                    label="Years of experience"
+                                    error={error}
+                                />
+                            )}
+                        />
                     </View>
 
                     <View>
-                        <MultiLineInput label="Experience (Optional)" />
+                        <MultiLineInput label="Education (Optional)" />
                     </View>
 
                     <View>
@@ -64,7 +85,7 @@ const DoctorProfileForm3 = ({ handlePressSubmit, handlePressBack }) => {
                     <AppButton
                         variant="primary"
                         btnLabel="Save"
-                        onPress={onPressSubmit}
+                        onPress={handleSubmit(onPressSubmit)}
                     />
                 </View>
             </View>

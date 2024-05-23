@@ -15,15 +15,11 @@ const formSchema = z.object({
     website: z.string().optional(),
 });
 
-const DoctorProfileForm2 = ({ handlePressNext, handlePressBack }) => {
+const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, specialties }) => {
     // STATES
     const [primarySpecialization, setPrimarySpecialization] = useState({
         value: "",
-        list: [
-            { _id: "1", value: "Cardiology" },
-            { _id: "2", value: "Neurology" },
-            { _id: "3", value: "Orthopedics" },
-        ],
+        list: specialties,
         selectedList: [],
     });
     const [
@@ -89,7 +85,7 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack }) => {
 
     const handlePrimarySelection = (value) => {
         setPrimarySpecialization({
-            ...secondarySpecialization,
+            ...primarySpecialization,
             value: value.text,
             selectedList: value.selectedList,
         });

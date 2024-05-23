@@ -3,7 +3,7 @@ import React from "react";
 import { TextInput } from "react-native-paper";
 import { theme } from "../../../../tailwind.config";
 
-const FormInput = ({ value, label, secureTextEntry, onChangeText, error }) => {
+const FormInput = ({ value, label, secureTextEntry, onChangeText, error, editable = true }) => {
     return (
         <View className="space-y-1">
             <TextInput
@@ -21,6 +21,7 @@ const FormInput = ({ value, label, secureTextEntry, onChangeText, error }) => {
                 }}
                 className="h-[55] bg-light"
                 error={error}
+                editable={editable}
             />
 
             {/* Error Message */}

@@ -20,69 +20,10 @@ import { customTheme } from "../../../../constants/themeConstants";
 import ScreenContainer from "../../components/Containers/ScreenContainer";
 import AppButton from "../../components/Buttons/AppButton";
 import { theme } from "../../../../tailwind.config";
+import { Flex } from "@aws-amplify/ui-react";
+import PatientStory from "../../../../components/Cards/PatientStory";
 
-// we dont need this function
-const generateTimeSlots = (startHour, endHour) => {
-    const slots = [];
-    let currentTime = new Date().setHours(startHour, 0, 0, 0);
-
-    while (new Date(currentTime).getHours() < endHour) {
-        let timeString = new Date(currentTime).toLocaleTimeString([], {
-            timeStyle: "short",
-        });
-        slots.push(timeString);
-        currentTime += 30 * 60 * 1000;
-    }
-
-    return slots;
-};
-
-// Create a component place it inside components folder
-const PatientStory = ({ story }) => {
-    return (
-        <View
-            style={{ backgroundColor: customTheme.colors.light }}
-            className="p-2 rounded-lg mb-4"
-        >
-            <View className="flex-row items-center">
-                <Image
-                    source={require("../../assets/doc1.webp")}
-                    className="w-12 h-12 rounded-full"
-                />
-                <View className="ml-4 flex-1">
-                    <Text className="text-sm font-[appfont-semi]">
-                        {story.name}
-                    </Text>
-                    <View className="flex-row items-center space-x-40">
-                        <Text
-                            style={{ color: customTheme.colors.dark }}
-                            className="text-xs font-[appfont]"
-                        >
-                            {story.date}
-                        </Text>
-                        <View className="flex-row items-center -mt-8">
-                            <Ionicons name="star" size={14} color="#ffd700" />
-                            <Text
-                                style={{ color: customTheme.colors.dark }}
-                                className="text-xs ml-1"
-                            >
-                                {story.rating}
-                            </Text>
-                        </View>
-                    </View>
-                </View>
-            </View>
-            <Text
-                style={{ color: customTheme.colors.dark }}
-                className="text-sm mt-2 font-[appfont]"
-            >
-                {story.comment}
-            </Text>
-        </View>
-    );
-};
-
-const CollapsibleItem = ({ title }) => {
+const CollapsibleItem = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -97,20 +38,19 @@ const CollapsibleItem = ({ title }) => {
             </View>
             {isOpen && (
                 <View className="mt-2">
-                    <Text className="text-sm font-[appfont]">
-                        Details about {title}
-                    </Text>
+                    <Text className="text-sm font-[appfont]">{children}</Text>
                 </View>
             )}
         </TouchableOpacity>
     );
 };
 
+
 export default Appointment = ({ route, navigation }) => {
     // use amplify to fetch the doctor
 
     // dont need it
-    const { name, specialization, zipcode, rating, experience, hospital } =
+    const { name, specialization, zipcode, rating, experience, hospital, city } =
         route.params;
     // doint need it
 
@@ -140,26 +80,17 @@ export default Appointment = ({ route, navigation }) => {
                 "This doctor has been a beacon of hope for my family and me through some challenging times. His exceptional expertise in internal medicine, combined with her warm and empathetic bedside manner, made each consultation comforting. His ability to explain complex health issues in simple terms is remarkable.",
         },
     ];
-
-    const getSlotsForSelectedDay = (type) => {
-        if (type === "video") {
-            return selectedDay === "today" ? todaySlots : tomorrowSlots;
-        } else {
-            return selectedClinicDay === "today"
-                ? clinicTodaySlots
-                : clinicTomorrowSlots;
-        }
-    };
+    
     return (
         <ScreenContainer>
-            <ScrollView style={{ backgroundColor: customTheme.colors.light }}>
+            <ScrollView style={{ backgroundColor: customTheme.colors.light }} className="space-y-4">
                 <View style={{ backgroundColor: customTheme.colors.light }}>
-                    <View className="flex-row items-center px-4 py-2">
+                    <View className="flex-row items-center">
                         <Image
                             source={require("../../assets/doc1.webp")}
                             className="w-24 h-24 rounded-full border border-gray-100"
                         />
-                        <View className="ml-6">
+                        <View style={{ flex: 1 }} className="ml-6">
                             <Text className="text-xl font-[appfont-semi]">{`${name}`}</Text>
                             <Text
                                 style={{ color: customTheme.colors.dark }}
@@ -201,7 +132,7 @@ export default Appointment = ({ route, navigation }) => {
                 </View>
 
                 <View
-                    className="flex-row justify-between items-center mt-3  p-5 rounded-lg shadow mx-4"
+                    className="flex-row justify-between items-center mt-3  p-5 rounded-lg shadow"
                     style={{ backgroundColor: customTheme.colors.lightPrimary }}
                 >
                     <View className="flex-row items-center">
@@ -226,7 +157,7 @@ export default Appointment = ({ route, navigation }) => {
 
                 <View
                     style={{ backgroundColor: customTheme.colors.light }}
-                    className="mt-4 p-4 rounded-lg mx-4"
+                    className=" p-2 rounded-lg"
                 >
                     <BookingSection
                         type="video"
@@ -239,7 +170,7 @@ export default Appointment = ({ route, navigation }) => {
 
                 {/* Clinic Appointment Section */}
                 <View
-                    className="flex-row justify-between items-center mt-5 bg-cyan-100 p-5 rounded-lg shadow mx-4"
+                    className="flex-row justify-between items-center mt-5 bg-cyan-100 p-5 rounded-lg shadow"
                     style={{ backgroundColor: customTheme.colors.primary }}
                 >
                     <View className="flex-row items-center">
@@ -256,18 +187,25 @@ export default Appointment = ({ route, navigation }) => {
                             Clinic Appointment
                         </Text>
                     </View>
+                    <View>
+                        <Text className="text-lg text-black-500 font-[appfont-semi]">{`${zipcode}`}</Text>
+                        <Text
+                            style={{ color: customTheme.colors.dark }}
+                            className="text-md font-[appfont-semi]"
+                        >{`${city}`}</Text>
+                    </View>
                 </View>
 
-                <View>
+                {/* <View>
                     <Text className="text-lg text-black-500 font-[appfont-semi]">{`${zipcode}`}</Text>
                     <Text
                         style={{ color: customTheme.colors.dark }}
                         className="text-md font-[appfont-semi]"
                     >{`${hospital}`}</Text>
-                </View>
+                </View> */}
 
                 {/* Clinic Appointment Time Slots */}
-                <View style={{ backgroundColor: customTheme.colors.light }}>
+                <View style={{ backgroundColor: customTheme.colors.light }} className="p-2">
                     <BookingSection
                         type="clinic"
                         selectedDate={clinicDate}
@@ -278,7 +216,7 @@ export default Appointment = ({ route, navigation }) => {
 
                     {/* Patient Stories Section */}
                     <View>
-                        <Text className="text-lg mt-2 font-[appfont-semi]">
+                        <Text className="text-lg mt-5 font-[appfont-semi]">
                             Patient Stories (+250)
                         </Text>
                         {patientStories.map((story) => (
@@ -287,7 +225,7 @@ export default Appointment = ({ route, navigation }) => {
                     </View>
                 </View>
 
-                <View className="flex-row justify-center -mt-3 mb-4">
+                <View className="flex-row justify-center mb-4">
                     <Text
                         style={{ color: customTheme.colors.primary }}
                         className="font-semibold"
@@ -304,7 +242,7 @@ export default Appointment = ({ route, navigation }) => {
                 {/* Clinic Details Section */}
                 <View
                     style={{ backgroundColor: customTheme.colors.light }}
-                    className="mt-4 mb-2 p-4 rounded-lg shadow mx-4"
+                    className="mt-4 mb-2 p-4 rounded-lg shadow mx-2"
                 >
                     <Text className="text-xl mb-3 font-[appfont-semi]">
                         Clinic Details
@@ -320,7 +258,7 @@ export default Appointment = ({ route, navigation }) => {
                         </View>
                     </View>
 
-                    <Text className="text-sm font-[appfont-semi] text-gray-500 mt-1">{`${hospital}`}</Text>
+                    <Text className="text-sm font-[appfont-semi] text-gray-500 mt-1">{`${city}`}</Text>
 
                     {/* Map Section */}
                     <InteractiveMapView
@@ -368,13 +306,19 @@ export default Appointment = ({ route, navigation }) => {
                     </TouchableOpacity>
                 </View>
 
-                <View className="mt-4 mb-24 p-4 bg-white rounded-lg  mx-4">
-                    {/* <Text className="text-lg font-semibold">Doctor Details</Text> */}
-
-                    <CollapsibleItem title="Specializations" />
-                    <CollapsibleItem title="Education" />
-                    <CollapsibleItem title="Experience" />
-                    <CollapsibleItem title="Awards And Recognitions" />
+                <View className="mt-4 mb-24 p-4 bg-white rounded-lg">
+                    <CollapsibleItem title="Specializations">
+                        Specialization: {specialization}
+                    </CollapsibleItem>
+                    <CollapsibleItem title="Education">
+                        {/* Add education details here */}
+                    </CollapsibleItem>
+                    <CollapsibleItem title="Experience">
+                        {/* Add experience details here */}
+                    </CollapsibleItem>
+                    <CollapsibleItem title="Awards And Recognitions">
+                        {/* Add awards and recognitions details here */}
+                    </CollapsibleItem>
                 </View>
             </ScrollView>
 
@@ -410,3 +354,4 @@ export default Appointment = ({ route, navigation }) => {
         </ScreenContainer>
     );
 };
+

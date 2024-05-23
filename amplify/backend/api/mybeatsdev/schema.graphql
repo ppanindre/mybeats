@@ -13,6 +13,7 @@ type Doctor @model @auth(rules: [{ allow: public }]) {
   specialties: [Specialty] @manyToMany(relationName: "DoctorSpecialties")
   address: String
   city: String
+  experience: String
   zipcode: String! @index(name: "byzipcode", queryField: "doctorByZipcode")
 appointmentSlots: [AppointmentSlot]
     @hasMany(indexName: "byDoctor", fields: ["doctorID"])

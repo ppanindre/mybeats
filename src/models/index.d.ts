@@ -21,6 +21,7 @@ type EagerDoctor = {
   readonly specialties?: (DoctorSpecialties | null)[] | null;
   readonly address?: string | null;
   readonly city?: string | null;
+  readonly experience?: string | null;
   readonly zipcode: string;
   readonly appointmentSlots?: (AppointmentSlot | null)[] | null;
   readonly createdAt?: string | null;
@@ -42,6 +43,7 @@ type LazyDoctor = {
   readonly specialties: AsyncCollection<DoctorSpecialties>;
   readonly address?: string | null;
   readonly city?: string | null;
+  readonly experience?: string | null;
   readonly zipcode: string;
   readonly appointmentSlots: AsyncCollection<AppointmentSlot>;
   readonly createdAt?: string | null;

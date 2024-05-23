@@ -67,7 +67,7 @@ export default function ActionButton({ excludeId3 = false }) {
     };
 
     return (
-        <View style={{ marginTop: 5 }}>
+        <View style={{ marginTop: 5, marginLeft:-10 }}>
             <FlatList
                 data={visibleActions}
                 columnWrapperStyle={{

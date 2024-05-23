@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
     View,
     FlatList,
@@ -7,7 +7,8 @@ import {
     ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
+import { generateClient } from "aws-amplify/api";
+import { listDoctors, listSpecialties, listDoctorSpecialties } from "../../../graphql/queries";
 import NavigationCard from "../../../../components/Cards/NavigationCard";
 import DoctorCard from "../../../../components/Cards/DoctorCard";
 import PharmacyCard from "../../../../components/Cards/PharmacyCard";
@@ -25,13 +26,75 @@ const PatientDashboard = () => {
     // Declare navigation instance
     const navigation = useNavigation();
 
+    const client = generateClient();
+
+    const [doctors, setDoctors] = useState([]);
+
+    const [specialties, setSpecialties] = useState([]);
+    const [doctorSpecialties, setDoctorSpecialties] = useState([]);
+
+    const fetchDoctors = async () => {
+        try {
+            const response = await client.graphql({
+                query: listDoctors,
+            });
+            const doctors = response.data.listDoctors.items.map((doctor, index) => ({
+                ...doctor,
+                id: doctor.id || index.toString(),
+            }));
+            setDoctors(doctors);
+        } catch (error) {
+            console.error("Error fetching doctors", error);
+        }
+    };
+
+    const fetchSpecialties = async () => {
+        try {
+            const response = await client.graphql({
+                query: listSpecialties,
+            });
+            const specialties = response.data.listSpecialties.items;
+            setSpecialties(specialties);
+        } catch (error) {
+            console.error("Error fetching specialties", error);
+        }
+    };
+
+    const fetchDoctorSpecialties = async () => {
+        try {
+            const response = await client.graphql({
+                query: listDoctorSpecialties,
+            });
+            const doctorSpecialties = response.data.listDoctorSpecialties.items;
+            setDoctorSpecialties(doctorSpecialties);
+        } catch (error) {
+            console.error("Error fetching doctor specialties", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchDoctors();
+        fetchSpecialties();
+        fetchDoctorSpecialties();
+    }, []);
+
+    const getDoctorSpecialty = (doctorId) => {
+        const docSpecialty = doctorSpecialties.find(ds => ds.doctorDoctorID === doctorId);
+        if (docSpecialty) {
+            const specialty = specialties.find(s => s.id === docSpecialty.specialtyId);
+            return specialty ? specialty.name : "No specialty";
+        }
+        return "No specialty";
+    };
+
     return (
         // Replace with ScreenContainer
         <CustomSafeView>
             <TopNavbar showSync={false} isMyBeats={true} />
 
             <ScreenContainer>
-                <ScrollView showsVerticalScrollIndicator={false}>
+                <ScrollView showsVerticalScrollIndicator={false}
+                contentContainerStyle={{paddingBottom:100}}>
                     <View className="space-y-5">
                         <View>
                             <FormInput label="Search Doctor, Health Condition, Pincode" />
@@ -110,7 +173,7 @@ const PatientDashboard = () => {
                         </View>
 
                         {/* Doctors based on zipcode */}
-                        <View className="flex-row justify-between items-center px-4">
+                        <View className="flex-row justify-between items-center">
                             <Text className="text-lg font-[appfont-semi]">
                                 {" "}
                                 Doctors near You
@@ -127,36 +190,42 @@ const PatientDashboard = () => {
                             </TouchableOpacity>
                         </View>
 
-                        {/* Doctor data */}
-                        <FlatList
-                            data={doctorData}
-                            keyExtractor={(item, index) =>
-                                item.id.toString() || index.toString()
+                         {/* Doctor data */}
+                         <FlatList
+                            data={doctors}
+                            keyExtractor={(item) =>
+                                item.id.toString()
                             }
                             horizontal={true}
                             showsHorizontalScrollIndicator={false}
                             contentContainerStyle={{
                                 gap: 10,
-                                padding: 20,
+                                padding: 5,
                             }}
                             renderItem={({ item: doctor }) => (
                                 <View key={doctor.id} className="w-[300]">
                                     <TouchableOpacity
-                                        onPress={() =>
-                                            navigation.navigate(
-                                                "appointment",
-                                                doctor
-                                            )
-                                        }
+                                       onPress={() =>
+                                        navigation.navigate(
+                                            "appointment",
+                                            {
+                                                name: `${doctor.firstname} ${doctor.lastname}`,
+                                                specialization: doctor.specialization,
+                                                zipcode: doctor.zipcode,
+                                                rating: doctor.rating,
+                                                experience: doctor.experience,
+                                                city: doctor.city,
+                                                specialization: getDoctorSpecialty(doctor.id)
+                                            }
+                                        )
+                                    }
                                     >
                                         <DoctorCard
-                                            doctorName={doctor.name}
-                                            doctorHospital={doctor.hospital}
+                                            doctorName={`${doctor.firstname} ${doctor.lastname}`}
+                                            doctorHospital={doctor.zipcode}
                                             doctorRating={doctor.rating}
                                             doctorExperience={doctor.experience}
-                                            doctorSpecialist={
-                                                doctor.specialization
-                                            }
+                                            doctorSpecialist={getDoctorSpecialty(doctor.id)}
                                         />
                                     </TouchableOpacity>
                                 </View>
@@ -164,7 +233,7 @@ const PatientDashboard = () => {
                         />
 
                         {/* Pharmacy based on the zip codes */}
-                        <View className="flex-row justify-between items-center px-4">
+                        <View className="flex-row justify-between items-center">
                             <Text className="text-lg font-[appfont-semi]">
                                 Pharmacy near you
                             </Text>
@@ -189,7 +258,7 @@ const PatientDashboard = () => {
                             horizontal={true}
                             showsHorizontalScrollIndicator={false}
                             renderItem={({ item: pharmacy }) => (
-                                <View key={pharmacy.id} className="w-[300]">
+                                <View key={pharmacy.id} className="w-[300] border rounded-lg" style={{borderColor:customTheme.colors.darkSecondary}}>
                                     <TouchableOpacity
                                         onPress={() =>
                                             navigation.navigate(
@@ -206,11 +275,11 @@ const PatientDashboard = () => {
                                     </TouchableOpacity>
                                 </View>
                             )}
-                            contentContainerStyle={{ padding: 20, gap: 10 }}
+                            contentContainerStyle={{ padding: 5, gap: 10 }}
                         />
 
                         {/* Labs based on the zipcode */}
-                        <View className="flex-row justify-between items-center px-4">
+                        <View className="flex-row justify-between items-center">
                             <Text className="text-lg font-[appfont-semi]">
                                 Labs near you
                             </Text>
@@ -250,7 +319,7 @@ const PatientDashboard = () => {
                                     </TouchableOpacity>
                                 </View>
                             )}
-                            contentContainerStyle={{ padding: 20, gap: 10 }}
+                            contentContainerStyle={{ padding: 5, gap: 10 }}
                         />
                     </View>
                 </ScrollView>
