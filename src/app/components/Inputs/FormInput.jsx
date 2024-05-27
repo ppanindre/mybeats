@@ -12,18 +12,17 @@ const FormInput = ({ value, label, secureTextEntry, onChangeText, error, editabl
                 secureTextEntry={secureTextEntry}
                 onChangeText={onChangeText}
                 mode="outlined"
-                outlineColor={theme.colors.dark}
+                outlineColor={editable ? theme.colors.dark : theme.colors.darkSecondary}
                 theme={{
                     colors: {
                         primary: theme.colors.primary,
                         error: theme.colors.error,
                     },
                 }}
-                className="h-[55] bg-light"
+                className={`h-[55] ${editable ? 'bg-light' : 'bg-light'}`}
                 error={error}
                 editable={editable}
             />
-
             {/* Error Message */}
             {error && <Text className="text-error">{error.message}</Text>}
         </View>

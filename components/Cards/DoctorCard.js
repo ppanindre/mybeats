@@ -10,6 +10,7 @@ const DoctorCard = ({
     doctorHospital,
     doctorRating,
     doctorExperience,
+    doctoravailableforVideoConsultation
 }) => {
     return (
         <View className="rounded-lg  bg-white p-5 h-[150] w-[96%] justify-center shadow-md"
@@ -25,21 +26,20 @@ const DoctorCard = ({
                     {/* Doctor Name */}
                     <View style={{ flex: 1 }}>
                         <Text className="flex text-black text-lg font-[appfont-bold]"
-                        numberOfLines={1}>
+                            numberOfLines={1}>
                             {doctorName}
                         </Text>
+                    <View className="flex-row justify-between items-center">
                         <Text
                             style={{ color: customTheme.colors.dark }}
                             className="text-md font-[appfont-bold]"
                         >
                             {doctorSpecialist}
                         </Text>
-                        <Text
-                            style={{ color: customTheme.colors.dark }}
-                            className="text-xs font-[appfont]"
-                        >
-                            {doctorHospital}
-                        </Text>
+                        {doctoravailableforVideoConsultation && (
+                        <Ionicons name="videocam" size={24} style={{ color: customTheme.colors.light }} />
+                    )}
+                    </View>
                     </View>
                 </View>
 

@@ -13,7 +13,7 @@ const colors = {
     LIGHT_GRAY: '#e6e8eb',
     GRAY: '#a6a4a4',
   };
-export default function ActionButton({ excludeId3 = false }) {
+export default function ActionButton({ excludeId3 = false, website }) {
     const [callModalVisible, setCallModalVisible] = useState(false);
     const [micOn, setMicOn] = useState(true);
     const [cameraOn, setCameraOn] = useState(true);
@@ -47,8 +47,16 @@ export default function ActionButton({ excludeId3 = false }) {
         },
     ];
 
-    // Filter out the item based on the excludeId3 prop
-    const visibleActions = excludeId3 ? actionButtonList.filter(item => item.id !== 3) : actionButtonList;
+     // Filtering out the item based on website validity
+     const visibleActions = actionButtonList.filter(item => {
+        if (excludeId3 && item.id === "3") {
+            return false;
+        }
+        if (item.name === 'Website' && (!website || website.trim().length === 0)) {
+            return false;
+        }
+        return true;
+    });
 
 
     const handlePress = (itemName) => {
@@ -57,8 +65,8 @@ export default function ActionButton({ excludeId3 = false }) {
                 const phoneNumber = '2222222222';
                 Linking.openURL(`tel:${phoneNumber}`);
                 break;
-            case 'Video Call':
-                setCallModalVisible(true);
+            case 'Website':
+                Linking.openURL(website);
                 break;
             default:
                 console.log('Action not supported');

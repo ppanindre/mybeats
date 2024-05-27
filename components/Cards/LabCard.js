@@ -21,14 +21,6 @@ const LabCard = ({ labName, labRating, labStoryCount }) => {
                     <Text className="text-xs font-[appfont]">{labRating} {labStoryCount}</Text>
                 </View>
             </View>
-            <TouchableOpacity
-                onPress={() => {
-                    /* logic to handle phone call */
-                }}
-                className="rounded-full p-3 shadow-lg" style={{backgroundColor: customTheme.colors.primary}}
-            >
-                <Ionicons name="call-outline" size={24} color="white" />
-            </TouchableOpacity>
         </View>
     );
 };

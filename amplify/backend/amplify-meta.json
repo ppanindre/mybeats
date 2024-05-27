@@ -31,12 +31,12 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync",
-      "lastPushTimeStamp": "2024-05-22T17:32:38.159Z",
+      "lastPushTimeStamp": "2024-05-25T04:51:34.845Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-mybeatsdev-dev-efa9b-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apimybeatsdev"
       },
-      "lastPushDirHash": "mFp49hi+5j9SsG/zsPp4Vknf210="
+      "lastPushDirHash": "fxSEPyo40oZVnnbReHy04wP0bvI="
     }
   }
 }

@@ -25,10 +25,10 @@ const formSchema = z.object({
         .string()
         .min(5, "License number must be at least 5 characters")
         .max(20, "License number must not exceed 20 characters"),
-    upiId: z.string().email("Please enter a valid UPI ID"),
-});
+        upiId: z.string().regex(/^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/, "Please enter a valid UPI ID"),
+    });
 
-const DoctorProfileForm1 = ({ handlePressNext }) => {
+const DoctorProfileForm1 = ({ handlePressNext, initialData ={} }) => {
 
     // getting user detais from redux for email
     const user = useSelector((state) => state.UserReducer);
@@ -66,16 +66,15 @@ const DoctorProfileForm1 = ({ handlePressNext }) => {
 
     const { control, handleSubmit, setValue } = useForm({
         defaultValues: {
-            email: "",
-            firstName: "",
-            lastName: "",
-            phoneNumber: "",
-            licenseNumber: "",
-            upiId: "",
+            email: initialData.email || "",
+            firstName: initialData.firstName || "",
+            lastName: initialData.lastName || "",
+            phoneNumber: initialData.phoneNumber || "",
+            licenseNumber: initialData.licenseNumber || "",
+            upiId: initialData.upiId || "",
         },
         resolver: zodResolver(formSchema),
     });
-
     // Setting the default value for email after fetching from redux
     useEffect(() => {
         if (user && user.email) {
