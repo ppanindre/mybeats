@@ -11,10 +11,19 @@ type Doctor @model @auth(rules: [{ allow: public }]) {
   licenseNumber: String
   upiId: String
   specialties: [Specialty] @manyToMany(relationName: "DoctorSpecialties")
+  primarySpecializationId: ID @index(name: "byPrimarySpecialization")
+  primarySpecialization: Specialty @hasOne(fields: ["primarySpecializationId"])
   address: String
   city: String
+  experience: String
+  secondarySpecialization: String
+  availableForVideoConsultation: Boolean
+  feeForVideoConsultation: String
+  educationExperience: String
+  awardsRecognition: String
+  website: String
   zipcode: String! @index(name: "byzipcode", queryField: "doctorByZipcode")
-appointmentSlots: [AppointmentSlot]
+  appointmentSlots: [AppointmentSlot]
     @hasMany(indexName: "byDoctor", fields: ["doctorID"])
 }
 

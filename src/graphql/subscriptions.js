@@ -16,8 +16,26 @@ export const onCreateDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
+      primarySpecializationId
+      primarySpecialization {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
       address
       city
+      experience
+      secondarySpecialization
+      availableForVideoConsultation
+      feeForVideoConsultation
+      educationExperience
+      awardsRecognition
+      website
       zipcode
       appointmentSlots {
         nextToken
@@ -48,8 +66,26 @@ export const onUpdateDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
+      primarySpecializationId
+      primarySpecialization {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
       address
       city
+      experience
+      secondarySpecialization
+      availableForVideoConsultation
+      feeForVideoConsultation
+      educationExperience
+      awardsRecognition
+      website
       zipcode
       appointmentSlots {
         nextToken
@@ -80,8 +116,26 @@ export const onDeleteDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
+      primarySpecializationId
+      primarySpecialization {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
       address
       city
+      experience
+      secondarySpecialization
+      availableForVideoConsultation
+      feeForVideoConsultation
+      educationExperience
+      awardsRecognition
+      website
       zipcode
       appointmentSlots {
         nextToken
@@ -251,8 +305,16 @@ export const onCreateAppointmentSlot = /* GraphQL */ `
         phoneNumber
         licenseNumber
         upiId
+        primarySpecializationId
         address
         city
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
         createdAt
         updatedAt
@@ -304,8 +366,16 @@ export const onUpdateAppointmentSlot = /* GraphQL */ `
         phoneNumber
         licenseNumber
         upiId
+        primarySpecializationId
         address
         city
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
         createdAt
         updatedAt
@@ -357,8 +427,16 @@ export const onDeleteAppointmentSlot = /* GraphQL */ `
         phoneNumber
         licenseNumber
         upiId
+        primarySpecializationId
         address
         city
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
         createdAt
         updatedAt
@@ -407,8 +485,16 @@ export const onCreateDoctorSpecialties = /* GraphQL */ `
         phoneNumber
         licenseNumber
         upiId
+        primarySpecializationId
         address
         city
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
         createdAt
         updatedAt
@@ -452,8 +538,16 @@ export const onUpdateDoctorSpecialties = /* GraphQL */ `
         phoneNumber
         licenseNumber
         upiId
+        primarySpecializationId
         address
         city
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
         createdAt
         updatedAt
@@ -497,8 +591,16 @@ export const onDeleteDoctorSpecialties = /* GraphQL */ `
         phoneNumber
         licenseNumber
         upiId
+        primarySpecializationId
         address
         city
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
         createdAt
         updatedAt

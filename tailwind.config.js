@@ -11,6 +11,7 @@ module.exports = {
             dark: "#4A4A4A",
             lightPrimary: "#FDBF60",
             error: "#FF204E",
+            darkSecondary: "#d9d9d9", // grey
         },
     },
     plugins: [],

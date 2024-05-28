@@ -20,69 +20,10 @@ import { customTheme } from "../../../../constants/themeConstants";
 import ScreenContainer from "../../components/Containers/ScreenContainer";
 import AppButton from "../../components/Buttons/AppButton";
 import { theme } from "../../../../tailwind.config";
+import { Flex } from "@aws-amplify/ui-react";
+import PatientStory from "../../../../components/Cards/PatientStory";
 
-// we dont need this function
-const generateTimeSlots = (startHour, endHour) => {
-    const slots = [];
-    let currentTime = new Date().setHours(startHour, 0, 0, 0);
-
-    while (new Date(currentTime).getHours() < endHour) {
-        let timeString = new Date(currentTime).toLocaleTimeString([], {
-            timeStyle: "short",
-        });
-        slots.push(timeString);
-        currentTime += 30 * 60 * 1000;
-    }
-
-    return slots;
-};
-
-// Create a component place it inside components folder
-const PatientStory = ({ story }) => {
-    return (
-        <View
-            style={{ backgroundColor: customTheme.colors.light }}
-            className="p-2 rounded-lg mb-4"
-        >
-            <View className="flex-row items-center">
-                <Image
-                    source={require("../../assets/doc1.webp")}
-                    className="w-12 h-12 rounded-full"
-                />
-                <View className="ml-4 flex-1">
-                    <Text className="text-sm font-[appfont-semi]">
-                        {story.name}
-                    </Text>
-                    <View className="flex-row items-center space-x-40">
-                        <Text
-                            style={{ color: customTheme.colors.dark }}
-                            className="text-xs font-[appfont]"
-                        >
-                            {story.date}
-                        </Text>
-                        <View className="flex-row items-center -mt-8">
-                            <Ionicons name="star" size={14} color="#ffd700" />
-                            <Text
-                                style={{ color: customTheme.colors.dark }}
-                                className="text-xs ml-1"
-                            >
-                                {story.rating}
-                            </Text>
-                        </View>
-                    </View>
-                </View>
-            </View>
-            <Text
-                style={{ color: customTheme.colors.dark }}
-                className="text-sm mt-2 font-[appfont]"
-            >
-                {story.comment}
-            </Text>
-        </View>
-    );
-};
-
-const CollapsibleItem = ({ title }) => {
+const CollapsibleItem = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -97,21 +38,33 @@ const CollapsibleItem = ({ title }) => {
             </View>
             {isOpen && (
                 <View className="mt-2">
-                    <Text className="text-sm font-[appfont]">
-                        Details about {title}
-                    </Text>
+                    <Text className="text-sm font-[appfont]">{children}</Text>
                 </View>
             )}
         </TouchableOpacity>
     );
 };
 
+
 export default Appointment = ({ route, navigation }) => {
     // use amplify to fetch the doctor
 
     // dont need it
-    const { name, specialization, zipcode, rating, experience, hospital } =
-        route.params;
+    const {
+        name,
+        specialization,
+        zipcode,
+        rating,
+        experience,
+        city,
+        address,
+        secondarySpecialization,
+        educationExperience,
+        awardsRecognition,
+        availableForVideoConsultation,
+        feeForVideoConsultation,
+        website
+    } = route.params;
     // doint need it
 
     // State for clinic bookings
@@ -141,25 +94,16 @@ export default Appointment = ({ route, navigation }) => {
         },
     ];
 
-    const getSlotsForSelectedDay = (type) => {
-        if (type === "video") {
-            return selectedDay === "today" ? todaySlots : tomorrowSlots;
-        } else {
-            return selectedClinicDay === "today"
-                ? clinicTodaySlots
-                : clinicTomorrowSlots;
-        }
-    };
     return (
         <ScreenContainer>
-            <ScrollView style={{ backgroundColor: customTheme.colors.light }}>
+            <ScrollView style={{ backgroundColor: customTheme.colors.light }} className="space-y-4">
                 <View style={{ backgroundColor: customTheme.colors.light }}>
-                    <View className="flex-row items-center px-4 py-2">
+                    <View className="flex-row items-center">
                         <Image
                             source={require("../../assets/doc1.webp")}
-                            className="w-24 h-24 rounded-full border border-gray-100"
+                            className="w-24 h-24 rounded-full border border-primary"
                         />
-                        <View className="ml-6">
+                        <View style={{ flex: 1 }} className="ml-6">
                             <Text className="text-xl font-[appfont-semi]">{`${name}`}</Text>
                             <Text
                                 style={{ color: customTheme.colors.dark }}
@@ -167,10 +111,6 @@ export default Appointment = ({ route, navigation }) => {
                             >
                                 {specialization}
                             </Text>
-                            <Text
-                                style={{ color: customTheme.colors.dark }}
-                                className="text-sm text-gray-500 font-[appfont]"
-                            >{`${zipcode}`}</Text>
                             <View className="flex-row items-center mt-1">
                                 <Ionicons
                                     name="star"
@@ -196,98 +136,149 @@ export default Appointment = ({ route, navigation }) => {
                 </View>
                 <View className="p-4">
                     {/* <HorizontalLine /> */}
-                    <ActionButton excludeId3={false} />
+                    <ActionButton website={website} />
                     {/* <HorizontalLine /> */}
                 </View>
 
-                <View
-                    className="flex-row justify-between items-center mt-3  p-5 rounded-lg shadow mx-4"
-                    style={{ backgroundColor: customTheme.colors.lightPrimary }}
-                >
-                    <View className="flex-row items-center">
-                        <Ionicons
-                            name="videocam"
-                            size={24}
-                            style={{ color: customTheme.colors.light }}
-                            className="bg-blue-100 p-1 rounded-full"
-                        />
-                        <Text
-                            className="text-sm ml-2 font-[appfont-semi]"
-                            style={{ color: customTheme.colors.light }}
-                        >
-                            Video Consultation
-                        </Text>
-                    </View>
-                    <Text
-                        className="text-lg font-[appfont-semi] text-gray-800"
-                        style={{ color: customTheme.colors.light }}
-                    >{`$50 Fee`}</Text>
-                </View>
-
-                <View
-                    style={{ backgroundColor: customTheme.colors.light }}
-                    className="mt-4 p-4 rounded-lg mx-4"
-                >
-                    <BookingSection
-                        type="video"
-                        selectedDate={videoDate}
-                        setSelectedDate={setVideoDate}
-                        selectedTime={videoTime}
-                        setSelectedTime={setVideoTime}
-                    />
-                </View>
-
-                {/* Clinic Appointment Section */}
-                <View
-                    className="flex-row justify-between items-center mt-5 bg-cyan-100 p-5 rounded-lg shadow mx-4"
-                    style={{ backgroundColor: customTheme.colors.primary }}
-                >
-                    <View className="flex-row items-center">
-                        <Ionicons
-                            name="business"
-                            size={24}
-                            style={{ color: customTheme.colors.light }}
-                            className="bg-blue-100 p-1 rounded-full"
-                        />
-                        <Text
-                            className="text-sm ml-2 font-[appfont-semi]"
-                            style={{ color: customTheme.colors.light }}
-                        >
-                            Clinic Appointment
-                        </Text>
-                    </View>
-                </View>
-
                 <View>
+                    {/* Clinic Appointment Section */}
+                    <View
+                        className="flex-row justify-between items-center bg-cyan-100 p-5 rounded-lg shadow"
+                        style={{ backgroundColor: customTheme.colors.primary }}
+                    >
+                        <View className="flex-row items-center">
+                            <Ionicons
+                                name="business"
+                                size={24}
+                                style={{ color: customTheme.colors.light }}
+                                className="bg-blue-100 p-1 rounded-full"
+                            />
+                            <Text
+                                className="text-sm ml-2 font-[appfont-semi]"
+                                style={{ color: customTheme.colors.light }}
+                            >
+                                Clinic Appointment
+                            </Text>
+                        </View>
+                        {/* <View>
+                        <Text className="text-lg text-black-500 font-[appfont-semi]">{`${zipcode}`}</Text>
+                        <Text
+                            style={{ color: customTheme.colors.dark }}
+                            className="text-md font-[appfont-semi]"
+                        >{`${city}`}</Text>
+                    </View> */}
+                    </View>
+
+                    {/* <View>
                     <Text className="text-lg text-black-500 font-[appfont-semi]">{`${zipcode}`}</Text>
                     <Text
                         style={{ color: customTheme.colors.dark }}
                         className="text-md font-[appfont-semi]"
                     >{`${hospital}`}</Text>
-                </View>
+                </View> */}
 
-                {/* Clinic Appointment Time Slots */}
-                <View style={{ backgroundColor: customTheme.colors.light }}>
-                    <BookingSection
-                        type="clinic"
-                        selectedDate={clinicDate}
-                        setSelectedDate={setClinicDate}
-                        selectedTime={clinicTime}
-                        setSelectedTime={setClinicTime}
-                    />
-
-                    {/* Patient Stories Section */}
-                    <View>
-                        <Text className="text-lg mt-2 font-[appfont-semi]">
-                            Patient Stories (+250)
-                        </Text>
-                        {patientStories.map((story) => (
-                            <PatientStory key={story.id} story={story} />
-                        ))}
+                    {/* Clinic Appointment Time Slots */}
+                    <View style={{ backgroundColor: customTheme.colors.light }} className="p-2">
+                        <BookingSection
+                            type="clinic"
+                            selectedDate={clinicDate}
+                            setSelectedDate={setClinicDate}
+                            selectedTime={clinicTime}
+                            setSelectedTime={setClinicTime}
+                        />
                     </View>
                 </View>
 
-                <View className="flex-row justify-center -mt-3 mb-4">
+                <View>
+                    {availableForVideoConsultation && (
+                        <>
+                            <View
+                                className="flex-row justify-between items-center mt-3  p-5 rounded-lg shadow"
+                                style={{ backgroundColor: customTheme.colors.lightPrimary }}
+                            >
+                                <View className="flex-row items-center">
+                                    <Ionicons
+                                        name="videocam"
+                                        size={24}
+                                        style={{ color: customTheme.colors.light }}
+                                        className="bg-blue-100 p-1 rounded-full"
+                                    />
+                                    <Text
+                                        className="text-sm ml-2 font-[appfont-semi]"
+                                        style={{ color: customTheme.colors.light }}
+                                    >
+                                        Video Consultation
+                                    </Text>
+                                </View>
+                                <Text
+                                    className="text-lg font-[appfont-semi] text-gray-800"
+                                    style={{ color: customTheme.colors.light }}
+                                >{`$${feeForVideoConsultation} Fee`}</Text>
+                            </View>
+                            <View
+                                style={{ backgroundColor: customTheme.colors.light }}
+                                className=" p-2 rounded-lg"
+                            >
+                                <BookingSection
+                                    type="video"
+                                    selectedDate={videoDate}
+                                    setSelectedDate={setVideoDate}
+                                    selectedTime={videoTime}
+                                    setSelectedTime={setVideoTime}
+                                />
+                            </View>
+                        </>
+                    )}
+                </View>
+
+                {/* Clinic Details Section */}
+                <View
+                    style={{ backgroundColor: customTheme.colors.light }}
+                    className="mt-4 mb-2 p-4 rounded-lg shadow mx-2 space-y-3"
+                >
+                    <Text className="text-xl mb-3 font-[appfont-semi]">
+                        Clinic Location
+                    </Text>
+
+                    {/* Map Section */}
+                    <InteractiveMapView
+                        name={name}
+                        city={city}
+                        address={address}
+                        zipcode={zipcode}
+                    />
+
+                    <TouchableOpacity
+                        style={{ backgroundColor: customTheme.colors.primary }}
+                        className="mt-3 text-white rounded-md py-2 px-4"
+                    >
+                        <View className="flex-row justify-center items-center">
+                            <Ionicons
+                                name="create-sharp"
+                                size={20}
+                                style={{ color: customTheme.colors.light }}
+                            />
+                            <Text
+                                style={{ color: customTheme.colors.light }}
+                                className="ml-2 font-[appfont-semi]"
+                            >
+                                Write a review
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+
+                 {/* Patient Stories Section */}
+                 <View className="p-2">
+                    <Text className="text-lg mt-5 font-[appfont-semi]">
+                        Patient Stories (+250)
+                    </Text>
+                    {patientStories.map((story) => (
+                        <PatientStory key={story.id} story={story} />
+                    ))}
+                </View>
+
+                <View className="flex-row justify-center mb-4">
                     <Text
                         style={{ color: customTheme.colors.primary }}
                         className="font-semibold"
@@ -296,102 +287,40 @@ export default Appointment = ({ route, navigation }) => {
                     </Text>
                     <Ionicons
                         name="chevron-forward"
-                        size={15}
-                        color="#3b82f6"
+                        size={16}
+                        style={{ color: customTheme.colors.primary }}
                     />
                 </View>
 
-                {/* Clinic Details Section */}
-                <View
-                    style={{ backgroundColor: customTheme.colors.light }}
-                    className="mt-4 mb-2 p-4 rounded-lg shadow mx-4"
-                >
-                    <Text className="text-xl mb-3 font-[appfont-semi]">
-                        Clinic Details
-                    </Text>
-
-                    <View className="flex-row justify-between items-center mt-2">
-                        <Text className="text-lg font-[appfont-semi]">{`${zipcode}`}</Text>
-                        <View className="flex-row items-center">
-                            <Ionicons name="star" size={15} color="#ffd700" />
-                            <Text className="text-md font-medium ml-1">
-                                4.5
-                            </Text>
-                        </View>
-                    </View>
-
-                    <Text className="text-sm font-[appfont-semi] text-gray-500 mt-1">{`${hospital}`}</Text>
-
-                    {/* Map Section */}
-                    <InteractiveMapView
-                        latitude={37.78825}
-                        longitude={-122.4324}
-                        name={name}
-                        zipcode={zipcode}
-                    />
-
-                    <View className="flex-row justify-between items-center mt-3">
-                        <View>
-                            <Text className="text-sm font-[appfont-semi]">
-                                Timings
-                            </Text>
-                            <Text className="text-sm font-[appfont]">
-                                Mon - Sun
-                            </Text>
-                        </View>
-                        <Text className="text-sm font-[appfont-semi] text-green-600">
-                            Open Today
-                        </Text>
-                    </View>
-
-                    <Text className="text-sm font-[appfont] mt-1">
-                        08:00 AM - 10:00 PM
-                    </Text>
-
-                    <TouchableOpacity
-                        style={{ backgroundColor: customTheme.colors.primary }}
-                        className="mt-3 text-white rounded-md py-2 px-4"
-                    >
-                        <View className="flex-row justify-center items-center">
-                            <Ionicons
-                                name="call"
-                                size={20}
-                                style={{ color: customTheme.colors.light }}
-                            />
-                            <Text
-                                style={{ color: customTheme.colors.light }}
-                                className="ml-2 font-[appfont-semi]"
-                            >
-                                Contact Clinic
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-
-                <View className="mt-4 mb-24 p-4 bg-white rounded-lg  mx-4">
-                    {/* <Text className="text-lg font-semibold">Doctor Details</Text> */}
-
-                    <CollapsibleItem title="Specializations" />
-                    <CollapsibleItem title="Education" />
-                    <CollapsibleItem title="Experience" />
-                    <CollapsibleItem title="Awards And Recognitions" />
+                <View className="mt-4 mb-24 p-4 bg-white rounded-lg">
+                    <CollapsibleItem title="Secondary Specializations">
+                        {secondarySpecialization}
+                    </CollapsibleItem>
+                    <CollapsibleItem title="Education">
+                        {educationExperience}
+                    </CollapsibleItem>
+                    <CollapsibleItem title="Awards and Recognitions">
+                        {awardsRecognition}
+                    </CollapsibleItem>
                 </View>
             </ScrollView>
 
             <View className="flex-row bg-light space-x-3">
-                <View className="flex-1">
-                    <AppButton
-                        variant="light"
-                        btnLabel="Video"
-                        btnLeftIcon={
-                            <Ionicons
-                                name="videocam"
-                                size={20}
-                                color={theme.colors.primary}
-                            />
-                        }
-                    />
-                </View>
+                {availableForVideoConsultation && (
+                    <View className="flex-1">
+                        <AppButton
+                            variant="light"
+                            btnLabel="Video"
+                            btnLeftIcon={
+                                <Ionicons
+                                    name="videocam"
+                                    size={20}
+                                    color={theme.colors.primary}
+                                />
+                            }
+                        />
+                    </View>
+                )}
 
                 <View className="flex-1">
                     <AppButton
@@ -410,3 +339,4 @@ export default Appointment = ({ route, navigation }) => {
         </ScreenContainer>
     );
 };
+

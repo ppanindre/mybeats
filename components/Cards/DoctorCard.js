@@ -10,9 +10,11 @@ const DoctorCard = ({
     doctorHospital,
     doctorRating,
     doctorExperience,
+    doctoravailableforVideoConsultation
 }) => {
     return (
-        <View className="rounded-lg bg-white p-5 h-[150] w-[100%] justify-center shadow-md">
+        <View className="rounded-lg  bg-white p-5 h-[150] w-[96%] justify-center shadow-md"
+            style={{ backgroundColor: customTheme.colors.lightPrimary }}>
             <TouchableOpacity className="space-y-3">
                 {/* Doctor Information */}
                 <View className="flex-row items-center space-x-3">
@@ -22,22 +24,22 @@ const DoctorCard = ({
                         className="w-20 h-20 mr-1 rounded-full"
                     />
                     {/* Doctor Name */}
-                    <View>
-                        <Text className="text-black text-lg font-[appfont-bold]">
+                    <View style={{ flex: 1 }}>
+                        <Text className="flex text-black text-lg font-[appfont-bold]"
+                            numberOfLines={1}>
                             {doctorName}
                         </Text>
+                    <View className="flex-row justify-between items-center">
                         <Text
                             style={{ color: customTheme.colors.dark }}
                             className="text-md font-[appfont-bold]"
                         >
                             {doctorSpecialist}
                         </Text>
-                        <Text
-                            style={{ color: customTheme.colors.dark }}
-                            className="text-xs font-[appfont]"
-                        >
-                            {doctorHospital}
-                        </Text>
+                        {doctoravailableforVideoConsultation && (
+                        <Ionicons name="videocam" size={24} style={{ color: customTheme.colors.light }} />
+                    )}
+                    </View>
                     </View>
                 </View>
 

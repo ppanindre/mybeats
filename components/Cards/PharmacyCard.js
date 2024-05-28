@@ -5,10 +5,11 @@ import { customTheme } from "../../constants/themeConstants";
 
 const PharmacyCard = ({ pharmacyLabel, pharmacyPrice, pharmacyRating }) => {
     return (
-        <View className="rounded-lg bg-white shadow-md">
+        <View className="rounded-lg shadow-md" 
+        style={{backgroundColor:customTheme.colors.lightPrimary}}>
             {/* Image card */}
             <View
-                style={{ backgroundColor: customTheme.colors.primary }}
+                style={{ backgroundColor: customTheme.colors.darkSecondary }}
                 className="h-[100] w-[100%] rounded-t-lg"
             ></View>
 

@@ -16,8 +16,26 @@ export const getDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
+      primarySpecializationId
+      primarySpecialization {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
       address
       city
+      experience
+      secondarySpecialization
+      availableForVideoConsultation
+      feeForVideoConsultation
+      educationExperience
+      awardsRecognition
+      website
       zipcode
       appointmentSlots {
         nextToken
@@ -56,8 +74,16 @@ export const listDoctors = /* GraphQL */ `
         phoneNumber
         licenseNumber
         upiId
+        primarySpecializationId
         address
         city
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
         createdAt
         updatedAt
@@ -93,8 +119,16 @@ export const syncDoctors = /* GraphQL */ `
         phoneNumber
         licenseNumber
         upiId
+        primarySpecializationId
         address
         city
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
         createdAt
         updatedAt
@@ -283,8 +317,16 @@ export const getAppointmentSlot = /* GraphQL */ `
         phoneNumber
         licenseNumber
         upiId
+        primarySpecializationId
         address
         city
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
         createdAt
         updatedAt
@@ -395,8 +437,16 @@ export const getDoctorSpecialties = /* GraphQL */ `
         phoneNumber
         licenseNumber
         upiId
+        primarySpecializationId
         address
         city
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
         createdAt
         updatedAt
@@ -482,6 +532,53 @@ export const syncDoctorSpecialties = /* GraphQL */ `
     }
   }
 `;
+export const doctorsByPrimarySpecializationId = /* GraphQL */ `
+  query DoctorsByPrimarySpecializationId(
+    $primarySpecializationId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelDoctorFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    doctorsByPrimarySpecializationId(
+      primarySpecializationId: $primarySpecializationId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
 export const doctorByZipcode = /* GraphQL */ `
   query DoctorByZipcode(
     $zipcode: String!
@@ -505,8 +602,16 @@ export const doctorByZipcode = /* GraphQL */ `
         phoneNumber
         licenseNumber
         upiId
+        primarySpecializationId
         address
         city
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
         createdAt
         updatedAt

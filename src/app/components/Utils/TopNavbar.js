@@ -9,7 +9,7 @@ import {
 import Modal from "react-native-modal";
 import moment from "moment";
 import { TourGuideZone, useTourGuideController } from "rn-tourguide";
-
+import AppButton from "../Buttons/AppButton";
 import SyncButton from "../../../../components/SyncButton";
 import { userAuthActionTypes } from "../../../../store/UserAuthReducer/UserAuthActionTypes";
 import { customTheme } from "../../../../constants/themeConstants";
@@ -268,7 +268,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
 
                     {/* Continue Button */}
                     <View className="flex justify-center items-center mt-4 mb-5">
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             onPress={handleContinue}
                             className="w-full p-4 rounded-lg"
                             style={{
@@ -278,7 +278,12 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                             <Text className="text-center text-white text-md font-[appfont-bold]">
                                 Continue
                             </Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
+                            <AppButton
+                                variant="primary"
+                                btnLabel="Continue"
+                                onPress={handleContinue}
+                            />
                     </View>
                 </View>
             </Modal>

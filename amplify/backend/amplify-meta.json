@@ -14,29 +14,29 @@
   },
   "api": {
     "mybeatsdev": {
-      "service": "AppSync",
-      "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "output": {
         "authConfig": {
+          "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
-            "authenticationType": "API_KEY",
             "apiKeyConfig": {
               "apiKeyExpirationDays": 7
-            }
-          },
-          "additionalAuthenticationProviders": []
+            },
+            "authenticationType": "API_KEY"
+          }
         },
         "GraphQLAPIIdOutput": "heewfprzlza5jfxjx533clppqi",
         "GraphQLAPIEndpointOutput": "https://aayezbhftjezdlcfxzfcg66qhu.appsync-api.us-east-1.amazonaws.com/graphql",
         "GraphQLAPIKeyOutput": "da2-byvr7funmjajvpcqkdekmoj6oe"
       },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync",
+      "lastPushTimeStamp": "2024-05-25T04:51:34.845Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-mybeatsdev-dev-efa9b-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apimybeatsdev"
       },
-      "lastPushTimeStamp": "2024-05-14T18:25:47.052Z",
-      "lastPushDirHash": "+OYeYCQKpWkczATfpEDljB82G4g="
+      "lastPushDirHash": "fxSEPyo40oZVnnbReHy04wP0bvI="
     }
   }
 }
