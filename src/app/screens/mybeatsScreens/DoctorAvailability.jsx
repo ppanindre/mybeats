@@ -19,9 +19,13 @@ const DoctorAvailability = () => {
     const [selectedDate, setSelectedDate] = useState("");
     const [markedDates, setMarkedDates] = useState({});
     const [isUnavailable, setIsUnavailable] = useState(false);
-    const [startTime, setStartTime] = useState(new Date());
     const [timeSlots, setTimeSlots] = useState({});
-    const [endTime, setEndTime] = useState(new Date());
+    const [startTime, setStartTime] = useState(
+        moment().set({ hour: 9, minute: 0, second: 0 }).toDate()
+    );
+    const [endTime, setEndTime] = useState(
+        moment().set({ hour: 10, minute: 0, second: 0 }).toDate()
+    );
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [isTimeStart, setIsTimeStart] = useState(true); // true for start time, false for end time
 
@@ -34,54 +38,6 @@ const DoctorAvailability = () => {
     const allDaysScheduled = Object.values(timeSlots)
         .flat()
         .some((slot) => slot.allDays && slot.dayLabel.includes(dayOfWeek));
-
-    /**
-     * add a new time slot
-     * @param {String} date
-     */
-    const addNewTimeSlot = (date) => {
-        setShowModal(true);
-        // Set the selectedDate to the date for which the new slot is being added
-        setSelectedDate(date);
-        const newStartTime = new Date(selectedDate);
-        newStartTime.setHours(newStartTime.getHours() + 1, 0, 0, 0);
-        const newEndTime = new Date(newStartTime);
-        newEndTime.setHours(newEndTime.getHours() + 1, 0, 0, 0);
-
-        // state to show the modal inputs
-        setStartTime(newStartTime);
-        setEndTime(newEndTime);
-
-        // Indicate which slot is being edited/added
-        setIsTimeStart(true);
-
-        // Show the modal for the user to confirm or adjust the times
-        setShowTimePicker(true);
-    };
-
-    // Function to handle date selection from calendar
-    const handleDatePress = (day) => {
-        const date = new Date(day.dateString);
-        const dayName = moment(day.dateString, "YYYY-MM-DD").format("dddd"); // Get the day name
-
-        setDayOfWeek(dayName);
-        // Update the markedDates state to only have the currently selected date marked
-        const newMarkedDates = {
-            [day.dateString]: {
-                selected: true,
-                selectedColor: theme.colors.primary,
-                selectedTextColor: theme.colors.light,
-            },
-        };
-
-        setShowModal(true);
-        setMarkedDates(newMarkedDates);
-        setSelectedDate(day.dateString);
-        setIsUnavailable(false); // reset availability switch
-        setEndTime(new Date(date.setHours(10, 0, 0, 0))); // default end time
-        setStartTime(new Date(date.setHours(9, 0, 0, 0))); // default start time
-        setShowTimePicker(true);
-    };
 
     /**
      * function to save time
@@ -141,21 +97,21 @@ const DoctorAvailability = () => {
         await fetchAvailability();
     };
 
-    /**
-     * function to remove the time slot
-     * @param {string} date
-     * @param {int} index
-     */
-    const handleRemoveTimeSlot = async (date, index) => {
-        await appointmentService.deleteAppointmentSlot(
-            timeSlots[date][index].id,
-            timeSlots[date][index]._version
-        );
+    const addAvailability = (date) => {
+        // open modal
+        setShowModal(true);
+        setDayOfWeek(moment(date, "YYYY-MM-DD").format("dddd"));
+        const newMarkedDates = {
+            [date]: {
+                selected: true,
+                selectedColor: theme.colors.primary,
+                selectedTextColor: theme.colors.light,
+            },
+        };
 
-        // fetch the updated appointment slots
-        await fetchAvailability();
-
-        Alert.alert("", "Appointment slot has been deleted");
+        setMarkedDates(newMarkedDates);
+        setShowTimePicker(true);
+        setSelectedDate(date);
     };
 
     /**
@@ -201,7 +157,7 @@ const DoctorAvailability = () => {
      * @param {Integer} daySlotIndex
      * @param {Integer} timeSlotIndex
      */
-    const deleteAvailability = async (daySlotIndex, timeSlotIndex) => {
+    const deleteAvailabilitySlot = async (daySlotIndex, timeSlotIndex) => {
         const selectedAvailability =
             availabilitySlots[daySlotIndex].slots[timeSlotIndex];
 
@@ -216,6 +172,8 @@ const DoctorAvailability = () => {
     useEffect(() => {
         fetchAvailability();
     }, []);
+
+    console.log("start time", startTime);
 
     return (
         <ScreenContainer>
@@ -316,15 +274,21 @@ const DoctorAvailability = () => {
                     {/* Calendar */}
                     <CalendarInput
                         markedDates={markedDates}
-                        onDayPress={handleDatePress}
+                        onDayPress={addAvailability}
                     />
 
                     {availabilitySlots.map((daySlot, dayIndex) => (
                         <View
                             key={dayIndex}
-                            className="border-b border-dark py-5 flex-row justify-between items-center"
+                            className={`border-b border-dark py-5 flex-row justify-between items-center ${
+                                availabilitySlots.length - 1 === dayIndex &&
+                                "border-b-0"
+                            }`}
                         >
-                            <TouchableOpacity className="flex-row space-x-2 items-center">
+                            <TouchableOpacity
+                                onPress={() => addAvailability(daySlot.date)}
+                                className="flex-row space-x-2 items-center"
+                            >
                                 <Text className="font-[appfont-semi]">
                                     {moment(daySlot.date, "YYYY-MM-DD").format(
                                         "ddd, DD MMM"
@@ -344,7 +308,7 @@ const DoctorAvailability = () => {
                                         <TouchableOpacity
                                             key={timeSlotIndex}
                                             onPress={() =>
-                                                deleteAvailability(
+                                                deleteAvailabilitySlot(
                                                     dayIndex,
                                                     timeSlotIndex
                                                 )
