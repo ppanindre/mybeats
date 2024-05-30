@@ -7,13 +7,25 @@ import moment from "moment";
  * @returns {Array<int>}
  */
 export const getAllDaysOfTheYear = (startTime, endTime) => {
-    const datesSelected = []
+    const datesSelected = [];
 
-    for (let i = 0; i <= 52; i++) {
+    datesSelected.push({
+        startTime: moment(startTime).toDate(),
+        endTime: moment(endTime).toDate(),
+    });
+
+    for (let i = 1; i <= 52; i++) {
+        const newStartTime = moment(startTime)
+            .add(i * 7, "days")
+            .toDate();
+        const newEndTime = moment(endTime)
+            .add(i * 7, "days")
+            .toDate();
+
         datesSelected.push({
-            startTime: moment(startTime).add(7, "day"),
-            endTime: moment(endTime).add(7, "day")
-        })
+            startTime: newStartTime,
+            endTime: newEndTime,
+        });
     }
 
     return datesSelected;

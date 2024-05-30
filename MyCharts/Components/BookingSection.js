@@ -14,7 +14,6 @@ const colors = {
 };
 
 export default function BookingSection({
-    type,
     selectedDate,
     setSelectedDate,
     selectedTime,
@@ -27,9 +26,6 @@ export default function BookingSection({
 
     // const [selectedDate, setSelectedDate] = useState();
     // const [selectedTime, setSelectedTime] = useState();
-    const [notes, setNotes] = useState();
-
-    const [loader, setLoader] = useState(false);
 
     useEffect(() => {
         getDays();

@@ -19,6 +19,7 @@ const FormInput = ({ value, label, secureTextEntry, onChangeText, error, editabl
                         error: theme.colors.error,
                     },
                 }}
+                textColor={!editable && theme.colors.dark}
                 className={`h-[55] ${editable ? 'bg-light' : 'bg-light'}`}
                 error={error}
                 editable={editable}

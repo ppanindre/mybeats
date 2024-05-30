@@ -727,6 +727,41 @@ export const slotsByPatient = /* GraphQL */ `
     }
   }
 `;
+export const slotsByStartTime = /* GraphQL */ `
+  query SlotsByStartTime(
+    $startTime: AWSDateTime!
+    $sortDirection: ModelSortDirection
+    $filter: ModelAppointmentSlotFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    slotsByStartTime(
+      startTime: $startTime
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        doctorID
+        patientId
+        startTime
+        endTime
+        isBooked
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
 export const doctorSpecialtiesByDoctorDoctorID = /* GraphQL */ `
   query DoctorSpecialtiesByDoctorDoctorID(
     $doctorDoctorID: ID!
