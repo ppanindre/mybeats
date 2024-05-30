@@ -1,11 +1,8 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, ScrollView, Alert } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import moment from "moment";
-import { generateClient } from "aws-amplify/api";
-
-import { createAppointmentSlot } from "../../../graphql/mutations";
 import { theme } from "../../../../tailwind.config";
 import ScreenContainer from "../../components/Containers/ScreenContainer";
 import ModalContainer from "../../components/Containers/ModalContainer";
@@ -16,8 +13,6 @@ import { doctorAvailabilityService } from "../../api/services/doctorAvailaibiity
 import { getAllDaysOfTheYear } from "../../utils/doctorAvailaibilityUtil";
 
 const DoctorAvailability = () => {
-    const client = generateClient();
-
     // STATES
     const [showModal, setShowModal] = useState(false);
     const [selectedDate, setSelectedDate] = useState("");
@@ -107,20 +102,20 @@ const DoctorAvailability = () => {
             }
         } else {
             if (applyScheduleToAllDays) {
-                updatedTimeSlots[selectedDate] = [
-                    {
-                        start: startTime,
-                        end: endTime,
-                        allDays: true,
-                        dayLabel: dayLabel,
-                    },
-                ];
+                // updatedTimeSlots[selectedDate] = [
+                //     {
+                //         start: startTime,
+                //         end: endTime,
+                //         allDays: true,
+                //         dayLabel: dayLabel,
+                //     },
+                // ];
 
                 // get dates selected for the year
                 const datesSelected = getAllDaysOfTheYear(startTime, endTime);
 
                 datesSelected.forEach(async (date) => {
-                    console.log("day", moment(date.startTime).format("dddd"));
+                    console.log("date", moment(date.startTime).format("YYYY-MM-DD"));
                     await doctorAvailabilityService.createAppointmentSlot(
                         "4",
                         "1",
@@ -158,26 +153,34 @@ const DoctorAvailability = () => {
      * @param {string} date
      * @param {int} index
      */
-    const handleRemoveTimeSlot = (date, index) => {
+    const handleRemoveTimeSlot = async (date, index) => {
+        await doctorAvailabilityService.deleteAppointmentSlot(
+            timeSlots[date][index].id,
+            timeSlots[date][index]._version
+        );
+        await fetchAppointmentSlots();
+        
+        Alert.alert("", "Appointment slot has been deleted")
+
         // unpack the timeslots
-        const updatedTimeSlots = { ...timeSlots };
+        // const updatedTimeSlots = { ...timeSlots };
 
         // remove the time slot from the time slots
-        updatedTimeSlots[date].splice(index, 1);
+        // updatedTimeSlots[date].splice(index, 1);
 
         // if there are not time slots for that particular date
         // delete the timeslots for that date
-        if (updatedTimeSlots[date].length === 0) {
-            delete updatedTimeSlots[date];
-        }
+        // if (updatedTimeSlots[date].length === 0) {
+        //     delete updatedTimeSlots[date];
+        // }
 
         // set updated time slots
-        setTimeSlots(updatedTimeSlots);
+        // setTimeSlots(updatedTimeSlots);
     };
 
     /**
      * function to handle when user changes the time
-     * @param {string} selectedTime
+     * @param {String} selectedTime
      */
     const handleTimeChange = (event, selectedTime) => {
         // show the time picker if the platform is ios
@@ -203,6 +206,22 @@ const DoctorAvailability = () => {
     const handleOnClose = () => {
         setShowModal(false);
     };
+
+    /**
+     * fetch appointment slots
+     */
+    const fetchAppointmentSlots = async () => {
+        const fetchedSlots =
+            await doctorAvailabilityService.listAppointmentSlots("4");
+
+        // setTimeSlots(fetchedSlots);
+    };
+
+    useEffect(() => {
+        fetchAppointmentSlots();
+    }, []);
+
+    console.log("time slots", timeSlots);
 
     return (
         <ScreenContainer>
@@ -323,7 +342,7 @@ const DoctorAvailability = () => {
                             <Text className="font-[appfont-semi]">
                                 {slots[0].allDays
                                     ? slots[0].dayLabel
-                                    : moment(date).format("ddd DD, YYYY")}
+                                    : moment(date).format("MMM DD, YYYY")}
                             </Text>
                             <TouchableOpacity
                                 onPress={() => addNewTimeSlot(date)}

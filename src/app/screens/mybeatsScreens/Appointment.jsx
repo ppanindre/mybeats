@@ -135,9 +135,7 @@ export default Appointment = ({ route, navigation }) => {
                     </View>
                 </View>
                 <View className="p-4">
-                    {/* <HorizontalLine /> */}
                     <ActionButton website={website} />
-                    {/* <HorizontalLine /> */}
                 </View>
 
                 <View>
@@ -160,22 +158,7 @@ export default Appointment = ({ route, navigation }) => {
                                 Clinic Appointment
                             </Text>
                         </View>
-                        {/* <View>
-                        <Text className="text-lg text-black-500 font-[appfont-semi]">{`${zipcode}`}</Text>
-                        <Text
-                            style={{ color: customTheme.colors.dark }}
-                            className="text-md font-[appfont-semi]"
-                        >{`${city}`}</Text>
-                    </View> */}
                     </View>
-
-                    {/* <View>
-                    <Text className="text-lg text-black-500 font-[appfont-semi]">{`${zipcode}`}</Text>
-                    <Text
-                        style={{ color: customTheme.colors.dark }}
-                        className="text-md font-[appfont-semi]"
-                    >{`${hospital}`}</Text>
-                </View> */}
 
                     {/* Clinic Appointment Time Slots */}
                     <View style={{ backgroundColor: customTheme.colors.light }} className="p-2">

@@ -14,7 +14,6 @@ const colors = {
 };
 
 export default function BookingSection({
-    type,
     selectedDate,
     setSelectedDate,
     selectedTime,
