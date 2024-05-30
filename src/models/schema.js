@@ -470,14 +470,14 @@ export const schema = {
                 "startTime": {
                     "name": "startTime",
                     "isArray": false,
-                    "type": "String",
+                    "type": "AWSDateTime",
                     "isRequired": true,
                     "attributes": []
                 },
                 "endTime": {
                     "name": "endTime",
                     "isArray": false,
-                    "type": "String",
+                    "type": "AWSDateTime",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -559,6 +559,16 @@ export const schema = {
                         "queryField": "slotsByPatient",
                         "fields": [
                             "patientId"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byStartTime",
+                        "queryField": "slotsByStartTime",
+                        "fields": [
+                            "startTime"
                         ]
                     }
                 },
@@ -698,5 +708,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "e84ea153847e6e81ab6c930197d1d7d7"
+    "version": "e9f73dc19d596c5dcadec8ccc5cd599c"
 };
