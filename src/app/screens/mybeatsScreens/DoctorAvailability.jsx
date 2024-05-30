@@ -9,8 +9,9 @@ import ModalContainer from "../../components/Containers/ModalContainer";
 import AppButton from "../../components/Buttons/AppButton";
 import SwitchInput from "../../components/Inputs/SwitchInput";
 import CalendarInput from "../../components/Inputs/CalendarInput";
-import { doctorAvailabilityService } from "../../api/services/doctorAvailaibiityService";
+import { appointmentService } from "../../api/services/appointmentService";
 import { getAllDaysOfTheYear } from "../../utils/doctorAvailaibilityUtil";
+import { availabilityService } from "../../api/services/availabilityService";
 
 const DoctorAvailability = () => {
     // STATES
@@ -19,10 +20,13 @@ const DoctorAvailability = () => {
     const [markedDates, setMarkedDates] = useState({});
     const [isUnavailable, setIsUnavailable] = useState(false);
     const [startTime, setStartTime] = useState(new Date());
+    const [timeSlots, setTimeSlots] = useState({});
     const [endTime, setEndTime] = useState(new Date());
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [isTimeStart, setIsTimeStart] = useState(true); // true for start time, false for end time
-    const [timeSlots, setTimeSlots] = useState({});
+
+    const [availabilitySlots, setAvailiablitySlots] = useState([]);
+
     const [dayOfWeek, setDayOfWeek] = useState("");
     const [applyScheduleToAllDays, setApplyScheduleToAllDays] = useState(false);
 
@@ -31,7 +35,10 @@ const DoctorAvailability = () => {
         .flat()
         .some((slot) => slot.allDays && slot.dayLabel.includes(dayOfWeek));
 
-    // Function to handle adding a new time slot
+    /**
+     * add a new time slot
+     * @param {String} date
+     */
     const addNewTimeSlot = (date) => {
         setShowModal(true);
         // Set the selectedDate to the date for which the new slot is being added
@@ -71,7 +78,7 @@ const DoctorAvailability = () => {
         setMarkedDates(newMarkedDates);
         setSelectedDate(day.dateString);
         setIsUnavailable(false); // reset availability switch
-        setEndTime(new Date(date.setHours(17, 0, 0, 0))); // default end time
+        setEndTime(new Date(date.setHours(10, 0, 0, 0))); // default end time
         setStartTime(new Date(date.setHours(9, 0, 0, 0))); // default start time
         setShowTimePicker(true);
     };
@@ -102,16 +109,6 @@ const DoctorAvailability = () => {
             }
         } else {
             if (applyScheduleToAllDays) {
-                // updatedTimeSlots[selectedDate] = [
-                //     {
-                //         start: startTime,
-                //         end: endTime,
-                //         allDays: true,
-                //         dayLabel: dayLabel,
-                //     },
-                // ];
-
-                // get dates selected for the year
                 const datesSelected = getAllDaysOfTheYear(startTime, endTime);
 
                 datesSelected.forEach(async (date) => {
@@ -119,7 +116,7 @@ const DoctorAvailability = () => {
                         "date",
                         moment(date.startTime).format("YYYY-MM-DD")
                     );
-                    await doctorAvailabilityService.createAppointmentSlot(
+                    await appointmentService.createAppointmentSlot(
                         "4",
                         "1",
                         date.startTime,
@@ -128,32 +125,20 @@ const DoctorAvailability = () => {
                 });
             } else {
                 // Apply only to the selected date
-                updatedTimeSlots[selectedDate] = [
-                    ...(updatedTimeSlots[selectedDate] || []),
-                    { start: startTime, end: endTime, dayLabel: dayLabel },
-                ];
-                await doctorAvailabilityService.createAppointmentSlot(
+                await availabilityService.createAvailability(
                     "4",
-                    "1",
                     startTime,
                     endTime
                 );
             }
         }
-
-        const fetchedSlots =
-            await doctorAvailabilityService.listAppointmentSlots("4");
-
-        setTimeSlots(fetchedSlots);
-        setShowTimePicker(false);
-
-        // CLose modal
-        setShowModal(false);
-
-        Alert.alert("", "Your availability has been set");
-
         setApplyScheduleToAllDays(false); // Reset after saving
         setIsUnavailable(false); // Also reset the unavailability toggle
+        setShowModal(false); // Close Modal
+        Alert.alert("", "Your availability has been set");
+
+        // Fetch availability
+        await fetchAvailability();
     };
 
     /**
@@ -162,28 +147,15 @@ const DoctorAvailability = () => {
      * @param {int} index
      */
     const handleRemoveTimeSlot = async (date, index) => {
-        await doctorAvailabilityService.deleteAppointmentSlot(
+        await appointmentService.deleteAppointmentSlot(
             timeSlots[date][index].id,
             timeSlots[date][index]._version
         );
-        await fetchAppointmentSlots();
+
+        // fetch the updated appointment slots
+        await fetchAvailability();
 
         Alert.alert("", "Appointment slot has been deleted");
-
-        // unpack the timeslots
-        // const updatedTimeSlots = { ...timeSlots };
-
-        // remove the time slot from the time slots
-        // updatedTimeSlots[date].splice(index, 1);
-
-        // if there are not time slots for that particular date
-        // delete the timeslots for that date
-        // if (updatedTimeSlots[date].length === 0) {
-        //     delete updatedTimeSlots[date];
-        // }
-
-        // set updated time slots
-        // setTimeSlots(updatedTimeSlots);
     };
 
     /**
@@ -191,9 +163,6 @@ const DoctorAvailability = () => {
      * @param {String} selectedTime
      */
     const handleTimeChange = (event, selectedTime) => {
-        // show the time picker if the platform is ios
-        setShowTimePicker(Platform.OS === "ios");
-
         // if user selects a time
         if (selectedTime) {
             // if the user selects the start time, set the start time
@@ -218,17 +187,35 @@ const DoctorAvailability = () => {
     /**
      * fetch appointment slots
      */
-    const fetchAppointmentSlots = async () => {
-        const fetchedSlots =
-            await doctorAvailabilityService.listAppointmentSlots("4");
+    const fetchAvailability = async () => {
+        const fetchedAvailability =
+            await availabilityService.listAvailabilities("4");
 
-        setTimeSlots(fetchedSlots);
+        setAvailiablitySlots(fetchedAvailability);
+
+        console.log("availabilites", fetchedAvailability[0].slots);
+    };
+
+    /**
+     *
+     * @param {Integer} daySlotIndex
+     * @param {Integer} timeSlotIndex
+     */
+    const deleteAvailability = async (daySlotIndex, timeSlotIndex) => {
+        const selectedAvailability =
+            availabilitySlots[daySlotIndex].slots[timeSlotIndex];
+
+        await availabilityService.deleteAvailability(
+            selectedAvailability.id,
+            selectedAvailability.version
+        );
+
+        await fetchAvailability();
     };
 
     useEffect(() => {
-        fetchAppointmentSlots();
+        fetchAvailability();
     }, []);
-
 
     return (
         <ScreenContainer>
@@ -325,72 +312,67 @@ const DoctorAvailability = () => {
             </ModalContainer>
 
             <ScrollView showsVerticalScrollIndicator={false}>
-                {/* Calendar */}
-                <CalendarInput
-                    markedDates={markedDates}
-                    onDayPress={handleDatePress}
-                />
+                <View>
+                    {/* Calendar */}
+                    <CalendarInput
+                        markedDates={markedDates}
+                        onDayPress={handleDatePress}
+                    />
 
-                {/* displaying the selected days and time slots in UI */}
-                {Object.entries(timeSlots).map(([date, slots], dateIndex) => (
-                    <View
-                        key={dateIndex}
-                        className="flex-row items-center justify-between border-b border-dark py-5"
-                    >
-                        <View className="flex-row items-center space-x-2 flex-1">
-                            <Text className="font-[appfont-semi]">
-                                {slots[0].allDays
-                                    ? slots[0].dayLabel
-                                    : moment(date).format("MMM DD, YYYY")}
-                            </Text>
-                            <TouchableOpacity
-                                onPress={() => addNewTimeSlot(date)}
-                            >
+                    {availabilitySlots.map((daySlot, dayIndex) => (
+                        <View
+                            key={dayIndex}
+                            className="border-b border-dark py-5 flex-row justify-between items-center"
+                        >
+                            <TouchableOpacity className="flex-row space-x-2 items-center">
+                                <Text className="font-[appfont-semi]">
+                                    {moment(daySlot.date, "YYYY-MM-DD").format(
+                                        "ddd, DD MMM"
+                                    )}
+                                </Text>
+
                                 <Ionicons
                                     name="add-circle"
                                     size={20}
                                     color={theme.colors.dark}
                                 />
                             </TouchableOpacity>
-                        </View>
 
-                        <View className="flex-1 space-y-3">
-                            {slots.map((slot, slotIndex) => (
-                                <View
-                                    key={slotIndex}
-                                    className="flex-row justify-between items-center border border-dark rounded-lg p-3"
-                                >
-                                    <Text className="flex-row items-center">
-                                        {slot.unavailable
-                                            ? "Unavailable"
-                                            : `${moment(slot.start).format(
-                                                  "h:mm A"
-                                              )} - ${moment(slot.end).format(
-                                                  "h:mm A"
-                                              )}`}
-                                    </Text>
-                                    <TouchableOpacity
-                                        onPress={() =>
-                                            handleRemoveTimeSlot(
-                                                date,
-                                                slotIndex
-                                            )
-                                        }
-                                    >
-                                        <Ionicons
-                                            name="close-circle"
-                                            size={22}
-                                            style={{
-                                                color: theme.colors.dark,
-                                            }}
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-                            ))}
+                            <View className="space-y-3">
+                                {daySlot.slots.map(
+                                    (timeSlot, timeSlotIndex) => (
+                                        <TouchableOpacity
+                                            key={timeSlotIndex}
+                                            onPress={() =>
+                                                deleteAvailability(
+                                                    dayIndex,
+                                                    timeSlotIndex
+                                                )
+                                            }
+                                            className="flex-row space-x-2 items-center border border-dark p-3 rounded-full"
+                                        >
+                                            <Text className="text-xs">
+                                                {moment(timeSlot.start).format(
+                                                    "h:mm a"
+                                                )}{" "}
+                                                -{" "}
+                                                {moment(timeSlot.end).format(
+                                                    "h:mm a"
+                                                )}
+                                            </Text>
+
+                                            <Ionicons
+                                                name="close-circle"
+                                                size={20}
+                                                color={theme.colors.dark}
+                                            />
+                                        </TouchableOpacity>
+                                    )
+                                )}
+                            </View>
                         </View>
-                        <View />
-                    </View>
-                ))}
+                    ))}
+                </View>
             </ScrollView>
         </ScreenContainer>
     );

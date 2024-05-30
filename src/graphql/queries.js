@@ -42,6 +42,11 @@ export const getDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
+      availability {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -287,6 +292,107 @@ export const syncPatients = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const getAvailability = /* GraphQL */ `
+  query GetAvailability($id: ID!) {
+    getAvailability(id: $id) {
+      id
+      doctorID
+      startTime
+      endTime
+      isAvailable
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listAvailabilities = /* GraphQL */ `
+  query ListAvailabilities(
+    $filter: ModelAvailabilityFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAvailabilities(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        doctorID
+        startTime
+        endTime
+        isAvailable
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncAvailabilities = /* GraphQL */ `
+  query SyncAvailabilities(
+    $filter: ModelAvailabilityFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncAvailabilities(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        doctorID
+        startTime
+        endTime
+        isAvailable
         createdAt
         updatedAt
         _version
@@ -644,6 +750,40 @@ export const specialtyByName = /* GraphQL */ `
       items {
         id
         name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const availabilityByDoctor = /* GraphQL */ `
+  query AvailabilityByDoctor(
+    $doctorID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelAvailabilityFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    availabilityByDoctor(
+      doctorID: $doctorID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        doctorID
+        startTime
+        endTime
+        isAvailable
         createdAt
         updatedAt
         _version
