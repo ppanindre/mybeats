@@ -1,13 +1,18 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
-import { doctorAvailabilityService } from "../../api/services/doctorAvailaibiityService";
 import moment from "moment";
+import { doctorAvailabilityService } from "../../api/services/doctorAvailaibiityService";
 
 const AvailableAppointmentsFrame = ({ doctorId, selectAppointmentSlot }) => {
+
+    // STATES
     const [availableSlots, setAvailableSlots] = useState([]);
     const [selectedDayIndex, setSelectedDayIndex] = useState(null);
     const [selectedTimeIndex, setSelectedTimeIndex] = useState(null);
 
+    /**
+     * fetch the available appointments and format them
+     */
     const fetchAvailableAppointments = async () => {
         const slots = await doctorAvailabilityService.listAppointmentSlots(
             doctorId
@@ -34,11 +39,20 @@ const AvailableAppointmentsFrame = ({ doctorId, selectAppointmentSlot }) => {
         setAvailableSlots(formattedSlots);
     };
 
+    /**
+     * select the day index and reset the selected time index
+     * @param {Integer} slotIndex
+     */
     const selectSlot = (slotIndex) => {
         setSelectedDayIndex(slotIndex);
         setSelectedTimeIndex(null);
     };
 
+    /**
+     * select the time index and
+     * select the appointment slot in the parent container
+     * @param {Integer} slotIndex
+     */
     const selectTimeSlot = (slotIndex) => {
         setSelectedTimeIndex(slotIndex);
         selectAppointmentSlot(
