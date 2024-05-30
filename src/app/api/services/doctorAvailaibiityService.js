@@ -4,8 +4,12 @@ import moment from "moment";
 import {
     createAppointmentSlot,
     deleteAppointmentSlot,
+    updateAppointmentSlot,
 } from "../../../graphql/mutations";
-import { listAppointmentSlots, slotsByStartTime } from "../../../graphql/queries";
+import {
+    listAppointmentSlots,
+    slotsByStartTime,
+} from "../../../graphql/queries";
 
 const client = generateClient();
 
@@ -49,7 +53,6 @@ export const doctorAvailabilityService = {
      * @param {String} slotId
      */
     deleteAppointmentSlot: async (slotId, _version) => {
-
         try {
             const response = await client.graphql({
                 query: deleteAppointmentSlot,
@@ -89,8 +92,11 @@ export const doctorAvailabilityService = {
                 },
             });
 
-            const fetchedSlots = response.data.listAppointmentSlots.items.filter(slot => !slot._deleted);
-            
+            const fetchedSlots =
+                response.data.listAppointmentSlots.items.filter(
+                    (slot) => !slot._deleted
+                );
+
             // Transform the data to group by date
             const newGroupedSlots = fetchedSlots.reduce((acc, slot) => {
                 const dateKey = moment(slot.startTime).format("YYYY-MM-DD");
@@ -110,6 +116,34 @@ export const doctorAvailabilityService = {
             return newGroupedSlots;
         } catch (error) {
             console.error("Error while fetching appointment slots", error);
+            Sentry.captureException(error, {
+                extra: {
+                    message: "Error captured while getting appointment slots",
+                },
+            });
+        }
+    },
+
+    /**
+     * book appointment slot
+     * @param {String} slotId
+     */
+    bookAppointmentSlot: async (slotId, _version) => {
+        try {
+            const response = await client.graphql({
+                query: updateAppointmentSlot,
+                variables: {
+                    input: {
+                        id: slotId,
+                        isBooked: true,
+                        _version: _version,
+                    },
+                },
+            });
+
+            console.log("response", response);
+        } catch (error) {
+            console.error("Error while booking appointment", error);
             Sentry.captureException(error, {
                 extra: {
                     message: "Error captured while getting appointment slots",

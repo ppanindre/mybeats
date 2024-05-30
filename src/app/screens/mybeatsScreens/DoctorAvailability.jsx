@@ -115,7 +115,10 @@ const DoctorAvailability = () => {
                 const datesSelected = getAllDaysOfTheYear(startTime, endTime);
 
                 datesSelected.forEach(async (date) => {
-                    console.log("date", moment(date.startTime).format("YYYY-MM-DD"));
+                    console.log(
+                        "date",
+                        moment(date.startTime).format("YYYY-MM-DD")
+                    );
                     await doctorAvailabilityService.createAppointmentSlot(
                         "4",
                         "1",
@@ -159,8 +162,8 @@ const DoctorAvailability = () => {
             timeSlots[date][index]._version
         );
         await fetchAppointmentSlots();
-        
-        Alert.alert("", "Appointment slot has been deleted")
+
+        Alert.alert("", "Appointment slot has been deleted");
 
         // unpack the timeslots
         // const updatedTimeSlots = { ...timeSlots };
@@ -214,7 +217,7 @@ const DoctorAvailability = () => {
         const fetchedSlots =
             await doctorAvailabilityService.listAppointmentSlots("4");
 
-        // setTimeSlots(fetchedSlots);
+        setTimeSlots(fetchedSlots);
     };
 
     useEffect(() => {
@@ -325,7 +328,7 @@ const DoctorAvailability = () => {
                 </View>
             </ModalContainer>
 
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 {/* Calendar */}
                 <CalendarInput
                     markedDates={markedDates}
@@ -355,7 +358,7 @@ const DoctorAvailability = () => {
                             </TouchableOpacity>
                         </View>
 
-                        <View className="flex-1">
+                        <View className="flex-1 space-y-3">
                             {slots.map((slot, slotIndex) => (
                                 <View
                                     key={slotIndex}
