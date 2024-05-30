@@ -75,7 +75,7 @@ export default function ActionButton({ excludeId3 = false, website }) {
     };
 
     return (
-        <View style={{ marginTop: 5, marginLeft:-10 }}>
+        <View>
             <FlatList
                 data={visibleActions}
                 columnWrapperStyle={{
@@ -87,8 +87,6 @@ export default function ActionButton({ excludeId3 = false, website }) {
                     <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => item.action ? item.action() : handlePress(item.name)}>
                         <View
                             style={{
-                                marginLeft: 10,
-                                marginRight: 10,
                                 backgroundColor: customTheme.colors.lightPrimary,
                                 padding: 13,
                                 borderRadius: 99,

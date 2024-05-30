@@ -7,8 +7,7 @@ import {
     updateAppointmentSlot,
 } from "../../../graphql/mutations";
 import {
-    listAppointmentSlots,
-    slotsByStartTime,
+    listAppointmentSlots
 } from "../../../graphql/queries";
 
 const client = generateClient();
@@ -89,6 +88,7 @@ export const doctorAvailabilityService = {
                     filter: {
                         doctorID: { eq: doctorID },
                     },
+                    limit: 7
                 },
             });
 

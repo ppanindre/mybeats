@@ -141,11 +141,16 @@ const DoctorAvailability = () => {
             }
         }
 
-        setTimeSlots(updatedTimeSlots);
+        const fetchedSlots =
+            await doctorAvailabilityService.listAppointmentSlots("4");
+
+        setTimeSlots(fetchedSlots);
         setShowTimePicker(false);
 
         // CLose modal
         setShowModal(false);
+
+        Alert.alert("", "Your availability has been set");
 
         setApplyScheduleToAllDays(false); // Reset after saving
         setIsUnavailable(false); // Also reset the unavailability toggle
@@ -224,7 +229,6 @@ const DoctorAvailability = () => {
         fetchAppointmentSlots();
     }, []);
 
-    console.log("time slots", timeSlots);
 
     return (
         <ScreenContainer>
@@ -314,16 +318,8 @@ const DoctorAvailability = () => {
                 <View>
                     <AppButton
                         variant="primary"
-                        btnLabel="Update"
+                        btnLabel="Set availability"
                         onPress={handleSaveTime}
-                    />
-                </View>
-
-                <View>
-                    <AppButton
-                        variant="light"
-                        btnLabel="Close Modal"
-                        onPress={handleOnClose}
                     />
                 </View>
             </ModalContainer>

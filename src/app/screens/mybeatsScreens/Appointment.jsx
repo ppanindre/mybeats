@@ -8,6 +8,7 @@ import {
     Image,
     FlatList,
     Dimensions,
+    Alert,
 } from "react-native";
 import { useState, useEffect, useRef } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -50,6 +51,7 @@ export default Appointment = ({ route, navigation }) => {
 
     // dont need it
     const {
+        // id - required
         name,
         specialization,
         zipcode,
@@ -103,6 +105,8 @@ export default Appointment = ({ route, navigation }) => {
             appointmentSlot.id,
             appointmentSlot._version
         );
+
+        Alert.alert("", "Your appointment has been booked!")
     };
 
     return (
@@ -148,7 +152,7 @@ export default Appointment = ({ route, navigation }) => {
                             </View>
                         </View>
                     </View>
-                    <View className="p-4">
+                    <View>
                         <ActionButton website={website} />
                     </View>
 
