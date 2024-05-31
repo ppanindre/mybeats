@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Text } from "react-native";
+import { ActivityIndicator, View } from "react-native";
+import { customTheme } from "../../../../constants/themeConstants";
 import { useSelector } from "react-redux";
 import { generateClient } from "aws-amplify/api";
 import * as Sentry from "@sentry/react-native";
@@ -42,7 +44,7 @@ function DoctorProfile() {
         try {
             const response = await client.graphql({
                 query: getDoctor,
-                variables: { doctorID: "18" },
+                variables: { doctorID: "1" },
             });
             const doctor = response.data.getDoctor;
             if (doctor) {
@@ -54,6 +56,7 @@ function DoctorProfile() {
                     upiId: doctor.upiId,
                     address: doctor.address,
                     city: doctor.city,
+                    state: doctor.state,
                     zipcode: doctor.zipcode,
                     primarySpecialization: doctor.primarySpecializationId,
                     secondarySpecialization: doctor.secondarySpecialization,
@@ -80,7 +83,7 @@ function DoctorProfile() {
     }, []);
 
     const handleSubmit = async (formData) => {
-        const finalDoctorData = { ...doctorData, ...formData, doctorID: "19" };
+        const finalDoctorData = { ...doctorData, ...formData, doctorID: "1" };
 
         try {
             const existingDoctorResponse = await client.graphql({
@@ -102,6 +105,7 @@ function DoctorProfile() {
                             zipcode: finalDoctorData.zipcode,
                             address: finalDoctorData.address,
                             city: finalDoctorData.city,
+                            state: finalDoctorData.state,
                             licenseNumber: finalDoctorData.licenseNumber,
                             phoneNumber: finalDoctorData.phoneNumber,
                             upiId: finalDoctorData.upiId,
@@ -130,6 +134,7 @@ function DoctorProfile() {
                             zipcode: finalDoctorData.zipcode,
                             address: finalDoctorData.address,
                             city: finalDoctorData.city,
+                            state: finalDoctorData.state,
                             licenseNumber: finalDoctorData.licenseNumber,
                             phoneNumber: finalDoctorData.phoneNumber,
                             upiId: finalDoctorData.upiId,
@@ -168,7 +173,14 @@ function DoctorProfile() {
     }, []);
 
     if (loading) {
-        return <ScreenContainer><Text>Loading...</Text></ScreenContainer>; // Show loading state
+        return <ScreenContainer>
+            <View
+                style={{ height: 600 }}
+                className="flex items-center justify-center"
+            >
+                <ActivityIndicator color={customTheme.colors.primary}/>
+            </View>
+        </ScreenContainer>; // Show loading state
     }
 
     return (

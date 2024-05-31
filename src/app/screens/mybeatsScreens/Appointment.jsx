@@ -64,6 +64,7 @@ export default Appointment = ({ route, navigation }) => {
         availableForVideoConsultation,
         feeForVideoConsultation,
         website,
+        state
     } = route.params;
     // doint need it
 
@@ -107,6 +108,8 @@ export default Appointment = ({ route, navigation }) => {
 
         Alert.alert("", "Your appointment has been booked!");
     };
+
+    const apiKey = "AIzaSyC1hiS3sXkvQPqEodYESWOLBYkUsyR8Tv4"; // google map api
 
     return (
         <ScreenContainer>
@@ -257,6 +260,8 @@ export default Appointment = ({ route, navigation }) => {
                             city={city}
                             address={address}
                             zipcode={zipcode}
+                            apiKey={apiKey}
+                            state={state}
                         />
 
                         <TouchableOpacity

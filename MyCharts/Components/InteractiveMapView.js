@@ -3,33 +3,23 @@ import { View, Text, Platform, Linking } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import axios from 'axios';
 
-const cache = new Map();
-
-const geocodeAddress = async (address, city, zipcode) => {
-  const cacheKey = `${address},${city},${zipcode}`;
-  if (cache.has(cacheKey)) {
-    return cache.get(cacheKey);
-  }
-
+const geocodeAddress = async (address, city, state, zipcode, apiKey) => {
   try {
-    const response = await axios.get('https://nominatim.openstreetmap.org/search', {
+    const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
       params: {
-        q: `${address}, ${city}, ${zipcode}`,
-        format: 'json',
-        limit: 1
+        address: `${address}, ${city}, ${state}, ${zipcode}, India`,
+        key: apiKey,
       }
     });
 
-    if (response.data && response.data.length > 0) {
-      const { lat, lon } = response.data[0];
-      const coordinates = {
-        latitude: parseFloat(lat),
-        longitude: parseFloat(lon),
+    if (response.data.status === 'OK') {
+      const { lat, lng } = response.data.results[0].geometry.location;
+      return {
+        latitude: lat,
+        longitude: lng,
       };
-      cache.set(cacheKey, coordinates);
-      return coordinates;
     } else {
-      console.error('Geocoding API error: No results found');
+      console.error('Geocoding API error:', response.data.status);
       return null;
     }
   } catch (error) {
@@ -38,16 +28,16 @@ const geocodeAddress = async (address, city, zipcode) => {
   }
 };
 
-const InteractiveMapView = ({ name, city, address, zipcode }) => {
+const InteractiveMapView = ({ name, city, address, state, zipcode, apiKey }) => {
   const [coordinates, setCoordinates] = useState(null);
 
   useEffect(() => {
     const fetchCoordinates = async () => {
-      const result = await geocodeAddress(address, city, zipcode);
+      const result = await geocodeAddress(address, city, state, zipcode, apiKey);
       setCoordinates(result);
     };
     fetchCoordinates();
-  }, [address, city, zipcode]);
+  }, [address, city, state, zipcode, apiKey]);
 
   const openMaps = (lat, lon, label) => {
     let url;
@@ -84,7 +74,7 @@ const InteractiveMapView = ({ name, city, address, zipcode }) => {
         <Marker
           coordinate={{ latitude: coordinates.latitude, longitude: coordinates.longitude }}
           title={name}
-          description={`${address}, ${city}, ${zipcode}`}
+          description={`${address}, ${city}, ${state}, ${zipcode}`}
         />
       </MapView>
     </View>
