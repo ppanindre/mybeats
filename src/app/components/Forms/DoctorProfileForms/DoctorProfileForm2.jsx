@@ -1,22 +1,25 @@
 import { View, ScrollView } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { z } from "zod";
 import MultiSelectInput from "../../Inputs/MultiSelectInput";
 import FormInput from "../../Inputs/FormInput";
 import AppButton from "../../Buttons/AppButton";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { tr } from "react-native-paper-dates";
 
 // Form Schema for validation
 const formSchema = z.object({
     address: z.string().min(1, "Please enter a valid address"),
     city: z.string().min(1, "Please enter a valid city"),
-    zipcode: z.string().length(5, "Please enter a valid zipcode"),
+    zipcode: z.string().length(6, "Please enter a valid zipcode"),
     website: z.string().optional(),
 });
 
-const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, specialties }) => {
+const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, specialties, initialData = {} }) => {
     // STATES
+    const [otherCondition, setOtherCondition] = useState(''); // State to hold the "other" condition if specified
+    const [toggleOthers, setToggleOthers] = useState(false); // State to toggle the additional input field
     const [primarySpecialization, setPrimarySpecialization] = useState({
         value: "",
         list: specialties,
@@ -75,13 +78,48 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, specialties }) =
 
     const { control, handleSubmit } = useForm({
         defaultValues: {
-            address: "",
-            city: "",
-            zipcode: "",
-            website: "",
+            address: initialData.address || "",
+            city: initialData.city || "",
+            zipcode: initialData.zipcode || "",
+            website: initialData.website || "",
         },
         resolver: zodResolver(formSchema),
     });
+
+    useEffect(() => {
+        if (initialData.primarySpecialization) {
+            const selectedSpecialization = specialties.find(specialty => specialty._id === initialData.primarySpecialization);
+            if (selectedSpecialization) {
+                setPrimarySpecialization({
+                    ...primarySpecialization,
+                    value: selectedSpecialization.value,
+                    selectedList: [selectedSpecialization],
+                });
+            }
+        }
+
+        if (initialData.secondarySpecialization) {
+            const selectedList = initialData.secondarySpecialization.split("; ").map(name => {
+                return secondarySpecialization.list.find(specialty => specialty.value === name);
+            }).filter(Boolean);
+            setSecondarySpecialization({
+                ...secondarySpecialization,
+                value: selectedList.map(item => item.value).join("; "),
+                selectedList,
+            });
+        }
+
+        if (initialData.countryState) {
+            const selectedState = countryStates.list.find(state => state.value === initialData.countryState);
+            if (selectedState) {
+                setCountryStates({
+                    ...countryStates,
+                    value: selectedState.value,
+                    selectedList: [selectedState],
+                });
+            }
+        }
+    }, [initialData, specialties]);
 
     const handlePrimarySelection = (value) => {
         setPrimarySpecialization({
@@ -93,11 +131,22 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, specialties }) =
     };
 
     const handleSecondarySelection = (value) => {
+        let selectedList = value.selectedList;
+
+        // Handling "Select All"
+        if (selectedList.some(item => item.value === "Select all")) {
+            selectedList = secondarySpecialization.list.filter(item => item.value !== "Others");
+        }
+
         setSecondarySpecialization({
             ...secondarySpecialization,
-            value: value.text,
-            selectedList: value.selectedList,
+            value: selectedList.map(item => item.value).join("; "),
+            selectedList: selectedList,
         });
+
+        // if "Others" is selected
+        const isOthersSelected = selectedList.some(item => item.value === "Others");
+        setToggleOthers(isOthersSelected);
     };
 
     const handleCountryStateSelection = (value) => {
@@ -128,9 +177,9 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, specialties }) =
         ) {
             // consolidate the doctor data into one object
             const formData = {
-                primarySpecialization: primarySpecialization.value,
+                primarySpecialization: primarySpecialization.selectedList[0]._id, // Assume single selection for primary
                 countryState: countryStates.value,
-                secondarySpecialization: secondarySpecialization.value,
+                secondarySpecialization: toggleOthers ? otherCondition : secondarySpecialization.selectedList.map(item => item.value).join("; "),
                 ...data,
             };
 
@@ -139,10 +188,10 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, specialties }) =
         }
     };
 
-    const onPressBack = () => {
-        handlePressBack();
+    const onPressBack = (data) => {
+        handlePressBack(data);
     };
-
+    
     return (
         <View className="space-y-5 h-[100%]">
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -177,7 +226,17 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, specialties }) =
                             onSelection={(value) =>
                                 handleSecondarySelection(value)
                             }
+                            multiEnable={true}
                         />
+                        {toggleOthers && (
+                            <View className="mt-4">
+                                <FormInput
+                                    label="If other, please specify"
+                                    value={otherCondition}
+                                    onChangeText={setOtherCondition}
+                                />
+                            </View>
+                        )}
                     </View>
 
                     {/* Address */}

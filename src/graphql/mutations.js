@@ -51,6 +51,12 @@ export const createDoctor = /* GraphQL */ `
       educationExperience
       awardsRecognition
       website
+      secondarySpecialization
+      availableForVideoConsultation
+      feeForVideoConsultation
+      educationExperience
+      awardsRecognition
+      website
       zipcode
       appointmentSlots {
         items {
@@ -128,6 +134,12 @@ export const updateDoctor = /* GraphQL */ `
       educationExperience
       awardsRecognition
       website
+      secondarySpecialization
+      availableForVideoConsultation
+      feeForVideoConsultation
+      educationExperience
+      awardsRecognition
+      website
       zipcode
       appointmentSlots {
         items {
@@ -199,6 +211,12 @@ export const deleteDoctor = /* GraphQL */ `
       address
       city
       experience
+      secondarySpecialization
+      availableForVideoConsultation
+      feeForVideoConsultation
+      educationExperience
+      awardsRecognition
+      website
       secondarySpecialization
       availableForVideoConsultation
       feeForVideoConsultation
@@ -479,6 +497,12 @@ export const createAppointmentSlot = /* GraphQL */ `
         educationExperience
         awardsRecognition
         website
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
         appointmentSlots {
           nextToken
@@ -554,6 +578,12 @@ export const updateAppointmentSlot = /* GraphQL */ `
         address
         city
         experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         secondarySpecialization
         availableForVideoConsultation
         feeForVideoConsultation
@@ -641,6 +671,12 @@ export const deleteAppointmentSlot = /* GraphQL */ `
         educationExperience
         awardsRecognition
         website
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
         appointmentSlots {
           nextToken
@@ -713,6 +749,12 @@ export const createDoctorSpecialties = /* GraphQL */ `
         address
         city
         experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         secondarySpecialization
         availableForVideoConsultation
         feeForVideoConsultation
@@ -792,6 +834,12 @@ export const updateDoctorSpecialties = /* GraphQL */ `
         educationExperience
         awardsRecognition
         website
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
         appointmentSlots {
           nextToken
@@ -859,6 +907,12 @@ export const deleteDoctorSpecialties = /* GraphQL */ `
         address
         city
         experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         secondarySpecialization
         availableForVideoConsultation
         feeForVideoConsultation

@@ -93,6 +93,31 @@ export const schema = {
                         ]
                     }
                 },
+                "primarySpecializationId": {
+                    "name": "primarySpecializationId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "primarySpecialization": {
+                    "name": "primarySpecialization",
+                    "isArray": false,
+                    "type": {
+                        "model": "Specialty"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "primarySpecializationId"
+                        ]
+                    }
+                },
                 "address": {
                     "name": "address",
                     "isArray": false,
@@ -109,6 +134,48 @@ export const schema = {
                 },
                 "experience": {
                     "name": "experience",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "secondarySpecialization": {
+                    "name": "secondarySpecialization",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "availableForVideoConsultation": {
+                    "name": "availableForVideoConsultation",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "feeForVideoConsultation": {
+                    "name": "feeForVideoConsultation",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "educationExperience": {
+                    "name": "educationExperience",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "awardsRecognition": {
+                    "name": "awardsRecognition",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "website": {
+                    "name": "website",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -215,6 +282,15 @@ export const schema = {
                     "properties": {
                         "fields": [
                             "doctorID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byPrimarySpecialization",
+                        "fields": [
+                            "primarySpecializationId"
                         ]
                     }
                 },

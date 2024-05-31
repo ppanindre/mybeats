@@ -48,6 +48,12 @@ export const getDoctor = /* GraphQL */ `
       educationExperience
       awardsRecognition
       website
+      secondarySpecialization
+      availableForVideoConsultation
+      feeForVideoConsultation
+      educationExperience
+      awardsRecognition
+      website
       zipcode
       appointmentSlots {
         items {
@@ -121,6 +127,12 @@ export const listDoctors = /* GraphQL */ `
         educationExperience
         awardsRecognition
         website
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
         appointmentSlots {
           nextToken
@@ -176,6 +188,12 @@ export const syncDoctors = /* GraphQL */ `
         address
         city
         experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         secondarySpecialization
         availableForVideoConsultation
         feeForVideoConsultation
@@ -423,6 +441,12 @@ export const getAppointmentSlot = /* GraphQL */ `
         educationExperience
         awardsRecognition
         website
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
         appointmentSlots {
           nextToken
@@ -632,6 +656,12 @@ export const getDoctorSpecialties = /* GraphQL */ `
         address
         city
         experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         secondarySpecialization
         availableForVideoConsultation
         feeForVideoConsultation
@@ -898,6 +928,12 @@ export const doctorByZipcode = /* GraphQL */ `
         address
         city
         experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         secondarySpecialization
         availableForVideoConsultation
         feeForVideoConsultation
