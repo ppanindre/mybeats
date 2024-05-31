@@ -29,6 +29,7 @@ export const getDoctor = /* GraphQL */ `
       }
       address
       city
+      state
       experience
       secondarySpecialization
       availableForVideoConsultation
@@ -38,6 +39,11 @@ export const getDoctor = /* GraphQL */ `
       website
       zipcode
       appointmentSlots {
+        nextToken
+        startedAt
+        __typename
+      }
+      availability {
         nextToken
         startedAt
         __typename
@@ -77,6 +83,7 @@ export const listDoctors = /* GraphQL */ `
         primarySpecializationId
         address
         city
+        state
         experience
         secondarySpecialization
         availableForVideoConsultation
@@ -122,6 +129,7 @@ export const syncDoctors = /* GraphQL */ `
         primarySpecializationId
         address
         city
+        state
         experience
         secondarySpecialization
         availableForVideoConsultation
@@ -300,6 +308,108 @@ export const syncPatients = /* GraphQL */ `
     }
   }
 `;
+export const getAvailability = /* GraphQL */ `
+  query GetAvailability($id: ID!) {
+    getAvailability(id: $id) {
+      id
+      doctorID
+      startTime
+      endTime
+      isAvailable
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listAvailabilities = /* GraphQL */ `
+  query ListAvailabilities(
+    $filter: ModelAvailabilityFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAvailabilities(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        doctorID
+        startTime
+        endTime
+        isAvailable
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncAvailabilities = /* GraphQL */ `
+  query SyncAvailabilities(
+    $filter: ModelAvailabilityFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncAvailabilities(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        doctorID
+        startTime
+        endTime
+        isAvailable
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
 export const getAppointmentSlot = /* GraphQL */ `
   query GetAppointmentSlot($id: ID!) {
     getAppointmentSlot(id: $id) {
@@ -320,6 +430,7 @@ export const getAppointmentSlot = /* GraphQL */ `
         primarySpecializationId
         address
         city
+        state
         experience
         secondarySpecialization
         availableForVideoConsultation
@@ -440,6 +551,7 @@ export const getDoctorSpecialties = /* GraphQL */ `
         primarySpecializationId
         address
         city
+        state
         experience
         secondarySpecialization
         availableForVideoConsultation
@@ -558,6 +670,7 @@ export const doctorsByPrimarySpecializationId = /* GraphQL */ `
         primarySpecializationId
         address
         city
+        state
         experience
         secondarySpecialization
         availableForVideoConsultation
@@ -605,6 +718,7 @@ export const doctorByZipcode = /* GraphQL */ `
         primarySpecializationId
         address
         city
+        state
         experience
         secondarySpecialization
         availableForVideoConsultation
@@ -644,6 +758,42 @@ export const specialtyByName = /* GraphQL */ `
       items {
         id
         name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const availabilityByDoctor = /* GraphQL */ `
+  query AvailabilityByDoctor(
+    $doctorID: ID!
+    $startTime: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelAvailabilityFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    availabilityByDoctor(
+      doctorID: $doctorID
+      startTime: $startTime
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        doctorID
+        startTime
+        endTime
+        isAvailable
         createdAt
         updatedAt
         _version
@@ -702,41 +852,6 @@ export const slotsByPatient = /* GraphQL */ `
   ) {
     slotsByPatient(
       patientId: $patientId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        doctorID
-        patientId
-        startTime
-        endTime
-        isBooked
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      nextToken
-      startedAt
-      __typename
-    }
-  }
-`;
-export const slotsByStartTime = /* GraphQL */ `
-  query SlotsByStartTime(
-    $startTime: AWSDateTime!
-    $sortDirection: ModelSortDirection
-    $filter: ModelAppointmentSlotFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    slotsByStartTime(
-      startTime: $startTime
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit

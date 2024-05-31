@@ -107,6 +107,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "state": {
+                    "name": "state",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "experience": {
                     "name": "experience",
                     "isArray": false,
@@ -168,6 +175,22 @@ export const schema = {
                     "isArray": true,
                     "type": {
                         "model": "AppointmentSlot"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "doctor"
+                        ]
+                    }
+                },
+                "availability": {
+                    "name": "availability",
+                    "isArray": true,
+                    "type": {
+                        "model": "Availability"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -443,6 +466,112 @@ export const schema = {
                 }
             ]
         },
+        "Availability": {
+            "name": "Availability",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "doctorID": {
+                    "name": "doctorID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "startTime": {
+                    "name": "startTime",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "endTime": {
+                    "name": "endTime",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "isAvailable": {
+                    "name": "isAvailable",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "doctor": {
+                    "name": "doctor",
+                    "isArray": false,
+                    "type": {
+                        "model": "Doctor"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "doctorID"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Availabilities",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byDoctor",
+                        "queryField": "availabilityByDoctor",
+                        "fields": [
+                            "doctorID",
+                            "startTime"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "AppointmentSlot": {
             "name": "AppointmentSlot",
             "fields": {
@@ -559,16 +688,6 @@ export const schema = {
                         "queryField": "slotsByPatient",
                         "fields": [
                             "patientId"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byStartTime",
-                        "queryField": "slotsByStartTime",
-                        "fields": [
-                            "startTime"
                         ]
                     }
                 },
@@ -708,5 +827,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "e9f73dc19d596c5dcadec8ccc5cd599c"
+    "version": "ee2455494c6ef49aa9e4359c01fb2003"
 };

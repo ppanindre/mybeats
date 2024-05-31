@@ -1,10 +1,9 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
+import { appointmentService } from "../../api/services/appointmentService";
 import moment from "moment";
-import { doctorAvailabilityService } from "../../api/services/doctorAvailaibiityService";
 
 const AvailableAppointmentsFrame = ({ doctorId, selectAppointmentSlot }) => {
-
     // STATES
     const [availableSlots, setAvailableSlots] = useState([]);
     const [selectedDayIndex, setSelectedDayIndex] = useState(null);
@@ -14,9 +13,7 @@ const AvailableAppointmentsFrame = ({ doctorId, selectAppointmentSlot }) => {
      * fetch the available appointments and format them
      */
     const fetchAvailableAppointments = async () => {
-        const slots = await doctorAvailabilityService.listAppointmentSlots(
-            doctorId
-        );
+        const slots = await appointmentService.listAppointmentSlots(doctorId);
 
         let formattedSlots = [];
         for (const [date, slotArray] of Object.entries(slots)) {

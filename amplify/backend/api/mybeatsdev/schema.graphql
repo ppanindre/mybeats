@@ -17,6 +17,7 @@ type Doctor @model @auth(rules: [{ allow: public }]) {
         @hasOne(fields: ["primarySpecializationId"])
     address: String
     city: String
+    state: String
     experience: String
     secondarySpecialization: String
     availableForVideoConsultation: Boolean
@@ -26,6 +27,8 @@ type Doctor @model @auth(rules: [{ allow: public }]) {
     website: String
     zipcode: String! @index(name: "byzipcode", queryField: "doctorByZipcode")
     appointmentSlots: [AppointmentSlot]
+        @hasMany(indexName: "byDoctor", fields: ["doctorID"])
+    availability: [Availability]
         @hasMany(indexName: "byDoctor", fields: ["doctorID"])
 }
 
@@ -47,12 +50,26 @@ type Patient @model @auth(rules: [{ allow: public }]) {
         @hasMany(indexName: "byPatient", fields: ["id"])
 }
 
+type Availability @model @auth(rules: [{ allow: public }]) {
+    id: ID!
+    doctorID: ID!
+        @index(
+            name: "byDoctor"
+            queryField: "availabilityByDoctor"
+            sortKeyFields: ["startTime"]
+        )
+    startTime: AWSDateTime!
+    endTime: AWSDateTime!
+    isAvailable: Boolean!
+    doctor: Doctor @belongsTo(fields: ["doctorID"])
+}
+
 type AppointmentSlot @model @auth(rules: [{ allow: public }]) {
     id: ID!
     doctorID: ID! @index(name: "byDoctor", queryField: "slotsByDoctor")
     patientId: ID! @index(name: "byPatient", queryField: "slotsByPatient")
-    
-    startTime: AWSDateTime! @index(name: "byStartTime", queryField: "slotsByStartTime")
+
+    startTime: AWSDateTime!
     endTime: AWSDateTime!
     isBooked: Boolean!
     doctor: Doctor @belongsTo(fields: ["doctorID"])
