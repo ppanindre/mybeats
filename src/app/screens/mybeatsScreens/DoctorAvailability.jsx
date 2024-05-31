@@ -24,6 +24,9 @@ const DoctorAvailability = () => {
     const [availabilitySlots, setAvailiablitySlots] = useState([]);
     const [dayOfWeek, setDayOfWeek] = useState("");
     const [applyScheduleToAllDays, setApplyScheduleToAllDays] = useState(false);
+    const [isSlotAvailable, setIsSlotAvailable] = useState(true);
+    const [nextTokenFetched, setNextTokenFetched] = useState(null);
+    const [hasNext, setHasNext] = useState(true);
     /**
      * function to save time
      * @param {void}
@@ -47,6 +50,7 @@ const DoctorAvailability = () => {
             );
         }
 
+        setNextTokenFetched(null);
         setApplyScheduleToAllDays(false);
         setShowModal(false); // Close Modal
         Alert.alert("", "Your availability has been set");
@@ -110,14 +114,25 @@ const DoctorAvailability = () => {
      * fetch appointment slots
      */
     const fetchAvailability = async () => {
-        console.log("fetching slots");
-        const fetchedAvailability =
-            await availabilityService.availabilityByDoctor("4");
+        // If there is data present in the database
 
-        setAvailiablitySlots((prevSlots) => [
-            ...prevSlots,
-            ...fetchedAvailability,
-        ]);
+        // Unpack availabilities fetched and the next token
+        const { fetchedAvailability, nextToken } =
+            await availabilityService.availabilityByDoctor("4", null);
+
+        // set the next token for fetching the next availabilities
+        setNextTokenFetched(nextToken);
+
+        // set availability slots
+        setAvailiablitySlots(fetchedAvailability);
+    };
+
+    const loadMoreAvailabilities = () => {
+        // if the data is empty, set the next token to null
+        // so that it doesnt fetch duplicate data
+        if (nextTokenFetched === null) {
+            setHasNext(false);
+        }
     };
 
     /**
@@ -134,12 +149,57 @@ const DoctorAvailability = () => {
             selectedAvailability.version
         );
 
+        Alert.alert("", "Your availability slot has been deleted");
+
         await fetchAvailability();
+    };
+
+    /**
+     * checks if availability exists
+     * @returns {Boolean}
+     */
+    const checkSlotExists = () => {
+        // get the date index of the available slot
+        const dateIndex = availabilitySlots.findIndex(
+            (slot) => slot.date === moment(startTime).format("YYYY-MM-DD")
+        );
+
+        // Check if the slot is filled
+        // slot filled is true if the start time picked by the user
+        // is between the start time and the end time of an already
+        // available slot for that date or the end time picked by the user
+        // is between the start time and the end time of an already available
+        // for that date
+        if (dateIndex !== -1) {
+            const isSlotFilled = availabilitySlots[dateIndex].slots.some(
+                (slot) => {
+                    const slotStart = moment(slot.start);
+                    const slotEnd = moment(slot.end);
+                    const newStart = moment(startTime);
+                    const newEnd = moment(endTime);
+
+                    return (
+                        newStart.isBetween(slotStart, slotEnd, null, "[)") ||
+                        newEnd.isBetween(slotStart, slotEnd, null, "(]")
+                    );
+                }
+            );
+
+            return isSlotFilled;
+        }
+
+        return false;
     };
 
     useEffect(() => {
         fetchAvailability();
     }, []);
+
+    useEffect(() => {
+        const isSlotFilled = checkSlotExists();
+
+        setIsSlotAvailable(!isSlotFilled);
+    }, [startTime, endTime]);
 
     return (
         <ScreenContainer>
@@ -224,7 +284,7 @@ const DoctorAvailability = () => {
 
                 <View>
                     <AppButton
-                        variant="primary"
+                        variant={`${isSlotAvailable ? "primary" : "disabled"}`}
                         btnLabel="Set availability"
                         onPress={handleSaveTime}
                     />
@@ -233,7 +293,7 @@ const DoctorAvailability = () => {
 
             <ScrollView
                 showsVerticalScrollIndicator={false}
-                onScrollEndDrag={fetchAvailability}
+                onScrollEndDrag={loadMoreAvailabilities}
             >
                 <View>
                     {/* Calendar */}

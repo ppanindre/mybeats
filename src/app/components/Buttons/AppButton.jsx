@@ -15,7 +15,7 @@ const AppButton = ({
       className={`${variant === "primary" && "border-2 border-primary bg-primary shadow-lg"} ${
         variant === "light" && "border-2 border-primary"
       } p-5 rounded-md mb-5 flex-row items-center justify-center ${
-        variant === "disabled" && "bg-gray-400 shadow-lg "
+        variant === "disabled" && "bg-dark shadow-lg "
       } w-[100%]`}
     >
 
