@@ -9,87 +9,45 @@ import ModalContainer from "../../components/Containers/ModalContainer";
 import AppButton from "../../components/Buttons/AppButton";
 import SwitchInput from "../../components/Inputs/SwitchInput";
 import CalendarInput from "../../components/Inputs/CalendarInput";
-import { appointmentService } from "../../api/services/appointmentService";
 import { getAllDaysOfTheYear } from "../../utils/doctorAvailaibilityUtil";
 import { availabilityService } from "../../api/services/availabilityService";
 
 const DoctorAvailability = () => {
     // STATES
     const [showModal, setShowModal] = useState(false);
-    const [selectedDate, setSelectedDate] = useState("");
     const [markedDates, setMarkedDates] = useState({});
     const [isUnavailable, setIsUnavailable] = useState(false);
-    const [timeSlots, setTimeSlots] = useState({});
-    const [startTime, setStartTime] = useState(
-        moment().set({ hour: 9, minute: 0, second: 0 }).toDate()
-    );
-    const [endTime, setEndTime] = useState(
-        moment().set({ hour: 10, minute: 0, second: 0 }).toDate()
-    );
+    const [startTime, setStartTime] = useState();
+    const [endTime, setEndTime] = useState();
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [isTimeStart, setIsTimeStart] = useState(true); // true for start time, false for end time
-
     const [availabilitySlots, setAvailiablitySlots] = useState([]);
-
     const [dayOfWeek, setDayOfWeek] = useState("");
     const [applyScheduleToAllDays, setApplyScheduleToAllDays] = useState(false);
-
-    //  Check if any time slots apply to all days of the week
-    const allDaysScheduled = Object.values(timeSlots)
-        .flat()
-        .some((slot) => slot.allDays && slot.dayLabel.includes(dayOfWeek));
-
     /**
      * function to save time
      * @param {void}
      */
     const handleSaveTime = async () => {
-        let updatedTimeSlots = { ...timeSlots };
-        const dayLabel =
-            moment(selectedDate, "YYYY-MM-DD").format("dddd") + "s";
+        if (applyScheduleToAllDays) {
+            const datesSelected = getAllDaysOfTheYear(startTime, endTime);
 
-        if (isUnavailable) {
-            if (applyScheduleToAllDays) {
-                updatedTimeSlots[selectedDate] = [
-                    {
-                        unavailable: true,
-                        allDays: true,
-                        dayLabel: dayLabel,
-                    },
-                ];
-            } else {
-                // Apply 'unavailable' only to the selected date
-                updatedTimeSlots[selectedDate] = [
-                    { unavailable: true, dayLabel: dayLabel },
-                ];
-            }
-        } else {
-            if (applyScheduleToAllDays) {
-                const datesSelected = getAllDaysOfTheYear(startTime, endTime);
-
-                datesSelected.forEach(async (date) => {
-                    console.log(
-                        "date",
-                        moment(date.startTime).format("YYYY-MM-DD")
-                    );
-                    await appointmentService.createAppointmentSlot(
-                        "4",
-                        "1",
-                        date.startTime,
-                        date.endTime
-                    );
-                });
-            } else {
-                // Apply only to the selected date
+            datesSelected.forEach(async (date) => {
                 await availabilityService.createAvailability(
                     "4",
-                    startTime,
-                    endTime
+                    date.startTime,
+                    date.endTime
                 );
-            }
+            });
+        } else {
+            await availabilityService.createAvailability(
+                "4",
+                startTime,
+                endTime
+            );
         }
-        setApplyScheduleToAllDays(false); // Reset after saving
-        setIsUnavailable(false); // Also reset the unavailability toggle
+
+        setApplyScheduleToAllDays(false);
         setShowModal(false); // Close Modal
         Alert.alert("", "Your availability has been set");
 
@@ -108,10 +66,18 @@ const DoctorAvailability = () => {
                 selectedTextColor: theme.colors.light,
             },
         };
-
+        setStartTime(
+            moment(date, "YYYY-MM-DD")
+                .set({ hour: 9, minute: 0, second: 0 })
+                .toDate()
+        );
+        setEndTime(
+            moment(date, "YYYY-MM-DD")
+                .set({ hour: 10, minute: 0, second: 0 })
+                .toDate()
+        );
         setMarkedDates(newMarkedDates);
         setShowTimePicker(true);
-        setSelectedDate(date);
     };
 
     /**
@@ -144,12 +110,14 @@ const DoctorAvailability = () => {
      * fetch appointment slots
      */
     const fetchAvailability = async () => {
+        console.log("fetching slots");
         const fetchedAvailability =
-            await availabilityService.listAvailabilities("4");
+            await availabilityService.availabilityByDoctor("4");
 
-        setAvailiablitySlots(fetchedAvailability);
-
-        console.log("availabilites", fetchedAvailability[0].slots);
+        setAvailiablitySlots((prevSlots) => [
+            ...prevSlots,
+            ...fetchedAvailability,
+        ]);
     };
 
     /**
@@ -173,8 +141,6 @@ const DoctorAvailability = () => {
         fetchAvailability();
     }, []);
 
-    console.log("start time", startTime);
-
     return (
         <ScreenContainer>
             {/* Calendar */}
@@ -191,11 +157,7 @@ const DoctorAvailability = () => {
 
                 <View>
                     <SwitchInput
-                        label={`${
-                            allDaysScheduled
-                                ? `All ${dayOfWeek}s schedule have been updated`
-                                : `Use this schedule for all ${dayOfWeek}s`
-                        }`}
+                        label={`${`Use this schedule for all ${dayOfWeek}s`}`}
                         value={applyScheduleToAllDays}
                         onValueChange={setApplyScheduleToAllDays}
                     />
@@ -269,7 +231,10 @@ const DoctorAvailability = () => {
                 </View>
             </ModalContainer>
 
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                onScrollEndDrag={fetchAvailability}
+            >
                 <View>
                     {/* Calendar */}
                     <CalendarInput

@@ -4,10 +4,15 @@ import {
     createAvailability,
     deleteAvailability,
 } from "../../../graphql/mutations";
-import { listAvailabilities } from "../../../graphql/queries";
+import {
+    availabilityByDoctor,
+    listAvailabilities,
+} from "../../../graphql/queries";
 import moment from "moment";
 
 const client = generateClient();
+
+let doctorAvailabilityNextToken = null;
 
 export const availabilityService = {
     /**
@@ -39,17 +44,22 @@ export const availabilityService = {
         }
     },
 
-    listAvailabilities: async (doctorId) => {
+    availabilityByDoctor: async (doctorId) => {
         try {
+
             const response = await client.graphql({
-                query: listAvailabilities,
+                query: availabilityByDoctor,
                 variables: {
-                    doctorID: { eq: doctorId },
+                    doctorID: doctorId,
+                    sortDirection: "ASC",
+                    nextToken: doctorAvailabilityNextToken,
+                    limit: 10,
                 },
             });
 
-            const availabilities = response.data.listAvailabilities.items;
-
+            const availabilities = response.data.availabilityByDoctor.items;
+            doctorAvailabilityNextToken =
+                response.data.availabilityByDoctor.nextToken;
             const groupedAvailabilities = availabilities.reduce(
                 (acc, availability) => {
                     if (!availability._deleted) {

@@ -766,6 +766,7 @@ export const specialtyByName = /* GraphQL */ `
 export const availabilityByDoctor = /* GraphQL */ `
   query AvailabilityByDoctor(
     $doctorID: ID!
+    $startTime: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelAvailabilityFilterInput
     $limit: Int
@@ -773,6 +774,7 @@ export const availabilityByDoctor = /* GraphQL */ `
   ) {
     availabilityByDoctor(
       doctorID: $doctorID
+      startTime: $startTime
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -842,41 +844,6 @@ export const slotsByPatient = /* GraphQL */ `
   ) {
     slotsByPatient(
       patientId: $patientId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        doctorID
-        patientId
-        startTime
-        endTime
-        isBooked
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      nextToken
-      startedAt
-      __typename
-    }
-  }
-`;
-export const slotsByStartTime = /* GraphQL */ `
-  query SlotsByStartTime(
-    $startTime: AWSDateTime!
-    $sortDirection: ModelSortDirection
-    $filter: ModelAppointmentSlotFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    slotsByStartTime(
-      startTime: $startTime
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit

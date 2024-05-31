@@ -51,7 +51,12 @@ type Patient @model @auth(rules: [{ allow: public }]) {
 
 type Availability @model @auth(rules: [{ allow: public }]) {
     id: ID!
-    doctorID: ID! @index(name: "byDoctor", queryField: "availabilityByDoctor")
+    doctorID: ID!
+        @index(
+            name: "byDoctor"
+            queryField: "availabilityByDoctor"
+            sortKeyFields: ["startTime"]
+        )
     startTime: AWSDateTime!
     endTime: AWSDateTime!
     isAvailable: Boolean!
@@ -64,7 +69,6 @@ type AppointmentSlot @model @auth(rules: [{ allow: public }]) {
     patientId: ID! @index(name: "byPatient", queryField: "slotsByPatient")
 
     startTime: AWSDateTime!
-        @index(name: "byStartTime", queryField: "slotsByStartTime")
     endTime: AWSDateTime!
     isBooked: Boolean!
     doctor: Doctor @belongsTo(fields: ["doctorID"])
