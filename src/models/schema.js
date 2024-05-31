@@ -107,6 +107,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "state": {
+                    "name": "state",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "experience": {
                     "name": "experience",
                     "isArray": false,
@@ -820,5 +827,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "267e829cc532893407a5afd097d3cfe9"
+    "version": "ee2455494c6ef49aa9e4359c01fb2003"
 };

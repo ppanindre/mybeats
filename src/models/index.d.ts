@@ -23,6 +23,7 @@ type EagerDoctor = {
   readonly primarySpecialization?: Specialty | null;
   readonly address?: string | null;
   readonly city?: string | null;
+  readonly state?: string | null;
   readonly experience?: string | null;
   readonly secondarySpecialization?: string | null;
   readonly availableForVideoConsultation?: boolean | null;
@@ -54,6 +55,7 @@ type LazyDoctor = {
   readonly primarySpecialization: AsyncItem<Specialty | undefined>;
   readonly address?: string | null;
   readonly city?: string | null;
+  readonly state?: string | null;
   readonly experience?: string | null;
   readonly secondarySpecialization?: string | null;
   readonly availableForVideoConsultation?: boolean | null;

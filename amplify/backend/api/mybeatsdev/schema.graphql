@@ -17,6 +17,7 @@ type Doctor @model @auth(rules: [{ allow: public }]) {
         @hasOne(fields: ["primarySpecializationId"])
     address: String
     city: String
+    state: String
     experience: String
     secondarySpecialization: String
     availableForVideoConsultation: Boolean
