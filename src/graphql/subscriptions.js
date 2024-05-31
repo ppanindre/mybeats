@@ -12,25 +12,66 @@ export const onCreateDoctor = /* GraphQL */ `
       licenseNumber
       upiId
       specialties {
+        items {
+          id
+          doctorDoctorID
+          specialtyId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
-        __typename
+      }
+      primarySpecializationId
+      primarySpecialization {
+        id
+        name
+        doctors {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       address
       city
       experience
+      secondarySpecialization
+      availableForVideoConsultation
+      feeForVideoConsultation
+      educationExperience
+      awardsRecognition
+      website
       zipcode
       appointmentSlots {
+        items {
+          id
+          doctorID
+          patientId
+          startTime
+          endTime
+          isBooked
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
-        __typename
       }
+      profileImage
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -45,25 +86,66 @@ export const onUpdateDoctor = /* GraphQL */ `
       licenseNumber
       upiId
       specialties {
+        items {
+          id
+          doctorDoctorID
+          specialtyId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
-        __typename
+      }
+      primarySpecializationId
+      primarySpecialization {
+        id
+        name
+        doctors {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       address
       city
       experience
+      secondarySpecialization
+      availableForVideoConsultation
+      feeForVideoConsultation
+      educationExperience
+      awardsRecognition
+      website
       zipcode
       appointmentSlots {
+        items {
+          id
+          doctorID
+          patientId
+          startTime
+          endTime
+          isBooked
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
-        __typename
       }
+      profileImage
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -78,25 +160,66 @@ export const onDeleteDoctor = /* GraphQL */ `
       licenseNumber
       upiId
       specialties {
+        items {
+          id
+          doctorDoctorID
+          specialtyId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
-        __typename
+      }
+      primarySpecializationId
+      primarySpecialization {
+        id
+        name
+        doctors {
+          nextToken
+          startedAt
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
       }
       address
       city
       experience
+      secondarySpecialization
+      availableForVideoConsultation
+      feeForVideoConsultation
+      educationExperience
+      awardsRecognition
+      website
       zipcode
       appointmentSlots {
+        items {
+          id
+          doctorID
+          patientId
+          startTime
+          endTime
+          isBooked
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
-        __typename
       }
+      profileImage
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -108,16 +231,24 @@ export const onCreateSpecialty = /* GraphQL */ `
       id
       name
       doctors {
+        items {
+          id
+          doctorDoctorID
+          specialtyId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
-        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -129,16 +260,24 @@ export const onUpdateSpecialty = /* GraphQL */ `
       id
       name
       doctors {
+        items {
+          id
+          doctorDoctorID
+          specialtyId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
-        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -150,16 +289,24 @@ export const onDeleteSpecialty = /* GraphQL */ `
       id
       name
       doctors {
+        items {
+          id
+          doctorDoctorID
+          specialtyId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
-        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -174,16 +321,27 @@ export const onCreatePatient = /* GraphQL */ `
       address
       zipcode
       appointmentSlots {
+        items {
+          id
+          doctorID
+          patientId
+          startTime
+          endTime
+          isBooked
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
-        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -198,16 +356,27 @@ export const onUpdatePatient = /* GraphQL */ `
       address
       zipcode
       appointmentSlots {
+        items {
+          id
+          doctorID
+          patientId
+          startTime
+          endTime
+          isBooked
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
-        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -222,16 +391,27 @@ export const onDeletePatient = /* GraphQL */ `
       address
       zipcode
       appointmentSlots {
+        items {
+          id
+          doctorID
+          patientId
+          startTime
+          endTime
+          isBooked
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         nextToken
         startedAt
-        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -254,16 +434,40 @@ export const onCreateAppointmentSlot = /* GraphQL */ `
         phoneNumber
         licenseNumber
         upiId
+        specialties {
+          nextToken
+          startedAt
+        }
+        primarySpecializationId
+        primarySpecialization {
+          id
+          name
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         address
         city
         experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
+        appointmentSlots {
+          nextToken
+          startedAt
+        }
+        profileImage
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       patient {
         id
@@ -273,19 +477,21 @@ export const onCreateAppointmentSlot = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        appointmentSlots {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -308,16 +514,40 @@ export const onUpdateAppointmentSlot = /* GraphQL */ `
         phoneNumber
         licenseNumber
         upiId
+        specialties {
+          nextToken
+          startedAt
+        }
+        primarySpecializationId
+        primarySpecialization {
+          id
+          name
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         address
         city
         experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
+        appointmentSlots {
+          nextToken
+          startedAt
+        }
+        profileImage
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       patient {
         id
@@ -327,19 +557,21 @@ export const onUpdateAppointmentSlot = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        appointmentSlots {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -362,16 +594,40 @@ export const onDeleteAppointmentSlot = /* GraphQL */ `
         phoneNumber
         licenseNumber
         upiId
+        specialties {
+          nextToken
+          startedAt
+        }
+        primarySpecializationId
+        primarySpecialization {
+          id
+          name
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         address
         city
         experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
+        appointmentSlots {
+          nextToken
+          startedAt
+        }
+        profileImage
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       patient {
         id
@@ -381,19 +637,21 @@ export const onDeleteAppointmentSlot = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        appointmentSlots {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -413,33 +671,59 @@ export const onCreateDoctorSpecialties = /* GraphQL */ `
         phoneNumber
         licenseNumber
         upiId
+        specialties {
+          nextToken
+          startedAt
+        }
+        primarySpecializationId
+        primarySpecialization {
+          id
+          name
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         address
         city
         experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
+        appointmentSlots {
+          nextToken
+          startedAt
+        }
+        profileImage
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       specialty {
         id
         name
+        doctors {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -459,33 +743,59 @@ export const onUpdateDoctorSpecialties = /* GraphQL */ `
         phoneNumber
         licenseNumber
         upiId
+        specialties {
+          nextToken
+          startedAt
+        }
+        primarySpecializationId
+        primarySpecialization {
+          id
+          name
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         address
         city
         experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
+        appointmentSlots {
+          nextToken
+          startedAt
+        }
+        profileImage
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       specialty {
         id
         name
+        doctors {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
@@ -505,33 +815,59 @@ export const onDeleteDoctorSpecialties = /* GraphQL */ `
         phoneNumber
         licenseNumber
         upiId
+        specialties {
+          nextToken
+          startedAt
+        }
+        primarySpecializationId
+        primarySpecialization {
+          id
+          name
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         address
         city
         experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
         zipcode
+        appointmentSlots {
+          nextToken
+          startedAt
+        }
+        profileImage
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       specialty {
         id
         name
+        doctors {
+          nextToken
+          startedAt
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      __typename
     }
   }
 `;
