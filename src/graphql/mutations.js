@@ -45,6 +45,11 @@ export const createDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
+      availability {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -98,6 +103,11 @@ export const updateDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
+      availability {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -147,6 +157,11 @@ export const deleteDoctor = /* GraphQL */ `
       website
       zipcode
       appointmentSlots {
+        nextToken
+        startedAt
+        __typename
+      }
+      availability {
         nextToken
         startedAt
         __typename
@@ -296,6 +311,144 @@ export const deletePatient = /* GraphQL */ `
       appointmentSlots {
         nextToken
         startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createAvailability = /* GraphQL */ `
+  mutation CreateAvailability(
+    $input: CreateAvailabilityInput!
+    $condition: ModelAvailabilityConditionInput
+  ) {
+    createAvailability(input: $input, condition: $condition) {
+      id
+      doctorID
+      startTime
+      endTime
+      isAvailable
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateAvailability = /* GraphQL */ `
+  mutation UpdateAvailability(
+    $input: UpdateAvailabilityInput!
+    $condition: ModelAvailabilityConditionInput
+  ) {
+    updateAvailability(input: $input, condition: $condition) {
+      id
+      doctorID
+      startTime
+      endTime
+      isAvailable
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteAvailability = /* GraphQL */ `
+  mutation DeleteAvailability(
+    $input: DeleteAvailabilityInput!
+    $condition: ModelAvailabilityConditionInput
+  ) {
+    deleteAvailability(input: $input, condition: $condition) {
+      id
+      doctorID
+      startTime
+      endTime
+      isAvailable
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
       createdAt

@@ -42,6 +42,11 @@ export const onCreateDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
+      availability {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -92,6 +97,11 @@ export const onUpdateDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
+      availability {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -138,6 +148,11 @@ export const onDeleteDoctor = /* GraphQL */ `
       website
       zipcode
       appointmentSlots {
+        nextToken
+        startedAt
+        __typename
+      }
+      availability {
         nextToken
         startedAt
         __typename
@@ -275,6 +290,141 @@ export const onDeletePatient = /* GraphQL */ `
       appointmentSlots {
         nextToken
         startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onCreateAvailability = /* GraphQL */ `
+  subscription OnCreateAvailability(
+    $filter: ModelSubscriptionAvailabilityFilterInput
+  ) {
+    onCreateAvailability(filter: $filter) {
+      id
+      doctorID
+      startTime
+      endTime
+      isAvailable
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateAvailability = /* GraphQL */ `
+  subscription OnUpdateAvailability(
+    $filter: ModelSubscriptionAvailabilityFilterInput
+  ) {
+    onUpdateAvailability(filter: $filter) {
+      id
+      doctorID
+      startTime
+      endTime
+      isAvailable
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteAvailability = /* GraphQL */ `
+  subscription OnDeleteAvailability(
+    $filter: ModelSubscriptionAvailabilityFilterInput
+  ) {
+    onDeleteAvailability(filter: $filter) {
+      id
+      doctorID
+      startTime
+      endTime
+      isAvailable
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
       createdAt

@@ -8,6 +8,7 @@ import {
     Image,
     FlatList,
     Dimensions,
+    Alert,
 } from "react-native";
 import { useState, useEffect, useRef } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -18,10 +19,9 @@ import { customTheme } from "../../../../constants/themeConstants";
 import ScreenContainer from "../../components/Containers/ScreenContainer";
 import AppButton from "../../components/Buttons/AppButton";
 import { theme } from "../../../../tailwind.config";
-import { Flex } from "@aws-amplify/ui-react";
 import PatientStory from "../../../../components/Cards/PatientStory";
 import AvailableAppointmentsFrame from "../../components/Frames/AvailableAppointmentsFrame";
-import { doctorAvailabilityService } from "../../api/services/doctorAvailaibiityService";
+import { appointmentService } from "../../api/services/appointmentService";
 
 const CollapsibleItem = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -50,6 +50,7 @@ export default Appointment = ({ route, navigation }) => {
 
     // dont need it
     const {
+        // id - required
         name,
         specialization,
         zipcode,
@@ -99,10 +100,12 @@ export default Appointment = ({ route, navigation }) => {
     };
 
     const bookAppointment = async () => {
-        await doctorAvailabilityService.bookAppointmentSlot(
+        await appointmentService.bookAppointmentSlot(
             appointmentSlot.id,
             appointmentSlot._version
         );
+
+        Alert.alert("", "Your appointment has been booked!");
     };
 
     return (
@@ -148,7 +151,7 @@ export default Appointment = ({ route, navigation }) => {
                             </View>
                         </View>
                     </View>
-                    <View className="p-4">
+                    <View>
                         <ActionButton website={website} />
                     </View>
 
