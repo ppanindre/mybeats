@@ -6,7 +6,7 @@ import {
     deleteAppointmentSlot,
     updateAppointmentSlot,
 } from "../../../graphql/mutations";
-import { listAppointmentSlots } from "../../../graphql/queries";
+import { listAppointmentSlots, slotsByDoctor } from "../../../graphql/queries";
 
 const client = generateClient();
 
@@ -21,39 +21,22 @@ export const appointmentService = {
      */
     createAppointmentSlot: async (doctorId, patientId, startTime, endTime) => {
         try {
-            const start = moment(startTime);
-            const end = moment(endTime);
-            const slotDuration = 15; // Slot duration in minutes
-
-            while (start.isBefore(end)) {
-                const slotEndTime = start.clone().add(slotDuration, "minutes");
-                if (slotEndTime.isAfter(end)) {
-                    break;
-                }
-
-                const response = await client.mutate({
-                    mutation: createAppointmentSlot,
-                    variables: {
-                        input: {
-                            doctorID: doctorId,
-                            patientId: patientId,
-                            startTime: start.toISOString(),
-                            endTime: slotEndTime.toISOString(),
-                            isBooked: false,
-                        },
+            const response = await client.graphql({
+                query: createAppointmentSlot,
+                variables: {
+                    input: {
+                        doctorID: doctorId,
+                        patientId: patientId,
+                        startTime: startTime,
+                        endTime: endTime,
+                        isBooked: false,
                     },
-                });
+                },
+            });
 
-                console.log(
-                    "Created appointment slot:",
-                    response.data.createAppointmentSlot
-                );
-
-                // Move to the next slot
-                start.add(slotDuration, "minutes");
-            }
+            console.log("response", response);
         } catch (error) {
-            console.error("Error while setting appointment slot", error);
+            console.error("Error while creating appointment slot", error);
             Sentry.captureException(error, {
                 extra: {
                     message: "Error captured while creating appointment slot",
@@ -139,11 +122,73 @@ export const appointmentService = {
         }
     },
 
+    appointmentSlotByDoctor: async (doctorId) => {
+        try {
+            const response = await client.graphql({
+                query: slotsByDoctor,
+                variables: {
+                    doctorID: doctorId,
+                    sortDirection: "ASC",
+                    filter: {
+                        isBooked: { ne: true },
+                    },
+                },
+            });
+
+            const appointments = response.data.slotsByDoctor.items;
+
+            const groupedAppointments = appointments.reduce(
+                (acc, appointment) => {
+                    if (!appointment._deleted) {
+                        const dateKey = moment(appointment.startTime).format(
+                            "YYYY-MM-DD"
+                        );
+
+                        if (!acc[dateKey]) {
+                            acc[dateKey] = [];
+                        }
+                        acc[dateKey].push({
+                            start: appointment.startTime,
+                            end: appointment.endTime,
+                            id: appointment.id,
+                            version: appointment._version,
+                        });
+                    }
+                    return acc;
+                },
+                {}
+            );
+
+            // Convert the grouped object to an array with date and slots
+            const formattedResponse = Object.keys(groupedAppointments).map(
+                (date) => ({
+                    date,
+                    slots: groupedAppointments[date],
+                })
+            );
+
+            return formattedResponse;
+            
+
+        } catch (error) {
+            console.error(
+                "Error while getting appointment slots by doctor",
+                error
+            );
+            Sentry.captureException(error, {
+                extra: {
+                    message:
+                        "Error captured while getting appointment slots by doctor",
+                },
+            });
+        }
+    },
+
     /**
      * book appointment slot
      * @param {String} slotId
      */
-    bookAppointmentSlot: async (slotId, _version) => {
+    bookAppointmentSlot: async (slotId, version) => {
         try {
             const response = await client.graphql({
                 query: updateAppointmentSlot,
@@ -151,7 +196,7 @@ export const appointmentService = {
                     input: {
                         id: slotId,
                         isBooked: true,
-                        _version: _version,
+                        _version: version,
                     },
                 },
             });

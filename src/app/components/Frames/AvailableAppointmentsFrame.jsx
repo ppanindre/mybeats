@@ -13,27 +13,12 @@ const AvailableAppointmentsFrame = ({ doctorId, selectAppointmentSlot }) => {
      * fetch the available appointments and format them
      */
     const fetchAvailableAppointments = async () => {
-        const slots = await appointmentService.listAppointmentSlots(doctorId);
+        const fetchedSlots = await appointmentService.appointmentSlotByDoctor(
+            "4",
+            "1"
+        );
 
-        let formattedSlots = [];
-        for (const [date, slotArray] of Object.entries(slots)) {
-            let slotDetails = slotArray
-                .filter((slot) => !slot.isBooked)
-                .map((slot) => ({
-                    startTime: slot.start,
-                    endTime: slot.end,
-                    id: slot.id,
-                    _version: slot._version,
-                }));
-            if (slotDetails.length > 0) {
-                formattedSlots.push({
-                    date,
-                    slots: slotDetails,
-                });
-            }
-        }
-
-        setAvailableSlots(formattedSlots);
+        setAvailableSlots(fetchedSlots);
     };
 
     /**
@@ -55,6 +40,8 @@ const AvailableAppointmentsFrame = ({ doctorId, selectAppointmentSlot }) => {
         selectAppointmentSlot(
             availableSlots[selectedDayIndex].slots[slotIndex]
         );
+        setSelectedDayIndex(null);
+        setSelectedTimeIndex(null);
     };
 
     useEffect(() => {
@@ -96,7 +83,7 @@ const AvailableAppointmentsFrame = ({ doctorId, selectAppointmentSlot }) => {
                                         }`}
                                     >
                                         {moment(slot.date, "YYYY-MM-DD").format(
-                                            "DD MMM"
+                                            "D MMM"
                                         )}
                                     </Text>
                                 </TouchableOpacity>
@@ -131,7 +118,7 @@ const AvailableAppointmentsFrame = ({ doctorId, selectAppointmentSlot }) => {
                                                 "text-light"
                                             }`}
                                         >
-                                            {moment(slot.startTime).format(
+                                            {moment(slot.start).format(
                                                 "h:mm a"
                                             )}
                                         </Text>

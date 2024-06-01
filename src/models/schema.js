@@ -677,7 +677,8 @@ export const schema = {
                         "name": "byDoctor",
                         "queryField": "slotsByDoctor",
                         "fields": [
-                            "doctorID"
+                            "doctorID",
+                            "startTime"
                         ]
                     }
                 },
@@ -687,7 +688,8 @@ export const schema = {
                         "name": "byPatient",
                         "queryField": "slotsByPatient",
                         "fields": [
-                            "patientId"
+                            "patientId",
+                            "startTime"
                         ]
                     }
                 },

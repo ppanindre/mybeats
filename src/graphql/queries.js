@@ -810,6 +810,7 @@ export const availabilityByDoctor = /* GraphQL */ `
 export const slotsByDoctor = /* GraphQL */ `
   query SlotsByDoctor(
     $doctorID: ID!
+    $startTime: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelAppointmentSlotFilterInput
     $limit: Int
@@ -817,6 +818,7 @@ export const slotsByDoctor = /* GraphQL */ `
   ) {
     slotsByDoctor(
       doctorID: $doctorID
+      startTime: $startTime
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -845,6 +847,7 @@ export const slotsByDoctor = /* GraphQL */ `
 export const slotsByPatient = /* GraphQL */ `
   query SlotsByPatient(
     $patientId: ID!
+    $startTime: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelAppointmentSlotFilterInput
     $limit: Int
@@ -852,6 +855,7 @@ export const slotsByPatient = /* GraphQL */ `
   ) {
     slotsByPatient(
       patientId: $patientId
+      startTime: $startTime
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit

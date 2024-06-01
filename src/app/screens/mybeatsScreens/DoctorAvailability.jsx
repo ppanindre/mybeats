@@ -11,6 +11,7 @@ import SwitchInput from "../../components/Inputs/SwitchInput";
 import CalendarInput from "../../components/Inputs/CalendarInput";
 import { getAllDaysOfTheYear } from "../../utils/doctorAvailaibilityUtil";
 import { availabilityService } from "../../api/services/availabilityService";
+import { appointmentService } from "../../api/services/appointmentService";
 
 const DoctorAvailability = () => {
     // STATES
@@ -41,6 +42,9 @@ const DoctorAvailability = () => {
                     date.startTime,
                     date.endTime
                 );
+
+                // Create apointment slot
+                await addAppointmentSlots(date.startTime, date.endTime);
             });
         } else {
             await availabilityService.createAvailability(
@@ -48,6 +52,8 @@ const DoctorAvailability = () => {
                 startTime,
                 endTime
             );
+
+            await addAppointmentSlots(startTime, endTime);
         }
 
         setNextTokenFetched(null);
@@ -57,6 +63,35 @@ const DoctorAvailability = () => {
 
         // Fetch availability
         await fetchAvailability();
+    };
+
+    const addAppointmentSlots = async (start, end) => {
+        const slotStart = moment(start);
+        const slotEnd = moment(end);
+        const intervalSlots = [];
+
+        while (slotStart.isBefore(slotEnd)) {
+            const intervalEnd = slotStart.clone().add(15, "minutes");
+
+            // Ensure we don't go beyond the availability end time
+            if (intervalEnd.isAfter(slotEnd)) break;
+
+            intervalSlots.push({
+                start: slotStart.toDate(),
+                end: intervalEnd.toDate(),
+            });
+
+            slotStart.add(15, "minutes");
+        }
+
+        intervalSlots.forEach(async (slot) => {
+            await appointmentService.createAppointmentSlot(
+                "4",
+                "null",
+                slot.start,
+                slot.end
+            );
+        });
     };
 
     const addAvailability = (date) => {

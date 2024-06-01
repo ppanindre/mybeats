@@ -100,12 +100,14 @@ export default Appointment = ({ route, navigation }) => {
     };
 
     const bookAppointment = async () => {
+        console.log("slot", appointmentSlot);
+
         await appointmentService.bookAppointmentSlot(
             appointmentSlot.id,
-            appointmentSlot._version
+            appointmentSlot.version
         );
 
-        Alert.alert("", "Your appointment has been booked!");
+        setAppointmentSlot(null);
     };
 
     return (

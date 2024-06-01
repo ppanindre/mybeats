@@ -59,11 +59,11 @@ export const availabilityService = {
                     filter: {
                         _deleted: { ne: true },
                     },
+                    limit: 10
                 },
             });
 
             const availabilities = response.data.availabilityByDoctor.items;
-            console.log("availabilities", availabilities);
 
             const doctorAvailabilityNextToken =
                 response.data.availabilityByDoctor.nextToken;
