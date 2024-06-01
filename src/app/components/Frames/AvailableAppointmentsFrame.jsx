@@ -44,10 +44,9 @@ const AvailableAppointmentsFrame = ({
         selectAppointmentSlot(
             availableSlots[selectedDayIndex].slots[slotIndex]
         );
-        // setSelectedDayIndex(null);
-        // setSelectedTimeIndex(null);
     };
 
+    // Reset appointment slot
     useEffect(() => {
         if (resetAppointmentSlot) {
             setSelectedDayIndex(null);

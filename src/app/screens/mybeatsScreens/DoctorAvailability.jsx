@@ -21,6 +21,7 @@ const DoctorAvailability = () => {
     const [startTime, setStartTime] = useState();
     const [endTime, setEndTime] = useState();
     const [showTimePicker, setShowTimePicker] = useState(false);
+    const [showMarkMeUnavailable, setShowMarkMeUnavailable] = useState(true);
     const [isTimeStart, setIsTimeStart] = useState(true); // true for start time, false for end time
     const [availabilitySlots, setAvailiablitySlots] = useState([]);
     const [dayOfWeek, setDayOfWeek] = useState("");
@@ -33,6 +34,19 @@ const DoctorAvailability = () => {
      * @param {void}
      */
     const handleSaveTime = async () => {
+        if (isUnavailable) {
+            const availabilityIndex = availabilitySlots.findIndex(
+                (avail) => avail.date === moment(startTime).format("YYYY-MM-DD")
+            );
+
+            availabilitySlots[availabilityIndex].slots.forEach(
+                async (_, slotIndex) => {
+                    await deleteAvailabilitySlot(availabilityIndex, slotIndex);
+                }
+            );
+            setShowModal(false);
+            return;
+        }
         if (applyScheduleToAllDays) {
             const datesSelected = getAllDaysOfTheYear(startTime, endTime);
 
@@ -110,6 +124,17 @@ const DoctorAvailability = () => {
     const addAvailability = (date) => {
         // open modal
         setShowModal(true);
+
+        const dateIndex = availabilitySlots.findIndex(
+            (avail) => avail.date === date
+        );
+
+        if (dateIndex === -1) {
+            setShowMarkMeUnavailable(false);
+        } else {
+            setShowMarkMeUnavailable(true);
+        }
+
         setDayOfWeek(moment(date, "YYYY-MM-DD").format("dddd"));
         const newMarkedDates = {
             [date]: {
@@ -156,6 +181,8 @@ const DoctorAvailability = () => {
      */
     const handleOnClose = () => {
         setShowModal(false);
+        setIsUnavailable(false);
+        setApplyScheduleToAllDays(false);
     };
 
     /**
@@ -245,6 +272,23 @@ const DoctorAvailability = () => {
         return false;
     };
 
+    const handleMarkAsUnavailable = (isUnavailable) => {
+        setIsUnavailable(isUnavailable);
+
+        if (isUnavailable) {
+            setIsSlotAvailable(true);
+            setApplyScheduleToAllDays(false);
+        }
+    };
+
+    const handleMarkForAllDays = (isAllDays) => {
+        setApplyScheduleToAllDays(true);
+
+        if (isAllDays) {
+            setIsUnavailable(false);
+        }
+    };
+
     useEffect(() => {
         fetchAvailability();
     }, []);
@@ -261,19 +305,21 @@ const DoctorAvailability = () => {
             {/* Modal for time selection */}
             <ModalContainer onClose={handleOnClose} visible={showModal}>
                 {/* Conditionally render the unavailable switch only for date overrides */}
-                <View className="flex-row justify-between items-center">
-                    <SwitchInput
-                        label="Mark me as unavailable this day"
-                        value={isUnavailable}
-                        onValueChange={setIsUnavailable}
-                    />
-                </View>
+                {showMarkMeUnavailable && (
+                    <View className="flex-row justify-between items-center">
+                        <SwitchInput
+                            label="Mark me as unavailable this day"
+                            value={isUnavailable}
+                            onValueChange={handleMarkAsUnavailable}
+                        />
+                    </View>
+                )}
 
                 <View>
                     <SwitchInput
                         label={`${`Use this schedule for all ${dayOfWeek}s`}`}
                         value={applyScheduleToAllDays}
-                        onValueChange={setApplyScheduleToAllDays}
+                        onValueChange={handleMarkForAllDays}
                     />
                 </View>
 
