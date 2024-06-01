@@ -331,6 +331,14 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
+                        "fields": [
+                            "id"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
                         "name": "byName",
                         "queryField": "specialtyByName",
                         "fields": [
@@ -449,6 +457,14 @@ export const schema = {
                     "properties": {}
                 },
                 {
+                    "type": "key",
+                    "properties": {
+                        "fields": [
+                            "id"
+                        ]
+                    }
+                },
+                {
                     "type": "auth",
                     "properties": {
                         "rules": [
@@ -519,6 +535,22 @@ export const schema = {
                         ]
                     }
                 },
+                "appointmentSlots": {
+                    "name": "appointmentSlots",
+                    "isArray": true,
+                    "type": {
+                        "model": "AppointmentSlot"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "availability"
+                        ]
+                    }
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -542,6 +574,14 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "fields": [
+                            "id"
+                        ]
+                    }
                 },
                 {
                     "type": "key",
@@ -591,6 +631,13 @@ export const schema = {
                 },
                 "patientId": {
                     "name": "patientId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "availabilityId": {
+                    "name": "availabilityId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
@@ -647,6 +694,21 @@ export const schema = {
                         ]
                     }
                 },
+                "availability": {
+                    "name": "availability",
+                    "isArray": false,
+                    "type": {
+                        "model": "Availability"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "availabilityId"
+                        ]
+                    }
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -674,6 +736,14 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
+                        "fields": [
+                            "id"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
                         "name": "byDoctor",
                         "queryField": "slotsByDoctor",
                         "fields": [
@@ -689,6 +759,17 @@ export const schema = {
                         "queryField": "slotsByPatient",
                         "fields": [
                             "patientId",
+                            "startTime"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "appointmentSlotsByAvailability",
+                        "queryField": "appointmentSlotsByAvailability",
+                        "fields": [
+                            "availabilityId",
                             "startTime"
                         ]
                     }
@@ -829,5 +910,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "ee2455494c6ef49aa9e4359c01fb2003"
+    "version": "1a58a27955a17e14fb86281070220f7a"
 };

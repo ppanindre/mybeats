@@ -100,8 +100,6 @@ export default Appointment = ({ route, navigation }) => {
     };
 
     const bookAppointment = async () => {
-        console.log("slot", appointmentSlot);
-
         await appointmentService.bookAppointmentSlot(
             appointmentSlot.id,
             appointmentSlot.version
@@ -187,6 +185,7 @@ export default Appointment = ({ route, navigation }) => {
                         <AvailableAppointmentsFrame
                             doctorId="4"
                             selectAppointmentSlot={handleSelectAppointmentSlot}
+                            resetAppointmentSlot={appointmentSlot === null}
                         />
                     </View>
 

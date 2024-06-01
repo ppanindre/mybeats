@@ -172,11 +172,19 @@ export const getSpecialty = /* GraphQL */ `
 `;
 export const listSpecialties = /* GraphQL */ `
   query ListSpecialties(
+    $id: ID
     $filter: ModelSpecialtyFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listSpecialties(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listSpecialties(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
         id
         name
@@ -248,11 +256,19 @@ export const getPatient = /* GraphQL */ `
 `;
 export const listPatients = /* GraphQL */ `
   query ListPatients(
+    $id: ID
     $filter: ModelPatientFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listPatients(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listPatients(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
         id
         firstname
@@ -343,6 +359,11 @@ export const getAvailability = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      appointmentSlots {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -354,11 +375,19 @@ export const getAvailability = /* GraphQL */ `
 `;
 export const listAvailabilities = /* GraphQL */ `
   query ListAvailabilities(
+    $id: ID
     $filter: ModelAvailabilityFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listAvailabilities(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listAvailabilities(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
         id
         doctorID
@@ -416,6 +445,7 @@ export const getAppointmentSlot = /* GraphQL */ `
       id
       doctorID
       patientId
+      availabilityId
       startTime
       endTime
       isBooked
@@ -461,6 +491,19 @@ export const getAppointmentSlot = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      availability {
+        id
+        doctorID
+        startTime
+        endTime
+        isAvailable
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -472,19 +515,24 @@ export const getAppointmentSlot = /* GraphQL */ `
 `;
 export const listAppointmentSlots = /* GraphQL */ `
   query ListAppointmentSlots(
+    $id: ID
     $filter: ModelAppointmentSlotFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
     listAppointmentSlots(
+      id: $id
       filter: $filter
       limit: $limit
       nextToken: $nextToken
+      sortDirection: $sortDirection
     ) {
       items {
         id
         doctorID
         patientId
+        availabilityId
         startTime
         endTime
         isBooked
@@ -518,6 +566,7 @@ export const syncAppointmentSlots = /* GraphQL */ `
         id
         doctorID
         patientId
+        availabilityId
         startTime
         endTime
         isBooked
@@ -828,6 +877,7 @@ export const slotsByDoctor = /* GraphQL */ `
         id
         doctorID
         patientId
+        availabilityId
         startTime
         endTime
         isBooked
@@ -865,6 +915,45 @@ export const slotsByPatient = /* GraphQL */ `
         id
         doctorID
         patientId
+        availabilityId
+        startTime
+        endTime
+        isBooked
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const appointmentSlotsByAvailability = /* GraphQL */ `
+  query AppointmentSlotsByAvailability(
+    $availabilityId: ID!
+    $startTime: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelAppointmentSlotFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    appointmentSlotsByAvailability(
+      availabilityId: $availabilityId
+      startTime: $startTime
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        doctorID
+        patientId
+        availabilityId
         startTime
         endTime
         isBooked

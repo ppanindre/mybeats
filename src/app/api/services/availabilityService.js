@@ -33,7 +33,8 @@ export const availabilityService = {
                 },
             });
 
-            console.log("response", response);
+            return response.data.createAvailability;
+
         } catch (error) {
             console.error("Error while creating availability", error);
             Sentry.captureException(error, {

@@ -3,7 +3,11 @@ import React, { useEffect, useState } from "react";
 import { appointmentService } from "../../api/services/appointmentService";
 import moment from "moment";
 
-const AvailableAppointmentsFrame = ({ doctorId, selectAppointmentSlot }) => {
+const AvailableAppointmentsFrame = ({
+    doctorId,
+    selectAppointmentSlot,
+    resetAppointmentSlot,
+}) => {
     // STATES
     const [availableSlots, setAvailableSlots] = useState([]);
     const [selectedDayIndex, setSelectedDayIndex] = useState(null);
@@ -40,9 +44,17 @@ const AvailableAppointmentsFrame = ({ doctorId, selectAppointmentSlot }) => {
         selectAppointmentSlot(
             availableSlots[selectedDayIndex].slots[slotIndex]
         );
-        setSelectedDayIndex(null);
-        setSelectedTimeIndex(null);
+        // setSelectedDayIndex(null);
+        // setSelectedTimeIndex(null);
     };
+
+    useEffect(() => {
+        if (resetAppointmentSlot) {
+            setSelectedDayIndex(null);
+            setSelectedTimeIndex(null);
+            fetchAvailableAppointments();
+        }
+    }, [resetAppointmentSlot]);
 
     useEffect(() => {
         fetchAvailableAppointments();

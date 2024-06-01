@@ -6,7 +6,11 @@ import {
     deleteAppointmentSlot,
     updateAppointmentSlot,
 } from "../../../graphql/mutations";
-import { listAppointmentSlots, slotsByDoctor } from "../../../graphql/queries";
+import {
+    appointmentSlotsByAvailability,
+    listAppointmentSlots,
+    slotsByDoctor,
+} from "../../../graphql/queries";
 
 const client = generateClient();
 
@@ -19,14 +23,17 @@ export const appointmentService = {
      * @param {string} endTime
      * @returns {Promise<void>}
      */
-    createAppointmentSlot: async (doctorId, patientId, startTime, endTime) => {
+    createAppointmentSlot: async (doctorId, availabilityId, patientId, startTime, endTime) => {
         try {
+            console.log(doctorId, availabilityId, patientId, startTime, endTime);
+
             const response = await client.graphql({
                 query: createAppointmentSlot,
                 variables: {
                     input: {
                         doctorID: doctorId,
                         patientId: patientId,
+                        availabilityId: availabilityId,
                         startTime: startTime,
                         endTime: endTime,
                         isBooked: false,
@@ -168,8 +175,6 @@ export const appointmentService = {
             );
 
             return formattedResponse;
-            
-
         } catch (error) {
             console.error(
                 "Error while getting appointment slots by doctor",
@@ -207,6 +212,45 @@ export const appointmentService = {
             Sentry.captureException(error, {
                 extra: {
                     message: "Error captured while getting appointment slots",
+                },
+            });
+        }
+    },
+
+    deleteAppointmentSlotsByAvailability: async (availabilityId) => {
+        console.log("availability Id", availabilityId);
+
+        try {
+            // Fetch the appointment slots for the given availability
+            const response = await client.graphql({
+                query: appointmentSlotsByAvailability,
+                variables: {
+                    availabilityId: availabilityId,
+                    filter: {
+                        isBooked: { ne: true },
+                    },
+                },
+            });
+
+            const appointmentSlots =
+                response.data.appointmentSlotsByAvailability.items;
+
+            // Delete each appointment slot
+            for (const slot of appointmentSlots) {
+                await client.graphql({
+                    query: deleteAppointmentSlot,
+                    variables: {
+                        input: { id: slot.id, _version: slot._version },
+                    },
+                });
+            }
+
+            console.log("deleted appointments");
+        } catch (error) {
+            console.error("Error while deleting appointment slots", error);
+            Sentry.captureException(error, {
+                extra: {
+                    message: "Error captured while deleting appointment slots",
                 },
             });
         }

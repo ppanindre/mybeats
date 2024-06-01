@@ -1,4 +1,4 @@
-import { ModelInit, MutableModel, __modelMeta__, CustomIdentifier, ManagedIdentifier } from "@aws-amplify/datastore";
+import { ModelInit, MutableModel, __modelMeta__, CustomIdentifier, OptionallyManagedIdentifier, ManagedIdentifier } from "@aws-amplify/datastore";
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@aws-amplify/datastore";
 
@@ -78,7 +78,7 @@ export declare const Doctor: (new (init: ModelInit<Doctor>) => Doctor) & {
 
 type EagerSpecialty = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Specialty, 'id'>;
+    identifier: OptionallyManagedIdentifier<Specialty, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
@@ -90,7 +90,7 @@ type EagerSpecialty = {
 
 type LazySpecialty = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Specialty, 'id'>;
+    identifier: OptionallyManagedIdentifier<Specialty, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
@@ -108,7 +108,7 @@ export declare const Specialty: (new (init: ModelInit<Specialty>) => Specialty) 
 
 type EagerPatient = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Patient, 'id'>;
+    identifier: OptionallyManagedIdentifier<Patient, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
@@ -125,7 +125,7 @@ type EagerPatient = {
 
 type LazyPatient = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Patient, 'id'>;
+    identifier: OptionallyManagedIdentifier<Patient, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
@@ -148,7 +148,7 @@ export declare const Patient: (new (init: ModelInit<Patient>) => Patient) & {
 
 type EagerAvailability = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Availability, 'id'>;
+    identifier: OptionallyManagedIdentifier<Availability, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
@@ -157,13 +157,14 @@ type EagerAvailability = {
   readonly endTime: string;
   readonly isAvailable: boolean;
   readonly doctor?: Doctor | null;
+  readonly appointmentSlots?: (AppointmentSlot | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
 type LazyAvailability = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Availability, 'id'>;
+    identifier: OptionallyManagedIdentifier<Availability, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
@@ -172,6 +173,7 @@ type LazyAvailability = {
   readonly endTime: string;
   readonly isAvailable: boolean;
   readonly doctor: AsyncItem<Doctor | undefined>;
+  readonly appointmentSlots: AsyncCollection<AppointmentSlot>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -184,34 +186,38 @@ export declare const Availability: (new (init: ModelInit<Availability>) => Avail
 
 type EagerAppointmentSlot = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<AppointmentSlot, 'id'>;
+    identifier: OptionallyManagedIdentifier<AppointmentSlot, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
   readonly doctorID: string;
   readonly patientId: string;
+  readonly availabilityId: string;
   readonly startTime: string;
   readonly endTime: string;
   readonly isBooked: boolean;
   readonly doctor?: Doctor | null;
   readonly patient?: Patient | null;
+  readonly availability?: Availability | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
 type LazyAppointmentSlot = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<AppointmentSlot, 'id'>;
+    identifier: OptionallyManagedIdentifier<AppointmentSlot, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
   readonly doctorID: string;
   readonly patientId: string;
+  readonly availabilityId: string;
   readonly startTime: string;
   readonly endTime: string;
   readonly isBooked: boolean;
   readonly doctor: AsyncItem<Doctor | undefined>;
   readonly patient: AsyncItem<Patient | undefined>;
+  readonly availability: AsyncItem<Availability | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

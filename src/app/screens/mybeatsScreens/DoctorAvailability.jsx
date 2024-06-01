@@ -37,23 +37,35 @@ const DoctorAvailability = () => {
             const datesSelected = getAllDaysOfTheYear(startTime, endTime);
 
             datesSelected.forEach(async (date) => {
-                await availabilityService.createAvailability(
-                    "4",
-                    date.startTime,
-                    date.endTime
-                );
+                const createdAvailability =
+                    await availabilityService.createAvailability(
+                        "4",
+                        date.startTime,
+                        date.endTime
+                    );
 
                 // Create apointment slot
-                await addAppointmentSlots(date.startTime, date.endTime);
+                await addAppointmentSlots(
+                    date.startTime,
+                    date.endTime,
+                    createdAvailability.id
+                );
             });
         } else {
-            await availabilityService.createAvailability(
-                "4",
-                startTime,
-                endTime
-            );
+            const createdAvailability =
+                await availabilityService.createAvailability(
+                    "4",
+                    startTime,
+                    endTime
+                );
 
-            await addAppointmentSlots(startTime, endTime);
+            console.log("created availability", createdAvailability.id);
+
+            await addAppointmentSlots(
+                startTime,
+                endTime,
+                createdAvailability.id
+            );
         }
 
         setNextTokenFetched(null);
@@ -65,7 +77,7 @@ const DoctorAvailability = () => {
         await fetchAvailability();
     };
 
-    const addAppointmentSlots = async (start, end) => {
+    const addAppointmentSlots = async (start, end, availabilityId) => {
         const slotStart = moment(start);
         const slotEnd = moment(end);
         const intervalSlots = [];
@@ -87,6 +99,7 @@ const DoctorAvailability = () => {
         intervalSlots.forEach(async (slot) => {
             await appointmentService.createAppointmentSlot(
                 "4",
+                availabilityId,
                 "null",
                 slot.start,
                 slot.end
@@ -179,9 +192,15 @@ const DoctorAvailability = () => {
         const selectedAvailability =
             availabilitySlots[daySlotIndex].slots[timeSlotIndex];
 
+        // console.log("selectede", selectedAvailability);
+
         await availabilityService.deleteAvailability(
             selectedAvailability.id,
             selectedAvailability.version
+        );
+
+        await appointmentService.deleteAppointmentSlotsByAvailability(
+            selectedAvailability.id
         );
 
         Alert.alert("", "Your availability slot has been deleted");
