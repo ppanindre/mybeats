@@ -22,6 +22,8 @@ const AvailableAppointmentsFrame = ({
             "1"
         );
 
+        console.log("fetched slots", fetchedSlots)
+
         setAvailableSlots(fetchedSlots);
     };
 

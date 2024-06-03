@@ -320,37 +320,19 @@ export default Appointment = ({ route, navigation }) => {
                 </View>
             </ScrollView>
 
-            <View className="flex-row bg-light space-x-3">
-                {availableForVideoConsultation && (
-                    <View className="flex-1">
-                        <AppButton
-                            variant="light"
-                            btnLabel="Video"
-                            btnLeftIcon={
-                                <Ionicons
-                                    name="videocam"
-                                    size={20}
-                                    color={theme.colors.primary}
-                                />
-                            }
+            <View>
+                <AppButton
+                    onPress={bookAppointment}
+                    variant="primary"
+                    btnLabel="Book"
+                    btnLeftIcon={
+                        <Ionicons
+                            name="calendar"
+                            size={20}
+                            color={theme.colors.light}
                         />
-                    </View>
-                )}
-
-                <View className="flex-1">
-                    <AppButton
-                        onPress={bookAppointment}
-                        variant="primary"
-                        btnLabel="Book"
-                        btnLeftIcon={
-                            <Ionicons
-                                name="calendar"
-                                size={20}
-                                color={theme.colors.light}
-                            />
-                        }
-                    />
-                </View>
+                    }
+                />
             </View>
         </ScreenContainer>
     );

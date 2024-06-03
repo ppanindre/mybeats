@@ -60,7 +60,6 @@ export const availabilityService = {
                     filter: {
                         _deleted: { ne: true },
                     },
-                    limit: 10
                 },
             });
 

@@ -44,7 +44,6 @@ export const appointmentService = {
                     },
                 },
             });
-
         } catch (error) {
             console.error("Error while creating appointment slot", error);
             Sentry.captureException(error, {
@@ -132,7 +131,7 @@ export const appointmentService = {
         }
     },
 
-    appointmentSlotByDoctor: async (doctorId, isBooked=false) => {
+    appointmentSlotByDoctor: async (doctorId, isBooked = false) => {
         try {
             const response = await client.graphql({
                 query: slotsByDoctor,
@@ -209,7 +208,6 @@ export const appointmentService = {
                     },
                 },
             });
-
         } catch (error) {
             console.error("Error while booking appointment", error);
             Sentry.captureException(error, {
@@ -221,7 +219,6 @@ export const appointmentService = {
     },
 
     deleteAppointmentSlotsByAvailability: async (availabilityId) => {
-
         try {
             // Fetch the appointment slots for the given availability
             const response = await client.graphql({

@@ -36,43 +36,85 @@ const DoctorAvailability = () => {
     const [isSlotAvailable, setIsSlotAvailable] = useState(true);
     const [nextTokenFetched, setNextTokenFetched] = useState(null);
     const [isSavingAvailability, setIsSavingAvailability] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
     const [hasNext, setHasNext] = useState(true);
     /**
      * function to save time
      * @param {void}
      */
     const handleSaveTime = async () => {
-        setIsSavingAvailability(true);
         if (isUnavailable) {
-            const availabilityIndex = availabilitySlots.findIndex(
-                (avail) => avail.date === moment(startTime).format("YYYY-MM-DD")
-            );
+            Alert.alert(
+                "",
+                "Are you sure you want to delete the slots?",
+                [
+                    {
+                        text: "Cancel",
+                        onPress: () => console.log("Cancel Pressed"),
+                        style: "cancel",
+                    },
+                    {
+                        text: "Ok",
+                        onPress: async () => {
+                            const availabilityIndex =
+                                availabilitySlots.findIndex(
+                                    (avail) =>
+                                        avail.date ===
+                                        moment(startTime).format("YYYY-MM-DD")
+                                );
 
-            availabilitySlots[availabilityIndex].slots.forEach(
-                async (_, slotIndex) => {
-                    await deleteAvailabilitySlot(availabilityIndex, slotIndex);
-                }
+                            availabilitySlots[availabilityIndex].slots.forEach(
+                                async (_, slotIndex) => {
+                                    await deleteAvailabilitySlot(
+                                        availabilityIndex,
+                                        slotIndex
+                                    );
+                                }
+                            );
+
+                            setShowModal(false);
+                        },
+                    },
+                ],
+                { cancelable: false }
             );
-            setShowModal(false);
             return;
         }
+        setIsSavingAvailability(true);
         if (applyScheduleToAllDays) {
             const datesSelected = getAllDaysOfTheYear(startTime, endTime);
 
             datesSelected.forEach(async (date) => {
-                const createdAvailability =
-                    await availabilityService.createAvailability(
-                        "4",
-                        date.startTime,
-                        date.endTime
-                    );
-
-                // Create apointment slot
-                await addAppointmentSlots(
-                    date.startTime,
-                    date.endTime,
-                    createdAvailability.id
+                const dateSlot = availabilitySlots.find(
+                    (d) =>
+                        d.date === moment(date.startTime).format("YYYY-MM-DD")
                 );
+
+                let slotExists = false;
+
+                if (dateSlot) {
+                    slotExists = dateSlot.slots.some((slot) =>
+                        moment(slot.start).isSame(moment(date.startTime))
+                    );
+                }
+
+                console.log("slot exists", slotExists);
+
+                if (!slotExists) {
+                    const createdAvailability =
+                        await availabilityService.createAvailability(
+                            "4",
+                            date.startTime,
+                            date.endTime
+                        );
+
+                    // Create apointment slot
+                    await addAppointmentSlots(
+                        date.startTime,
+                        date.endTime,
+                        createdAvailability.id
+                    );
+                }
             });
         } else {
             const createdAvailability =
@@ -216,6 +258,8 @@ const DoctorAvailability = () => {
         // set the next token for fetching the next availabilities
         setNextTokenFetched(nextToken);
 
+        console.log("fetched availability", fetchedAvailability);
+
         // set availability slots
         setAvailiablitySlots(fetchedAvailability);
     };
@@ -235,6 +279,7 @@ const DoctorAvailability = () => {
      * @param {Integer} timeSlotIndex
      */
     const deleteAvailabilitySlot = async (daySlotIndex, timeSlotIndex) => {
+        setIsDeleting(true);
         // Get the selected availability
         const selectedAvailability =
             availabilitySlots[daySlotIndex].slots[timeSlotIndex];
@@ -249,6 +294,8 @@ const DoctorAvailability = () => {
         await appointmentService.deleteAppointmentSlotsByAvailability(
             selectedAvailability.id
         );
+
+        setIsDeleting(false);
 
         Alert.alert("", "Your availability slot has been deleted");
 
@@ -331,8 +378,7 @@ const DoctorAvailability = () => {
     }, [startTime, endTime]);
 
     return (
-        <ScreenContainer>
-            {/* Calendar */}
+        <ScreenContainer isLoading={isDeleting}>
             {/* Modal for time selection */}
 
             {/* Flex gap not working: TODO */}

@@ -77,6 +77,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
 
     // Declare navigation instance
     const navigation = useNavigation();
+
     const dispatch = useDispatch();
 
     // Declare Tour guide hook
@@ -104,6 +105,30 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
         return () => {
             eventEmitter.off("stop", handleOnStop);
         };
+    }, []);
+
+    useEffect(() => {
+        const routeName = route.name;
+        let role = "Doctor";
+
+        switch (routeName) {
+            case "doctorDashboard":
+                role = "Doctor";
+                break;
+            case "patientDashboard":
+                role = "Patient";
+                break;
+            case "PharmacyManager":
+                role = "PharmacyManager";
+                break;
+            case "LabManager":
+                role = "LabManager";
+                break;
+            default:
+                break;
+        }
+
+        setSelectedRole(role);
     }, []);
 
     // Get Last sync time
@@ -135,7 +160,9 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
         // convert the sync timestamp to the following time forat
         deviceSyncTime = moment(deviceSyncTime).format("MMM DD, YYYY h:mmA");
         return isMyBeats
-            ? `Last Active: `.concat(deviceSyncTime)
+            ? `Last Active as ${selectedRole && selectedRole}: `.concat(
+                  deviceSyncTime
+              )
             : "Last sync: ".concat(deviceSyncTime);
     };
 
