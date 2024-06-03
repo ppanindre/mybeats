@@ -132,7 +132,7 @@ export const appointmentService = {
         }
     },
 
-    appointmentSlotByDoctor: async (doctorId) => {
+    appointmentSlotByDoctor: async (doctorId, isBooked=false) => {
         try {
             const response = await client.graphql({
                 query: slotsByDoctor,
@@ -140,7 +140,7 @@ export const appointmentService = {
                     doctorID: doctorId,
                     sortDirection: "ASC",
                     filter: {
-                        isBooked: { ne: true },
+                        isBooked: { eq: isBooked },
                         _deleted: { ne: true },
                     },
                 },
