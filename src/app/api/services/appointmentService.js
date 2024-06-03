@@ -23,10 +23,14 @@ export const appointmentService = {
      * @param {string} endTime
      * @returns {Promise<void>}
      */
-    createAppointmentSlot: async (doctorId, availabilityId, patientId, startTime, endTime) => {
+    createAppointmentSlot: async (
+        doctorId,
+        availabilityId,
+        patientId,
+        startTime,
+        endTime
+    ) => {
         try {
-            console.log(doctorId, availabilityId, patientId, startTime, endTime);
-
             const response = await client.graphql({
                 query: createAppointmentSlot,
                 variables: {
@@ -41,7 +45,6 @@ export const appointmentService = {
                 },
             });
 
-            console.log("response", response);
         } catch (error) {
             console.error("Error while creating appointment slot", error);
             Sentry.captureException(error, {
@@ -138,6 +141,7 @@ export const appointmentService = {
                     sortDirection: "ASC",
                     filter: {
                         isBooked: { ne: true },
+                        _deleted: { ne: true },
                     },
                 },
             });
@@ -206,7 +210,6 @@ export const appointmentService = {
                 },
             });
 
-            console.log("response", response);
         } catch (error) {
             console.error("Error while booking appointment", error);
             Sentry.captureException(error, {
@@ -218,7 +221,6 @@ export const appointmentService = {
     },
 
     deleteAppointmentSlotsByAvailability: async (availabilityId) => {
-        console.log("availability Id", availabilityId);
 
         try {
             // Fetch the appointment slots for the given availability

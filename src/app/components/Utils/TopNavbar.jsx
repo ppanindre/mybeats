@@ -21,7 +21,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
     const user = useSelector((state) => state.UserReducer);
 
     const [isModalVisible, setModalVisible] = useState(false);
-    const [selectedRole, setSelectedRole] = useState("");
+    const [selectedRole, setSelectedRole] = useState(null);
     const isFocused = useIsFocused();
     const route = useRoute();
     const [displayedRole, setDisplayedRole] = useState("Patient");
@@ -44,7 +44,6 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
 
     // Handle continue for change role
     const handleContinue = () => {
-        console.log("Selected Role:", selectedRole);
         setModalVisible(false);
 
         let screenName = "";
@@ -136,7 +135,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
         // convert the sync timestamp to the following time forat
         deviceSyncTime = moment(deviceSyncTime).format("MMM DD, YYYY h:mmA");
         return isMyBeats
-            ? "Last Active: ".concat(deviceSyncTime)
+            ? `Last Active: `.concat(deviceSyncTime)
             : "Last sync: ".concat(deviceSyncTime);
     };
 
@@ -268,22 +267,11 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
 
                     {/* Continue Button */}
                     <View className="flex justify-center items-center mt-4 mb-5">
-                        {/* <TouchableOpacity
+                        <AppButton
+                            variant={`${selectedRole ? "primary" : "disabled"}`}
+                            btnLabel="Confirm"
                             onPress={handleContinue}
-                            className="w-full p-4 rounded-lg"
-                            style={{
-                                backgroundColor: customTheme.colors.primary,
-                            }}
-                        >
-                            <Text className="text-center text-white text-md font-[appfont-bold]">
-                                Continue
-                            </Text>
-                        </TouchableOpacity> */}
-                            <AppButton
-                                variant="primary"
-                                btnLabel="Continue"
-                                onPress={handleContinue}
-                            />
+                        />
                     </View>
                 </View>
             </Modal>

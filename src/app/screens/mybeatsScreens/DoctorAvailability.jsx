@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView, Alert } from "react-native";
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    ScrollView,
+    Alert,
+    ActivityIndicator,
+} from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import moment from "moment";
@@ -28,12 +35,14 @@ const DoctorAvailability = () => {
     const [applyScheduleToAllDays, setApplyScheduleToAllDays] = useState(false);
     const [isSlotAvailable, setIsSlotAvailable] = useState(true);
     const [nextTokenFetched, setNextTokenFetched] = useState(null);
+    const [isSavingAvailability, setIsSavingAvailability] = useState(false);
     const [hasNext, setHasNext] = useState(true);
     /**
      * function to save time
      * @param {void}
      */
     const handleSaveTime = async () => {
+        setIsSavingAvailability(true);
         if (isUnavailable) {
             const availabilityIndex = availabilitySlots.findIndex(
                 (avail) => avail.date === moment(startTime).format("YYYY-MM-DD")
@@ -73,8 +82,6 @@ const DoctorAvailability = () => {
                     endTime
                 );
 
-            console.log("created availability", createdAvailability.id);
-
             await addAppointmentSlots(
                 startTime,
                 endTime,
@@ -85,12 +92,19 @@ const DoctorAvailability = () => {
         setNextTokenFetched(null);
         setApplyScheduleToAllDays(false);
         setShowModal(false); // Close Modal
+        setIsSavingAvailability(false);
         Alert.alert("", "Your availability has been set");
 
         // Fetch availability
         await fetchAvailability();
     };
 
+    /**
+     * add appointment slots for each availability
+     * @param {String} start
+     * @param {String} end
+     * @param {String} availabilityId
+     */
     const addAppointmentSlots = async (start, end, availabilityId) => {
         const slotStart = moment(start);
         const slotEnd = moment(end);
@@ -121,6 +135,10 @@ const DoctorAvailability = () => {
         });
     };
 
+    /**
+     * add availability for the date
+     * @param {String} date
+     */
     const addAvailability = (date) => {
         // open modal
         setShowModal(true);
@@ -211,26 +229,31 @@ const DoctorAvailability = () => {
     };
 
     /**
-     *
+     * delete availability slot and appointments referenced to that
+     * availability
      * @param {Integer} daySlotIndex
      * @param {Integer} timeSlotIndex
      */
     const deleteAvailabilitySlot = async (daySlotIndex, timeSlotIndex) => {
+        // Get the selected availability
         const selectedAvailability =
             availabilitySlots[daySlotIndex].slots[timeSlotIndex];
 
-        // console.log("selectede", selectedAvailability);
-
+        // Delete the availability
         await availabilityService.deleteAvailability(
             selectedAvailability.id,
             selectedAvailability.version
         );
 
+        // Delete the appointment slots for each
         await appointmentService.deleteAppointmentSlotsByAvailability(
             selectedAvailability.id
         );
 
         Alert.alert("", "Your availability slot has been deleted");
+
+        setIsUnavailable(false);
+        setShowTimePicker(true);
 
         await fetchAvailability();
     };
@@ -272,6 +295,10 @@ const DoctorAvailability = () => {
         return false;
     };
 
+    /**
+     * handle when user switches the mark me as unavailable
+     * @param {Boolean} isUnavailable
+     */
     const handleMarkAsUnavailable = (isUnavailable) => {
         setIsUnavailable(isUnavailable);
 
@@ -281,6 +308,10 @@ const DoctorAvailability = () => {
         }
     };
 
+    /**
+     * handle when user switches the mark for all days
+     * @param {Boolean} isAllDays
+     */
     const handleMarkForAllDays = (isAllDays) => {
         setApplyScheduleToAllDays(true);
 
@@ -303,6 +334,8 @@ const DoctorAvailability = () => {
         <ScreenContainer>
             {/* Calendar */}
             {/* Modal for time selection */}
+
+            {/* Flex gap not working: TODO */}
             <ModalContainer onClose={handleOnClose} visible={showModal}>
                 {/* Conditionally render the unavailable switch only for date overrides */}
                 {showMarkMeUnavailable && (
@@ -315,7 +348,7 @@ const DoctorAvailability = () => {
                     </View>
                 )}
 
-                <View>
+                <View className="mb-3">
                     <SwitchInput
                         label={`${`Use this schedule for all ${dayOfWeek}s`}`}
                         value={applyScheduleToAllDays}
@@ -385,7 +418,8 @@ const DoctorAvailability = () => {
                 <View>
                     <AppButton
                         variant={`${isSlotAvailable ? "primary" : "disabled"}`}
-                        btnLabel="Set availability"
+                        btnLabel="Save"
+                        isLoading={isSavingAvailability}
                         onPress={handleSaveTime}
                     />
                 </View>

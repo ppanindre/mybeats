@@ -1,40 +1,48 @@
-import { Text, TouchableOpacity } from "react-native";
+import { ActivityIndicator, Text, TouchableOpacity } from "react-native";
 import React from "react";
+import { theme } from "../../../../tailwind.config";
 
 const AppButton = ({
-  btnLabel,
-  btnLeftIcon,
-  btnRightIcon,
-  variant,
-  onPress,
+    btnLabel,
+    btnLeftIcon,
+    btnRightIcon,
+    variant,
+    onPress,
+    isLoading = false,
 }) => {
-  return (
-    <TouchableOpacity
-      onPress={onPress}
-      disabled={variant === "disabled"}
-      className={`${variant === "primary" && "border-2 border-primary bg-primary shadow-lg"} ${
-        variant === "light" && "border-2 border-primary"
-      } p-5 rounded-md mb-5 flex-row items-center justify-center ${
-        variant === "disabled" && "bg-dark shadow-lg "
-      } w-[100%]`}
-    >
+    return (
+        <TouchableOpacity
+            onPress={onPress}
+            isLoading={isLoading}
+            disabled={variant === "disabled"}
+            className={`${
+                variant === "primary" &&
+                "border-2 border-primary bg-primary shadow-lg"
+            } ${
+                variant === "light" && "border-2 border-primary"
+            } p-5 rounded-md mb-5 flex-row items-center justify-center ${
+                variant === "disabled" && "bg-darkSecondary shadow-lg "
+            } w-[100%]`}
+        >
+            {/* Btn left icon */}
+            {btnLeftIcon}
 
-      {/* Btn left icon */}
-      {btnLeftIcon}
+            {isLoading ? (
+                <ActivityIndicator color={theme.colors.light} />
+            ) : (
+                <Text
+                    className={`${variant === "primary" && "text-light"} ${
+                        variant === "light" && "text-primary"
+                    } ${variant === "disabled" && "text-light"} font-bold mx-3`}
+                >
+                    {btnLabel}
+                </Text>
+            )}
 
-      {/* Button Label */}
-      <Text
-        className={`${variant === "primary" && "text-light"} ${
-          variant === "light" && "text-primary"
-        } ${variant === "disabled" && "text-light"} font-bold mx-3`}
-      >
-        {btnLabel}
-      </Text>
-
-      {/* Btn right icon */}
-      {btnRightIcon}
-    </TouchableOpacity>
-  );
+            {/* Btn right icon */}
+            {btnRightIcon}
+        </TouchableOpacity>
+    );
 };
 
 export default AppButton;
