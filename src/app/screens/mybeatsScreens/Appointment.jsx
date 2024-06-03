@@ -102,10 +102,10 @@ export default Appointment = ({ route, navigation }) => {
     const bookAppointment = async () => {
         await appointmentService.bookAppointmentSlot(
             appointmentSlot.id,
-            appointmentSlot._version
+            appointmentSlot.version
         );
 
-        Alert.alert("", "Your appointment has been booked!");
+        setAppointmentSlot(null);
     };
 
     return (
@@ -185,6 +185,7 @@ export default Appointment = ({ route, navigation }) => {
                         <AvailableAppointmentsFrame
                             doctorId="4"
                             selectAppointmentSlot={handleSelectAppointmentSlot}
+                            resetAppointmentSlot={appointmentSlot === null}
                         />
                     </View>
 
@@ -319,37 +320,19 @@ export default Appointment = ({ route, navigation }) => {
                 </View>
             </ScrollView>
 
-            <View className="flex-row bg-light space-x-3">
-                {availableForVideoConsultation && (
-                    <View className="flex-1">
-                        <AppButton
-                            variant="light"
-                            btnLabel="Video"
-                            btnLeftIcon={
-                                <Ionicons
-                                    name="videocam"
-                                    size={20}
-                                    color={theme.colors.primary}
-                                />
-                            }
+            <View>
+                <AppButton
+                    onPress={bookAppointment}
+                    variant="primary"
+                    btnLabel="Book"
+                    btnLeftIcon={
+                        <Ionicons
+                            name="calendar"
+                            size={20}
+                            color={theme.colors.light}
                         />
-                    </View>
-                )}
-
-                <View className="flex-1">
-                    <AppButton
-                        onPress={bookAppointment}
-                        variant="primary"
-                        btnLabel="Book"
-                        btnLeftIcon={
-                            <Ionicons
-                                name="calendar"
-                                size={20}
-                                color={theme.colors.light}
-                            />
-                        }
-                    />
-                </View>
+                    }
+                />
             </View>
         </ScreenContainer>
     );

@@ -33,13 +33,13 @@ type Doctor @model @auth(rules: [{ allow: public }]) {
 }
 
 type Specialty @model @auth(rules: [{ allow: public }]) {
-    id: ID!
+    id: ID! @primaryKey
     name: String! @index(name: "byName", queryField: "specialtyByName")
     doctors: [Doctor] @manyToMany(relationName: "DoctorSpecialties")
 }
 
 type Patient @model @auth(rules: [{ allow: public }]) {
-    id: ID!
+    id: ID! @primaryKey
     firstname: String!
     lastname: String!
     email: String
@@ -51,7 +51,7 @@ type Patient @model @auth(rules: [{ allow: public }]) {
 }
 
 type Availability @model @auth(rules: [{ allow: public }]) {
-    id: ID!
+    id: ID! @primaryKey
     doctorID: ID!
         @index(
             name: "byDoctor"
@@ -62,16 +62,35 @@ type Availability @model @auth(rules: [{ allow: public }]) {
     endTime: AWSDateTime!
     isAvailable: Boolean!
     doctor: Doctor @belongsTo(fields: ["doctorID"])
+    appointmentSlots: [AppointmentSlot]
+        @hasMany(indexName: "appointmentSlotsByAvailability", fields: ["id"])
 }
 
 type AppointmentSlot @model @auth(rules: [{ allow: public }]) {
-    id: ID!
-    doctorID: ID! @index(name: "byDoctor", queryField: "slotsByDoctor")
-    patientId: ID! @index(name: "byPatient", queryField: "slotsByPatient")
+    id: ID! @primaryKey
+    doctorID: ID!
+        @index(
+            name: "byDoctor"
+            queryField: "slotsByDoctor"
+            sortKeyFields: ["startTime"]
+        )
+    patientId: ID!
+        @index(
+            name: "byPatient"
+            queryField: "slotsByPatient"
+            sortKeyFields: ["startTime"]
+        )
+    availabilityId: ID!
+        @index(
+            name: "appointmentSlotsByAvailability"
+            queryField: "appointmentSlotsByAvailability"
+            sortKeyFields: ["startTime"]
+        )
 
     startTime: AWSDateTime!
     endTime: AWSDateTime!
-    isBooked: Boolean!
+    isBooked: Boolean! #true
     doctor: Doctor @belongsTo(fields: ["doctorID"])
     patient: Patient @belongsTo(fields: ["patientId"]) # Added patient relationship
+    availability: Availability @belongsTo(fields: ["availabilityId"])
 }

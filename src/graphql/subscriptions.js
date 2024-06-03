@@ -341,6 +341,11 @@ export const onCreateAvailability = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      appointmentSlots {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -385,6 +390,11 @@ export const onUpdateAvailability = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        __typename
+      }
+      appointmentSlots {
+        nextToken
+        startedAt
         __typename
       }
       createdAt
@@ -433,6 +443,11 @@ export const onDeleteAvailability = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      appointmentSlots {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -450,6 +465,7 @@ export const onCreateAppointmentSlot = /* GraphQL */ `
       id
       doctorID
       patientId
+      availabilityId
       startTime
       endTime
       isBooked
@@ -488,6 +504,19 @@ export const onCreateAppointmentSlot = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      availability {
+        id
+        doctorID
+        startTime
+        endTime
+        isAvailable
         createdAt
         updatedAt
         _version
@@ -512,6 +541,7 @@ export const onUpdateAppointmentSlot = /* GraphQL */ `
       id
       doctorID
       patientId
+      availabilityId
       startTime
       endTime
       isBooked
@@ -550,6 +580,19 @@ export const onUpdateAppointmentSlot = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      availability {
+        id
+        doctorID
+        startTime
+        endTime
+        isAvailable
         createdAt
         updatedAt
         _version
@@ -574,6 +617,7 @@ export const onDeleteAppointmentSlot = /* GraphQL */ `
       id
       doctorID
       patientId
+      availabilityId
       startTime
       endTime
       isBooked
@@ -612,6 +656,19 @@ export const onDeleteAppointmentSlot = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      availability {
+        id
+        doctorID
+        startTime
+        endTime
+        isAvailable
         createdAt
         updatedAt
         _version

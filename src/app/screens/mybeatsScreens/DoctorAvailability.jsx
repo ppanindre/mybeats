@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView, Alert } from "react-native";
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    ScrollView,
+    Alert,
+    ActivityIndicator,
+} from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import moment from "moment";
@@ -11,6 +18,7 @@ import SwitchInput from "../../components/Inputs/SwitchInput";
 import CalendarInput from "../../components/Inputs/CalendarInput";
 import { getAllDaysOfTheYear } from "../../utils/doctorAvailaibilityUtil";
 import { availabilityService } from "../../api/services/availabilityService";
+import { appointmentService } from "../../api/services/appointmentService";
 
 const DoctorAvailability = () => {
     // STATES
@@ -20,48 +28,173 @@ const DoctorAvailability = () => {
     const [startTime, setStartTime] = useState();
     const [endTime, setEndTime] = useState();
     const [showTimePicker, setShowTimePicker] = useState(false);
+    const [showMarkMeUnavailable, setShowMarkMeUnavailable] = useState(true);
     const [isTimeStart, setIsTimeStart] = useState(true); // true for start time, false for end time
     const [availabilitySlots, setAvailiablitySlots] = useState([]);
     const [dayOfWeek, setDayOfWeek] = useState("");
     const [applyScheduleToAllDays, setApplyScheduleToAllDays] = useState(false);
     const [isSlotAvailable, setIsSlotAvailable] = useState(true);
     const [nextTokenFetched, setNextTokenFetched] = useState(null);
+    const [isSavingAvailability, setIsSavingAvailability] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
     const [hasNext, setHasNext] = useState(true);
     /**
      * function to save time
      * @param {void}
      */
     const handleSaveTime = async () => {
+        if (isUnavailable) {
+            Alert.alert(
+                "",
+                "Are you sure you want to delete the slots?",
+                [
+                    {
+                        text: "Cancel",
+                        onPress: () => console.log("Cancel Pressed"),
+                        style: "cancel",
+                    },
+                    {
+                        text: "Ok",
+                        onPress: async () => {
+                            const availabilityIndex =
+                                availabilitySlots.findIndex(
+                                    (avail) =>
+                                        avail.date ===
+                                        moment(startTime).format("YYYY-MM-DD")
+                                );
+
+                            availabilitySlots[availabilityIndex].slots.forEach(
+                                async (_, slotIndex) => {
+                                    await deleteAvailabilitySlot(
+                                        availabilityIndex,
+                                        slotIndex
+                                    );
+                                }
+                            );
+
+                            setShowModal(false);
+                        },
+                    },
+                ],
+                { cancelable: false }
+            );
+            return;
+        }
+        setIsSavingAvailability(true);
         if (applyScheduleToAllDays) {
             const datesSelected = getAllDaysOfTheYear(startTime, endTime);
 
             datesSelected.forEach(async (date) => {
-                await availabilityService.createAvailability(
-                    "4",
-                    date.startTime,
-                    date.endTime
+                const dateSlot = availabilitySlots.find(
+                    (d) =>
+                        d.date === moment(date.startTime).format("YYYY-MM-DD")
                 );
+
+                let slotExists = false;
+
+                if (dateSlot) {
+                    slotExists = dateSlot.slots.some((slot) =>
+                        moment(slot.start).isSame(moment(date.startTime))
+                    );
+                }
+
+                console.log("slot exists", slotExists);
+
+                if (!slotExists) {
+                    const createdAvailability =
+                        await availabilityService.createAvailability(
+                            "4",
+                            date.startTime,
+                            date.endTime
+                        );
+
+                    // Create apointment slot
+                    await addAppointmentSlots(
+                        date.startTime,
+                        date.endTime,
+                        createdAvailability.id
+                    );
+                }
             });
         } else {
-            await availabilityService.createAvailability(
-                "4",
+            const createdAvailability =
+                await availabilityService.createAvailability(
+                    "4",
+                    startTime,
+                    endTime
+                );
+
+            await addAppointmentSlots(
                 startTime,
-                endTime
+                endTime,
+                createdAvailability.id
             );
         }
 
         setNextTokenFetched(null);
         setApplyScheduleToAllDays(false);
         setShowModal(false); // Close Modal
+        setIsSavingAvailability(false);
         Alert.alert("", "Your availability has been set");
 
         // Fetch availability
         await fetchAvailability();
     };
 
+    /**
+     * add appointment slots for each availability
+     * @param {String} start
+     * @param {String} end
+     * @param {String} availabilityId
+     */
+    const addAppointmentSlots = async (start, end, availabilityId) => {
+        const slotStart = moment(start);
+        const slotEnd = moment(end);
+        const intervalSlots = [];
+
+        while (slotStart.isBefore(slotEnd)) {
+            const intervalEnd = slotStart.clone().add(15, "minutes");
+
+            // Ensure we don't go beyond the availability end time
+            if (intervalEnd.isAfter(slotEnd)) break;
+
+            intervalSlots.push({
+                start: slotStart.toDate(),
+                end: intervalEnd.toDate(),
+            });
+
+            slotStart.add(15, "minutes");
+        }
+
+        intervalSlots.forEach(async (slot) => {
+            await appointmentService.createAppointmentSlot(
+                "4",
+                availabilityId,
+                "null",
+                slot.start,
+                slot.end
+            );
+        });
+    };
+
+    /**
+     * add availability for the date
+     * @param {String} date
+     */
     const addAvailability = (date) => {
         // open modal
         setShowModal(true);
+
+        const dateIndex = availabilitySlots.findIndex(
+            (avail) => avail.date === date
+        );
+
+        if (dateIndex === -1) {
+            setShowMarkMeUnavailable(false);
+        } else {
+            setShowMarkMeUnavailable(true);
+        }
+
         setDayOfWeek(moment(date, "YYYY-MM-DD").format("dddd"));
         const newMarkedDates = {
             [date]: {
@@ -108,6 +241,8 @@ const DoctorAvailability = () => {
      */
     const handleOnClose = () => {
         setShowModal(false);
+        setIsUnavailable(false);
+        setApplyScheduleToAllDays(false);
     };
 
     /**
@@ -123,6 +258,8 @@ const DoctorAvailability = () => {
         // set the next token for fetching the next availabilities
         setNextTokenFetched(nextToken);
 
+        console.log("fetched availability", fetchedAvailability);
+
         // set availability slots
         setAvailiablitySlots(fetchedAvailability);
     };
@@ -136,20 +273,34 @@ const DoctorAvailability = () => {
     };
 
     /**
-     *
+     * delete availability slot and appointments referenced to that
+     * availability
      * @param {Integer} daySlotIndex
      * @param {Integer} timeSlotIndex
      */
     const deleteAvailabilitySlot = async (daySlotIndex, timeSlotIndex) => {
+        setIsDeleting(true);
+        // Get the selected availability
         const selectedAvailability =
             availabilitySlots[daySlotIndex].slots[timeSlotIndex];
 
+        // Delete the availability
         await availabilityService.deleteAvailability(
             selectedAvailability.id,
             selectedAvailability.version
         );
 
+        // Delete the appointment slots for each
+        await appointmentService.deleteAppointmentSlotsByAvailability(
+            selectedAvailability.id
+        );
+
+        setIsDeleting(false);
+
         Alert.alert("", "Your availability slot has been deleted");
+
+        setIsUnavailable(false);
+        setShowTimePicker(true);
 
         await fetchAvailability();
     };
@@ -191,6 +342,31 @@ const DoctorAvailability = () => {
         return false;
     };
 
+    /**
+     * handle when user switches the mark me as unavailable
+     * @param {Boolean} isUnavailable
+     */
+    const handleMarkAsUnavailable = (isUnavailable) => {
+        setIsUnavailable(isUnavailable);
+
+        if (isUnavailable) {
+            setIsSlotAvailable(true);
+            setApplyScheduleToAllDays(false);
+        }
+    };
+
+    /**
+     * handle when user switches the mark for all days
+     * @param {Boolean} isAllDays
+     */
+    const handleMarkForAllDays = (isAllDays) => {
+        setApplyScheduleToAllDays(true);
+
+        if (isAllDays) {
+            setIsUnavailable(false);
+        }
+    };
+
     useEffect(() => {
         fetchAvailability();
     }, []);
@@ -202,24 +378,27 @@ const DoctorAvailability = () => {
     }, [startTime, endTime]);
 
     return (
-        <ScreenContainer>
-            {/* Calendar */}
+        <ScreenContainer isLoading={isDeleting}>
             {/* Modal for time selection */}
+
+            {/* Flex gap not working: TODO */}
             <ModalContainer onClose={handleOnClose} visible={showModal}>
                 {/* Conditionally render the unavailable switch only for date overrides */}
-                <View className="flex-row justify-between items-center">
-                    <SwitchInput
-                        label="Mark me as unavailable this day"
-                        value={isUnavailable}
-                        onValueChange={setIsUnavailable}
-                    />
-                </View>
+                {showMarkMeUnavailable && (
+                    <View className="flex-row justify-between items-center">
+                        <SwitchInput
+                            label="Mark me as unavailable this day"
+                            value={isUnavailable}
+                            onValueChange={handleMarkAsUnavailable}
+                        />
+                    </View>
+                )}
 
-                <View>
+                <View className="mb-3">
                     <SwitchInput
                         label={`${`Use this schedule for all ${dayOfWeek}s`}`}
                         value={applyScheduleToAllDays}
-                        onValueChange={setApplyScheduleToAllDays}
+                        onValueChange={handleMarkForAllDays}
                     />
                 </View>
 
@@ -285,7 +464,8 @@ const DoctorAvailability = () => {
                 <View>
                     <AppButton
                         variant={`${isSlotAvailable ? "primary" : "disabled"}`}
-                        btnLabel="Set availability"
+                        btnLabel="Save"
+                        isLoading={isSavingAvailability}
                         onPress={handleSaveTime}
                     />
                 </View>

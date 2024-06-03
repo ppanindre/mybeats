@@ -33,7 +33,8 @@ export const availabilityService = {
                 },
             });
 
-            console.log("response", response);
+            return response.data.createAvailability;
+
         } catch (error) {
             console.error("Error while creating availability", error);
             Sentry.captureException(error, {
@@ -63,7 +64,6 @@ export const availabilityService = {
             });
 
             const availabilities = response.data.availabilityByDoctor.items;
-            console.log("availabilities", availabilities);
 
             const doctorAvailabilityNextToken =
                 response.data.availabilityByDoctor.nextToken;
@@ -121,7 +121,6 @@ export const availabilityService = {
                 },
             });
 
-            console.log("response", response);
         } catch (error) {
             console.error("Error while creating availability", error);
             Sentry.captureException(error, {
