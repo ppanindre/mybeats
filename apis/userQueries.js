@@ -13,6 +13,7 @@ import { SleepActionTypes } from "../store/SleepReducer/SleepActionTypes";
 import { activityActionTypes } from "../store/ActivityReducer/ActivityActionTypes";
 import { foodActionTypes } from "../store/FoodReducer/FoodActionTypes";
 import { UserActionTypes } from "../store/UserReducer/UserActionTypes";
+import { patientService } from "../src/app/api/services/patientService";
 
 export const userQueries = {
   // validate otp function
@@ -68,6 +69,11 @@ export const userQueries = {
               emailForOtp,
               snap.data().password
             );
+
+            // Set patient id for the user when user
+            // creates the account
+            
+
             const userData = {
               email: credentials.user.email,
               userId: credentials.user.uid,
@@ -133,7 +139,11 @@ export const userQueries = {
         .update({
           profileData,
           avatar: selectedAvatar,
-        }); // update profile data
+        });
+
+        // create a patient in patient table
+        await patientService.createPatient()
+
     } catch (error) {
       Sentry.captureException(error, {
         extra: { message: "Error when setting profile data on firebase" },
