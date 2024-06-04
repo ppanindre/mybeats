@@ -13,18 +13,21 @@ import { useNavigation } from "@react-navigation/native";
 import CustomSafeView from "../../../../components/CustomSafeView";
 import TextInputBoxWithIcon from "../../../../components/Utilities/TextInputBoxWithIcon";
 import NavigationCard from "../../../../components/Cards/NavigationCard";
-import DoctorCard from "../../../../components/Cards/DoctorCard";
 import PharmacyCard from "../../../../components/Cards/PharmacyCard";
-import { doctorData } from "../../../../constants/doctorConstants";
 import { pharmacyData } from "../../../../constants/pharmacyConstants";
 import { LabData } from "../../../../constants/LabConstants";
 import { customTheme } from "../../../../constants/themeConstants";
 import LabCard from "../../../../components/Cards/LabCard";
 import TopNavbar from "../../components/Utils/TopNavbar";
+import { useDispatch, useSelector } from "react-redux";
+import { doctorService } from "../../api/services/doctorService";
 
 const DoctorDashboard = ({ route }) => {
+    const user = useSelector((state) => state.UserReducer);
+
     // Declare navigation instance
     const navigation = useNavigation();
+    const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(
         route.params?.isLoading || false
     );
@@ -35,6 +38,14 @@ const DoctorDashboard = ({ route }) => {
             setTimeout(() => setIsLoading(false), 3000);
         }
     }, [isLoading]);
+
+    const fetchDoctorData = async () => {
+        await doctorService.getDoctor(user.userId, dispatch);
+    };
+
+    useEffect(() => {
+        fetchDoctorData();
+    }, []);
 
     if (isLoading) {
         return (
@@ -84,9 +95,7 @@ const DoctorDashboard = ({ route }) => {
                         className="h-[150] rounded-lg shadow-lg p-4"
                     >
                         <TouchableOpacity
-                            onPress={() =>
-                                navigation.navigate("appointments")
-                            }
+                            onPress={() => navigation.navigate("appointments")}
                             className="h-[100%] justify-end"
                         >
                             <Text

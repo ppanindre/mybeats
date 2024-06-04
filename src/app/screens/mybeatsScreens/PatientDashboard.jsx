@@ -28,7 +28,6 @@ const PatientDashboard = () => {
     const dispatch = useDispatch();
     const client = generateClient();
 
-    const [patient, setPatient] = useState(null);
     const [doctors, setDoctors] = useState([]);
     const [specialties, setSpecialties] = useState([]);
 
@@ -92,7 +91,7 @@ const PatientDashboard = () => {
         <CustomSafeView>
             <TopNavbar showSync={false} isMyBeats={true} />
             <ScreenContainer>
-                {patient !== null ? (
+                {patientStore.id !== null ? (
                     <ScrollView
                         showsVerticalScrollIndicator={false}
                         contentContainerStyle={{ paddingBottom: 100 }}

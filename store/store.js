@@ -12,6 +12,7 @@ import { SleepReducer } from "./SleepReducer/SleepReducer";
 import { FoodReducer } from "./FoodReducer/FoodReducer";
 import { DashboardReducer } from "./DashboardReducer/DashboardReducer";
 import { PatientReducer } from "./PatientReducer/patientReducer";
+import { DoctorReducer } from "./DoctorReducer/DoctorReducer";
 
 // Combining every reducer
 const reducers = combineReducers({
@@ -25,6 +26,7 @@ const reducers = combineReducers({
     FoodReducer,
     DashboardReducer,
     PatientReducer,
+    DoctorReducer,
 });
 
 // Redux store containing reducers and the middleware

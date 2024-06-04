@@ -22,6 +22,7 @@ import { theme } from "../../../../tailwind.config";
 import PatientStory from "../../../../components/Cards/PatientStory";
 import AvailableAppointmentsFrame from "../../components/Frames/AvailableAppointmentsFrame";
 import { appointmentService } from "../../api/services/appointmentService";
+import { useSelector } from "react-redux";
 
 const CollapsibleItem = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -46,6 +47,8 @@ const CollapsibleItem = ({ title, children }) => {
 };
 
 export default Appointment = ({ route, navigation }) => {
+    const patientStore = useSelector((state) => state.PatientReducer);
+
     // use amplify to fetch the doctor
 
     // dont need it
@@ -67,9 +70,6 @@ export default Appointment = ({ route, navigation }) => {
     } = route.params;
     // doint need it
 
-    // State for clinic bookings
-    const [clinicDate, setClinicDate] = useState();
-    const [clinicTime, setClinicTime] = useState();
     const [appointmentSlot, setAppointmentSlot] = useState(null);
 
     // State for video consultation bookings
@@ -102,6 +102,7 @@ export default Appointment = ({ route, navigation }) => {
     const bookAppointment = async () => {
         await appointmentService.bookAppointmentSlot(
             appointmentSlot.id,
+            patientStore.id,
             appointmentSlot.version
         );
 

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View, Image } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { ScrollView, Text, View } from "react-native";
 import moment from "moment";
-import { customTheme } from "../../../../constants/themeConstants";
 import { useNavigation } from "@react-navigation/native";
 import TabButton from "../../components/Buttons/TabButton";
 import ScreenContainer from "../../components/Containers/ScreenContainer";
@@ -16,9 +14,22 @@ const Appointments = () => {
     const [pastAppointments, setPastAppointments] = useState([]);
 
     const fetchUpcomingAppointments = async () => {
-        const appointmentSlots =
-            await appointmentService.appointmentSlotByDoctor("4", true);
-        setUpcomingAppointments(appointmentSlots);
+        const today = moment();
+
+        const appointments = await appointmentService.appointmentSlotByDoctor(
+            "4",
+            true
+        );
+
+        const past = appointments.filter((appointment) =>
+            moment(appointment.date).isBefore(today, "day")
+        );
+        const upcoming = appointments.filter((appointment) =>
+            moment(appointment.date).isSameOrAfter(today, "day")
+        );
+
+        setUpcomingAppointments(upcoming);
+        setPastAppointments(past);
     };
 
     useEffect(() => {
@@ -50,6 +61,28 @@ const Appointments = () => {
                     <View className="space-y-5">
                         {selectedTab === "upcoming" &&
                             upcomingAppointments.map((appointment, index) => (
+                                <View key={index} className="space-y-3">
+                                    <Text className="font-[appfont-semi] text-lg">
+                                        {moment(
+                                            appointment.date,
+                                            "YYYY-MM-DD"
+                                        ).format("D MMM, YYYY")}
+                                    </Text>
+
+                                    {appointment.slots.map((slot) => (
+                                        <View>
+                                            <AppointmentCard
+                                                patientName="John Doe"
+                                                appointmentTime={slot.start}
+                                                appointmentType="Video"
+                                            />
+                                        </View>
+                                    ))}
+                                </View>
+                            ))}
+
+                        {selectedTab === "past" &&
+                            pastAppointments.map((appointment, index) => (
                                 <View key={index} className="space-y-3">
                                     <Text className="font-[appfont-semi] text-lg">
                                         {moment(
