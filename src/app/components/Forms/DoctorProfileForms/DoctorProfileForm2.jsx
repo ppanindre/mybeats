@@ -109,8 +109,8 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, specialties, ini
             });
         }
 
-        if (initialData.countryState) {
-            const selectedState = countryStates.list.find(state => state.value === initialData.countryState);
+        if (initialData.state) {
+            const selectedState = countryStates.list.find(state => state.value === initialData.state);
             if (selectedState) {
                 setCountryStates({
                     ...countryStates,
@@ -178,7 +178,7 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, specialties, ini
             // consolidate the doctor data into one object
             const formData = {
                 primarySpecialization: primarySpecialization.selectedList[0]._id, // Assume single selection for primary
-                countryState: countryStates.value,
+                state: countryStates.value,
                 secondarySpecialization: toggleOthers ? otherCondition : secondarySpecialization.selectedList.map(item => item.value).join("; "),
                 ...data,
             };

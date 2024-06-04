@@ -174,7 +174,8 @@ const PatientDashboard = () => {
                                             awardsRecognition: doctor.awardsRecognition,
                                             availableForVideoConsultation: doctor.availableForVideoConsultation,
                                             feeForVideoConsultation: doctor.feeForVideoConsultation,
-                                            website: doctor.website
+                                            website: doctor.website,
+                                            state: doctor.state
                                         })}
                                     >
                                         <DoctorCard
