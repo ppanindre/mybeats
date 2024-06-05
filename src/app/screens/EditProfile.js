@@ -86,15 +86,7 @@ const EditProfile = () => {
                 .doc(userId)
                 .update({
                     profileData,
-                });
-
-            const patient = await patientService.getPatient(userId);
-
-            console.log("patient", patient);
-            
-            if (patient === null) {
-                await patientService.createPatient(userId, email, profileData);
-            }
+                });            
 
             Alert.alert("", "Your profile has been saved");
         } catch (error) {

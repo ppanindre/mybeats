@@ -142,7 +142,7 @@ export const userQueries = {
         });
 
         // create a patient in patient table
-        await patientService.createPatient()
+        // await patientService.createPatient()
 
     } catch (error) {
       Sentry.captureException(error, {
