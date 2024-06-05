@@ -1,7 +1,13 @@
 import {
     PATIENT_CREATE_REQUEST,
     PATIENT_CREATE_SUCCESS,
-    PATIENT_DETAILS_FAILURE,
+    PAITENT_CREATE_FAILURE,
+    PATIENT_UPDATE_REQUEST,
+    PATIENT_UPDATE_SUCCESS,
+    PAITENT_UPDATE_FAILURE,
+    PATIENT_GET_REQUEST,
+    PATIENT_GET_SUCCESS,
+    PATIENT_GET_FAILURE,
 } from "../types/patientActionTypes";
 
 export const patientCreateReducer = (state = {}, action) => {
@@ -20,7 +26,65 @@ export const patientCreateReducer = (state = {}, action) => {
             };
         }
 
-        case PATIENT_DETAILS_FAILURE: {
+        case PAITENT_CREATE_FAILURE: {
+            return {
+                loading: false,
+                error: action.payload,
+            };
+        }
+
+        default: {
+            return state;
+        }
+    }
+};
+
+export const patientUpdateReducer = (state = {}, action) => {
+    switch (action.type) {
+        case PATIENT_UPDATE_REQUEST: {
+            return {
+                loading: true,
+            };
+        }
+
+        case PATIENT_UPDATE_SUCCESS: {
+            return {
+                loading: false,
+                success: true,
+                patient: action.payload,
+            };
+        }
+
+        case PAITENT_UPDATE_FAILURE: {
+            return {
+                loading: false,
+                error: action.payload,
+            };
+        }
+
+        default: {
+            return state;
+        }
+    }
+};
+
+export const patientGetReducer = (state = {}, action) => {
+    switch (action.type) {
+        case PATIENT_GET_REQUEST: {
+            return {
+                loading: true,
+            };
+        }
+
+        case PATIENT_GET_SUCCESS: {
+            return {
+                loading: false,
+                success: true,
+                patient: action.payload,
+            };
+        }
+
+        case PATIENT_GET_FAILURE: {
             return {
                 loading: false,
                 error: action.payload,

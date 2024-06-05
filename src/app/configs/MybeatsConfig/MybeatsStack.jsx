@@ -1,15 +1,39 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import React from "react";
+import React, { useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { mybeatsStackConfig } from "./MybeatsStackConfig";
 
 import { TouchableOpacity, View } from "react-native";
 import { theme } from "../../../../tailwind.config";
+import { useDispatch, useSelector } from "react-redux";
+import { getPatientActionCreator } from "../../../../store/actions/patientActions";
+import Loader from "../../components/Utils/Loader";
+import FailureScreen from "../../components/Utils/FailureScreen";
 
 const ICON_SIZE = 24;
 
 const MybeatsStack = () => {
+    const { loading, error, success } = useSelector(
+        (state) => state.patientGetReducer
+    );
+
     const Stack = createStackNavigator();
+    const dispatch = useDispatch();
+
+    // Get patient when loading this screen
+    useEffect(() => {
+        dispatch(getPatientActionCreator());
+    }, []);
+
+    // When the reducer is loading
+    if (loading) {
+        return <Loader />;
+    }
+
+    // If the user did not save the profile
+    if (error || !success) {
+        return <FailureScreen />;
+    }
 
     return (
         <Stack.Navigator initialRouteName="patientDashboard">

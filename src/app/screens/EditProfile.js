@@ -11,7 +11,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { ChevronLeftIcon } from "react-native-heroicons/outline";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import * as Sentry from "@sentry/react-native";
@@ -24,12 +24,15 @@ import DatePicker from "../../../components/DatePicker";
 import CustomButton from "../../../components/CustomButton";
 import MultiSelect from "../../../components/MultiSelect";
 import { patientService } from "../api/services/patientService";
+import { updatePatientActionCreator } from "../../../store/actions/patientActions";
 
 const EditProfile = () => {
     const user = useSelector((state) => state.UserReducer); // get user listener
 
     // define navigation instance
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+
     const [toggleOthers, setToggleOthers] = useState(false);
     const [firstName, setFirstName] = useState(user.profileData?.firstName); // first name
     const [lastName, setLastName] = useState(user.profileData?.lastName); // last name
@@ -76,7 +79,7 @@ const EditProfile = () => {
         error: "",
     }); // conditions
 
-    const setProfileDataOnFirebase = async (profileData, email) => {
+    const setProfileDataOnFirebase = async (profileData) => {
         const userId = auth().currentUser.uid;
 
         // Set profile profileData to firebase
@@ -86,7 +89,7 @@ const EditProfile = () => {
                 .doc(userId)
                 .update({
                     profileData,
-                });            
+                });
 
             Alert.alert("", "Your profile has been saved");
         } catch (error) {
@@ -113,7 +116,8 @@ const EditProfile = () => {
             otherCondition: otherCondition ?? "",
         };
 
-        await setProfileDataOnFirebase(profile, user.email);
+        await setProfileDataOnFirebase(profile); // set profile data to firebase
+        dispatch(updatePatientActionCreator(profile));
     };
 
     useEffect(() => {
