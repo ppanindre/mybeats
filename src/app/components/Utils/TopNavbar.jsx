@@ -167,7 +167,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
     };
 
     return (
-        <View className="relative p-4 border-b-2 border-gray-300 flex-row items-center justify-between">
+        <View className="relative p-4 border-b border-darkSecondary flex-row items-center justify-between">
             <View className="flex-row items-center gap-2 ">
                 {/* Profile Icon */}
 
@@ -198,7 +198,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                             }}
                             className="h-10 w-10 rounded-lg items-center justify-center"
                         >
-                            <Text className="text-white text-lg font-bold font-[appfont-bold]">
+                            <Text className="text-light text-lg font-bold font-[appfont-bold]">
                                 {user.email && user.email[0].toUpperCase()}
                             </Text>
                         </TouchableOpacity>

@@ -13,7 +13,7 @@ import FailureScreen from "../../components/Utils/FailureScreen";
 const ICON_SIZE = 24;
 
 const MybeatsStack = () => {
-    const { loading, error, success } = useSelector(
+    const { loading, error, patient } = useSelector(
         (state) => state.patientGetReducer
     );
 
@@ -31,7 +31,7 @@ const MybeatsStack = () => {
     }
 
     // If the user did not save the profile
-    if (error || !success) {
+    if (error || !patient) {
         return <FailureScreen />;
     }
 

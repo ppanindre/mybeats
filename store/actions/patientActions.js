@@ -10,6 +10,7 @@ import {
     PATIENT_GET_REQUEST,
     PATIENT_GET_FAILURE,
     PATIENT_GET_SUCCESS,
+    PATIENT_CREATE_FAILURE,
 } from "../types/patientActionTypes";
 import { createPatient, updatePatient } from "../../src/graphql/mutations";
 import { getPatient } from "../../src/graphql/queries";
@@ -48,7 +49,7 @@ export const createPatientActionCreator =
         } catch (error) {
             console.error("Error while creating patient", error);
             dispatch({
-                type: PATIENT_DETAILS_FAILURE,
+                type: PATIENT_CREATE_FAILURE,
                 payload: error.message || "Error while creating patient",
             });
         }
@@ -76,8 +77,6 @@ export const updatePatientActionCreator =
                     },
                 },
             });
-
-            console.log("response", response.data.updatePatient);
 
             dispatch({
                 type: PATIENT_UPDATE_SUCCESS,

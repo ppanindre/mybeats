@@ -1,32 +1,32 @@
 import {
-    PATIENT_CREATE_REQUEST,
-    PATIENT_CREATE_SUCCESS,
-    PATIENT_CREATE_FAILURE,
-    PATIENT_UPDATE_REQUEST,
-    PATIENT_UPDATE_SUCCESS,
-    PATIENT_UPDATE_FAILURE,
-    PATIENT_GET_REQUEST,
-    PATIENT_GET_SUCCESS,
-    PATIENT_GET_FAILURE,
-} from "../types/patientActionTypes";
+    DOCTOR_CREATE_FAILURE,
+    DOCTOR_CREATE_REQUEST,
+    DOCTOR_CREATE_SUCCESS,
+    DOCTOR_GET_FAILURE,
+    DOCTOR_GET_REQUEST,
+    DOCTOR_GET_SUCCESS,
+    DOCTOR_UPDATE_FAILURE,
+    DOCTOR_UPDATE_REQUEST,
+    DOCTOR_UPDATE_SUCCESS,
+} from "../types/doctorActionTypes";
 
-export const patientCreateReducer = (state = {}, action) => {
+export const doctorCreateReducer = (state = {}, action) => {
     switch (action.type) {
-        case PATIENT_CREATE_REQUEST: {
+        case DOCTOR_CREATE_REQUEST: {
             return {
                 loading: true,
             };
         }
 
-        case PATIENT_CREATE_SUCCESS: {
+        case DOCTOR_CREATE_SUCCESS: {
             return {
                 loading: false,
                 success: true,
-                patient: action.payload,
+                doctor: action.payload,
             };
         }
 
-        case PATIENT_CREATE_FAILURE: {
+        case DOCTOR_CREATE_FAILURE: {
             return {
                 loading: false,
                 error: action.payload,
@@ -39,23 +39,23 @@ export const patientCreateReducer = (state = {}, action) => {
     }
 };
 
-export const patientUpdateReducer = (state = {}, action) => {
+export const doctorUpdateReducer = (state = {}, action) => {
     switch (action.type) {
-        case PATIENT_UPDATE_REQUEST: {
+        case DOCTOR_UPDATE_REQUEST: {
             return {
                 loading: true,
             };
         }
 
-        case PATIENT_UPDATE_SUCCESS: {
+        case DOCTOR_UPDATE_SUCCESS: {
             return {
                 loading: false,
                 success: true,
-                patient: action.payload,
+                doctor: action.payload,
             };
         }
 
-        case PATIENT_UPDATE_FAILURE: {
+        case DOCTOR_UPDATE_FAILURE: {
             return {
                 loading: false,
                 error: action.payload,
@@ -68,23 +68,23 @@ export const patientUpdateReducer = (state = {}, action) => {
     }
 };
 
-export const patientGetReducer = (state = {}, action) => {
+export const doctorGetReducer = (state = {}, action) => {
     switch (action.type) {
-        case PATIENT_GET_REQUEST: {
+        case DOCTOR_GET_REQUEST: {
             return {
                 loading: true,
             };
         }
 
-        case PATIENT_GET_SUCCESS: {
+        case DOCTOR_GET_SUCCESS: {
             return {
                 loading: false,
                 success: true,
-                patient: action.payload,
+                doctor: action.payload,
             };
         }
 
-        case PATIENT_GET_FAILURE: {
+        case DOCTOR_GET_FAILURE: {
             return {
                 loading: false,
                 error: action.payload,
