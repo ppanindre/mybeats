@@ -11,7 +11,7 @@ import { HeartRateReducer } from "./HeartRateReducer/HeartRateReducer";
 import { SleepReducer } from "./SleepReducer/SleepReducer";
 import { FoodReducer } from "./FoodReducer/FoodReducer";
 import { DashboardReducer } from "./DashboardReducer/DashboardReducer";
-import { PatientReducer } from "./PatientReducer/patientReducer";
+import { PatientReducer } from "./PatientReducer/PatientReducer";
 import { DoctorReducer } from "./DoctorReducer/DoctorReducer";
 
 // Combining every reducer

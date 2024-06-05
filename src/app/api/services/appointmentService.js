@@ -161,6 +161,8 @@ export const appointmentService = {
                             start: appointment.startTime,
                             end: appointment.endTime,
                             id: appointment.id,
+                            patientId: appointment.patientId,
+                            type: appointment.type,
                             version: appointment._version,
                         });
                     }

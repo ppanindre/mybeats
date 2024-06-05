@@ -89,6 +89,7 @@ type AppointmentSlot @model @auth(rules: [{ allow: public }]) {
 
     startTime: AWSDateTime!
     endTime: AWSDateTime!
+    type: String
     isBooked: Boolean! #true
     doctor: Doctor @belongsTo(fields: ["doctorID"])
     patient: Patient @belongsTo(fields: ["patientId"]) # Added patient relationship

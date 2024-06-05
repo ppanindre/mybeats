@@ -72,7 +72,7 @@ const Appointments = () => {
                                     {appointment.slots.map((slot) => (
                                         <View>
                                             <AppointmentCard
-                                                patientName="John Doe"
+                                                patientId={slot.patientId}
                                                 appointmentTime={slot.start}
                                                 appointmentType="Video"
                                             />
@@ -94,9 +94,9 @@ const Appointments = () => {
                                     {appointment.slots.map((slot) => (
                                         <View>
                                             <AppointmentCard
-                                                patientName="John Doe"
+                                                patientId={slot.patientId}
                                                 appointmentTime={slot.start}
-                                                appointmentType="Video"
+                                                appointmentType={slot.type}
                                             />
                                         </View>
                                     ))}

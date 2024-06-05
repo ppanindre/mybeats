@@ -657,6 +657,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "type": {
+                    "name": "type",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "isBooked": {
                     "name": "isBooked",
                     "isArray": false,
@@ -910,5 +917,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "1a58a27955a17e14fb86281070220f7a"
+    "version": "3d504f7681b002a90a29d6b2a281a1c2"
 };
