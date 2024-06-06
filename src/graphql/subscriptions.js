@@ -468,6 +468,7 @@ export const onCreateAppointmentSlot = /* GraphQL */ `
       availabilityId
       startTime
       endTime
+      type
       isBooked
       doctor {
         doctorID
@@ -544,6 +545,7 @@ export const onUpdateAppointmentSlot = /* GraphQL */ `
       availabilityId
       startTime
       endTime
+      type
       isBooked
       doctor {
         doctorID
@@ -620,6 +622,7 @@ export const onDeleteAppointmentSlot = /* GraphQL */ `
       availabilityId
       startTime
       endTime
+      type
       isBooked
       doctor {
         doctorID

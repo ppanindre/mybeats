@@ -232,7 +232,7 @@ const Profile = () => {
       {isDeleteLoading && (
         <View
           style={{ height: height, width: "100%", opacity: 0.4 }}
-          className="bg-black absolute top-0 left-0 items-center justify-center z-20"
+          className="bg-dark absolute top-0 left-0 items-center justify-center z-20"
         >
           <ActivityIndicator color={customTheme.colors.primary} size="large" />
         </View>

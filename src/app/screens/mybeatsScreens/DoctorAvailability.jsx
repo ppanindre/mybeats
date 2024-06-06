@@ -5,7 +5,6 @@ import {
     TouchableOpacity,
     ScrollView,
     Alert,
-    ActivityIndicator,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Ionicons from "react-native-vector-icons/Ionicons";

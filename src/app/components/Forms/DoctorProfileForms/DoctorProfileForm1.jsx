@@ -28,7 +28,7 @@ const formSchema = z.object({
         upiId: z.string().regex(/^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/, "Please enter a valid UPI ID"),
     });
 
-const DoctorProfileForm1 = ({ handlePressNext, initialData ={} }) => {
+const DoctorProfileForm1 = ({ handlePressNext, initialData }) => {
 
     // getting user detais from redux for email
     const user = useSelector((state) => state.UserReducer);

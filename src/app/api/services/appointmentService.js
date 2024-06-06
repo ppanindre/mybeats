@@ -161,6 +161,8 @@ export const appointmentService = {
                             start: appointment.startTime,
                             end: appointment.endTime,
                             id: appointment.id,
+                            patientId: appointment.patientId,
+                            type: appointment.type,
                             version: appointment._version,
                         });
                     }
@@ -196,13 +198,16 @@ export const appointmentService = {
      * book appointment slot
      * @param {String} slotId
      */
-    bookAppointmentSlot: async (slotId, version) => {
+    bookAppointmentSlot: async (slotId, patientId, version) => {
+        console.log("patient id", patientId);
+
         try {
             const response = await client.graphql({
                 query: updateAppointmentSlot,
                 variables: {
                     input: {
                         id: slotId,
+                        patientId: patientId,
                         isBooked: true,
                         _version: version,
                     },

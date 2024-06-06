@@ -195,6 +195,7 @@ type EagerAppointmentSlot = {
   readonly availabilityId: string;
   readonly startTime: string;
   readonly endTime: string;
+  readonly type?: string | null;
   readonly isBooked: boolean;
   readonly doctor?: Doctor | null;
   readonly patient?: Patient | null;
@@ -214,6 +215,7 @@ type LazyAppointmentSlot = {
   readonly availabilityId: string;
   readonly startTime: string;
   readonly endTime: string;
+  readonly type?: string | null;
   readonly isBooked: boolean;
   readonly doctor: AsyncItem<Doctor | undefined>;
   readonly patient: AsyncItem<Patient | undefined>;

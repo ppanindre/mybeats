@@ -16,13 +16,23 @@ const formSchema = z.object({
     website: z.string().optional(),
 });
 
-const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, specialties, initialData = {} }) => {
+const DoctorProfileForm2 = ({
+    handlePressNext,
+    handlePressBack,
+    specialties,
+    initialData = {},
+}) => {
     // STATES
-    const [otherCondition, setOtherCondition] = useState(''); // State to hold the "other" condition if specified
+    const [otherCondition, setOtherCondition] = useState(""); // State to hold the "other" condition if specified
     const [toggleOthers, setToggleOthers] = useState(false); // State to toggle the additional input field
     const [primarySpecialization, setPrimarySpecialization] = useState({
         value: "",
-        list: specialties,
+        list: [
+            { _id: "1", value: "Surgery" },
+            { _id: "2", value: "Pediatrics" },
+            { _id: "3", value: "General Medicine" },
+            { _id: "4", value: "Others" },
+        ],
         selectedList: [],
     });
     const [
@@ -86,40 +96,50 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, specialties, ini
         resolver: zodResolver(formSchema),
     });
 
-    useEffect(() => {
-        if (initialData.primarySpecialization) {
-            const selectedSpecialization = specialties.find(specialty => specialty._id === initialData.primarySpecialization);
-            if (selectedSpecialization) {
-                setPrimarySpecialization({
-                    ...primarySpecialization,
-                    value: selectedSpecialization.value,
-                    selectedList: [selectedSpecialization],
-                });
-            }
-        }
+    // useEffect(() => {
+    //     if (initialData.primarySpecialization) {
+    //         const selectedSpecialization = primarySpecialization.find(
+    //             (specialty) =>
+    //                 specialty._id === initialData.primarySpecialization
+    //         );
+    //         if (selectedSpecialization) {
+    //             setPrimarySpecialization({
+    //                 ...primarySpecialization,
+    //                 value: selectedSpecialization.value,
+    //                 selectedList: [selectedSpecialization],
+    //             });
+    //         }
+    //     }
 
-        if (initialData.secondarySpecialization) {
-            const selectedList = initialData.secondarySpecialization.split("; ").map(name => {
-                return secondarySpecialization.list.find(specialty => specialty.value === name);
-            }).filter(Boolean);
-            setSecondarySpecialization({
-                ...secondarySpecialization,
-                value: selectedList.map(item => item.value).join("; "),
-                selectedList,
-            });
-        }
+    //     if (initialData.secondarySpecialization) {
+    //         const selectedList = initialData.secondarySpecialization
+    //             .split("; ")
+    //             .map((name) => {
+    //                 return secondarySpecialization.list.find(
+    //                     (specialty) => specialty.value === name
+    //                 );
+    //             })
+    //             .filter(Boolean);
+    //         setSecondarySpecialization({
+    //             ...secondarySpecialization,
+    //             value: selectedList.map((item) => item.value).join("; "),
+    //             selectedList,
+    //         });
+    //     }
 
-        if (initialData.countryState) {
-            const selectedState = countryStates.list.find(state => state.value === initialData.countryState);
-            if (selectedState) {
-                setCountryStates({
-                    ...countryStates,
-                    value: selectedState.value,
-                    selectedList: [selectedState],
-                });
-            }
-        }
-    }, [initialData, specialties]);
+    //     if (initialData.countryState) {
+    //         const selectedState = countryStates.list.find(
+    //             (state) => state.value === initialData.countryState
+    //         );
+    //         if (selectedState) {
+    //             setCountryStates({
+    //                 ...countryStates,
+    //                 value: selectedState.value,
+    //                 selectedList: [selectedState],
+    //             });
+    //         }
+    //     }
+    // }, [initialData, specialties]);
 
     const handlePrimarySelection = (value) => {
         setPrimarySpecialization({
@@ -134,18 +154,22 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, specialties, ini
         let selectedList = value.selectedList;
 
         // Handling "Select All"
-        if (selectedList.some(item => item.value === "Select all")) {
-            selectedList = secondarySpecialization.list.filter(item => item.value !== "Others");
+        if (selectedList.some((item) => item.value === "Select all")) {
+            selectedList = secondarySpecialization.list.filter(
+                (item) => item.value !== "Others"
+            );
         }
 
         setSecondarySpecialization({
             ...secondarySpecialization,
-            value: selectedList.map(item => item.value).join("; "),
+            value: selectedList.map((item) => item.value).join("; "),
             selectedList: selectedList,
         });
 
         // if "Others" is selected
-        const isOthersSelected = selectedList.some(item => item.value === "Others");
+        const isOthersSelected = selectedList.some(
+            (item) => item.value === "Others"
+        );
         setToggleOthers(isOthersSelected);
     };
 
@@ -177,9 +201,14 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, specialties, ini
         ) {
             // consolidate the doctor data into one object
             const formData = {
-                primarySpecialization: primarySpecialization.selectedList[0]._id, // Assume single selection for primary
+                primarySpecialization:
+                    primarySpecialization.selectedList[0]._id, // Assume single selection for primary
                 countryState: countryStates.value,
-                secondarySpecialization: toggleOthers ? otherCondition : secondarySpecialization.selectedList.map(item => item.value).join("; "),
+                secondarySpecialization: toggleOthers
+                    ? otherCondition
+                    : secondarySpecialization.selectedList
+                          .map((item) => item.value)
+                          .join("; "),
                 ...data,
             };
 
@@ -191,7 +220,7 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, specialties, ini
     const onPressBack = (data) => {
         handlePressBack(data);
     };
-    
+
     return (
         <View className="space-y-5 h-[100%]">
             <ScrollView showsVerticalScrollIndicator={false}>

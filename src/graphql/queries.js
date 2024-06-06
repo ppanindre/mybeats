@@ -448,6 +448,7 @@ export const getAppointmentSlot = /* GraphQL */ `
       availabilityId
       startTime
       endTime
+      type
       isBooked
       doctor {
         doctorID
@@ -535,6 +536,7 @@ export const listAppointmentSlots = /* GraphQL */ `
         availabilityId
         startTime
         endTime
+        type
         isBooked
         createdAt
         updatedAt
@@ -569,6 +571,7 @@ export const syncAppointmentSlots = /* GraphQL */ `
         availabilityId
         startTime
         endTime
+        type
         isBooked
         createdAt
         updatedAt
@@ -880,6 +883,7 @@ export const slotsByDoctor = /* GraphQL */ `
         availabilityId
         startTime
         endTime
+        type
         isBooked
         createdAt
         updatedAt
@@ -918,6 +922,7 @@ export const slotsByPatient = /* GraphQL */ `
         availabilityId
         startTime
         endTime
+        type
         isBooked
         createdAt
         updatedAt
@@ -956,6 +961,7 @@ export const appointmentSlotsByAvailability = /* GraphQL */ `
         availabilityId
         startTime
         endTime
+        type
         isBooked
         createdAt
         updatedAt
