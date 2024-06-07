@@ -3,6 +3,9 @@ import {
     AVAILABILITIES_BY_DOCTOR_FAILURE,
     AVAILABILITIES_BY_DOCTOR_REQUEST,
     AVAILABILITIES_BY_DOCTOR_SUCCESS,
+    AVAILABILITIES_DELETE_FAILURE,
+    AVAILABILITIES_DELETE_REQUEST,
+    AVAILABILITIES_DELETE_SUCCESS,
     AVAILABILITY_CREATE_FAILURE,
     AVAILABILITY_CREATE_REQUEST,
     AVAILABILITY_CREATE_SUCCESS,
@@ -145,11 +148,48 @@ export const deleteAvailabilityActionCreator =
         }
     };
 
+export const deleteAvailabilitiesActionCreator =
+    (selectedDate) => async (dispatch, getState) => {
+        try {
+            dispatch({ type: AVAILABILITIES_DELETE_REQUEST });
+
+            const { availabilities } = getState().availabilitesByDoctorReducer;
+            const dateKey = moment(selectedDate).format("YYYY-MM-DD");
+
+            console.log("availabilities", availabilities[dateKey])
+
+            availabilities[dateKey].forEach(async (slot) => {
+                await client.graphql({
+                    query: deleteAvailability,
+                    variables: {
+                        input: {
+                            id: slot.id,
+                            _version: slot.version,
+                        },
+                    },
+                });
+            });
+
+
+            dispatch({ type: AVAILABILITIES_DELETE_SUCCESS });
+
+            dispatch(getAvailabilitiesByDoctorActionCreator());
+        } catch (error) {
+            console.error("Error while deleting availabilities", error);
+            dispatch({ type: AVAILABILITIES_DELETE_FAILURE, payload: error });
+        }
+    };
+
 export const availabilityExistsActionCreator =
     (startTime, endTime, selectedDate) => (dispatch, getState) => {
         const { availabilities } = getState().availabilitesByDoctorReducer;
 
         const dateKey = moment(selectedDate).format("YYYY-MM-DD");
+
+        if (!availabilities[dateKey]) {
+            dispatch({ type: AVAILABILITY_EXISTS, payload: true });
+            return;
+        }
 
         for (const availability of availabilities[dateKey]) {
             const existingStartTime = moment(availability.startTime);
@@ -171,7 +211,6 @@ export const availabilityExistsActionCreator =
                 (moment(startTime).isSameOrBefore(existingStartTime) &&
                     moment(endTime).isSameOrAfter(existingEndTime))
             ) {
-
                 dispatch({ type: AVAILABILITY_EXISTS, payload: false });
                 return;
             }

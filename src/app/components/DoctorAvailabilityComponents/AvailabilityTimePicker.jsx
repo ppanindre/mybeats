@@ -6,7 +6,7 @@ import AvailabilityTimeButton from "./AvailabilityTimeButton";
 import { useDispatch, useSelector } from "react-redux";
 import { availabilityExistsActionCreator } from "../../../../store/actions/availabilityActions";
 
-const AvailabilityTimePicker = ({ onSave, selectedDate }) => {
+const AvailabilityTimePicker = ({ onSave, selectedDate, showTimePicker }) => {
     const { availabilityExists } = useSelector(
         (state) => state.availabilityExistsReducer
     );
@@ -43,40 +43,44 @@ const AvailabilityTimePicker = ({ onSave, selectedDate }) => {
 
     return (
         <View className="space-y-5">
-            <View className="flex-row justify-between items-center">
-                <AvailabilityTimeButton
-                    id="start"
-                    label="Start Time"
-                    value={startTime}
-                    handlePress={(timeSelected) =>
-                        setSelectedTime(timeSelected)
-                    }
-                    isSelected={selectedTime === "start"}
-                />
-                <AvailabilityTimeButton
-                    id="end"
-                    label="End Time"
-                    value={endTime}
-                    handlePress={(timeSelected) =>
-                        setSelectedTime(timeSelected)
-                    }
-                    isSelected={selectedTime === "end"}
-                />
-            </View>
+            {showTimePicker && (
+                <View className="flex-row justify-between items-center">
+                    <AvailabilityTimeButton
+                        id="start"
+                        label="Start Time"
+                        value={startTime}
+                        handlePress={(timeSelected) =>
+                            setSelectedTime(timeSelected)
+                        }
+                        isSelected={selectedTime === "start"}
+                    />
+                    <AvailabilityTimeButton
+                        id="end"
+                        label="End Time"
+                        value={endTime}
+                        handlePress={(timeSelected) =>
+                            setSelectedTime(timeSelected)
+                        }
+                        isSelected={selectedTime === "end"}
+                    />
+                </View>
+            )}
 
-            <View>
-                <DateTimePicker
-                    onChange={handleTimeChange}
-                    value={selectedTime === "start" ? startTime : endTime}
-                    mode="time"
-                    is24Hour={true}
-                    display="spinner"
-                />
-            </View>
+            {showTimePicker && (
+                <View>
+                    <DateTimePicker
+                        onChange={handleTimeChange}
+                        value={selectedTime === "start" ? startTime : endTime}
+                        mode="time"
+                        is24Hour={true}
+                        display="spinner"
+                    />
+                </View>
+            )}
 
             <View>
                 <AppButton
-                    variant={`${availabilityExists ? "primary" : "disabled"}`}
+                    variant={`${availabilityExists || !showTimePicker ? "primary" : "disabled"}`}
                     btnLabel="Save"
                     onPress={() => onSave(startTime, endTime)}
                 />

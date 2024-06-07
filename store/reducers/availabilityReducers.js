@@ -2,6 +2,9 @@ import {
     AVAILABILITIES_BY_DOCTOR_FAILURE,
     AVAILABILITIES_BY_DOCTOR_REQUEST,
     AVAILABILITIES_BY_DOCTOR_SUCCESS,
+    AVAILABILITIES_DELETE_FAILURE,
+    AVAILABILITIES_DELETE_REQUEST,
+    AVAILABILITIES_DELETE_SUCCESS,
     AVAILABILITY_CREATE_FAILURE,
     AVAILABILITY_CREATE_REQUEST,
     AVAILABILITY_CREATE_SUCCESS,
@@ -150,6 +153,34 @@ export const availabilityDeleteReducer = (state = {}, action) => {
         }
 
         case AVAILABILITY_DELETE_FAILURE: {
+            return {
+                loading: false,
+                error: action.payload,
+            };
+        }
+
+        default: {
+            return state;
+        }
+    }
+};
+
+export const availabilitiesDeleteReducer = (state = {}, action) => {
+    switch (action.type) {
+        case AVAILABILITIES_DELETE_REQUEST: {
+            return {
+                loading: true,
+            };
+        }
+
+        case AVAILABILITIES_DELETE_SUCCESS: {
+            return {
+                loading: false,
+                sucess: true,
+            };
+        }
+
+        case AVAILABILITIES_DELETE_FAILURE: {
             return {
                 loading: false,
                 error: action.payload,
