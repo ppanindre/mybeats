@@ -38,7 +38,7 @@ export const onCreateDoctor = /* GraphQL */ `
       awardsRecognition
       website
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -94,7 +94,7 @@ export const onUpdateDoctor = /* GraphQL */ `
       awardsRecognition
       website
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -150,7 +150,7 @@ export const onDeleteDoctor = /* GraphQL */ `
       awardsRecognition
       website
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -242,7 +242,7 @@ export const onCreatePatient = /* GraphQL */ `
       phoneNumber
       address
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -266,7 +266,7 @@ export const onUpdatePatient = /* GraphQL */ `
       phoneNumber
       address
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -290,7 +290,7 @@ export const onDeletePatient = /* GraphQL */ `
       phoneNumber
       address
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -313,7 +313,6 @@ export const onCreateAvailability = /* GraphQL */ `
       doctorID
       startTime
       endTime
-      isAvailable
       doctor {
         doctorID
         firstname
@@ -339,11 +338,6 @@ export const onCreateAvailability = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        __typename
-      }
-      appointmentSlots {
-        nextToken
-        startedAt
         __typename
       }
       createdAt
@@ -364,7 +358,6 @@ export const onUpdateAvailability = /* GraphQL */ `
       doctorID
       startTime
       endTime
-      isAvailable
       doctor {
         doctorID
         firstname
@@ -390,11 +383,6 @@ export const onUpdateAvailability = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        __typename
-      }
-      appointmentSlots {
-        nextToken
-        startedAt
         __typename
       }
       createdAt
@@ -415,7 +403,6 @@ export const onDeleteAvailability = /* GraphQL */ `
       doctorID
       startTime
       endTime
-      isAvailable
       doctor {
         doctorID
         firstname
@@ -443,11 +430,6 @@ export const onDeleteAvailability = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
-      appointmentSlots {
-        nextToken
-        startedAt
-        __typename
-      }
       createdAt
       updatedAt
       _version
@@ -457,15 +439,14 @@ export const onDeleteAvailability = /* GraphQL */ `
     }
   }
 `;
-export const onCreateAppointmentSlot = /* GraphQL */ `
-  subscription OnCreateAppointmentSlot(
-    $filter: ModelSubscriptionAppointmentSlotFilterInput
+export const onCreateAppointment = /* GraphQL */ `
+  subscription OnCreateAppointment(
+    $filter: ModelSubscriptionAppointmentFilterInput
   ) {
-    onCreateAppointmentSlot(filter: $filter) {
+    onCreateAppointment(filter: $filter) {
       id
       doctorID
       patientId
-      availabilityId
       startTime
       endTime
       type
@@ -512,19 +493,6 @@ export const onCreateAppointmentSlot = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
-      availability {
-        id
-        doctorID
-        startTime
-        endTime
-        isAvailable
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
       createdAt
       updatedAt
       _version
@@ -534,15 +502,14 @@ export const onCreateAppointmentSlot = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateAppointmentSlot = /* GraphQL */ `
-  subscription OnUpdateAppointmentSlot(
-    $filter: ModelSubscriptionAppointmentSlotFilterInput
+export const onUpdateAppointment = /* GraphQL */ `
+  subscription OnUpdateAppointment(
+    $filter: ModelSubscriptionAppointmentFilterInput
   ) {
-    onUpdateAppointmentSlot(filter: $filter) {
+    onUpdateAppointment(filter: $filter) {
       id
       doctorID
       patientId
-      availabilityId
       startTime
       endTime
       type
@@ -589,19 +556,6 @@ export const onUpdateAppointmentSlot = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
-      availability {
-        id
-        doctorID
-        startTime
-        endTime
-        isAvailable
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
       createdAt
       updatedAt
       _version
@@ -611,15 +565,14 @@ export const onUpdateAppointmentSlot = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteAppointmentSlot = /* GraphQL */ `
-  subscription OnDeleteAppointmentSlot(
-    $filter: ModelSubscriptionAppointmentSlotFilterInput
+export const onDeleteAppointment = /* GraphQL */ `
+  subscription OnDeleteAppointment(
+    $filter: ModelSubscriptionAppointmentFilterInput
   ) {
-    onDeleteAppointmentSlot(filter: $filter) {
+    onDeleteAppointment(filter: $filter) {
       id
       doctorID
       patientId
-      availabilityId
       startTime
       endTime
       type
@@ -659,19 +612,6 @@ export const onDeleteAppointmentSlot = /* GraphQL */ `
         phoneNumber
         address
         zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      availability {
-        id
-        doctorID
-        startTime
-        endTime
-        isAvailable
         createdAt
         updatedAt
         _version

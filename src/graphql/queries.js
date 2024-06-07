@@ -38,7 +38,7 @@ export const getDoctor = /* GraphQL */ `
       awardsRecognition
       website
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -240,7 +240,7 @@ export const getPatient = /* GraphQL */ `
       phoneNumber
       address
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -331,7 +331,6 @@ export const getAvailability = /* GraphQL */ `
       doctorID
       startTime
       endTime
-      isAvailable
       doctor {
         doctorID
         firstname
@@ -357,11 +356,6 @@ export const getAvailability = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
-        __typename
-      }
-      appointmentSlots {
-        nextToken
-        startedAt
         __typename
       }
       createdAt
@@ -393,7 +387,6 @@ export const listAvailabilities = /* GraphQL */ `
         doctorID
         startTime
         endTime
-        isAvailable
         createdAt
         updatedAt
         _version
@@ -425,7 +418,6 @@ export const syncAvailabilities = /* GraphQL */ `
         doctorID
         startTime
         endTime
-        isAvailable
         createdAt
         updatedAt
         _version
@@ -439,13 +431,12 @@ export const syncAvailabilities = /* GraphQL */ `
     }
   }
 `;
-export const getAppointmentSlot = /* GraphQL */ `
-  query GetAppointmentSlot($id: ID!) {
-    getAppointmentSlot(id: $id) {
+export const getAppointment = /* GraphQL */ `
+  query GetAppointment($id: ID!) {
+    getAppointment(id: $id) {
       id
       doctorID
       patientId
-      availabilityId
       startTime
       endTime
       type
@@ -492,19 +483,6 @@ export const getAppointmentSlot = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
-      availability {
-        id
-        doctorID
-        startTime
-        endTime
-        isAvailable
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
       createdAt
       updatedAt
       _version
@@ -514,15 +492,15 @@ export const getAppointmentSlot = /* GraphQL */ `
     }
   }
 `;
-export const listAppointmentSlots = /* GraphQL */ `
-  query ListAppointmentSlots(
+export const listAppointments = /* GraphQL */ `
+  query ListAppointments(
     $id: ID
-    $filter: ModelAppointmentSlotFilterInput
+    $filter: ModelAppointmentFilterInput
     $limit: Int
     $nextToken: String
     $sortDirection: ModelSortDirection
   ) {
-    listAppointmentSlots(
+    listAppointments(
       id: $id
       filter: $filter
       limit: $limit
@@ -533,7 +511,6 @@ export const listAppointmentSlots = /* GraphQL */ `
         id
         doctorID
         patientId
-        availabilityId
         startTime
         endTime
         type
@@ -551,14 +528,14 @@ export const listAppointmentSlots = /* GraphQL */ `
     }
   }
 `;
-export const syncAppointmentSlots = /* GraphQL */ `
-  query SyncAppointmentSlots(
-    $filter: ModelAppointmentSlotFilterInput
+export const syncAppointments = /* GraphQL */ `
+  query SyncAppointments(
+    $filter: ModelAppointmentFilterInput
     $limit: Int
     $nextToken: String
     $lastSync: AWSTimestamp
   ) {
-    syncAppointmentSlots(
+    syncAppointments(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -568,7 +545,6 @@ export const syncAppointmentSlots = /* GraphQL */ `
         id
         doctorID
         patientId
-        availabilityId
         startTime
         endTime
         type
@@ -845,7 +821,6 @@ export const availabilityByDoctor = /* GraphQL */ `
         doctorID
         startTime
         endTime
-        isAvailable
         createdAt
         updatedAt
         _version
@@ -864,7 +839,7 @@ export const slotsByDoctor = /* GraphQL */ `
     $doctorID: ID!
     $startTime: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
-    $filter: ModelAppointmentSlotFilterInput
+    $filter: ModelAppointmentFilterInput
     $limit: Int
     $nextToken: String
   ) {
@@ -880,7 +855,6 @@ export const slotsByDoctor = /* GraphQL */ `
         id
         doctorID
         patientId
-        availabilityId
         startTime
         endTime
         type
@@ -903,7 +877,7 @@ export const slotsByPatient = /* GraphQL */ `
     $patientId: ID!
     $startTime: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
-    $filter: ModelAppointmentSlotFilterInput
+    $filter: ModelAppointmentFilterInput
     $limit: Int
     $nextToken: String
   ) {
@@ -919,46 +893,6 @@ export const slotsByPatient = /* GraphQL */ `
         id
         doctorID
         patientId
-        availabilityId
-        startTime
-        endTime
-        type
-        isBooked
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      nextToken
-      startedAt
-      __typename
-    }
-  }
-`;
-export const appointmentSlotsByAvailability = /* GraphQL */ `
-  query AppointmentSlotsByAvailability(
-    $availabilityId: ID!
-    $startTime: ModelStringKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelAppointmentSlotFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    appointmentSlotsByAvailability(
-      availabilityId: $availabilityId
-      startTime: $startTime
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        doctorID
-        patientId
-        availabilityId
         startTime
         endTime
         type

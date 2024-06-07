@@ -6,7 +6,6 @@ import FormInput from "../../Inputs/FormInput";
 import AppButton from "../../Buttons/AppButton";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { tr } from "react-native-paper-dates";
 
 // Form Schema for validation
 const formSchema = z.object({
@@ -50,7 +49,7 @@ const DoctorProfileForm2 = ({
         selectedList: [],
     });
     const [countryStates, setCountryStates] = useState({
-        value: "",
+        value: initialData.state || "", 
         list: [
             { _id: "1", value: "Andhra Pradesh" },
             { _id: "2", value: "Arunachal Pradesh" },
