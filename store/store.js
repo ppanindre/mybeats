@@ -22,6 +22,7 @@ import { doctorGetReducer } from "./reducers/doctorReducers";
 import {
     availabilitesByDoctorReducer,
     availabilityCreateReducer,
+    availabilityDeleteReducer,
 } from "./reducers/availabilityReducers";
 import { appointmentCreateReducer } from "./reducers/appointmentReducers";
 
@@ -45,6 +46,7 @@ const reducers = combineReducers({
     availabilityCreateReducer: availabilityCreateReducer,
     appointmentCreateReducer: appointmentCreateReducer,
     availabilitesByDoctorReducer: availabilitesByDoctorReducer,
+    availabilityDeleteReducer: availabilityDeleteReducer,
 });
 
 // Redux store containing reducers and the middleware

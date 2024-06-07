@@ -10,6 +10,8 @@ import {
     createAvailabilityActionCreator,
     getAvailabilitiesByDoctorActionCreator,
 } from "../../../../store/actions/availabilityActions";
+import AvailabilitySlotFrame from "../../components/DoctorAvailabilityComponents/AvailabilitySlotFrame";
+import Loader from "../../components/Utils/Loader";
 
 const DoctorAvailability = () => {
     // STATES
@@ -27,7 +29,7 @@ const DoctorAvailability = () => {
     const [selectedDate, setSelectedDate] = useState(moment());
 
     const handleDayPress = (date) => {
-        setSelectedDate(moment(date.dateString, "YYYY-MM-DD"));
+        setSelectedDate(moment(date, "YYYY-MM-DD"));
         setShowModal(true);
     };
 
@@ -39,6 +41,8 @@ const DoctorAvailability = () => {
     useEffect(() => {
         dispatch(getAvailabilitiesByDoctorActionCreator());
     }, []);
+
+    if (loading) return <Loader />;
 
     return (
         <ScreenContainer>
@@ -55,13 +59,18 @@ const DoctorAvailability = () => {
             </ModalContainer>
 
             <ScrollView showsVerticalScrollIndicator={false}>
-                <View>
-                    {/* Calendar */}
-                    <CalendarInput onDayPress={handleDayPress} />
-                </View>
+                <View className="space-y-5">
+                    <View>
+                        {/* Calendar */}
+                        <CalendarInput onDayPress={handleDayPress} />
+                    </View>
 
-                <View>
-                    
+                    <View>
+                        <AvailabilitySlotFrame
+                            onAdd={handleDayPress}
+                            availabilities={availabilities}
+                        />
+                    </View>
                 </View>
             </ScrollView>
         </ScreenContainer>

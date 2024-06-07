@@ -5,6 +5,9 @@ import {
     AVAILABILITY_CREATE_FAILURE,
     AVAILABILITY_CREATE_REQUEST,
     AVAILABILITY_CREATE_SUCCESS,
+    AVAILABILITY_DELETE_FAILURE,
+    AVAILABILITY_DELETE_REQUEST,
+    AVAILABILITY_DELETE_SUCCESS,
     AVAILABILITY_GET_FAILURE,
     AVAILABILITY_GET_REQUEST,
     AVAILABILITY_GET_SUCCESS,
@@ -117,6 +120,35 @@ export const availabilitesByDoctorReducer = (state = {}, action) => {
         }
 
         case AVAILABILITIES_BY_DOCTOR_FAILURE: {
+            return {
+                loading: false,
+                error: action.payload,
+            };
+        }
+
+        default: {
+            return state;
+        }
+    }
+};
+
+export const availabilityDeleteReducer = (state = {}, action) => {
+    switch (action.type) {
+        case AVAILABILITY_DELETE_REQUEST: {
+            return {
+                loading: true,
+            };
+        }
+
+        case AVAILABILITY_DELETE_SUCCESS: {
+            return {
+                loading: false,
+                sucess: true,
+                availability: action.payload,
+            };
+        }
+
+        case AVAILABILITY_DELETE_FAILURE: {
             return {
                 loading: false,
                 error: action.payload,

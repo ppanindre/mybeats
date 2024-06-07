@@ -6,8 +6,14 @@ import {
     AVAILABILITY_CREATE_FAILURE,
     AVAILABILITY_CREATE_REQUEST,
     AVAILABILITY_CREATE_SUCCESS,
+    AVAILABILITY_DELETE_FAILURE,
+    AVAILABILITY_DELETE_REQUEST,
+    AVAILABILITY_DELETE_SUCCESS,
 } from "../types/availabilityActionTypes";
-import { createAvailability } from "../../src/graphql/mutations";
+import {
+    createAvailability,
+    deleteAvailability,
+} from "../../src/graphql/mutations";
 import { availabilityByDoctor } from "../../src/graphql/queries";
 import moment from "moment";
 
@@ -36,6 +42,8 @@ export const createAvailabilityActionCreator =
                 type: AVAILABILITY_CREATE_SUCCESS,
                 payload: response.data.createAvailability,
             });
+
+            dispatch(getAvailabilitiesByDoctorActionCreator());
         } catch (error) {
             console.error("Error while creating availability", error);
             dispatch({ type: AVAILABILITY_CREATE_FAILURE, payload: error });
@@ -78,8 +86,10 @@ export const getAvailabilitiesByDoctorActionCreator =
 
                 // Add the availability to the array
                 groupedAvailabilities[date].push({
+                    id: availability.id,
                     startTime: availability.startTime,
                     endTime: availability.endTime,
+                    version: availability._version,
                 });
             });
 
@@ -97,12 +107,39 @@ export const getAvailabilitiesByDoctorActionCreator =
                 type: AVAILABILITIES_BY_DOCTOR_SUCCESS,
                 payload: groupedAvailabilities,
             });
-            
         } catch (error) {
             console.error("Error while fetching availabilites", error);
             dispatch({
                 type: AVAILABILITIES_BY_DOCTOR_FAILURE,
                 payload: error,
             });
+        }
+    };
+
+export const deleteAvailabilityActionCreator =
+    (availabilityId, version = 1) =>
+    async (dispatch) => {
+        try {
+            dispatch({ type: AVAILABILITY_DELETE_REQUEST });
+
+            const response = await client.graphql({
+                query: deleteAvailability,
+                variables: {
+                    input: {
+                        id: availabilityId,
+                        _version: version,
+                    },
+                },
+            });
+
+            dispatch({
+                type: AVAILABILITY_DELETE_SUCCESS,
+                payload: response.data.deleteAvailability,
+            });
+
+            dispatch(getAvailabilitiesByDoctorActionCreator());
+        } catch (error) {
+            console.error("Error while deleting availability", error);
+            dispatch({ type: AVAILABILITY_DELETE_FAILURE, payload: error });
         }
     };
