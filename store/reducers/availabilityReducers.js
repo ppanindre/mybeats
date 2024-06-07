@@ -8,6 +8,7 @@ import {
     AVAILABILITY_DELETE_FAILURE,
     AVAILABILITY_DELETE_REQUEST,
     AVAILABILITY_DELETE_SUCCESS,
+    AVAILABILITY_EXISTS,
     AVAILABILITY_GET_FAILURE,
     AVAILABILITY_GET_REQUEST,
     AVAILABILITY_GET_SUCCESS,
@@ -152,6 +153,20 @@ export const availabilityDeleteReducer = (state = {}, action) => {
             return {
                 loading: false,
                 error: action.payload,
+            };
+        }
+
+        default: {
+            return state;
+        }
+    }
+};
+
+export const availabilityExistsReducer = (state = {}, action) => {
+    switch (action.type) {
+        case AVAILABILITY_EXISTS: {
+            return {
+                availabilityExists: action.payload,
             };
         }
 

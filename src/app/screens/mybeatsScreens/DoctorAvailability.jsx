@@ -17,7 +17,7 @@ const DoctorAvailability = () => {
     // STATES
     const [showModal, setShowModal] = useState(false);
 
-    const { error: createError, availability: availabilityCreated } =
+    const { error: createError } =
         useSelector((state) => state.availabilityCreateReducer);
 
     const { error, loading, availabilities } = useSelector(
@@ -46,8 +46,6 @@ const DoctorAvailability = () => {
 
     return (
         <ScreenContainer>
-            {/* Modal for time selection */}
-
             <ModalContainer
                 onClose={() => setShowModal(false)}
                 visible={showModal}
@@ -61,10 +59,8 @@ const DoctorAvailability = () => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View className="space-y-5">
                     <View>
-                        {/* Calendar */}
                         <CalendarInput onDayPress={handleDayPress} />
                     </View>
-
                     <View>
                         <AvailabilitySlotFrame
                             onAdd={handleDayPress}

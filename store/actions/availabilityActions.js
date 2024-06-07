@@ -9,6 +9,7 @@ import {
     AVAILABILITY_DELETE_FAILURE,
     AVAILABILITY_DELETE_REQUEST,
     AVAILABILITY_DELETE_SUCCESS,
+    AVAILABILITY_EXISTS,
 } from "../types/availabilityActionTypes";
 import {
     createAvailability,
@@ -142,4 +143,38 @@ export const deleteAvailabilityActionCreator =
             console.error("Error while deleting availability", error);
             dispatch({ type: AVAILABILITY_DELETE_FAILURE, payload: error });
         }
+    };
+
+export const availabilityExistsActionCreator =
+    (startTime, endTime, selectedDate) => (dispatch, getState) => {
+        const { availabilities } = getState().availabilitesByDoctorReducer;
+
+        const dateKey = moment(selectedDate).format("YYYY-MM-DD");
+
+        for (const availability of availabilities[dateKey]) {
+            const existingStartTime = moment(availability.startTime);
+            const existingEndTime = moment(availability.endTime);
+
+            if (
+                moment(startTime).isBetween(
+                    existingStartTime,
+                    existingEndTime,
+                    null,
+                    "[)"
+                ) ||
+                moment(endTime).isBetween(
+                    existingStartTime,
+                    existingEndTime,
+                    null,
+                    "(]"
+                ) ||
+                (moment(startTime).isSameOrBefore(existingStartTime) &&
+                    moment(endTime).isSameOrAfter(existingEndTime))
+            ) {
+
+                dispatch({ type: AVAILABILITY_EXISTS, payload: false });
+                return;
+            }
+        }
+        dispatch({ type: AVAILABILITY_EXISTS, payload: true });
     };

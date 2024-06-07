@@ -1,10 +1,15 @@
 import { View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import AppButton from "../Buttons/AppButton";
 import AvailabilityTimeButton from "./AvailabilityTimeButton";
+import { useDispatch, useSelector } from "react-redux";
+import { availabilityExistsActionCreator } from "../../../../store/actions/availabilityActions";
 
 const AvailabilityTimePicker = ({ onSave, selectedDate }) => {
+    const { availabilityExists } = useSelector(
+        (state) => state.availabilityExistsReducer
+    );
 
     const getDefaultTime = (timeLabel) => {
         const date = new Date(selectedDate);
@@ -15,6 +20,8 @@ const AvailabilityTimePicker = ({ onSave, selectedDate }) => {
         }
         return date;
     };
+
+    const dispatch = useDispatch();
 
     const [startTime, setStartTime] = useState(getDefaultTime("start"));
     const [endTime, setEndTime] = useState(getDefaultTime("end"));
@@ -27,6 +34,12 @@ const AvailabilityTimePicker = ({ onSave, selectedDate }) => {
             setEndTime(time);
         }
     };
+
+    useEffect(() => {
+        dispatch(
+            availabilityExistsActionCreator(startTime, endTime, selectedDate)
+        );
+    }, [startTime, endTime]);
 
     return (
         <View className="space-y-5">
@@ -63,7 +76,7 @@ const AvailabilityTimePicker = ({ onSave, selectedDate }) => {
 
             <View>
                 <AppButton
-                    variant="primary"
+                    variant={`${availabilityExists ? "primary" : "disabled"}`}
                     btnLabel="Save"
                     onPress={() => onSave(startTime, endTime)}
                 />
