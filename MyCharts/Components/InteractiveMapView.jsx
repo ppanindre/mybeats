@@ -1,43 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Platform, Linking } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import axios from 'axios';
+import geocodingService from '../../src/app/api/services/geocodingService';
 
-const geocodeAddress = async (address, city, state, zipcode, apiKey) => {
-  try {
-    const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
-      params: {
-        address: `${address}, ${city}, ${state}, ${zipcode}, India`,
-        key: apiKey,
-      }
-    });
-
-    if (response.data.status === 'OK') {
-      const { lat, lng } = response.data.results[0].geometry.location;
-      return {
-        latitude: lat,
-        longitude: lng,
-      };
-    } else {
-      console.error('Geocoding API error:', response.data.status);
-      return null;
-    }
-  } catch (error) {
-    console.error('Geocoding API error:', error);
-    return null;
-  }
-};
-
-const InteractiveMapView = ({ name, city, address, state, zipcode, apiKey }) => {
+const InteractiveMapView = ({ name, city, address, state, zipcode }) => {
   const [coordinates, setCoordinates] = useState(null);
 
   useEffect(() => {
     const fetchCoordinates = async () => {
-      const result = await geocodeAddress(address, city, state, zipcode, apiKey);
+      const result = await geocodingService.geocodeAddress(address, city, state, zipcode);
       setCoordinates(result);
     };
     fetchCoordinates();
-  }, [address, city, state, zipcode, apiKey]);
+  }, [address, city, state, zipcode]);
 
   const openMaps = (lat, lon, label) => {
     let url;

@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, TextInput, ScrollView, FlatList } from 'react-native';
 import { customTheme } from '../../../../constants/themeConstants';
 import { CheckBox } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
 import { useNavigation } from "@react-navigation/native";
+import { Calendar } from 'react-native-calendars';
 
-const DoctorPrescription = () => {
+const DoctorPrescription = ({ route }) => {
     const navigation = useNavigation()
+    const { selectedMedicine: initialSelectedMedicine } = route.params || {};
     const [searchInput, setSearchInput] = useState('');
     const [selectedPeriod, setSelectedPeriod] = useState(null);
     const [selectedDays, setSelectedDays] = useState(new Set());
@@ -19,8 +21,18 @@ const DoctorPrescription = () => {
     const [mealDosage, setMealDosage] = useState({});
     const [selectedMedicine, setSelectedMedicine] = useState(null);
     const [recentSearches, setRecentSearches] = useState([]); // State to track recent searches
+    const [newMedicines, setNewMedicines] = useState([]); // State to track new medicines being added
+    const [calendarType, setCalendarType] = useState('start');
+    const [calendarModalVisible, setCalendarModalVisible] = useState(false);
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
 
-
+    useEffect(() => {
+        if (initialSelectedMedicine) {
+            setSelectedMedicine(initialSelectedMedicine);
+            setSelectedPeriod(initialSelectedMedicine.period || null);
+        }
+    }, [initialSelectedMedicine]);
 
     const dosageOptionsMap = {
         'Liquid': ['1 spoon', '2 spoons', '3 spoons', 'None'],
@@ -32,7 +44,8 @@ const DoctorPrescription = () => {
         { id: 1, name: 'Paracetamol' },
         { id: 2, name: 'Amoxicillin' },
         { id: 3, name: 'Ibuprofen' },
-        { id: 4, name: 'Penicillin' }
+        { id: 4, name: 'Penicillin' },
+        { id: 5, name: "Dolo" }
     ];
 
     // Filter medicines based on search input
@@ -50,9 +63,9 @@ const DoctorPrescription = () => {
 
     // Form  Completion Update
     const isFormComplete = () => {
-        return selectedMedicine && selectedType && selectedPeriod && selectedDays.size > 0 && Object.values(mealDosage).some(dosage => dosage);
+        return selectedMedicine && selectedType && selectedPeriod && selectedDays.size > 0 && Object.values(mealDosage).some(dosage => dosage) && startDate && endDate;
     };
-    
+
     // AnotherPrescriptionButton
     const AnotherPrescriptionButton = (isEnabled) => ({
         backgroundColor: isEnabled ? customTheme.colors.primary : customTheme.colors.primary,
@@ -62,7 +75,7 @@ const DoctorPrescription = () => {
 
     // SubmitButton
     const SubmitButton = (isEnabled) => ({
-        backgroundColor: isEnabled ? customTheme.colors.lightPrimary : customTheme.colors.lightPrimary,
+        backgroundColor: isEnabled ? customTheme.colors.primary : customTheme.colors.primary,
         opacity: isEnabled ? 1 : 0.5,
         cursor: isEnabled ? 'pointer' : 'not-allowed'
     });
@@ -81,6 +94,13 @@ const DoctorPrescription = () => {
         } else {
             setMealDosage({ ...mealDosage, [meal]: dosage });
         }
+    };
+
+    const handleAddMedicine = () => {
+        const newMedicine = { id: Date.now(), name: searchInput };
+        setSelectedMedicine(newMedicine);
+        setNewMedicines([...newMedicines, newMedicine]);
+        setSearchInput('');
     };
 
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'All'];
@@ -104,14 +124,41 @@ const DoctorPrescription = () => {
         setSelectedDays(newSelectedDays);
     };
 
-    const toggleMeal = meal => {
-        const newSelectedMeals = new Set(selectedMeals);
-        if (newSelectedMeals.has(meal)) {
-            newSelectedMeals.delete(meal);
-        } else {
-            newSelectedMeals.add(meal);
+    // reset form on selecting add another prescription
+    const resetForm = () => {
+        setSelectedMedicine(null);
+        setSelectedPeriod(null);
+        setSelectedDays(new Set());
+        setSelectedMeals(new Set());
+        setSelectedType(null);
+        setMealDosage({});
+        setNote('');
+        setSearchInput('');
+        setStartDate(null);
+        setEndDate(null);
+        navigation.navigate('DoctorPrescription');
+    };
+
+    const handleSubmit = () => {
+        if (isFormComplete()) {
+            const newMedicine = {
+                id: Date.now(), // Generate a new unique id
+                name: selectedMedicine.name,
+                type: selectedType,
+                period: selectedPeriod,
+                days: Array.from(selectedDays),
+                meals: mealDosage,
+                note,
+                startDate,
+                endDate,
+            };
+            navigation.navigate('doctorMedicine', { newMedicine });
         }
-        setSelectedMeals(newSelectedMeals);
+    };
+
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
     };
 
     return (
@@ -120,6 +167,7 @@ const DoctorPrescription = () => {
                 <View className="mb-4">
                     <TextInput
                         placeholder="Search or enter a medicine name"
+                        returnKeyType="search"
                         onChangeText={text => {
                             setSearchInput(text);
                             if (text) {
@@ -132,23 +180,30 @@ const DoctorPrescription = () => {
                                 setNote('');
                             }
                         }}
+                        onSubmitEditing={handleAddMedicine}
                         value={searchInput}
                         className="rounded-lg shadow-lg"
                         style={{ backgroundColor: customTheme.colors.light, paddingHorizontal: 10, paddingVertical: 15, borderColor: customTheme.colors.darkSecondary }}
+                    />
+                    <Ionicons
+                        name="search-outline"
+                        size={20}
+                        color={customTheme.colors.dark}
+                        style={{ position: 'absolute', top: 13, right: 14 }}
                     />
                 </View>
 
                 {/* Display search results */}
                 {!selectedMedicine && (
                     <View className="">
-                        <View className="bg-white rounded-lg shadow-lg">
+                        <View className="bg-light rounded-lg shadow-lg">
                             <FlatList
                                 data={filteredMedicines}
                                 keyExtractor={(item) => item.id.toString()}
                                 renderItem={({ item }) => (
                                     <TouchableOpacity
                                         onPress={() => selectMedicine(item)}
-                                        className="p-4 border-b border-gray-100"
+                                        className="p-4 border-b border-darkSecondary"
                                     >
                                         <View className="flex-row items-center space-x-3">
                                             <Ionicons
@@ -169,7 +224,7 @@ const DoctorPrescription = () => {
 
 
                 {selectedMedicine && (
-                    <View className="p-4 rounded-lg shadow" style={{ backgroundColor: customTheme.colors.light }}>
+                    <View className="p-4 bg-light rounded-lg shadow">
 
                         <Text className="text-lg font-[appfont-semi] mb-3">{selectedMedicine.name}</Text>
 
@@ -183,7 +238,7 @@ const DoctorPrescription = () => {
                                     className={`flex-1 py-4 rounded-lg mr-2`}
                                     style={{ backgroundColor: selectedType === type ? customTheme.colors.primary : customTheme.colors.darkSecondary }}
                                     onPress={() => setSelectedType(selectedType === type ? null : type)}>
-                                    <Text className={`text-center text-md font-[appfont-semi] ${selectedType === type ? 'text-white' : 'text-black'}`}>{type}</Text>
+                                    <Text className={`text-center text-md font-[appfont-semi] ${selectedType === type ? 'text-light' : 'text-black'}`}>{type}</Text>
                                 </TouchableOpacity>
                             ))}
                         </View>
@@ -199,7 +254,7 @@ const DoctorPrescription = () => {
                                             className={`flex-1 py-4 rounded-lg mr-2`}
                                             style={{ backgroundColor: selectedPeriod === period ? customTheme.colors.primary : customTheme.colors.darkSecondary }}
                                             onPress={() => setSelectedPeriod(selectedPeriod === period ? null : period)}>
-                                            <Text className={`text-center text-md font-[appfont-semi] ${selectedPeriod === period ? 'text-white' : 'text-black'}`}>{period}</Text>
+                                            <Text className={`text-center text-md font-[appfont-semi] ${selectedPeriod === period ? 'text-light' : 'text-black'}`}>{period}</Text>
                                         </TouchableOpacity>
                                     ))}
                                 </View>
@@ -208,17 +263,17 @@ const DoctorPrescription = () => {
                                     {days.map((day, index) => (
                                         <TouchableOpacity
                                             key={day}
-                                            className={`w-1/5 py-4  ${selectedDays.has(day) ? 'bg-green-500' : 'bg-gray-200'} rounded-lg mr-2 mb-2 ${index % 4 === 0 ? 'ml-1' : 'ml-3'}`}
+                                            className={`w-1/5 py-4  ${selectedDays.has(day) ? 'bg-primary' : 'bg-darkSecondary'} rounded-lg mr-2 mb-2 ${index % 4 === 0 ? 'ml-1' : 'ml-3'}`}
                                             style={{ backgroundColor: selectedDays.has(day) ? customTheme.colors.primary : customTheme.colors.darkSecondary }}
                                             onPress={() => toggleDay(day)}>
-                                            <Text className={`text-center text-md font-[appfont-semi] ${selectedDays.has(day) ? 'text-white' : 'text-black'}`}>{day}</Text>
+                                            <Text className={`text-center text-md font-[appfont-semi] ${selectedDays.has(day) ? 'text-light' : 'text-black'}`}>{day}</Text>
                                         </TouchableOpacity>
                                     ))}
                                 </View>
 
 
                                 <Modal isVisible={modalVisible} onBackdropPress={() => setModalVisible(false)}>
-                                    <View className="bg-white p-5 rounded-lg shadow w-full">
+                                    <View className="bg-light p-5 rounded-lg shadow w-full">
                                         <View className="flex-row items-center justify-between mb-3">
                                             <Text className="font-[appfont-semi]">Select Quantity</Text>
                                             <TouchableOpacity
@@ -254,8 +309,7 @@ const DoctorPrescription = () => {
                                         className={`py-4 rounded-lg mb-3 }`}
                                         onPress={() => handleMealSelect(meal)}>
                                         <Text
-                                            // style={{ color: mealDosage[meal] ? customTheme.colors.light : customTheme.colors.dark }}
-                                            className={`text-center font-[appfont-bold] text-md ${mealDosage[meal] ? 'text-white' : 'text-black'
+                                            className={`text-center font-[appfont-bold] text-md ${mealDosage[meal] ? 'text-light' : 'text-dark'
                                                 }`}>
                                             {meal} {mealDosage[meal] ? `- ${mealDosage[meal]}` : ''}
                                         </Text>
@@ -263,14 +317,56 @@ const DoctorPrescription = () => {
 
 
                                 ))}
+
+                                <View className="flex-row mt-6">
+                                    <TouchableOpacity
+                                        className={`flex-1 py-4 rounded-lg mr-2`}
+                                        style={{ backgroundColor: startDate ? customTheme.colors.primary : customTheme.colors.darkSecondary }}
+                                        onPress={() => { setCalendarType('start'); setCalendarModalVisible(true); }}>
+                                        <Text className={`text-center text-md font-[appfont-semi] ${startDate ? 'text-light' : 'text-dark'}`}>
+                                            {startDate ? `Start Date - ${formatDate(startDate)}` : 'Start Date'}
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+
+                                {startDate && (
+                                    <View className="flex-row mt-3">
+                                        <TouchableOpacity
+                                            className={`flex-1 py-4 rounded-lg mr-2`}
+                                            style={{ backgroundColor: endDate ? customTheme.colors.primary : customTheme.colors.darkSecondary }}
+                                            onPress={() => { setCalendarType('end'); setCalendarModalVisible(true); }}>
+                                            <Text className={`text-center text-md font-[appfont-semi] ${endDate ? 'text-light' : 'text-dark'}`}>
+                                                {endDate ? `End Date - ${formatDate(endDate)}` : 'End Date'}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                )}
+
+                                <Modal isVisible={calendarModalVisible} onBackdropPress={() => setCalendarModalVisible(false)}>
+                                    <View className="bg-light p-5 rounded-lg shadow w-full">
+                                        <Calendar
+                                            minDate={calendarType === 'end' ? startDate : new Date().toISOString().split('T')[0]}
+                                            onDayPress={(day) => {
+                                                if (calendarType === 'start') {
+                                                    setStartDate(day.dateString);
+                                                } else {
+                                                    setEndDate(day.dateString);
+                                                }
+                                                setCalendarModalVisible(false);
+                                            }}
+                                        />
+                                    </View>
+                                </Modal>
+
                                 <TextInput
-                                    className="py-3 px-4 bg-gray-200 rounded-lg mb-8 mt-8 font-[appfont]"
-                                    style={{ backgroundColor: customTheme.colors.darkSecondary }}
-                                    placeholder="Add Note"
+                                    className="py-3 px-4 bg-gray-200 rounded-lg mb-8 mt-8 font-[appfont] bg-darkSecondary"
+                                    placeholder="Add Notes"
                                     value={note}
                                     onChangeText={setNote}
                                     multiline
                                 />
+
+
                             </>
                         )}
 
@@ -282,30 +378,31 @@ const DoctorPrescription = () => {
 
             </ScrollView>
 
-            <View className="absolute bottom-0 left-0 right-0 flex-row justify-between py-3 bg-white">
+
+            <View className="absolute bottom-0 left-0 right-0 flex-row justify-between py-3 bg-light">
                 {selectedMedicine ? (
                     <>
-                    {/* Buttons for add another prescription and submit*/}
-                        <TouchableOpacity
+                        {/* Buttons for add another prescription and submit*/}
+                        {/* <TouchableOpacity
                             disabled={!isFormComplete()}
                             style={AnotherPrescriptionButton(isFormComplete())}
+                            onPress={resetForm}
                             className="flex-1 m-1 mx-5 py-4 rounded-lg flex-row justify-center items-center mr-2">
-                            <Text style={{ color: customTheme.colors.light }} className=" ml-2 font-[appfont-semi]">Add another Prescription</Text>
-                        </TouchableOpacity>
+                            <Text  className=" ml-2 font-[appfont-semi] text-light">Add more</Text>
+                        </TouchableOpacity> */}
                         <TouchableOpacity
                             disabled={!isFormComplete()}
                             style={SubmitButton(isFormComplete())}
-                            onPress={()=> navigation.navigate('DoctorMedicine')}
-                            className="flex-1 m-1 mx-2 py-4 rounded-lg flex-row justify-center items-center mr-4">
-                            <Text style={{ color: customTheme.colors.light }} className="ml-2 font-[appfont-semi]">Submit</Text>
+                            onPress={handleSubmit}
+                            className="flex-1 m-1 mx-5 py-4 rounded-lg flex-row justify-center items-center mr-4">
+                            <Text className="ml-2 font-[appfont-semi] text-light">Submit</Text>
                         </TouchableOpacity>
                     </>
                 ) : (
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('UploadPrescription')}
-                        style={{ backgroundColor: customTheme.colors.primary }}
-                        className="flex-1 m-1 mx-5 py-4 rounded-lg flex-row justify-center items-center mr-4">
-                        <Text style={{ color: customTheme.colors.light }} className="ml-2 font-[appfont-semi]">Upload Prescription</Text>
+                        onPress={() => navigation.navigate('uploadPrescription')}
+                        className="flex-1 m-1 mx-5 py-4 rounded-lg flex-row justify-center items-center mr-4 bg-primary">
+                        <Text className="ml-2 font-[appfont-semi] text-light">Upload Prescription</Text>
                     </TouchableOpacity>
                 )}
             </View>
