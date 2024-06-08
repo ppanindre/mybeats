@@ -76,12 +76,10 @@ const DoctorAvailability = () => {
                     <View>
                         <CalendarInput onDayPress={handleDayPress} />
                     </View>
-                    <View>
-                        <AvailabilitySlotFrame
-                            onAdd={handleDayPress}
-                            availabilities={availabilities}
-                        />
-                    </View>
+                    <AvailabilitySlotFrame
+                        onAdd={handleDayPress}
+                        availabilities={availabilities}
+                    />
                 </View>
             </ScrollView>
         </ScreenContainer>

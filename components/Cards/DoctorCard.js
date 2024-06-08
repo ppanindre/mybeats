@@ -53,7 +53,6 @@ const DoctorCard = ({
                             size={14}
                         />
                         <Text
-                            style={{ color: customTheme.colors.dark }}
                             className="text-xs font-[appfont]"
                         >
                             {doctorRating} (500+ ratings)

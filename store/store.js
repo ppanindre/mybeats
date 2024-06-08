@@ -18,7 +18,10 @@ import {
     patientGetReducer,
     patientUpdateReducer,
 } from "./reducers/patientReducers";
-import { doctorGetReducer } from "./reducers/doctorReducers";
+import {
+    doctorGetReducer,
+    doctorsListReducer,
+} from "./reducers/doctorReducers";
 import {
     availabilitesByDoctorReducer,
     availabilitiesDeleteReducer,
@@ -45,6 +48,7 @@ const reducers = combineReducers({
     patientUpdateReducer: patientUpdateReducer,
     patientGetReducer: patientGetReducer,
     doctorGetReducer: doctorGetReducer,
+    doctorsListReducer: doctorsListReducer,
     availabilityCreateReducer: availabilityCreateReducer,
     appointmentCreateReducer: appointmentCreateReducer,
     availabilitesByDoctorReducer: availabilitesByDoctorReducer,

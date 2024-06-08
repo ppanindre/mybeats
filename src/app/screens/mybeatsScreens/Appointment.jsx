@@ -46,14 +46,14 @@ const CollapsibleItem = ({ title, children }) => {
     );
 };
 
-export default Appointment = ({ route, navigation }) => {
+export default Appointment = ({ route }) => {
     const patientStore = useSelector((state) => state.PatientReducer);
 
     // use amplify to fetch the doctor
 
     // dont need it
     const {
-        // id - required
+        doctor,
         name,
         specialization,
         zipcode,
@@ -156,8 +156,7 @@ export default Appointment = ({ route, navigation }) => {
                         <ActionButton website={website} />
                     </View>
 
-                    <View>
-                        {/* Clinic Appointment Section */}
+                    {/* <View>
                         <View
                             className="flex-row justify-between items-center bg-cyan-100 p-5 rounded-lg shadow"
                             style={{
@@ -181,14 +180,13 @@ export default Appointment = ({ route, navigation }) => {
                         </View>
                     </View>
 
-                    {/* Clinic Appointment Time Slots */}
                     <View>
                         <AvailableAppointmentsFrame
                             doctorId="4"
                             selectAppointmentSlot={handleSelectAppointmentSlot}
                             resetAppointmentSlot={appointmentSlot === null}
                         />
-                    </View>
+                    </View> */}
 
                     <View>
                         {availableForVideoConsultation && (
