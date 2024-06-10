@@ -61,10 +61,13 @@ export const updatePatientActionCreator =
             dispatch({ type: PATIENT_UPDATE_REQUEST });
 
             const patientId = auth().currentUser.uid;
+
+            console.log("patient id", patientId);
+
             const email = auth().currentUser.email;
 
             const response = await client.graphql({
-                query: updatePatient,
+                query: createPatient,
                 variables: {
                     input: {
                         id: patientId,

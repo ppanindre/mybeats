@@ -11,7 +11,7 @@ import {
     APPOINTMENT_LIST_BY_DOCTOR_SUCCESS,
 } from "../types/appointmentActionTypes.js";
 import moment from "moment";
-import { slotsByDoctor } from "../../src/graphql/queries.js";
+import { getPatient, slotsByDoctor } from "../../src/graphql/queries.js";
 import { createAppointment } from "../../src/graphql/mutations.js";
 
 const client = generateClient();
@@ -51,12 +51,18 @@ export const createAppointmentActionCreators =
 export const listAppointmentsByDoctorActionCreators =
     (doctorId) => async (dispatch, getState) => {
         try {
+            if (!doctorId) {
+                const user = getState().UserReducer;
+                doctorId = user.userId;
+            }
+
             dispatch({ type: APPOINTMENT_LIST_BY_DOCTOR_REQUEST });
 
             const response = await client.graphql({
                 query: slotsByDoctor,
                 variables: {
                     doctorID: doctorId,
+                    sortDirection: "ASC",
                 },
             });
 
@@ -64,6 +70,7 @@ export const listAppointmentsByDoctorActionCreators =
                 type: APPOINTMENT_LIST_BY_DOCTOR_SUCCESS,
                 payload: response.data.slotsByDoctor.items,
             });
+
         } catch (error) {
             console.error("Error while listing appointments", error);
             dispatch({

@@ -1,39 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
-import moment from "moment";
+import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import TabButton from "../../components/Buttons/TabButton";
 import ScreenContainer from "../../components/Containers/ScreenContainer";
 import AppButton from "../../components/Buttons/AppButton";
-import { appointmentService } from "../../api/services/appointmentService";
-import AppointmentCard from "../../components/Cards/AppointmentCard";
+import DoctorAppointmentsFrame from "../../components/DoctorAppointmentsComponents/DoctorAppointmentsFrame";
+import { useDispatch, useSelector } from "react-redux";
+import { listAppointmentsByDoctorActionCreators } from "../../../../store/actions/appointmentActions";
 const Appointments = () => {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+
+    const { loading, error, appointmentsByDoctor } = useSelector(
+        (state) => state.appointmentsListByDoctorReducer
+    );
+
     const [selectedTab, setSelectedTab] = useState("upcoming");
-    const [upcomingAppointments, setUpcomingAppointments] = useState([]);
-    const [pastAppointments, setPastAppointments] = useState([]);
-
-    const fetchUpcomingAppointments = async () => {
-        const today = moment();
-
-        const appointments = await appointmentService.appointmentSlotByDoctor(
-            "4",
-            true
-        );
-
-        const past = appointments.filter((appointment) =>
-            moment(appointment.date).isBefore(today, "day")
-        );
-        const upcoming = appointments.filter((appointment) =>
-            moment(appointment.date).isSameOrAfter(today, "day")
-        );
-
-        setUpcomingAppointments(upcoming);
-        setPastAppointments(past);
-    };
 
     useEffect(() => {
-        fetchUpcomingAppointments();
+        dispatch(listAppointmentsByDoctorActionCreators());
     }, []);
 
     return (
@@ -55,8 +40,16 @@ const Appointments = () => {
                 />
             </View>
 
-            {/* Appointments */}
             <View className="flex-1">
+                {appointmentsByDoctor && (
+                    <DoctorAppointmentsFrame
+                        selectedTab={selectedTab}
+                        appointments={appointmentsByDoctor}
+                    />
+                )}
+            </View>
+
+            {/* <View className="flex-1">
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View className="space-y-5">
                         {selectedTab === "upcoming" &&
@@ -104,7 +97,7 @@ const Appointments = () => {
                             ))}
                     </View>
                 </ScrollView>
-            </View>
+            </View> */}
 
             {/* Set Availability Button */}
             <View>

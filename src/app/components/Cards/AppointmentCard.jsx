@@ -1,22 +1,10 @@
 import { View, Text, Image } from "react-native";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { theme } from "../../../../tailwind.config";
 import moment from "moment";
-import { patientService } from "../../api/services/patientService";
 
-const AppointmentCard = ({ patientId, appointmentType, appointmentTime }) => {
-    const [patient, setPatient] = useState(null);
-
-    const fetchPatientData = async () => {
-        const fetchedPatient = await patientService.getPatient(patientId);
-        console.log("fetched patient", fetchedPatient);
-    }
-
-    useEffect(() => {
-        fetchPatientData()
-    }, [])
-
+const AppointmentCard = ({ appointmentTime, appointmentType, patient }) => {
     return (
         <View className="bg-light p-5 items-center justify-center rounded-lg shadow-lg">
             <View className="flex-row space-x-3 items-center">
@@ -26,14 +14,21 @@ const AppointmentCard = ({ patientId, appointmentType, appointmentTime }) => {
                 />
                 <View className="flex-1">
                     <Text className="font-[appfont-semi] text-lg">
+                        {patient.firstname} {patient.lastname}
+                    </Text>
+                    <Text className="font-[appfont-semi]">
+                        {moment(appointmentTime).format("D MMM")}
                     </Text>
                     <Text className="font-[appfont]">
                         {moment(appointmentTime).format("H:mm a")}
                     </Text>
-                    <Text className="font-[appfont]">{appointmentType}</Text>
                 </View>
                 <Ionicons
-                    name="videocam"
+                    name={
+                        appointmentType === "clinic"
+                            ? "chatbubble-ellipses"
+                            : "video"
+                    }
                     size={20}
                     color={theme.colors.primary}
                 />
