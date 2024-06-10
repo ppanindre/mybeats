@@ -66,6 +66,7 @@ const DoctorAvailability = () => {
                     selectedDate={selectedDate}
                 />
                 <AvailabilityTimePicker
+                    showTimePicker={selectedChoice !== "unavailable"}
                     selectedDate={selectedDate}
                     onSave={handleSave}
                 />

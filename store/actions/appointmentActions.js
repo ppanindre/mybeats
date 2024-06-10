@@ -1,5 +1,8 @@
 import { generateClient } from "aws-amplify/api";
 import {
+    APPOINTMENT_CREATE_FAILURE,
+    APPOINTMENT_CREATE_REQUEST,
+    APPOINTMENT_CREATE_SUCCESS,
     APPOINTMENT_LIST_AVAILABLE_FAILURE,
     APPOINTMENT_LIST_AVAILABLE_REQUEST,
     APPOINTMENT_LIST_AVAILABLE_SUCCESS,
@@ -9,13 +12,40 @@ import {
 } from "../types/appointmentActionTypes.js";
 import moment from "moment";
 import { slotsByDoctor } from "../../src/graphql/queries.js";
+import { createAppointment } from "../../src/graphql/mutations.js";
 
 const client = generateClient();
 
 export const createAppointmentActionCreators =
-    () => async (dispatch, getState) => {
+    (doctorId, type, slot) => async (dispatch, getState) => {
         try {
-        } catch (error) {}
+            const user = getState().UserReducer;
+            const patientId = user.userId;
+
+            dispatch({ type: APPOINTMENT_CREATE_REQUEST });
+
+            const response = await client.graphql({
+                query: createAppointment,
+                variables: {
+                    input: {
+                        patientId: patientId,
+                        doctorID: doctorId,
+                        type: type,
+                        startTime: slot.startTime,
+                        endTime: slot.endTime,
+                        isBooked: true,
+                    },
+                },
+            });
+
+            dispatch({
+                type: APPOINTMENT_CREATE_SUCCESS,
+                payload: response.data.createAppointment,
+            });
+        } catch (error) {
+            console.error("Error creating appointment", error);
+            dispatch({ type: APPOINTMENT_CREATE_FAILURE, payload: error });
+        }
     };
 
 export const listAppointmentsByDoctorActionCreators =
@@ -52,6 +82,11 @@ export const listAvailableAppointmentsActionCreators =
             const { appointmentsByDoctor } =
                 getState().appointmentsListByDoctorReducer;
 
+            // Create a Set of booked start times
+            const bookedStartTimes = new Set(
+                appointmentsByDoctor.map((appt) => appt.startTime)
+            );
+
             const slots = {};
 
             Object.keys(availabilities).forEach((dateKey) => {
@@ -65,11 +100,17 @@ export const listAvailableAppointmentsActionCreators =
                         const slotEndTime = startTime
                             .clone()
                             .add(15, "minutes");
-                        slots[dateKey].push({
-                            startTime: startTime.clone().toISOString(),
-                            endTime: slotEndTime.clone().toISOString(),
-                            isBooked: false, // Assume all slots are initially available
-                        });
+                        const slotStartTimeISO = startTime
+                            .clone()
+                            .toISOString();
+
+                        if (!bookedStartTimes.has(slotStartTimeISO)) {
+                            slots[dateKey].push({
+                                startTime: slotStartTimeISO,
+                                endTime: slotEndTime.clone().toISOString(),
+                            });
+                        }
+
                         startTime.add(15, "minutes");
                     }
                 });
