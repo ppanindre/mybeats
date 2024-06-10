@@ -55,12 +55,13 @@ export const createAvailabilityActionCreator =
     };
 
 export const getAvailabilitiesByDoctorActionCreator =
-    () => async (dispatch, getState) => {
+    (doctorId) => async (dispatch, getState) => {
         try {
             dispatch({ type: AVAILABILITIES_BY_DOCTOR_REQUEST });
-
-            const user = getState().UserReducer;
-            const doctorId = user.userId;
+            if (!doctorId) {
+                const user = getState().UserReducer;
+                doctorId = user.userId;
+            }
 
             const response = await client.graphql({
                 query: availabilityByDoctor,
@@ -156,7 +157,7 @@ export const deleteAvailabilitiesActionCreator =
             const { availabilities } = getState().availabilitesByDoctorReducer;
             const dateKey = moment(selectedDate).format("YYYY-MM-DD");
 
-            console.log("availabilities", availabilities[dateKey])
+            console.log("availabilities", availabilities[dateKey]);
 
             availabilities[dateKey].forEach(async (slot) => {
                 await client.graphql({
@@ -169,7 +170,6 @@ export const deleteAvailabilitiesActionCreator =
                     },
                 });
             });
-
 
             dispatch({ type: AVAILABILITIES_DELETE_SUCCESS });
 

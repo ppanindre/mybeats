@@ -29,7 +29,12 @@ import {
     availabilityDeleteReducer,
     availabilityExistsReducer,
 } from "./reducers/availabilityReducers";
-import { appointmentCreateReducer } from "./reducers/appointmentReducers";
+import {
+    appointmentCreateReducer,
+    appointmentListAvailableReducer,
+    appointmentListReducer,
+    appointmentsListByDoctorReducer,
+} from "./reducers/appointmentReducers";
 
 // Combining every reducer
 const reducers = combineReducers({
@@ -51,6 +56,9 @@ const reducers = combineReducers({
     doctorsListReducer: doctorsListReducer,
     availabilityCreateReducer: availabilityCreateReducer,
     appointmentCreateReducer: appointmentCreateReducer,
+    appointmentListAvailableReducer: appointmentListAvailableReducer,
+    appointmentListReducer: appointmentListReducer,
+    appointmentsListByDoctorReducer: appointmentsListByDoctorReducer,
     availabilitesByDoctorReducer: availabilitesByDoctorReducer,
     availabilityDeleteReducer: availabilityDeleteReducer,
     availabilityExistsReducer: availabilityExistsReducer,

@@ -20,9 +20,11 @@ import ScreenContainer from "../../components/Containers/ScreenContainer";
 import AppButton from "../../components/Buttons/AppButton";
 import { theme } from "../../../../tailwind.config";
 import PatientStory from "../../../../components/Cards/PatientStory";
-import AvailableAppointmentsFrame from "../../components/Frames/AvailableAppointmentsFrame";
+// import AvailableAppointmentsFrame from "../../components/Frames/AvailableAppointmentsFrame";
 import { appointmentService } from "../../api/services/appointmentService";
 import { useSelector } from "react-redux";
+import ClinicAppointmentFrame from "../../components/PatientAppointmentCO/ClinicAppointmentFrame";
+import AvailableAppointmentsFrame from "../../components/PatientAppointmentCO/AvailableAppointmentsFrame";
 
 const CollapsibleItem = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -156,31 +158,17 @@ export default Appointment = ({ route }) => {
                         <ActionButton website={website} />
                     </View>
 
-                    {/* <View>
-                        <View
-                            className="flex-row justify-between items-center bg-cyan-100 p-5 rounded-lg shadow"
-                            style={{
-                                backgroundColor: customTheme.colors.primary,
-                            }}
-                        >
-                            <View className="flex-row items-center">
-                                <Ionicons
-                                    name="business"
-                                    size={24}
-                                    style={{ color: customTheme.colors.light }}
-                                    className="bg-blue-100 p-1 rounded-full"
-                                />
-                                <Text
-                                    className="text-sm ml-2 font-[appfont-semi]"
-                                    style={{ color: customTheme.colors.light }}
-                                >
-                                    Clinic Appointment
-                                </Text>
-                            </View>
-                        </View>
+                    <View>
+                        <ClinicAppointmentFrame />
                     </View>
 
                     <View>
+                        <AvailableAppointmentsFrame
+                            doctorId={doctor.doctorID}
+                        />
+                    </View>
+
+                    {/* <View>
                         <AvailableAppointmentsFrame
                             doctorId="4"
                             selectAppointmentSlot={handleSelectAppointmentSlot}
