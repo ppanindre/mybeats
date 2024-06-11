@@ -5,14 +5,21 @@ import { Ionicons } from "@expo/vector-icons";
 import { theme } from "../../../../tailwind.config";
 import { useDispatch } from "react-redux";
 import { deleteAvailabilityActionCreator } from "../../../../store/actions/availabilityActions";
+import showConfirmAlert from "../../utils/showConfirmAlert";
 
 const ICON_SIZE = 20;
 
 const AvailabilitySlotFrame = ({ availabilities = {}, onAdd }) => {
     const dispatch = useDispatch();
 
-    const deleteAvailability = (slot) => {
+    const onConfirmDeleteAvailability = (slot) => {
         dispatch(deleteAvailabilityActionCreator(slot.id, slot.version));
+    };
+
+    const deleteAvailability = (slot) => {
+        showConfirmAlert("Are you sure you want to delete this slot", () =>
+            onConfirmDeleteAvailability(slot)
+        );
     };
 
     return (

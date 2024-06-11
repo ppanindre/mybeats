@@ -6,7 +6,18 @@ import moment from "moment";
 
 const AppointmentCard = ({ appointmentTime, appointmentType, patient }) => {
     return (
-        <View className="bg-light p-5 items-center justify-center rounded-lg shadow-lg">
+        <View className="relative bg-light p-5 items-center justify-center rounded-lg shadow-lg">
+            <View className="absolute p-1 bottom-3 z-[30] left-2 border rounded-full border-primary flex-row items-center space-x-1">
+                <Ionicons
+                    name="videocam"
+                    size={15}
+                    color={theme.colors.primary}
+                />
+                {/* <Text className="font-[appfont] text-xs text-primary">
+                    Video
+                </Text> */}
+            </View>
+
             <View className="flex-row space-x-3 items-center">
                 <Image
                     source={require("../../assets/doc1.webp")}
@@ -23,12 +34,15 @@ const AppointmentCard = ({ appointmentTime, appointmentType, patient }) => {
                         {moment(appointmentTime).format("H:mm a")}
                     </Text>
                 </View>
+                {appointmentType === "video" && (
+                    <Ionicons
+                        name="videocam"
+                        size={20}
+                        color={theme.colors.primary}
+                    />
+                )}
                 <Ionicons
-                    name={
-                        appointmentType === "clinic"
-                            ? "chatbubble-ellipses"
-                            : "video"
-                    }
+                    name="close-circle"
                     size={20}
                     color={theme.colors.primary}
                 />

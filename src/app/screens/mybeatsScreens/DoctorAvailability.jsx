@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Alert } from "react-native";
 import moment from "moment";
 import ScreenContainer from "../../components/Containers/ScreenContainer";
 import ModalContainer from "../../components/Containers/ModalContainer";
@@ -8,12 +8,14 @@ import AvailabilityTimePicker from "../../components/DoctorAvailabilityComponent
 import { useDispatch, useSelector } from "react-redux";
 import {
     createAvailabilityActionCreator,
+    createAvailabilityForAllDaysActionCreator,
     deleteAvailabilitiesActionCreator,
     getAvailabilitiesByDoctorActionCreator,
 } from "../../../../store/actions/availabilityActions";
 import AvailabilitySlotFrame from "../../components/DoctorAvailabilityComponents/AvailabilitySlotFrame";
 import Loader from "../../components/Utils/Loader";
 import AvailabilitySwitchFrame from "../../components/DoctorAvailabilityComponents/AvailabilitySwitchFrame";
+import showConfirmAlert from "../../utils/showConfirmAlert";
 
 const DoctorAvailability = () => {
     // STATES
@@ -37,11 +39,24 @@ const DoctorAvailability = () => {
         setShowModal(true);
     };
 
-    const handleSave = (startTime, endTime) => {
+    const onConfirmDeleteAvailability = () => {
+        dispatch(deleteAvailabilitiesActionCreator(selectedDate));
+        Alert.alert("", "Schedule has been updated");
+    };
+
+    const handleSave = async (startTime, endTime) => {
         if (selectedChoice === "unavailable") {
-            dispatch(deleteAvailabilitiesActionCreator(selectedDate));
+            showConfirmAlert(
+                "Are you sure you want to remove all slots for this day",
+                () => onConfirmDeleteAvailability()
+            );
+        } else if (selectedChoice === "allDays") {
+            dispatch(
+                createAvailabilityForAllDaysActionCreator(startTime, endTime)
+            );
         } else {
             dispatch(createAvailabilityActionCreator(startTime, endTime));
+            Alert.alert("", "Schedule has been updated");
         }
         setShowModal(false);
         setSelectedChoice(null);
@@ -65,11 +80,13 @@ const DoctorAvailability = () => {
                     availabilities={availabilities}
                     selectedDate={selectedDate}
                 />
-                <AvailabilityTimePicker
-                    showTimePicker={selectedChoice !== "unavailable"}
-                    selectedDate={selectedDate}
-                    onSave={handleSave}
-                />
+                <View>
+                    <AvailabilityTimePicker
+                        showTimePicker={selectedChoice !== "unavailable"}
+                        selectedDate={selectedDate}
+                        onSave={handleSave}
+                    />
+                </View>
             </ModalContainer>
 
             <ScrollView showsVerticalScrollIndicator={false}>

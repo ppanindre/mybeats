@@ -5,6 +5,9 @@ import {
     AVAILABILITIES_DELETE_FAILURE,
     AVAILABILITIES_DELETE_REQUEST,
     AVAILABILITIES_DELETE_SUCCESS,
+    AVAILABILITY_ALL_DAYS_CREATE_FAILURE,
+    AVAILABILITY_ALL_DAYS_CREATE_REQUEST,
+    AVAILABILITY_ALL_DAYS_CREATE_SUCCESS,
     AVAILABILITY_CREATE_FAILURE,
     AVAILABILITY_CREATE_REQUEST,
     AVAILABILITY_CREATE_SUCCESS,
@@ -37,6 +40,34 @@ export const availabilityCreateReducer = (state = {}, action) => {
         }
 
         case AVAILABILITY_CREATE_FAILURE: {
+            return {
+                loading: false,
+                error: action.payload,
+            };
+        }
+
+        default: {
+            return state;
+        }
+    }
+};
+
+export const availabilityAllDaysReducer = (state = {}, action) => {
+    switch (action.type) {
+        case AVAILABILITY_ALL_DAYS_CREATE_REQUEST: {
+            return {
+                loading: true,
+            };
+        }
+
+        case AVAILABILITY_ALL_DAYS_CREATE_SUCCESS: {
+            return {
+                loading: false,
+                success: true,
+            };
+        }
+
+        case AVAILABILITY_ALL_DAYS_CREATE_FAILURE: {
             return {
                 loading: false,
                 error: action.payload,

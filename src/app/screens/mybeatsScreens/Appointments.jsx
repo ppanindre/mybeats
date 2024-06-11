@@ -7,6 +7,7 @@ import AppButton from "../../components/Buttons/AppButton";
 import DoctorAppointmentsFrame from "../../components/DoctorAppointmentsComponents/DoctorAppointmentsFrame";
 import { useDispatch, useSelector } from "react-redux";
 import { listAppointmentsByDoctorActionCreators } from "../../../../store/actions/appointmentActions";
+import Loader from "../../components/Utils/Loader";
 const Appointments = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
@@ -20,6 +21,8 @@ const Appointments = () => {
     useEffect(() => {
         dispatch(listAppointmentsByDoctorActionCreators());
     }, []);
+
+    if (loading) return <Loader />;
 
     return (
         <ScreenContainer>

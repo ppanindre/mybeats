@@ -6,6 +6,9 @@ import {
     AVAILABILITIES_DELETE_FAILURE,
     AVAILABILITIES_DELETE_REQUEST,
     AVAILABILITIES_DELETE_SUCCESS,
+    AVAILABILITY_ALL_DAYS_CREATE_FAILURE,
+    AVAILABILITY_ALL_DAYS_CREATE_REQUEST,
+    AVAILABILITY_ALL_DAYS_CREATE_SUCCESS,
     AVAILABILITY_CREATE_FAILURE,
     AVAILABILITY_CREATE_REQUEST,
     AVAILABILITY_CREATE_SUCCESS,
@@ -51,6 +54,61 @@ export const createAvailabilityActionCreator =
         } catch (error) {
             console.error("Error while creating availability", error);
             dispatch({ type: AVAILABILITY_CREATE_FAILURE, payload: error });
+        }
+    };
+
+export const createAvailabilityForAllDaysActionCreator =
+    (startTime, endTime) => async (dispatch, getState) => {
+        try {
+            dispatch({ type: AVAILABILITY_ALL_DAYS_CREATE_REQUEST });
+
+            const { availabilities } = getState().availabilitesByDoctorReducer;
+
+            const datesSelected = [];
+
+            datesSelected.push({
+                startTime: moment(startTime).toDate(),
+                endTime: moment(endTime).toDate(),
+            });
+
+            for (let i = 1; i <= 52; i++) {
+                const newStartTime = moment(startTime)
+                    .add(i * 7, "days")
+                    .toDate();
+                const newEndTime = moment(endTime)
+                    .add(i * 7, "days")
+                    .toDate();
+
+                if (
+                    !availabilities[moment(newStartTime).format("YYYY-MM-DD")]
+                ) {
+                    datesSelected.push({
+                        startTime: newStartTime,
+                        endTime: newEndTime,
+                    });
+                }
+            }
+
+            datesSelected.forEach((date) => {
+                dispatch(deleteAvailabilitiesActionCreator(date.startTime));
+                dispatch(
+                    createAvailabilityActionCreator(
+                        date.startTime,
+                        date.endTime
+                    )
+                );
+            });
+
+            dispatch({ type: AVAILABILITY_ALL_DAYS_CREATE_SUCCESS });
+        } catch (error) {
+            console.error(
+                "Error while creating availabilities for all days",
+                error
+            );
+            dispatch({
+                type: AVAILABILITY_ALL_DAYS_CREATE_FAILURE,
+                error: ActionSheetIOS.payload,
+            });
         }
     };
 
@@ -137,7 +195,7 @@ export const deleteAvailabilityActionCreator =
                 },
             });
 
-            dispatch({
+            await dispatch({
                 type: AVAILABILITY_DELETE_SUCCESS,
                 payload: response.data.deleteAvailability,
             });
@@ -157,8 +215,6 @@ export const deleteAvailabilitiesActionCreator =
             const { availabilities } = getState().availabilitesByDoctorReducer;
             const dateKey = moment(selectedDate).format("YYYY-MM-DD");
 
-            console.log("availabilities", availabilities[dateKey]);
-
             availabilities[dateKey].forEach(async (slot) => {
                 await client.graphql({
                     query: deleteAvailability,
@@ -171,7 +227,7 @@ export const deleteAvailabilitiesActionCreator =
                 });
             });
 
-            dispatch({ type: AVAILABILITIES_DELETE_SUCCESS });
+            await dispatch({ type: AVAILABILITIES_DELETE_SUCCESS });
 
             dispatch(getAvailabilitiesByDoctorActionCreator());
         } catch (error) {

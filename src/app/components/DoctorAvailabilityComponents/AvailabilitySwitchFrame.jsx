@@ -14,7 +14,7 @@ const AvailabilitySwitchFrame = ({
             {availabilities[moment(selectedDate).format("YYYY-MM-DD")] && (
                 <View>
                     <SwitchInput
-                        label="Mark me as unavailable"
+                        label="Unavailable on this day"
                         onValueChange={(value) =>
                             value
                                 ? selectChoice("unavailable")
@@ -26,7 +26,10 @@ const AvailabilitySwitchFrame = ({
             )}
             <View>
                 <SwitchInput
-                    label="Set schedule for all days"
+                    label={`Set schedule for all ${moment(
+                        selectedDate,
+                        "YYYY-MM-DD"
+                    ).format("dddd")}s`}
                     onValueChange={(value) =>
                         value ? selectChoice("allDays") : selectChoice(null)
                     }

@@ -10,7 +10,7 @@ const AvailableDayFrame = ({
     return (
         <View className="space-y-3">
             <Text className="font-[appfont-bold] text-lg">Day</Text>
-            <ScrollView horizontal>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View className="space-x-3 flex-row">
                     {Object.keys(appointments).map((date) => (
                         <TouchableOpacity

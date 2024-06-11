@@ -29,6 +29,7 @@ import {
     createAppointmentActionCreators,
     listAvailableAppointmentsActionCreators,
 } from "../../../../store/actions/appointmentActions";
+import Loader from "../../components/Utils/Loader";
 
 const CollapsibleItem = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -99,6 +100,10 @@ export default Appointment = ({ route }) => {
         },
     ];
 
+    const { loading, error, appointment } = useSelector(
+        (state) => state.appointmentCreateReducer
+    );
+
     const [selectedSlot, setSelectedSlot] = useState(null);
 
     const dispatch = useDispatch();
@@ -111,7 +116,11 @@ export default Appointment = ({ route }) => {
                 selectedSlot
             )
         );
+
+        Alert.alert("", "Your appointment has been booked")
     };
+
+    if (loading) return <Loader />;
 
     return (
         <ScreenContainer>

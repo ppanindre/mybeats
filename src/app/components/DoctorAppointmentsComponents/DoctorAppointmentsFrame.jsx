@@ -31,6 +31,7 @@ const DoctorAppointmentsFrame = ({ selectedTab, appointments = [] }) => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View className="space-y-5">
                     {selectedTab === "upcoming" &&
+                        upcomingAppointments &&
                         upcomingAppointments.map((appointment) => (
                             <View>
                                 <AppointmentCard
@@ -47,6 +48,7 @@ const DoctorAppointmentsFrame = ({ selectedTab, appointments = [] }) => {
                                 <AppointmentCard
                                     appointmentTime={appointment.startTime}
                                     appointmentType={appointment.type}
+                                    patient={appointment.patient}
                                 />
                             </View>
                         ))}
