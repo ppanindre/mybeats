@@ -14,6 +14,28 @@ import { useNavigation } from '@react-navigation/native';
 import ScreenContainer from "../../components/Containers/ScreenContainer";
 import imageRecognitionService from "../../api/services/imageRecognitionService";
 
+const CollapsibleItem = ({ title, children }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        <TouchableOpacity onPress={() => setIsOpen(!isOpen)} className="mt-2">
+            <View className="flex-row items-center">
+                <Text className="text- font-[appfont-semi]">{title}</Text>
+                <Ionicons
+                    name={isOpen ? "chevron-up" : "chevron-down"}
+                    size={20}
+                    style={{ color: customTheme.colors.dark }}
+                />
+            </View>
+            {isOpen && (
+                <View className="mt-2">
+                    {children}
+                </View>
+            )}
+        </TouchableOpacity>
+    );
+};
+
 const DoctorMedicine = ({ route }) => {
     const { newMedicine } = route.params || {};
     const { imageUri } = route.params;
@@ -115,6 +137,15 @@ const DoctorMedicine = ({ route }) => {
 
     console.log('Matched Medicines:', matchedMedicines);
 
+    const isDetailsComplete = (item) => item.period && item.days && item.meals && item.startDate && item.endDate;
+    const isSubmitEnabled = allMedicines.every(item => item.period && item.days && item.meals && item.startDate && item.endDate);
+    const SubmitButton = (isEnabled) => ({
+        backgroundColor: isEnabled ? customTheme.colors.primary : customTheme.colors.primary,
+        opacity: isEnabled ? 1 : 0.5,
+        cursor: isEnabled ? 'pointer' : 'not-allowed'
+    });
+
+
     return (
         <ScreenContainer>
             {analyzing ? (
@@ -142,8 +173,8 @@ const DoctorMedicine = ({ route }) => {
                                             <Text className="text-lg font-[appfont-semi]">
                                                 {item.name}
                                             </Text>
-                                            <Text className="text-sm font-[appfont-semi] text-dark">
-                                                {formatDays(item.days)}
+                                            <Text className={`text-sm font-[appfont-semi] ${isDetailsComplete(item) ? 'text-dark' : 'text-primary'}`}>
+                                                {isDetailsComplete(item) ? "Details specified" : "Details Missing"}
                                             </Text>
                                         </View>
                                     </View>
@@ -172,23 +203,27 @@ const DoctorMedicine = ({ route }) => {
                                         </TouchableOpacity>
                                     </View>
                                 </View>
-                                <View className="mt-2">
+
+                                <CollapsibleItem title="Details">
+                                    <Text className="text-sm font-[appfont-semi] text-dark">
+                                        {formatDays(item.days)}
+                                    </Text>
                                     <Text className="text-sm font-[appfont-semi] text-dark">
                                         {item.period || "Period not specified"}
                                     </Text>
                                     {item.meals && Object.keys(item.meals).length > 0 ? (
-                                        Object.entries(item.meals).map(([meal, dosage], index) => (
-                                            <Text key={index} className="text-sm font-[appfont-semi] text-dark">
-                                                {meal} - {dosage}
-                                            </Text>
-                                        ))
+                                        <Text className="text-sm font-[appfont-semi] text-dark">
+                                            {Object.entries(item.meals).map(([meal, dosage], index) => (
+                                                `${meal} - ${dosage}`
+                                            )).join("; ")}
+                                        </Text>
                                     ) : (
                                         <Text className="text-sm font-[appfont-semi] text-dark">
                                             Dosage not specified
                                         </Text>
                                     )}
                                     <Text className="text-sm font-[appfont-semi] text-dark">
-                                        {`Start Date : ${item.startDate ? new Date(item.startDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : 'not specified'}`} - {`End Date : ${item.endDate ? new Date(item.endDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : 'not specified'}`}
+                                        {`Start Date: ${item.startDate ? new Date(item.startDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : 'not specified'}`} - {`End Date: ${item.endDate ? new Date(item.endDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : 'not specified'}`}
                                     </Text>
                                     {item.note ? (
                                         <Text className="text-sm font-[appfont-semi] text-dark">
@@ -199,7 +234,7 @@ const DoctorMedicine = ({ route }) => {
                                             Notes not specified
                                         </Text>
                                     )}
-                                </View>
+                                </CollapsibleItem>
                             </View>
                         ))}
 
@@ -227,6 +262,8 @@ const DoctorMedicine = ({ route }) => {
                         <TouchableOpacity
                             onPress={() => alert('Prescription has been sent to the patient and pharmacy')}
                             className="flex-1 m-1 mx-5 py-3 rounded-lg flex-row justify-center items-center bg-primary"
+                            style={SubmitButton(isSubmitEnabled)}
+                            disabled={!isSubmitEnabled}
                         >
                             <Text className="text-center text-lg font-[appfont-semi] text-light">
                                 Submit

@@ -31,6 +31,12 @@ const DoctorPrescription = ({ route }) => {
         if (initialSelectedMedicine) {
             setSelectedMedicine(initialSelectedMedicine);
             setSelectedPeriod(initialSelectedMedicine.period || null);
+            setSelectedType(initialSelectedMedicine.type || null);
+            setSelectedDays(new Set(initialSelectedMedicine.days || []));
+            setMealDosage(initialSelectedMedicine.meals || {});
+            setStartDate(initialSelectedMedicine.startDate || null);
+            setEndDate(initialSelectedMedicine.endDate || null);
+            setNote(initialSelectedMedicine.note || '');
         }
     }, [initialSelectedMedicine]);
 
