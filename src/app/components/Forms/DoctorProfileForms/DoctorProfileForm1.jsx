@@ -5,7 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ProfileImageButton from "../../Buttons/ProfileImageButton";
-import { launchImageLibrary } from 'react-native-image-picker';
+import { launchImageLibrary } from "react-native-image-picker";
 
 import FormInput from "../../Inputs/FormInput";
 import PhoneInput from "../../Inputs/PhoneInput";
@@ -25,42 +25,20 @@ const formSchema = z.object({
         .string()
         .min(5, "License number must be at least 5 characters")
         .max(20, "License number must not exceed 20 characters"),
-        upiId: z.string().regex(/^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/, "Please enter a valid UPI ID"),
-    });
+    upiId: z
+        .string()
+        .regex(
+            /^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/,
+            "Please enter a valid UPI ID"
+        ),
+});
 
 const DoctorProfileForm1 = ({ handlePressNext, initialData }) => {
-
-    // image constants for picture
     const [imageUri, setImageUri] = useState(null);
 
-    // pick image from gallery keep this function in image library
-    // we need to declare it everywhere wherever we use the image library 
-    // component
-    const selectImage = () => {
-        const options = {
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-            },
-        };
-
-        launchImageLibrary(options, response => {
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            } else {
-                const source = { uri: response.assets[0].uri };
-                setImageUri(source.uri);
-            }
-        });
-    };
-    /**
-     * function to handle when user presses next
-     */
     const onSubmit = (data) => {
         // send the form data to the parent component
-        handlePressNext(data);
+        handlePressNext(data, imageUri);
     };
 
     const { control, handleSubmit, setValue } = useForm({
@@ -75,14 +53,16 @@ const DoctorProfileForm1 = ({ handlePressNext, initialData }) => {
         resolver: zodResolver(formSchema),
     });
 
-
     return (
         <View className="h-[100%] space-y-5">
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View className="space-y-5">
                     {/* Profile Image Button */}
                     <View className="items-center">
-                        <ProfileImageButton imageUri={imageUri} selectImage={selectImage} />
+                        <ProfileImageButton
+                            imageUri={imageUri}
+                            onSelectImage={(uri) => setImageUri(uri)}
+                        />
                     </View>
 
                     {/* Inputs */}

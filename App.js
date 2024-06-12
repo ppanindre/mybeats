@@ -10,7 +10,7 @@ import { store } from "./store/store";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import MainStack from "./src/app/configs/MainStack";
 import config from "./src/amplifyconfiguration.json";
-import { generateClient } from "aws-amplify/api";
+
 const theme = {
     ...DefaultTheme,
     colors: {

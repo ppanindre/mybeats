@@ -16,7 +16,7 @@ import { generateClient } from "aws-amplify/api";
 const client = generateClient();
 
 export const createDoctorActionCreator =
-    (doctorDetails) => async (dispatch, getState) => {
+    (doctorDetails, imageData) => async (dispatch, getState) => {
         try {
             const user = getState().UserReducer;
 

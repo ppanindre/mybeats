@@ -6,6 +6,7 @@ import ScreenContainer from "../../components/Containers/ScreenContainer";
 import Loader from "../../components/Utils/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { createDoctorActionCreator } from "../../../../store/actions/doctorActions";
+import getImageData from "../../utils/getImageData";
 
 function DoctorProfile() {
     const { loading, doctor, error } = useSelector(
@@ -16,12 +17,18 @@ function DoctorProfile() {
 
     const [pageIndex, setPageIndex] = useState(0);
     const [doctorData, setDoctorData] = useState({});
+    const [imageData, setImageData] = useState(null);
 
-    const goToNextForm = (formData) => {
+    const goToNextForm = async (formData, imageUri) => {
         setDoctorData((prevData) => ({
             ...prevData,
             ...formData,
         }));
+
+        const fileData = await getImageData(imageUri);
+
+        setImageData(fileData);
+
         setPageIndex((prevPageIndex) => prevPageIndex + 1);
     };
 
@@ -41,7 +48,7 @@ function DoctorProfile() {
             ...finalDoctorData,
         };
 
-        dispatch(createDoctorActionCreator(doctorDetails));
+        dispatch(createDoctorActionCreator(doctorDetails, imageData));
     };
 
     if (loading) {
