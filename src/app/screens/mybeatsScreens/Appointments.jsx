@@ -26,7 +26,6 @@ const Appointments = () => {
 
     return (
         <ScreenContainer>
-            {/* Tab Selector */}
             <View className="flex-row">
                 <TabButton
                     label="Upcoming"
@@ -52,57 +51,6 @@ const Appointments = () => {
                 )}
             </View>
 
-            {/* <View className="flex-1">
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View className="space-y-5">
-                        {selectedTab === "upcoming" &&
-                            upcomingAppointments.map((appointment, index) => (
-                                <View key={index} className="space-y-3">
-                                    <Text className="font-[appfont-semi] text-lg">
-                                        {moment(
-                                            appointment.date,
-                                            "YYYY-MM-DD"
-                                        ).format("D MMM, YYYY")}
-                                    </Text>
-
-                                    {appointment.slots.map((slot) => (
-                                        <View>
-                                            <AppointmentCard
-                                                patientId={slot.patientId}
-                                                appointmentTime={slot.start}
-                                                appointmentType="Video"
-                                            />
-                                        </View>
-                                    ))}
-                                </View>
-                            ))}
-
-                        {selectedTab === "past" &&
-                            pastAppointments.map((appointment, index) => (
-                                <View key={index} className="space-y-3">
-                                    <Text className="font-[appfont-semi] text-lg">
-                                        {moment(
-                                            appointment.date,
-                                            "YYYY-MM-DD"
-                                        ).format("D MMM, YYYY")}
-                                    </Text>
-
-                                    {appointment.slots.map((slot) => (
-                                        <View>
-                                            <AppointmentCard
-                                                patientId={slot.patientId}
-                                                appointmentTime={slot.start}
-                                                appointmentType={slot.type}
-                                            />
-                                        </View>
-                                    ))}
-                                </View>
-                            ))}
-                    </View>
-                </ScrollView>
-            </View> */}
-
-            {/* Set Availability Button */}
             <View>
                 <AppButton
                     btnLabel="Set availability"

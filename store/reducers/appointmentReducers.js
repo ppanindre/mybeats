@@ -2,6 +2,9 @@ import {
     APPOINTMENT_CREATE_FAILURE,
     APPOINTMENT_CREATE_REQUEST,
     APPOINTMENT_CREATE_SUCCESS,
+    APPOINTMENT_DELETE_FAILURE,
+    APPOINTMENT_DELETE_REQUEST,
+    APPOINTMENT_DELETE_SUCCESS,
     APPOINTMENT_GET_FAILURE,
     APPOINTMENT_GET_REQUEST,
     APPOINTMENT_GET_SUCCESS,
@@ -65,6 +68,35 @@ export const appointmentUpdateReducer = (state = {}, action) => {
         }
 
         case APPOINTMENT_UPDATE_FAILURE: {
+            return {
+                loading: false,
+                error: action.payload,
+            };
+        }
+
+        default: {
+            return state;
+        }
+    }
+};
+
+
+export const appointmentDeleteReducer = (state = {}, action) => {
+    switch (action.type) {
+        case APPOINTMENT_DELETE_REQUEST: {
+            return {
+                loading: true,
+            };
+        }
+
+        case APPOINTMENT_DELETE_SUCCESS: {
+            return {
+                loading: false,
+                success: true,
+            };
+        }
+
+        case APPOINTMENT_DELETE_FAILURE: {
             return {
                 loading: false,
                 error: action.payload,

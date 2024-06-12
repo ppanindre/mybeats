@@ -113,7 +113,7 @@ export const createAvailabilityForAllDaysActionCreator =
     };
 
 export const getAvailabilitiesByDoctorActionCreator =
-    (doctorId) => async (dispatch, getState) => {
+    (doctorId, limit) => async (dispatch, getState) => {
         try {
             dispatch({ type: AVAILABILITIES_BY_DOCTOR_REQUEST });
             if (!doctorId) {
@@ -121,15 +121,22 @@ export const getAvailabilitiesByDoctorActionCreator =
                 doctorId = user.userId;
             }
 
+            const variables = {
+                doctorID: doctorId,
+                sortDirection: "ASC",
+                filter: {
+                    _deleted: { ne: true },
+                },
+            };
+
+            // Conditionally add the limit parameter if it is provided
+            if (limit !== undefined) {
+                variables.limit = limit;
+            }
+
             const response = await client.graphql({
                 query: availabilityByDoctor,
-                variables: {
-                    doctorID: doctorId,
-                    sortDirection: "ASC",
-                    filter: {
-                        _deleted: { ne: true },
-                    },
-                },
+                variables: variables,
             });
 
             const availabilities = response.data.availabilityByDoctor.items;

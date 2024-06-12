@@ -1,21 +1,50 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 import { theme } from "../../../../tailwind.config";
 import moment from "moment";
+import showConfirmAlert from "../../utils/showConfirmAlert";
+import { useDispatch } from "react-redux";
+import {
+    deleteAppointmentActionCreator,
+    listAppointmentsByDoctorActionCreators,
+} from "../../../../store/actions/appointmentActions";
 
-const AppointmentCard = ({ appointmentTime, appointmentType, patient }) => {
+const ICON_SIZE = 20;
+
+const AppointmentCard = ({ appointment, patient }) => {
+    const dispatch = useDispatch();
+
+    const onConfirmDeleteAppointment = async () => {
+        await dispatch(
+            deleteAppointmentActionCreator(appointment.id, appointment._version)
+        );
+        dispatch(listAppointmentsByDoctorActionCreators());
+    };
+
+    const deleteAppointment = () => {
+        showConfirmAlert(
+            "Are you sure you want to cancel this appointment",
+            () => onConfirmDeleteAppointment()
+        );
+    };
+
     return (
         <View className="relative bg-light p-5 items-center justify-center rounded-lg shadow-lg">
-            <View className="absolute p-1 bottom-3 z-[30] left-2 border rounded-full border-primary flex-row items-center space-x-1">
-                <Ionicons
-                    name="videocam"
-                    size={15}
-                    color={theme.colors.primary}
-                />
-                {/* <Text className="font-[appfont] text-xs text-primary">
-                    Video
-                </Text> */}
+            <View className="absolute p-1 bottom-3 z-[30] left-2 border rounded-full bg-primary border-primary flex-row items-center space-x-1">
+                {appointment.type === "video" ? (
+                    <Ionicons
+                        name="videocam"
+                        size={ICON_SIZE}
+                        color={theme.colors.light}
+                    />
+                ) : (
+                    <FontAwesome5
+                        name="hospital"
+                        size={ICON_SIZE}
+                        color={theme.colors.light}
+                    />
+                )}
             </View>
 
             <View className="flex-row space-x-3 items-center">
@@ -28,24 +57,20 @@ const AppointmentCard = ({ appointmentTime, appointmentType, patient }) => {
                         {patient.firstname} {patient.lastname}
                     </Text>
                     <Text className="font-[appfont-semi]">
-                        {moment(appointmentTime).format("D MMM")}
+                        {moment(appointment.startTime).format("D MMM")}
                     </Text>
                     <Text className="font-[appfont]">
-                        {moment(appointmentTime).format("H:mm a")}
+                        {moment(appointment.startTime).format("H:mm a")}
                     </Text>
                 </View>
-                {appointmentType === "video" && (
+
+                <TouchableOpacity onPress={deleteAppointment}>
                     <Ionicons
-                        name="videocam"
+                        name="close-circle"
                         size={20}
                         color={theme.colors.primary}
                     />
-                )}
-                <Ionicons
-                    name="close-circle"
-                    size={20}
-                    color={theme.colors.primary}
-                />
+                </TouchableOpacity>
             </View>
         </View>
     );

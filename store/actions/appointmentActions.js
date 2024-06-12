@@ -3,6 +3,9 @@ import {
     APPOINTMENT_CREATE_FAILURE,
     APPOINTMENT_CREATE_REQUEST,
     APPOINTMENT_CREATE_SUCCESS,
+    APPOINTMENT_DELETE_FAILURE,
+    APPOINTMENT_DELETE_REQUEST,
+    APPOINTMENT_DELETE_SUCCESS,
     APPOINTMENT_LIST_AVAILABLE_FAILURE,
     APPOINTMENT_LIST_AVAILABLE_REQUEST,
     APPOINTMENT_LIST_AVAILABLE_SUCCESS,
@@ -12,7 +15,10 @@ import {
 } from "../types/appointmentActionTypes.js";
 import moment from "moment";
 import { getPatient, slotsByDoctor } from "../../src/graphql/queries.js";
-import { createAppointment } from "../../src/graphql/mutations.js";
+import {
+    createAppointment,
+    deleteAppointment,
+} from "../../src/graphql/mutations.js";
 
 const client = generateClient();
 
@@ -48,6 +54,30 @@ export const createAppointmentActionCreators =
         }
     };
 
+export const deleteAppointmentActionCreator =
+    (appointmentId, version = 1) =>
+    async (dispatch) => {
+        try {
+            dispatch({ type: APPOINTMENT_DELETE_REQUEST });
+
+            await client.graphql({
+                query: deleteAppointment,
+                variables: {
+                    input: {
+                        id: appointmentId,
+                        _version: version,
+                    },
+                },
+            });
+
+            dispatch({ type: APPOINTMENT_DELETE_SUCCESS });
+
+        } catch (error) {
+            console.error("Error deleting appointment", error, appointmentId);
+            dispatchEvent({ type: APPOINTMENT_DELETE_FAILURE, payload: error });
+        }
+    };
+
 export const listAppointmentsByDoctorActionCreators =
     (doctorId) => async (dispatch, getState) => {
         try {
@@ -63,6 +93,9 @@ export const listAppointmentsByDoctorActionCreators =
                 variables: {
                     doctorID: doctorId,
                     sortDirection: "ASC",
+                    filter: {
+                        _deleted: { ne: true },
+                    },
                 },
             });
 
@@ -70,7 +103,6 @@ export const listAppointmentsByDoctorActionCreators =
                 type: APPOINTMENT_LIST_BY_DOCTOR_SUCCESS,
                 payload: response.data.slotsByDoctor.items,
             });
-
         } catch (error) {
             console.error("Error while listing appointments", error);
             dispatch({

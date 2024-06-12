@@ -10,7 +10,6 @@ const DoctorAppointmentsFrame = ({ selectedTab, appointments = [] }) => {
     const divideAppointments = () => {
         const currentTime = moment();
 
-        // Filter upcoming and past appointments
         const upcomingAppointments = appointments.filter((appointment) =>
             moment(appointment.startTime).isAfter(currentTime)
         );
@@ -35,8 +34,7 @@ const DoctorAppointmentsFrame = ({ selectedTab, appointments = [] }) => {
                         upcomingAppointments.map((appointment) => (
                             <View>
                                 <AppointmentCard
-                                    appointmentTime={appointment.startTime}
-                                    appointmentType={appointment.type}
+                                    appointment={appointment}
                                     patient={appointment.patient}
                                 />
                             </View>
@@ -46,8 +44,7 @@ const DoctorAppointmentsFrame = ({ selectedTab, appointments = [] }) => {
                         pastAppointments.map((appointment) => (
                             <View>
                                 <AppointmentCard
-                                    appointmentTime={appointment.startTime}
-                                    appointmentType={appointment.type}
+                                    appointment={appointment}
                                     patient={appointment.patient}
                                 />
                             </View>

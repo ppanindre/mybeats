@@ -109,7 +109,7 @@ export default Appointment = ({ route }) => {
     const dispatch = useDispatch();
 
     const bookAppointment = async () => {
-        await dispatch(
+        dispatch(
             createAppointmentActionCreators(
                 doctor.doctorID,
                 "clinic",
