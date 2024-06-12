@@ -20,9 +20,16 @@ import ScreenContainer from "../../components/Containers/ScreenContainer";
 import AppButton from "../../components/Buttons/AppButton";
 import { theme } from "../../../../tailwind.config";
 import PatientStory from "../../../../components/Cards/PatientStory";
-import AvailableAppointmentsFrame from "../../components/Frames/AvailableAppointmentsFrame";
+// import AvailableAppointmentsFrame from "../../components/Frames/AvailableAppointmentsFrame";
 import { appointmentService } from "../../api/services/appointmentService";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import ClinicAppointmentFrame from "../../components/PatientAppointmentCO/ClinicAppointmentFrame";
+import AvailableAppointmentsFrame from "../../components/PatientAppointmentCO/AvailableAppointmentsFrame";
+import {
+    createAppointmentActionCreators,
+    listAvailableAppointmentsActionCreators,
+} from "../../../../store/actions/appointmentActions";
+import Loader from "../../components/Utils/Loader";
 
 const CollapsibleItem = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -46,14 +53,14 @@ const CollapsibleItem = ({ title, children }) => {
     );
 };
 
-export default Appointment = ({ route, navigation }) => {
+export default Appointment = ({ route }) => {
     const patientStore = useSelector((state) => state.PatientReducer);
 
     // use amplify to fetch the doctor
 
     // dont need it
     const {
-        // id - required
+        doctor,
         name,
         specialization,
         zipcode,
@@ -69,8 +76,6 @@ export default Appointment = ({ route, navigation }) => {
         website,
     } = route.params;
     // doint need it
-
-    const [appointmentSlot, setAppointmentSlot] = useState(null);
 
     // State for video consultation bookings
     const [videoDate, setVideoDate] = useState();
@@ -95,19 +100,27 @@ export default Appointment = ({ route, navigation }) => {
         },
     ];
 
-    const handleSelectAppointmentSlot = (slot) => {
-        setAppointmentSlot(slot);
-    };
+    const { loading, error, appointment } = useSelector(
+        (state) => state.appointmentCreateReducer
+    );
+
+    const [selectedSlot, setSelectedSlot] = useState(null);
+
+    const dispatch = useDispatch();
 
     const bookAppointment = async () => {
-        await appointmentService.bookAppointmentSlot(
-            appointmentSlot.id,
-            patientStore.id,
-            appointmentSlot.version
+        dispatch(
+            createAppointmentActionCreators(
+                doctor.doctorID,
+                "clinic",
+                selectedSlot
+            )
         );
 
-        setAppointmentSlot(null);
+        Alert.alert("", "Your appointment has been booked")
     };
+
+    if (loading) return <Loader />;
 
     return (
         <ScreenContainer>
@@ -157,36 +170,13 @@ export default Appointment = ({ route, navigation }) => {
                     </View>
 
                     <View>
-                        {/* Clinic Appointment Section */}
-                        <View
-                            className="flex-row justify-between items-center bg-cyan-100 p-5 rounded-lg shadow"
-                            style={{
-                                backgroundColor: customTheme.colors.primary,
-                            }}
-                        >
-                            <View className="flex-row items-center">
-                                <Ionicons
-                                    name="business"
-                                    size={24}
-                                    style={{ color: customTheme.colors.light }}
-                                    className="bg-blue-100 p-1 rounded-full"
-                                />
-                                <Text
-                                    className="text-sm ml-2 font-[appfont-semi]"
-                                    style={{ color: customTheme.colors.light }}
-                                >
-                                    Clinic Appointment
-                                </Text>
-                            </View>
-                        </View>
+                        <ClinicAppointmentFrame />
                     </View>
 
-                    {/* Clinic Appointment Time Slots */}
                     <View>
                         <AvailableAppointmentsFrame
-                            doctorId="4"
-                            selectAppointmentSlot={handleSelectAppointmentSlot}
-                            resetAppointmentSlot={appointmentSlot === null}
+                            onSelectSlot={(slot) => setSelectedSlot(slot)}
+                            doctorId={doctor.doctorID}
                         />
                     </View>
 
@@ -324,7 +314,7 @@ export default Appointment = ({ route, navigation }) => {
             <View>
                 <AppButton
                     onPress={bookAppointment}
-                    variant="primary"
+                    variant={`${selectedSlot ? "primary" : "disabled"}`}
                     btnLabel="Book"
                     btnLeftIcon={
                         <Ionicons

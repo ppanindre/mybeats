@@ -1,24 +1,52 @@
-import { View, Text, Image } from "react-native";
-import React, { useEffect, useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { View, Text, Image, TouchableOpacity } from "react-native";
+import React from "react";
+import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 import { theme } from "../../../../tailwind.config";
 import moment from "moment";
-import { patientService } from "../../api/services/patientService";
+import showConfirmAlert from "../../utils/showConfirmAlert";
+import { useDispatch } from "react-redux";
+import {
+    deleteAppointmentActionCreator,
+    listAppointmentsByDoctorActionCreators,
+} from "../../../../store/actions/appointmentActions";
 
-const AppointmentCard = ({ patientId, appointmentType, appointmentTime }) => {
-    const [patient, setPatient] = useState(null);
+const ICON_SIZE = 20;
 
-    const fetchPatientData = async () => {
-        const fetchedPatient = await patientService.getPatient(patientId);
-        console.log("fetched patient", fetchedPatient);
-    }
+const AppointmentCard = ({ appointment, patient }) => {
+    const dispatch = useDispatch();
 
-    useEffect(() => {
-        fetchPatientData()
-    }, [])
+    const onConfirmDeleteAppointment = async () => {
+        await dispatch(
+            deleteAppointmentActionCreator(appointment.id, appointment._version)
+        );
+        dispatch(listAppointmentsByDoctorActionCreators());
+    };
+
+    const deleteAppointment = () => {
+        showConfirmAlert(
+            "Are you sure you want to cancel this appointment",
+            () => onConfirmDeleteAppointment()
+        );
+    };
 
     return (
-        <View className="bg-light p-5 items-center justify-center rounded-lg shadow-lg">
+        <View className="relative bg-light p-5 items-center justify-center rounded-lg shadow-lg">
+            <View className="absolute p-1 bottom-3 z-[30] left-2 border rounded-full bg-primary border-primary flex-row items-center space-x-1">
+                {appointment.type === "video" ? (
+                    <Ionicons
+                        name="videocam"
+                        size={ICON_SIZE}
+                        color={theme.colors.light}
+                    />
+                ) : (
+                    <FontAwesome5
+                        name="hospital"
+                        size={ICON_SIZE}
+                        color={theme.colors.light}
+                    />
+                )}
+            </View>
+
             <View className="flex-row space-x-3 items-center">
                 <Image
                     source={require("../../assets/doc1.webp")}
@@ -26,17 +54,23 @@ const AppointmentCard = ({ patientId, appointmentType, appointmentTime }) => {
                 />
                 <View className="flex-1">
                     <Text className="font-[appfont-semi] text-lg">
+                        {patient.firstname} {patient.lastname}
+                    </Text>
+                    <Text className="font-[appfont-semi]">
+                        {moment(appointment.startTime).format("D MMM")}
                     </Text>
                     <Text className="font-[appfont]">
-                        {moment(appointmentTime).format("H:mm a")}
+                        {moment(appointment.startTime).format("H:mm a")}
                     </Text>
-                    <Text className="font-[appfont]">{appointmentType}</Text>
                 </View>
-                <Ionicons
-                    name="videocam"
-                    size={20}
-                    color={theme.colors.primary}
-                />
+
+                <TouchableOpacity onPress={deleteAppointment}>
+                    <Ionicons
+                        name="close-circle"
+                        size={20}
+                        color={theme.colors.primary}
+                    />
+                </TouchableOpacity>
             </View>
         </View>
     );

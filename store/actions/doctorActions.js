@@ -5,9 +5,12 @@ import {
     DOCTOR_GET_REQUEST,
     DOCTOR_GET_SUCCESS,
     DOCTOR_GET_FAILURE,
+    DOCTOR_LIST_FAILURE,
+    DOCTOR_LIST_SUCCESS,
+    DOCTOR_LIST_REQUEST,
 } from "../types/doctorActionTypes";
 import { createDoctor } from "../../src/graphql/mutations";
-import { getDoctor } from "../../src/graphql/queries";
+import { getDoctor, listDoctors } from "../../src/graphql/queries";
 import { generateClient } from "aws-amplify/api";
 
 const client = generateClient();
@@ -50,7 +53,6 @@ export const createDoctorActionCreator =
                 },
             });
 
-
             dispatch({
                 type: DOCTOR_CREATE_SUCCESS,
                 payload: response.data.createDoctor,
@@ -63,6 +65,24 @@ export const createDoctorActionCreator =
             });
         }
     };
+
+export const listDoctorsActionCreator = () => async (dispatch) => {
+    try {
+        dispatch({ type: DOCTOR_LIST_REQUEST });
+
+        const response = await client.graphql({
+            query: listDoctors,
+        });
+
+        dispatch({
+            type: DOCTOR_LIST_SUCCESS,
+            payload: response.data.listDoctors.items,
+        });
+    } catch (error) {
+        console.error("Error while getting doctors", error);
+        dispatch({ type: DOCTOR_LIST_FAILURE, payload: error });
+    }
+};
 
 export const getDoctorActionCreator = () => async (dispatch, getState) => {
     try {

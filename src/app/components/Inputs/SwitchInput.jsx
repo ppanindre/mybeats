@@ -5,7 +5,7 @@ import { theme } from "../../../../tailwind.config";
 const SwitchInput = ({ label, value, onValueChange }) => {
     return (
         <View className="flex-row justify-between items-center w-[100%]">
-            <Text className="text-[appfont]">{label}</Text>
+            <Text className="font-[appfont-bold]">{label}</Text>
             <Switch
                 value={value}
                 onValueChange={onValueChange}

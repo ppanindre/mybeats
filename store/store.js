@@ -18,7 +18,24 @@ import {
     patientGetReducer,
     patientUpdateReducer,
 } from "./reducers/patientReducers";
-import { doctorGetReducer } from "./reducers/doctorReducers";
+import {
+    doctorGetReducer,
+    doctorsListReducer,
+} from "./reducers/doctorReducers";
+import {
+    availabilitesByDoctorReducer,
+    availabilitiesDeleteReducer,
+    availabilityCreateReducer,
+    availabilityDeleteReducer,
+    availabilityExistsReducer,
+} from "./reducers/availabilityReducers";
+import {
+    appointmentCreateReducer,
+    appointmentDeleteReducer,
+    appointmentListAvailableReducer,
+    appointmentListReducer,
+    appointmentsListByDoctorReducer,
+} from "./reducers/appointmentReducers";
 
 // Combining every reducer
 const reducers = combineReducers({
@@ -37,6 +54,17 @@ const reducers = combineReducers({
     patientUpdateReducer: patientUpdateReducer,
     patientGetReducer: patientGetReducer,
     doctorGetReducer: doctorGetReducer,
+    doctorsListReducer: doctorsListReducer,
+    availabilityCreateReducer: availabilityCreateReducer,
+    appointmentCreateReducer: appointmentCreateReducer,
+    appointmentListAvailableReducer: appointmentListAvailableReducer,
+    appointmentListReducer: appointmentListReducer,
+    appointmentsListByDoctorReducer: appointmentsListByDoctorReducer,
+    appointmentDeleteReducer: appointmentDeleteReducer,
+    availabilitesByDoctorReducer: availabilitesByDoctorReducer,
+    availabilityDeleteReducer: availabilityDeleteReducer,
+    availabilityExistsReducer: availabilityExistsReducer,
+    availabilitiesDeleteReducer: availabilitiesDeleteReducer,
 });
 
 // Redux store containing reducers and the middleware

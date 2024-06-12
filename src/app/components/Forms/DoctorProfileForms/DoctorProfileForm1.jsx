@@ -1,15 +1,15 @@
 import { ScrollView, View } from "react-native";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ProfileImageButton from "../../Buttons/ProfileImageButton";
 import { launchImageLibrary } from 'react-native-image-picker';
+
 import FormInput from "../../Inputs/FormInput";
 import PhoneInput from "../../Inputs/PhoneInput";
 import AppButton from "../../Buttons/AppButton";
-import { useSelector } from 'react-redux';
 
 // Form Schema for validation
 const formSchema = z.object({
@@ -30,13 +30,12 @@ const formSchema = z.object({
 
 const DoctorProfileForm1 = ({ handlePressNext, initialData }) => {
 
-    // getting user detais from redux for email
-    const user = useSelector((state) => state.UserReducer);
-
     // image constants for picture
     const [imageUri, setImageUri] = useState(null);
 
-    // pick image from gallery 
+    // pick image from gallery keep this function in image library
+    // we need to declare it everywhere wherever we use the image library 
+    // component
     const selectImage = () => {
         const options = {
             storageOptions: {
@@ -67,20 +66,14 @@ const DoctorProfileForm1 = ({ handlePressNext, initialData }) => {
     const { control, handleSubmit, setValue } = useForm({
         defaultValues: {
             email: initialData.email || "",
-            firstName: initialData.firstName || "",
-            lastName: initialData.lastName || "",
+            firstName: initialData.firstname || "",
+            lastName: initialData.lastname || "",
             phoneNumber: initialData.phoneNumber || "",
             licenseNumber: initialData.licenseNumber || "",
             upiId: initialData.upiId || "",
         },
         resolver: zodResolver(formSchema),
     });
-    // Setting the default value for email after fetching from redux
-    useEffect(() => {
-        if (user && user.email) {
-            setValue("email", user.email);
-        }
-    }, [user, setValue]);
 
 
     return (

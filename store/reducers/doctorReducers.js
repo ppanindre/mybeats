@@ -5,6 +5,9 @@ import {
     DOCTOR_GET_FAILURE,
     DOCTOR_GET_REQUEST,
     DOCTOR_GET_SUCCESS,
+    DOCTOR_LIST_FAILURE,
+    DOCTOR_LIST_REQUEST,
+    DOCTOR_LIST_SUCCESS,
     DOCTOR_UPDATE_FAILURE,
     DOCTOR_UPDATE_REQUEST,
     DOCTOR_UPDATE_SUCCESS,
@@ -85,6 +88,35 @@ export const doctorGetReducer = (state = {}, action) => {
         }
 
         case DOCTOR_GET_FAILURE: {
+            return {
+                loading: false,
+                error: action.payload,
+            };
+        }
+
+        default: {
+            return state;
+        }
+    }
+};
+
+export const doctorsListReducer = (state = {}, action) => {
+    switch (action.type) {
+        case DOCTOR_LIST_REQUEST: {
+            return {
+                loading: true,
+            };
+        }
+
+        case DOCTOR_LIST_SUCCESS: {
+            return {
+                loading: false,
+                success: true,
+                doctors: action.payload,
+            };
+        }
+
+        case DOCTOR_LIST_FAILURE: {
             return {
                 loading: false,
                 error: action.payload,

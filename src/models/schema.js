@@ -170,11 +170,11 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "appointmentSlots": {
-                    "name": "appointmentSlots",
+                "appointments": {
+                    "name": "appointments",
                     "isArray": true,
                     "type": {
-                        "model": "AppointmentSlot"
+                        "model": "Appointment"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -416,11 +416,11 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "appointmentSlots": {
-                    "name": "appointmentSlots",
+                "appointments": {
+                    "name": "appointments",
                     "isArray": true,
                     "type": {
-                        "model": "AppointmentSlot"
+                        "model": "Appointment"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -513,13 +513,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "isAvailable": {
-                    "name": "isAvailable",
-                    "isArray": false,
-                    "type": "Boolean",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "doctor": {
                     "name": "doctor",
                     "isArray": false,
@@ -532,22 +525,6 @@ export const schema = {
                         "connectionType": "BELONGS_TO",
                         "targetNames": [
                             "doctorID"
-                        ]
-                    }
-                },
-                "appointmentSlots": {
-                    "name": "appointmentSlots",
-                    "isArray": true,
-                    "type": {
-                        "model": "AppointmentSlot"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "availability"
                         ]
                     }
                 },
@@ -612,8 +589,8 @@ export const schema = {
                 }
             ]
         },
-        "AppointmentSlot": {
-            "name": "AppointmentSlot",
+        "Appointment": {
+            "name": "Appointment",
             "fields": {
                 "id": {
                     "name": "id",
@@ -631,13 +608,6 @@ export const schema = {
                 },
                 "patientId": {
                     "name": "patientId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "availabilityId": {
-                    "name": "availabilityId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
@@ -701,21 +671,6 @@ export const schema = {
                         ]
                     }
                 },
-                "availability": {
-                    "name": "availability",
-                    "isArray": false,
-                    "type": {
-                        "model": "Availability"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "availabilityId"
-                        ]
-                    }
-                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -734,7 +689,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "AppointmentSlots",
+            "pluralName": "Appointments",
             "attributes": [
                 {
                     "type": "model",
@@ -766,17 +721,6 @@ export const schema = {
                         "queryField": "slotsByPatient",
                         "fields": [
                             "patientId",
-                            "startTime"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "appointmentSlotsByAvailability",
-                        "queryField": "appointmentSlotsByAvailability",
-                        "fields": [
-                            "availabilityId",
                             "startTime"
                         ]
                     }
@@ -917,5 +861,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "3d504f7681b002a90a29d6b2a281a1c2"
+    "version": "22891cf401e2202cc50f64a6111aae8b"
 };

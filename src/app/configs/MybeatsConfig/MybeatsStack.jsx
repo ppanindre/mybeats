@@ -31,9 +31,9 @@ const MybeatsStack = () => {
     }
 
     // If the user did not save the profile
-    if (error || !patient) {
-        return <FailureScreen />;
-    }
+    // if (error || !patient) {
+    //     return <FailureScreen />;
+    // }
 
     return (
         <Stack.Navigator initialRouteName="patientDashboard">

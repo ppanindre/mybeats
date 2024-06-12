@@ -26,7 +26,7 @@ type Doctor @model @auth(rules: [{ allow: public }]) {
     awardsRecognition: String
     website: String
     zipcode: String! @index(name: "byzipcode", queryField: "doctorByZipcode")
-    appointmentSlots: [AppointmentSlot]
+    appointments: [Appointment]
         @hasMany(indexName: "byDoctor", fields: ["doctorID"])
     availability: [Availability]
         @hasMany(indexName: "byDoctor", fields: ["doctorID"])
@@ -46,7 +46,7 @@ type Patient @model @auth(rules: [{ allow: public }]) {
     phoneNumber: String
     address: String
     zipcode: String
-    appointmentSlots: [AppointmentSlot]
+    appointments: [Appointment]
         @hasMany(indexName: "byPatient", fields: ["id"])
 }
 
@@ -60,13 +60,10 @@ type Availability @model @auth(rules: [{ allow: public }]) {
         )
     startTime: AWSDateTime!
     endTime: AWSDateTime!
-    isAvailable: Boolean!
     doctor: Doctor @belongsTo(fields: ["doctorID"])
-    appointmentSlots: [AppointmentSlot]
-        @hasMany(indexName: "appointmentSlotsByAvailability", fields: ["id"])
 }
 
-type AppointmentSlot @model @auth(rules: [{ allow: public }]) {
+type Appointment @model @auth(rules: [{ allow: public }]) {
     id: ID! @primaryKey
     doctorID: ID!
         @index(
@@ -80,18 +77,10 @@ type AppointmentSlot @model @auth(rules: [{ allow: public }]) {
             queryField: "slotsByPatient"
             sortKeyFields: ["startTime"]
         )
-    availabilityId: ID!
-        @index(
-            name: "appointmentSlotsByAvailability"
-            queryField: "appointmentSlotsByAvailability"
-            sortKeyFields: ["startTime"]
-        )
-
     startTime: AWSDateTime!
     endTime: AWSDateTime!
     type: String
-    isBooked: Boolean! #true
+    isBooked: Boolean!
     doctor: Doctor @belongsTo(fields: ["doctorID"])
-    patient: Patient @belongsTo(fields: ["patientId"]) # Added patient relationship
-    availability: Availability @belongsTo(fields: ["availabilityId"])
+    patient: Patient @belongsTo(fields: ["patientId"])
 }

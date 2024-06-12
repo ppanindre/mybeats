@@ -20,6 +20,10 @@ import FormInput from "../../components/Inputs/FormInput";
 import CustomSafeView from "../../../../components/CustomSafeView";
 import TopNavbar from "../../components/Utils/TopNavbar";
 import ScreenContainer from "../../components/Containers/ScreenContainer";
+import PatientSearchInputFrame from "../../components/PatientDashboardComponents/PatientSearchInputFrame";
+import PatientBanner from "../../components/PatientDashboardComponents/PatientBanner";
+import PatientNavigationFrame from "../../components/PatientDashboardComponents/PatientNavigationFrame";
+import DoctorScrollView from "../../components/PatientDashboardComponents/DoctorScrollView";
 
 const PatientDashboard = () => {
     const navigation = useNavigation();
@@ -79,49 +83,16 @@ const PatientDashboard = () => {
                     contentContainerStyle={{ paddingBottom: 100 }}
                 >
                     <View className="space-y-5">
-                        <View>
-                            <FormInput label="Search Doctor, Health Condition, Pincode" />
-                        </View>
+                        <PatientSearchInputFrame />
 
                         {/* NavigationBanner */}
                         <View>
-                            <View className="h-[150] rounded-lg shadow-lg p-5 bg-primary">
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        navigation.navigate("consultDoctor")
-                                    }
-                                    className="h-[100%] justify-end"
-                                >
-                                    <Text className="font-[appfont-bold] text-xl text-light">
-                                        Consult Doctors
-                                    </Text>
-                                    <Text className="font-[appfont] text-lg text-light">
-                                        Book an appointment
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
+                            <PatientBanner />
                         </View>
 
                         {/* Cards View */}
-                        <View className="flex-row justify-around space-x-5">
-                            {/* First Card: Telehealth */}
-                            <View className="flex-1">
-                                <NavigationCard
-                                    cardTitle="Telehealth"
-                                    cardContent="Video consultation"
-                                />
-                            </View>
-
-                            <View className="flex-1">
-                                {/* Second Card: Diagnostics */}
-                                <NavigationCard
-                                    cardTitle="Diagnostics"
-                                    cardContent="Request a lab test"
-                                    onPress={() =>
-                                        navigation.navigate("diagnostics")
-                                    }
-                                />
-                            </View>
+                        <View>
+                            <PatientNavigationFrame />
                         </View>
 
                         {/* Pharma card */}
@@ -155,8 +126,12 @@ const PatientDashboard = () => {
                             </TouchableOpacity>
                         </View>
 
+                        <View>
+                            <DoctorScrollView />
+                        </View>
+
                         {/* Doctors based on zipcode */}
-                        <View className="flex-row justify-between items-center">
+                        {/* <View className="flex-row justify-between items-center">
                             <Text className="text-lg font-[appfont-semi]">
                                 Doctors near You
                             </Text>
@@ -170,10 +145,10 @@ const PatientDashboard = () => {
                                     See all
                                 </Text>
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
 
                         {/* Doctor data */}
-                        <FlatList
+                        {/* <FlatList
                             data={doctors}
                             keyExtractor={(item) => item.id.toString()}
                             horizontal={true}
@@ -223,7 +198,7 @@ const PatientDashboard = () => {
                                     </TouchableOpacity>
                                 </View>
                             )}
-                        />
+                        /> */}
 
                         {/* Pharmacy based on the zip codes */}
                         <View className="flex-row justify-between items-center">

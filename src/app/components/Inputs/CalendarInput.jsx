@@ -20,7 +20,6 @@ const CalendarInput = ({ onDayPress, markedDates }) => {
             theme={{
                 arrowColor: theme.colors.primary,
             }}
-            className="rounded-lg shadow-lg"
         />
     );
 };
