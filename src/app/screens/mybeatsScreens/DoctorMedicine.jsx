@@ -14,13 +14,13 @@ import { useNavigation } from '@react-navigation/native';
 import ScreenContainer from "../../components/Containers/ScreenContainer";
 import imageRecognitionService from "../../api/services/imageRecognitionService";
 
-const CollapsibleItem = ({ title, children }) => {
+const CollapsibleItem = ({ titleComponent, children }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
         <TouchableOpacity onPress={() => setIsOpen(!isOpen)} className="mt-2">
             <View className="flex-row items-center">
-                <Text className="text- font-[appfont-semi]">{title}</Text>
+                <Text className="font-[appfont-semi]">{titleComponent}</Text>
                 <Ionicons
                     name={isOpen ? "chevron-up" : "chevron-down"}
                     size={20}
@@ -173,9 +173,6 @@ const DoctorMedicine = ({ route }) => {
                                             <Text className="text-lg font-[appfont-semi]">
                                                 {item.name}
                                             </Text>
-                                            <Text className={`text-sm font-[appfont-semi] ${isDetailsComplete(item) ? 'text-dark' : 'text-primary'}`}>
-                                                {isDetailsComplete(item) ? "Details specified" : "Details Missing"}
-                                            </Text>
                                         </View>
                                     </View>
                                     <View className="flex-row">
@@ -204,7 +201,11 @@ const DoctorMedicine = ({ route }) => {
                                     </View>
                                 </View>
 
-                                <CollapsibleItem title="Details">
+                                <CollapsibleItem titleComponent={
+                                    <Text className={`text-sm font-[appfont-semi] ${isDetailsComplete(item) ? 'text-dark' : 'text-primary'}`}>
+                                        {isDetailsComplete(item) ? "Details specified" : "Details Missing"}
+                                    </Text>
+                                }>
                                     <Text className="text-sm font-[appfont-semi] text-dark">
                                         {formatDays(item.days)}
                                     </Text>
@@ -215,7 +216,7 @@ const DoctorMedicine = ({ route }) => {
                                         <Text className="text-sm font-[appfont-semi] text-dark">
                                             {Object.entries(item.meals).map(([meal, dosage], index) => (
                                                 `${meal} - ${dosage}`
-                                            )).join("; ")}
+                                            )).join("\n")}
                                         </Text>
                                     ) : (
                                         <Text className="text-sm font-[appfont-semi] text-dark">
@@ -223,7 +224,10 @@ const DoctorMedicine = ({ route }) => {
                                         </Text>
                                     )}
                                     <Text className="text-sm font-[appfont-semi] text-dark">
-                                        {`Start Date: ${item.startDate ? new Date(item.startDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : 'not specified'}`} - {`End Date: ${item.endDate ? new Date(item.endDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : 'not specified'}`}
+                                        {`Start Date: ${item.startDate ? new Date(item.startDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : 'not specified'}`}
+                                    </Text>
+                                    <Text className="text-sm font-[appfont-semi] text-dark">
+                                        {`End Date: ${item.endDate ? new Date(item.endDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : 'not specified'}`}
                                     </Text>
                                     {item.note ? (
                                         <Text className="text-sm font-[appfont-semi] text-dark">

@@ -6,6 +6,10 @@ import { Ionicons } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
 import { useNavigation } from "@react-navigation/native";
 import { Calendar } from 'react-native-calendars';
+import MultiLineInput from '../../components/Inputs/MultiLineInput';
+import PrescriptionDatepicker from '../../../../components/PrescriptionDatepicker';
+import moment from 'moment';
+
 
 const DoctorPrescription = ({ route }) => {
     const navigation = useNavigation()
@@ -130,21 +134,6 @@ const DoctorPrescription = ({ route }) => {
         setSelectedDays(newSelectedDays);
     };
 
-    // reset form on selecting add another prescription
-    const resetForm = () => {
-        setSelectedMedicine(null);
-        setSelectedPeriod(null);
-        setSelectedDays(new Set());
-        setSelectedMeals(new Set());
-        setSelectedType(null);
-        setMealDosage({});
-        setNote('');
-        setSearchInput('');
-        setStartDate(null);
-        setEndDate(null);
-        navigation.navigate('DoctorPrescription');
-    };
-
     const handleSubmit = () => {
         if (isFormComplete()) {
             const newMedicine = {
@@ -162,10 +151,6 @@ const DoctorPrescription = ({ route }) => {
         }
     };
 
-    const formatDate = (dateString) => {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString(undefined, options);
-    };
 
     return (
         <>
@@ -324,27 +309,13 @@ const DoctorPrescription = ({ route }) => {
 
                                 ))}
 
-                                <View className="flex-row mt-6">
-                                    <TouchableOpacity
-                                        className={`flex-1 py-4 rounded-lg mr-2`}
-                                        style={{ backgroundColor: startDate ? customTheme.colors.primary : customTheme.colors.darkSecondary }}
-                                        onPress={() => { setCalendarType('start'); setCalendarModalVisible(true); }}>
-                                        <Text className={`text-center text-md font-[appfont-semi] ${startDate ? 'text-light' : 'text-dark'}`}>
-                                            {startDate ? `Start Date - ${formatDate(startDate)}` : 'Start Date'}
-                                        </Text>
-                                    </TouchableOpacity>
+                                <View className="mb-4 mt-6">
+                                    <PrescriptionDatepicker label="Start Date" currVal={startDate} onConfirm={setStartDate} minDate={new Date()} />
                                 </View>
 
                                 {startDate && (
-                                    <View className="flex-row mt-3">
-                                        <TouchableOpacity
-                                            className={`flex-1 py-4 rounded-lg mr-2`}
-                                            style={{ backgroundColor: endDate ? customTheme.colors.primary : customTheme.colors.darkSecondary }}
-                                            onPress={() => { setCalendarType('end'); setCalendarModalVisible(true); }}>
-                                            <Text className={`text-center text-md font-[appfont-semi] ${endDate ? 'text-light' : 'text-dark'}`}>
-                                                {endDate ? `End Date - ${formatDate(endDate)}` : 'End Date'}
-                                            </Text>
-                                        </TouchableOpacity>
+                                    <View className="mb-3">
+                                        <PrescriptionDatepicker label="End Date" currVal={endDate} onConfirm={setEndDate} minDate={new Date(startDate)} />
                                     </View>
                                 )}
 
@@ -364,14 +335,14 @@ const DoctorPrescription = ({ route }) => {
                                     </View>
                                 </Modal>
 
-                                <TextInput
-                                    className="py-3 px-4 bg-gray-200 rounded-lg mb-8 mt-8 font-[appfont] bg-darkSecondary"
-                                    placeholder="Add Notes"
-                                    value={note}
-                                    onChangeText={setNote}
-                                    multiline
-                                />
 
+                                <View className="mt-8">
+                                    <MultiLineInput
+                                        value={note}
+                                        onChangeText={setNote}
+                                        label="Add Notes (Optional)"
+                                    />
+                                </View>
 
                             </>
                         )}
@@ -388,14 +359,6 @@ const DoctorPrescription = ({ route }) => {
             <View className="absolute bottom-0 left-0 right-0 flex-row justify-between py-3 bg-light">
                 {selectedMedicine ? (
                     <>
-                        {/* Buttons for add another prescription and submit*/}
-                        {/* <TouchableOpacity
-                            disabled={!isFormComplete()}
-                            style={AnotherPrescriptionButton(isFormComplete())}
-                            onPress={resetForm}
-                            className="flex-1 m-1 mx-5 py-4 rounded-lg flex-row justify-center items-center mr-2">
-                            <Text  className=" ml-2 font-[appfont-semi] text-light">Add more</Text>
-                        </TouchableOpacity> */}
                         <TouchableOpacity
                             disabled={!isFormComplete()}
                             style={SubmitButton(isFormComplete())}
