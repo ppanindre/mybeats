@@ -25,9 +25,9 @@ function DoctorProfile() {
             ...formData,
         }));
 
-        const fileData = await getImageData(imageUri);
+        // const fileData = await getImageData(imageUri);
 
-        setImageData(fileData);
+        // setImageData(fileData);
 
         setPageIndex((prevPageIndex) => prevPageIndex + 1);
     };

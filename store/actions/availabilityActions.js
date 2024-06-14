@@ -49,8 +49,6 @@ export const createAvailabilityActionCreator =
                 type: AVAILABILITY_CREATE_SUCCESS,
                 payload: response.data.createAvailability,
             });
-
-            dispatch(getAvailabilitiesByDoctorActionCreator());
         } catch (error) {
             console.error("Error while creating availability", error);
             dispatch({ type: AVAILABILITY_CREATE_FAILURE, payload: error });
@@ -88,16 +86,6 @@ export const createAvailabilityForAllDaysActionCreator =
                     });
                 }
             }
-
-            datesSelected.forEach((date) => {
-                dispatch(deleteAvailabilitiesActionCreator(date.startTime));
-                dispatch(
-                    createAvailabilityActionCreator(
-                        date.startTime,
-                        date.endTime
-                    )
-                );
-            });
 
             dispatch({ type: AVAILABILITY_ALL_DAYS_CREATE_SUCCESS });
         } catch (error) {
@@ -220,6 +208,7 @@ export const deleteAvailabilitiesActionCreator =
             dispatch({ type: AVAILABILITIES_DELETE_REQUEST });
 
             const { availabilities } = getState().availabilitesByDoctorReducer;
+
             const dateKey = moment(selectedDate).format("YYYY-MM-DD");
 
             availabilities[dateKey].forEach(async (slot) => {
@@ -235,8 +224,6 @@ export const deleteAvailabilitiesActionCreator =
             });
 
             await dispatch({ type: AVAILABILITIES_DELETE_SUCCESS });
-
-            dispatch(getAvailabilitiesByDoctorActionCreator());
         } catch (error) {
             console.error("Error while deleting availabilities", error);
             dispatch({ type: AVAILABILITIES_DELETE_FAILURE, payload: error });

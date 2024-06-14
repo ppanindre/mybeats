@@ -41,23 +41,23 @@ const DoctorAvailability = () => {
 
     const onConfirmDeleteAvailability = () => {
         dispatch(deleteAvailabilitiesActionCreator(selectedDate));
-        Alert.alert("", "Schedule has been updated");
     };
 
     const handleSave = async (startTime, endTime) => {
         if (selectedChoice === "unavailable") {
             showConfirmAlert(
-                "Are you sure you want to remove all slots for this day",
+                "Are you sure you want to delete your availabilities and appointments for this day?",
                 () => onConfirmDeleteAvailability()
             );
         } else if (selectedChoice === "allDays") {
             dispatch(
                 createAvailabilityForAllDaysActionCreator(startTime, endTime)
             );
+            Alert.alert("", "Schedule has been updated");
         } else {
             dispatch(createAvailabilityActionCreator(startTime, endTime));
-            Alert.alert("", "Schedule has been updated");
         }
+        dispatch(getAvailabilitiesByDoctorActionCreator());
         setShowModal(false);
         setSelectedChoice(null);
     };

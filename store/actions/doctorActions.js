@@ -8,6 +8,8 @@ import {
     DOCTOR_LIST_FAILURE,
     DOCTOR_LIST_SUCCESS,
     DOCTOR_LIST_REQUEST,
+    DOCTOR_UPDATE_FAILURE,
+    DOCTOR_UPDATE_REQUEST,
 } from "../types/doctorActionTypes";
 import { createDoctor } from "../../src/graphql/mutations";
 import { getDoctor, listDoctors } from "../../src/graphql/queries";
@@ -65,6 +67,18 @@ export const createDoctorActionCreator =
             });
         }
     };
+
+export const updateDoctorActionCreator = () => async (dispatch) => {
+    try {
+        dispatch({type: DOCTOR_UPDATE_REQUEST});
+
+        
+
+    } catch (error) {
+        console.error("Error while updating doctor", error);
+        dispatch({ type: DOCTOR_UPDATE_FAILURE, payload: error });
+    }
+};
 
 export const listDoctorsActionCreator = () => async (dispatch) => {
     try {
