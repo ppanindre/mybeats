@@ -2,15 +2,12 @@ import React, { Component } from "react";
 import {
     View,
     Text,
-    TextInput,
     TouchableOpacity,
     ScrollView,
     Image,
-    FlatList,
-    Dimensions,
     Alert,
 } from "react-native";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import BookingSection from "../../../../MyCharts/Components/BookingSection";
 import ActionButton from "../../../../MyCharts/Components/ActionButton";

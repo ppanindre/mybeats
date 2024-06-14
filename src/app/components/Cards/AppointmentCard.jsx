@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 import { theme } from "../../../../tailwind.config";
 import moment from "moment";
-import showConfirmAlert from "../../utils/showConfirmAlert";
 import { useDispatch } from "react-redux";
 import {
     deleteAppointmentActionCreator,

@@ -57,7 +57,6 @@ const DoctorAvailability = () => {
         } else {
             dispatch(createAvailabilityActionCreator(startTime, endTime));
         }
-        dispatch(getAvailabilitiesByDoctorActionCreator());
         setShowModal(false);
         setSelectedChoice(null);
     };
