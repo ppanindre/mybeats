@@ -132,14 +132,14 @@ export const schema = {
                     "name": "availableForVideoConsultation",
                     "isArray": false,
                     "type": "Boolean",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "feeForVideoConsultation": {
                     "name": "feeForVideoConsultation",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "educationExperience": {
@@ -861,5 +861,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "22891cf401e2202cc50f64a6111aae8b"
+    "version": "d159498cdb80aef52b6186d9d2f333c0"
 };

@@ -5,7 +5,12 @@ import DoctorProfileForm3 from "../../components/Forms/DoctorProfileForms/Doctor
 import ScreenContainer from "../../components/Containers/ScreenContainer";
 import Loader from "../../components/Utils/Loader";
 import { useDispatch, useSelector } from "react-redux";
-import { createDoctorActionCreator } from "../../../../store/actions/doctorActions";
+import {
+    createDoctorActionCreator,
+    updateDoctorActionCreator,
+} from "../../../../store/actions/doctorActions";
+import getImageData from "../../utils/getImageData";
+import { uploadData } from "aws-amplify/storage";
 
 function DoctorProfile() {
     const { loading, doctor, error } = useSelector(
@@ -16,13 +21,29 @@ function DoctorProfile() {
 
     const [pageIndex, setPageIndex] = useState(0);
     const [doctorData, setDoctorData] = useState({});
+    const [imageData, setImageData] = useState(null);
 
-    const goToNextForm = (formData) => {
+    const goToNextForm = async (formData, imageUri) => {
         setDoctorData((prevData) => ({
             ...prevData,
             ...formData,
         }));
-        setPageIndex((prevPageIndex) => prevPageIndex + 1);
+
+        if (imageUri) {
+            const fileData = await getImageData(imageUri);
+
+            const result = await uploadData({
+                key: "album/2024/1.jpg",
+                data: fileData,
+                options: {
+                    accessLevel: "guest",
+                },
+            }).result;
+
+            console.log("succeeded", result);
+        }
+
+        // setPageIndex((prevPageIndex) => prevPageIndex + 1);
     };
 
     const goToPreviousForm = (formData) => {
@@ -41,7 +62,17 @@ function DoctorProfile() {
             ...finalDoctorData,
         };
 
-        dispatch(createDoctorActionCreator(doctorDetails));
+        if (doctor) {
+            dispatch(
+                updateDoctorActionCreator(
+                    doctorDetails,
+                    imageData,
+                    doctor._version
+                )
+            );
+        } else {
+            dispatch(createDoctorActionCreator(doctorDetails, imageData));
+        }
     };
 
     if (loading) {

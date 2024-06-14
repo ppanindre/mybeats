@@ -26,8 +26,8 @@ type EagerDoctor = {
   readonly state?: string | null;
   readonly experience?: string | null;
   readonly secondarySpecialization?: string | null;
-  readonly availableForVideoConsultation?: boolean | null;
-  readonly feeForVideoConsultation?: string | null;
+  readonly availableForVideoConsultation: boolean;
+  readonly feeForVideoConsultation: string;
   readonly educationExperience?: string | null;
   readonly awardsRecognition?: string | null;
   readonly website?: string | null;
@@ -58,8 +58,8 @@ type LazyDoctor = {
   readonly state?: string | null;
   readonly experience?: string | null;
   readonly secondarySpecialization?: string | null;
-  readonly availableForVideoConsultation?: boolean | null;
-  readonly feeForVideoConsultation?: string | null;
+  readonly availableForVideoConsultation: boolean;
+  readonly feeForVideoConsultation: string;
   readonly educationExperience?: string | null;
   readonly awardsRecognition?: string | null;
   readonly website?: string | null;

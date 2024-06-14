@@ -9,7 +9,11 @@ import {
 import AvailableDayFrame from "./AvailableDayFrame";
 import AvailableTimeFrame from "./AvailableTimeFrame";
 
-const AvailableAppointmentsFrame = ({ doctorId = null, onSelectSlot }) => {
+const AvailableAppointmentsFrame = ({
+    doctorId = null,
+    onSelectSlot,
+    reset,
+}) => {
     const { loading, error, availableAppointments } = useSelector(
         (state) => state.appointmentListAvailableReducer
     );
@@ -18,8 +22,8 @@ const AvailableAppointmentsFrame = ({ doctorId = null, onSelectSlot }) => {
         (state) => state.appointmentCreateReducer
     );
 
-    const [selectedDate, setSelectedDate] = useState();
-    const [selectedSlot, setSelectedSlot] = useState();
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedSlot, setSelectedSlot] = useState(null);
 
     const dispatch = useDispatch();
 
@@ -37,6 +41,13 @@ const AvailableAppointmentsFrame = ({ doctorId = null, onSelectSlot }) => {
     useEffect(() => {
         fetchAvailableAppointments();
     }, [appointment]);
+
+    useEffect(() => {
+        if (reset) {
+            setSelectedDate(null);
+            setSelectedSlot(null);
+        }
+    }, [reset]);
 
     return (
         <View className="space-y-5">

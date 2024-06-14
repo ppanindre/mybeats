@@ -855,20 +855,17 @@ export const slotsByDoctor = /* GraphQL */ `
                 id
                 doctorID
                 patientId
+                patient {
+                    firstname
+                    lastname
+                    email
+                    phoneNumber
+                    zipcode
+                }
                 startTime
                 endTime
                 type
                 isBooked
-                doctor {
-                    doctorID
-                    firstname
-                    lastname
-                }
-                patient {
-                    id
-                    firstname
-                    lastname
-                }
                 createdAt
                 updatedAt
                 _version

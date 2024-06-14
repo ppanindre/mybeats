@@ -25,6 +25,8 @@ const DoctorAppointmentsFrame = ({ selectedTab, appointments = [] }) => {
         divideAppointments();
     }, []);
 
+    console.log("upcoming appts", upcomingAppointments);
+
     return (
         <View>
             <ScrollView showsVerticalScrollIndicator={false}>

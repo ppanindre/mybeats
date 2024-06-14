@@ -62,11 +62,15 @@ export const createAvailabilityForAllDaysActionCreator =
         try {
             dispatch({ type: AVAILABILITY_ALL_DAYS_CREATE_REQUEST });
 
+            const user = getState().UserReducer;
+            const doctorId = user.userId;
+
             const { availabilities } = getState().availabilitesByDoctorReducer;
 
             const datesSelected = [];
 
             datesSelected.push({
+                dateKey: moment(startTime).format("YYYY-MM-DD"),
                 startTime: moment(startTime).toDate(),
                 endTime: moment(endTime).toDate(),
             });
@@ -79,27 +83,43 @@ export const createAvailabilityForAllDaysActionCreator =
                     .add(i * 7, "days")
                     .toDate();
 
-                if (
-                    !availabilities[moment(newStartTime).format("YYYY-MM-DD")]
-                ) {
-                    datesSelected.push({
-                        startTime: newStartTime,
-                        endTime: newEndTime,
-                    });
-                }
+                datesSelected.push({
+                    dateKey: moment(newStartTime).format("YYYY-MM-DD"),
+                    startTime: newStartTime,
+                    endTime: newEndTime,
+                });
             }
 
-            datesSelected.forEach((date) => {
-                dispatch(deleteAvailabilitiesActionCreator(date.startTime));
-                dispatch(
-                    createAvailabilityActionCreator(
-                        date.startTime,
-                        date.endTime
-                    )
-                );
-            });
+            for (const date of datesSelected) {
+                const availabilitesByDate = availabilities[date.dateKey];
+                if (availabilitesByDate) {
+                    for (const slot of availabilitesByDate) {
+                        await client.graphql({
+                            query: deleteAvailability,
+                            variables: {
+                                input: {
+                                    id: slot.id,
+                                    _version: slot.version,
+                                },
+                            },
+                        });
+                    }
+                }
+
+                await client.graphql({
+                    query: createAvailability,
+                    variables: {
+                        input: {
+                            doctorID: doctorId,
+                            startTime: date.startTime,
+                            endTime: date.endTime,
+                        },
+                    },
+                });
+            }
 
             dispatch({ type: AVAILABILITY_ALL_DAYS_CREATE_SUCCESS });
+            dispatch(getAvailabilitiesByDoctorActionCreator());
         } catch (error) {
             console.error(
                 "Error while creating availabilities for all days",
@@ -220,9 +240,10 @@ export const deleteAvailabilitiesActionCreator =
             dispatch({ type: AVAILABILITIES_DELETE_REQUEST });
 
             const { availabilities } = getState().availabilitesByDoctorReducer;
+
             const dateKey = moment(selectedDate).format("YYYY-MM-DD");
 
-            availabilities[dateKey].forEach(async (slot) => {
+            for (const slot of availabilities[dateKey]) {
                 await client.graphql({
                     query: deleteAvailability,
                     variables: {
@@ -232,11 +253,11 @@ export const deleteAvailabilitiesActionCreator =
                         },
                     },
                 });
-            });
-
-            await dispatch({ type: AVAILABILITIES_DELETE_SUCCESS });
+            }
 
             dispatch(getAvailabilitiesByDoctorActionCreator());
+
+            dispatch({ type: AVAILABILITIES_DELETE_SUCCESS });
         } catch (error) {
             console.error("Error while deleting availabilities", error);
             dispatch({ type: AVAILABILITIES_DELETE_FAILURE, payload: error });
