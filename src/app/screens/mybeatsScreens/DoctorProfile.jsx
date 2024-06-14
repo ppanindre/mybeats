@@ -5,7 +5,12 @@ import DoctorProfileForm3 from "../../components/Forms/DoctorProfileForms/Doctor
 import ScreenContainer from "../../components/Containers/ScreenContainer";
 import Loader from "../../components/Utils/Loader";
 import { useDispatch, useSelector } from "react-redux";
-import { createDoctorActionCreator } from "../../../../store/actions/doctorActions";
+import {
+    createDoctorActionCreator,
+    updateDoctorActionCreator,
+} from "../../../../store/actions/doctorActions";
+import getImageData from "../../utils/getImageData";
+import { uploadData } from "aws-amplify/storage";
 
 function DoctorProfile() {
     const { loading, doctor, error } = useSelector(
@@ -24,11 +29,21 @@ function DoctorProfile() {
             ...formData,
         }));
 
-        // const fileData = await getImageData(imageUri);
+        if (imageUri) {
+            const fileData = await getImageData(imageUri);
 
-        // setImageData(fileData);
+            const result = await uploadData({
+                key: "album/2024/1.jpg",
+                data: fileData,
+                options: {
+                    accessLevel: "guest",
+                },
+            }).result;
 
-        setPageIndex((prevPageIndex) => prevPageIndex + 1);
+            console.log("succeeded", result);
+        }
+
+        // setPageIndex((prevPageIndex) => prevPageIndex + 1);
     };
 
     const goToPreviousForm = (formData) => {
@@ -47,7 +62,17 @@ function DoctorProfile() {
             ...finalDoctorData,
         };
 
-        dispatch(createDoctorActionCreator(doctorDetails, imageData));
+        if (doctor) {
+            dispatch(
+                updateDoctorActionCreator(
+                    doctorDetails,
+                    imageData,
+                    doctor._version
+                )
+            );
+        } else {
+            dispatch(createDoctorActionCreator(doctorDetails, imageData));
+        }
     };
 
     if (loading) {

@@ -63,7 +63,9 @@ const DoctorProfileForm1 = ({ handlePressNext, initialData }) => {
                     {/* Profile Image Button */}
                     <View className="items-center">
                         <ProfileImageButton
-                            imageUri={imageUri}
+                            imageUri={
+                                "https://mybeats-profile-imagesefa9b-dev.s3.amazonaws.com/public/album/2024/1.jpg"
+                            }
                             onSelectImage={(uri) => setImageUri(uri)}
                         />
                     </View>

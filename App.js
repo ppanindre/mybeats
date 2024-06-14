@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { TourGuideProvider } from "rn-tourguide";
 import { useFonts } from "expo-font";
 import * as Sentry from "@sentry/react-native";
-import { Amplify } from "aws-amplify";
+import { Amplify} from "aws-amplify";
 
 import { store } from "./store/store";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -21,6 +21,7 @@ const theme = {
 
 Amplify.configure(config);
 
+
 const App = () => {
     // Load Fonts
     const [fontsLoaded] = useFonts({
@@ -31,7 +32,7 @@ const App = () => {
     if (!fontsLoaded) {
         return null;
     }
-    
+
     return (
         <Sentry.TouchEventBoundary>
             <Provider store={store}>
