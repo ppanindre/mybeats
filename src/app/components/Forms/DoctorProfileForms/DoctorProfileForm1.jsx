@@ -10,6 +10,7 @@ import { launchImageLibrary } from "react-native-image-picker";
 import FormInput from "../../Inputs/FormInput";
 import PhoneInput from "../../Inputs/PhoneInput";
 import AppButton from "../../Buttons/AppButton";
+import { useSelector } from "react-redux";
 
 // Form Schema for validation
 const formSchema = z.object({
@@ -34,6 +35,8 @@ const formSchema = z.object({
 });
 
 const DoctorProfileForm1 = ({ handlePressNext, initialData }) => {
+    const user = useSelector((state) => state.UserReducer);
+
     const [imageUri, setImageUri] = useState(null);
 
     const onSubmit = (data) => {
@@ -43,7 +46,7 @@ const DoctorProfileForm1 = ({ handlePressNext, initialData }) => {
 
     const { control, handleSubmit, setValue } = useForm({
         defaultValues: {
-            email: initialData.email || "",
+            email: user.email || "",
             firstName: initialData.firstname || "",
             lastName: initialData.lastname || "",
             phoneNumber: initialData.phoneNumber || "",

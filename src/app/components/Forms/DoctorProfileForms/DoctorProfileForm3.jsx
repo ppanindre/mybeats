@@ -18,12 +18,6 @@ const DoctorProfileForm3 = ({ handlePressSubmit, handlePressBack, initialData })
         },
     });
 
-    // useEffect(() => {
-    //     if (initialData.availableForVideoConsultation) {
-    //         setIsAvailable(initialData.availableForVideoConsultation);
-    //     }
-    // }, [initialData.availableForVideoConsultation]);
-
     const onPressSubmit = (data) => {
         const finalData = {
             ...data,

@@ -20,8 +20,8 @@ type Doctor @model @auth(rules: [{ allow: public }]) {
     state: String
     experience: String
     secondarySpecialization: String
-    availableForVideoConsultation: Boolean
-    feeForVideoConsultation: String
+    availableForVideoConsultation: Boolean!
+    feeForVideoConsultation: String!
     educationExperience: String
     awardsRecognition: String
     website: String

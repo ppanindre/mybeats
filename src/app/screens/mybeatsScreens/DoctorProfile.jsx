@@ -6,7 +6,6 @@ import ScreenContainer from "../../components/Containers/ScreenContainer";
 import Loader from "../../components/Utils/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { createDoctorActionCreator } from "../../../../store/actions/doctorActions";
-import getImageData from "../../utils/getImageData";
 
 function DoctorProfile() {
     const { loading, doctor, error } = useSelector(

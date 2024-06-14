@@ -20,16 +20,12 @@ import ScreenContainer from "../../components/Containers/ScreenContainer";
 import AppButton from "../../components/Buttons/AppButton";
 import { theme } from "../../../../tailwind.config";
 import PatientStory from "../../../../components/Cards/PatientStory";
-// import AvailableAppointmentsFrame from "../../components/Frames/AvailableAppointmentsFrame";
-import { appointmentService } from "../../api/services/appointmentService";
 import { useDispatch, useSelector } from "react-redux";
 import ClinicAppointmentFrame from "../../components/PatientAppointmentCO/ClinicAppointmentFrame";
 import AvailableAppointmentsFrame from "../../components/PatientAppointmentCO/AvailableAppointmentsFrame";
-import {
-    createAppointmentActionCreators,
-    listAvailableAppointmentsActionCreators,
-} from "../../../../store/actions/appointmentActions";
+import { createAppointmentActionCreators } from "../../../../store/actions/appointmentActions";
 import Loader from "../../components/Utils/Loader";
+import VideoAppointmentFrame from "../../components/PatientAppointmentCO/VideoAppointmentFrame";
 
 const CollapsibleItem = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -54,8 +50,6 @@ const CollapsibleItem = ({ title, children }) => {
 };
 
 export default Appointment = ({ route }) => {
-    const patientStore = useSelector((state) => state.PatientReducer);
-
     // use amplify to fetch the doctor
 
     // dont need it
@@ -105,6 +99,7 @@ export default Appointment = ({ route }) => {
     );
 
     const [selectedSlot, setSelectedSlot] = useState(null);
+    const [appointmentType, setAppointmentType] = useState("clinic");
 
     const dispatch = useDispatch();
 
@@ -112,12 +107,17 @@ export default Appointment = ({ route }) => {
         dispatch(
             createAppointmentActionCreators(
                 doctor.doctorID,
-                "clinic",
+                appointmentType,
                 selectedSlot
             )
         );
 
-        Alert.alert("", "Your appointment has been booked")
+        Alert.alert("", "Your appointment has been booked");
+    };
+
+    const selectAppointmentSlot = (appointmentType, slot) => {
+        setAppointmentType(appointmentType);
+        setSelectedSlot(slot);
     };
 
     if (loading) return <Loader />;
@@ -175,64 +175,31 @@ export default Appointment = ({ route }) => {
 
                     <View>
                         <AvailableAppointmentsFrame
-                            onSelectSlot={(slot) => setSelectedSlot(slot)}
+                            onSelectSlot={(slot) =>
+                                selectAppointmentSlot("clinic", slot)
+                            }
+                            reset={appointmentType === "video"}
                             doctorId={doctor.doctorID}
                         />
                     </View>
 
-                    <View>
-                        {availableForVideoConsultation && (
-                            <>
-                                <View
-                                    className="flex-row justify-between items-center mt-3  p-5 rounded-lg shadow"
-                                    style={{
-                                        backgroundColor:
-                                            customTheme.colors.lightPrimary,
-                                    }}
-                                >
-                                    <View className="flex-row items-center">
-                                        <Ionicons
-                                            name="videocam"
-                                            size={24}
-                                            style={{
-                                                color: customTheme.colors.light,
-                                            }}
-                                            className="bg-blue-100 p-1 rounded-full"
-                                        />
-                                        <Text
-                                            className="text-sm ml-2 font-[appfont-semi]"
-                                            style={{
-                                                color: customTheme.colors.light,
-                                            }}
-                                        >
-                                            Video Consultation
-                                        </Text>
-                                    </View>
-                                    <Text
-                                        className="text-lg font-[appfont-semi] text-gray-800"
-                                        style={{
-                                            color: customTheme.colors.light,
-                                        }}
-                                    >{`$${feeForVideoConsultation} Fee`}</Text>
-                                </View>
-                                <View
-                                    style={{
-                                        backgroundColor:
-                                            customTheme.colors.light,
-                                    }}
-                                    className=" p-2 rounded-lg"
-                                >
-                                    <BookingSection
-                                        type="video"
-                                        selectedDate={videoDate}
-                                        setSelectedDate={setVideoDate}
-                                        selectedTime={videoTime}
-                                        setSelectedTime={setVideoTime}
-                                    />
-                                </View>
-                            </>
-                        )}
-                    </View>
+                    {doctor.availableForVideoConsultation && (
+                        <View>
+                            <View>
+                                <VideoAppointmentFrame />
+                            </View>
+
+                            <View>
+                                <AvailableAppointmentsFrame
+                                    onSelectSlot={(slot) =>
+                                        selectAppointmentSlot("video", slot)
+                                    }
+                                    reset={appointmentType === "clinic"}
+                                    doctorId={doctor.doctorId}
+                                />
+                            </View>
+                        </View>
+                    )}
 
                     {/* Clinic Details Section */}
                     <View

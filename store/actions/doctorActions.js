@@ -26,6 +26,8 @@ export const createDoctorActionCreator =
 
             dispatch({ type: DOCTOR_CREATE_REQUEST });
 
+            console.log("doctor", doctorDetails);
+
             const response = await client.graphql({
                 query: createDoctor,
                 variables: {
@@ -70,10 +72,7 @@ export const createDoctorActionCreator =
 
 export const updateDoctorActionCreator = () => async (dispatch) => {
     try {
-        dispatch({type: DOCTOR_UPDATE_REQUEST});
-
-        
-
+        dispatch({ type: DOCTOR_UPDATE_REQUEST });
     } catch (error) {
         console.error("Error while updating doctor", error);
         dispatch({ type: DOCTOR_UPDATE_FAILURE, payload: error });

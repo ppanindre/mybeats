@@ -34,7 +34,7 @@ const AppointmentCard = ({ appointment, patient }) => {
             <View className="absolute p-1 bottom-3 z-[30] left-2 border rounded-full bg-primary border-primary flex-row items-center space-x-1">
                 {appointment.type === "video" ? (
                     <Ionicons
-                        name="videocam"
+                        name="videocam-outline"
                         size={ICON_SIZE}
                         color={theme.colors.light}
                     />
