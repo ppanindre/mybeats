@@ -1,42 +1,16 @@
 import React, { useState, useEffect } from "react";
-import {
-    View,
-    Text,
-    ScrollView,
-    TouchableOpacity,
-    Image,
-    Alert,
-    ActivityIndicator
-} from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image, Alert, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { customTheme } from "../../../../constants/themeConstants";
 import { useNavigation } from '@react-navigation/native';
 import ScreenContainer from "../../components/Containers/ScreenContainer";
-import imageRecognitionService from "../../api/services/imageRecognitionService";
-
-const CollapsibleItem = ({ titleComponent, children }) => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-        <TouchableOpacity onPress={() => setIsOpen(!isOpen)} className="mt-2">
-            <View className="flex-row items-center">
-                <Text className="font-[appfont-semi]">{titleComponent}</Text>
-                <Ionicons
-                    name={isOpen ? "chevron-up" : "chevron-down"}
-                    size={20}
-                    style={{ color: customTheme.colors.dark }}
-                />
-            </View>
-            {isOpen && (
-                <View className="mt-2">
-                    {children}
-                </View>
-            )}
-        </TouchableOpacity>
-    );
-};
+import { useDispatch, useSelector } from 'react-redux';
+import { analyzeImage } from "../../../../store/ImageRecognitionReducer/ImageRecognitionActions";
+import CollapsibleItem from "../../../../components/CollapsibleItem";
+import moment from 'moment';
 
 const DoctorMedicine = ({ route }) => {
+    const dispatch = useDispatch();
     const { newMedicine } = route.params || {};
     const { imageUri } = route.params;
     const [medicineItems, setMedicineItems] = useState([
@@ -47,41 +21,18 @@ const DoctorMedicine = ({ route }) => {
         { id: 5, name: "Ibup" },
         { id: 6, name: "Amoxillin" },
     ]);
-
     const [userAddedMedicines, setUserAddedMedicines] = useState([]);
-
-
-
-    const [recognizedText, setRecognizedText] = useState([]);
-    const [analyzing, setAnalyzing] = useState(false);
+    const { recognizedTexts, loading, error } = useSelector((state) => state.imageRecognition);
     const navigation = useNavigation();
 
-    // Function to analyze image using Google Vision API
-    const analyzeImageHandler = async () => {
-        setAnalyzing(true);
-        try {
-            const recognizedTexts = await imageRecognitionService.analyzeImage(imageUri);
-            setRecognizedText(recognizedTexts);
-            if (recognizedTexts.length === 0) {
-                Alert.alert('No text detected.');
-            }
-        } catch (error) {
-            Alert.alert('Error analyzing image. Please try again later.');
-        } finally {
-            setAnalyzing(false);
-        }
-    };
 
     useEffect(() => {
         if (newMedicine) {
             const normalizedMedicineName = newMedicine.name.toLowerCase();
-
             // Check if the medicine is already in the recognized list
             const isRecognizedMedicine = medicineItems.some(item => item.name.toLowerCase() === normalizedMedicineName);
-
             // Check if the medicine is already in the user-added list
             const isUserAddedMedicine = userAddedMedicines.some(item => item.name.toLowerCase() === normalizedMedicineName);
-
             if (isRecognizedMedicine) {
                 setMedicineItems(prevItems =>
                     prevItems.map(item =>
@@ -103,9 +54,15 @@ const DoctorMedicine = ({ route }) => {
     // To analyze image when component mounts
     useEffect(() => {
         if (imageUri) {
-            analyzeImageHandler();
+          dispatch(analyzeImage(imageUri));
         }
-    }, [imageUri]);
+    }, [dispatch, imageUri]);   
+    
+    useEffect(() => {
+        if (recognizedTexts.length === 0 && !loading && !error) {
+          Alert.alert('No text detected.');
+        }
+      }, [recognizedTexts, loading, error]);      
 
     // Function to handle deletion of a medicine item
     const handleDelete = (id) => {
@@ -117,14 +74,12 @@ const DoctorMedicine = ({ route }) => {
     const normalizeText = (text) => {
         return text.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase();
     };
-
-    const normalizedRecognizedText = recognizedText.map(text => normalizeText(text));
+    const normalizedRecognizedText = recognizedTexts.map(text => normalizeText(text));
 
     // Filtering medicines that match recognized text
     const matchedMedicines = medicineItems.filter(item =>
         normalizedRecognizedText.some(text => text.includes(normalizeText(item.name)))
     );
-
     const allMedicines = [...matchedMedicines, ...userAddedMedicines];
 
     // Function to format days with commas or "All" if all days are selected
@@ -136,7 +91,6 @@ const DoctorMedicine = ({ route }) => {
     };
 
     console.log('Matched Medicines:', matchedMedicines);
-
     const isDetailsComplete = (item) => item.period && item.days && item.meals && item.startDate && item.endDate;
     const isSubmitEnabled = allMedicines.every(item => item.period && item.days && item.meals && item.startDate && item.endDate);
     const SubmitButton = (isEnabled) => ({
@@ -145,10 +99,9 @@ const DoctorMedicine = ({ route }) => {
         cursor: isEnabled ? 'pointer' : 'not-allowed'
     });
 
-
     return (
         <ScreenContainer>
-            {analyzing ? (
+            {loading ? (
                 <View className="flex-1 items-center justify-center">
                     <ActivityIndicator size="large" color={customTheme.colors.primary} />
                 </View>
@@ -203,7 +156,7 @@ const DoctorMedicine = ({ route }) => {
 
                                 <CollapsibleItem titleComponent={
                                     <Text className={`text-sm font-[appfont-semi] ${isDetailsComplete(item) ? 'text-dark' : 'text-primary'}`}>
-                                        {isDetailsComplete(item) ? "Details specified" : "Details Missing"}
+                                        {isDetailsComplete(item) ? "Dosage Details" : "Dosage Details Missing"}
                                     </Text>
                                 }>
                                     <Text className="text-sm font-[appfont-semi] text-dark">
@@ -224,10 +177,10 @@ const DoctorMedicine = ({ route }) => {
                                         </Text>
                                     )}
                                     <Text className="text-sm font-[appfont-semi] text-dark">
-                                        {`Start Date: ${item.startDate ? new Date(item.startDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : 'not specified'}`}
+                                        {`Start Date: ${item.startDate ? moment(item.startDate).format('MMMM D, YYYY') : 'not specified'}`}
                                     </Text>
                                     <Text className="text-sm font-[appfont-semi] text-dark">
-                                        {`End Date: ${item.endDate ? new Date(item.endDate).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : 'not specified'}`}
+                                        {`End Date: ${item.endDate ? moment(item.endDate).format('MMMM D, YYYY') : 'not specified'}`}
                                     </Text>
                                     {item.note ? (
                                         <Text className="text-sm font-[appfont-semi] text-dark">
@@ -241,8 +194,6 @@ const DoctorMedicine = ({ route }) => {
                                 </CollapsibleItem>
                             </View>
                         ))}
-
-
                     </View>
                 </ScrollView>
             ) : (

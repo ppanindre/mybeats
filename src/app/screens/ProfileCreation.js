@@ -198,6 +198,7 @@ const ProfileCreation = () => {
                     sentry-label="profile-creation-dob"
                     onConfirm={(dob) => setDob(dob)}
                     currVal={dob}
+                    mode="dob"
                   />
                 </View>
 

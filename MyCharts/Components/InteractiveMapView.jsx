@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Platform, Linking } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import geocodingService from '../../src/app/api/services/geocodingService';
+import { useDispatch, useSelector } from 'react-redux';
+import { geocodeAddress } from '../../store/GeocodingReducer/GeocodingActions';
 
 const InteractiveMapView = ({ name, city, address, state, zipcode }) => {
-  const [coordinates, setCoordinates] = useState(null);
+  const dispatch = useDispatch();
+  const { coordinates, loading, error } = useSelector((state) => state.geocoding);
 
   useEffect(() => {
-    const fetchCoordinates = async () => {
-      const result = await geocodingService.geocodeAddress(address, city, state, zipcode);
-      setCoordinates(result);
-    };
-    fetchCoordinates();
-  }, [address, city, state, zipcode]);
+    dispatch(geocodeAddress(address, city, state, zipcode));
+  }, [dispatch, address, city, state, zipcode]);
 
   const openMaps = (lat, lon, label) => {
     let url;
@@ -25,10 +23,26 @@ const InteractiveMapView = ({ name, city, address, state, zipcode }) => {
     Linking.openURL(url).catch(err => console.error('An error occurred', err));
   };
 
-  if (!coordinates) {
+  if (loading) {
     return (
       <View>
         <Text>Loading map...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View>
+        <Text>Error loading map: {error}</Text>
+      </View>
+    );
+  }
+
+  if (!coordinates) {
+    return (
+      <View>
+        <Text>No coordinates available</Text>
       </View>
     );
   }
