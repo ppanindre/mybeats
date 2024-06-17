@@ -21,7 +21,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
     const user = useSelector((state) => state.UserReducer);
 
     const [isModalVisible, setModalVisible] = useState(false);
-    const [selectedRole, setSelectedRole] = useState("");
+    const [selectedRole, setSelectedRole] = useState(null);
     const isFocused = useIsFocused();
     const route = useRoute();
     const [displayedRole, setDisplayedRole] = useState("Patient");
@@ -44,7 +44,6 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
 
     // Handle continue for change role
     const handleContinue = () => {
-        console.log("Selected Role:", selectedRole);
         setModalVisible(false);
 
         let screenName = "";
@@ -78,6 +77,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
 
     // Declare navigation instance
     const navigation = useNavigation();
+
     const dispatch = useDispatch();
 
     // Declare Tour guide hook
@@ -105,6 +105,30 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
         return () => {
             eventEmitter.off("stop", handleOnStop);
         };
+    }, []);
+
+    useEffect(() => {
+        const routeName = route.name;
+        let role = "Doctor";
+
+        switch (routeName) {
+            case "doctorDashboard":
+                role = "Doctor";
+                break;
+            case "patientDashboard":
+                role = "Patient";
+                break;
+            case "PharmacyManager":
+                role = "PharmacyManager";
+                break;
+            case "LabManager":
+                role = "LabManager";
+                break;
+            default:
+                break;
+        }
+
+        setSelectedRole(role);
     }, []);
 
     // Get Last sync time
@@ -136,12 +160,14 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
         // convert the sync timestamp to the following time forat
         deviceSyncTime = moment(deviceSyncTime).format("MMM DD, YYYY h:mmA");
         return isMyBeats
-            ? "Last Active: ".concat(deviceSyncTime)
+            ? `Last Active as ${selectedRole && selectedRole}: `.concat(
+                  deviceSyncTime
+              )
             : "Last sync: ".concat(deviceSyncTime);
     };
 
     return (
-        <View className="relative p-4 border-b-2 border-gray-300 flex-row items-center justify-between">
+        <View className="relative p-4 border-b border-darkSecondary flex-row items-center justify-between">
             <View className="flex-row items-center gap-2 ">
                 {/* Profile Icon */}
 
@@ -172,7 +198,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                             }}
                             className="h-10 w-10 rounded-lg items-center justify-center"
                         >
-                            <Text className="text-white text-lg font-bold font-[appfont-bold]">
+                            <Text className="text-light text-lg font-bold font-[appfont-bold]">
                                 {user.email && user.email[0].toUpperCase()}
                             </Text>
                         </TouchableOpacity>
@@ -268,22 +294,11 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
 
                     {/* Continue Button */}
                     <View className="flex justify-center items-center mt-4 mb-5">
-                        {/* <TouchableOpacity
+                        <AppButton
+                            variant={`${selectedRole ? "primary" : "disabled"}`}
+                            btnLabel="Confirm"
                             onPress={handleContinue}
-                            className="w-full p-4 rounded-lg"
-                            style={{
-                                backgroundColor: customTheme.colors.primary,
-                            }}
-                        >
-                            <Text className="text-center text-white text-md font-[appfont-bold]">
-                                Continue
-                            </Text>
-                        </TouchableOpacity> */}
-                            <AppButton
-                                variant="primary"
-                                btnLabel="Continue"
-                                onPress={handleContinue}
-                            />
+                        />
                     </View>
                 </View>
             </Modal>

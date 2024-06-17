@@ -3,7 +3,11 @@ import React, { useEffect, useState } from "react";
 import { appointmentService } from "../../api/services/appointmentService";
 import moment from "moment";
 
-const AvailableAppointmentsFrame = ({ doctorId, selectAppointmentSlot }) => {
+const AvailableAppointmentsFrame = ({
+    doctorId,
+    selectAppointmentSlot,
+    resetAppointmentSlot,
+}) => {
     // STATES
     const [availableSlots, setAvailableSlots] = useState([]);
     const [selectedDayIndex, setSelectedDayIndex] = useState(null);
@@ -13,27 +17,14 @@ const AvailableAppointmentsFrame = ({ doctorId, selectAppointmentSlot }) => {
      * fetch the available appointments and format them
      */
     const fetchAvailableAppointments = async () => {
-        const slots = await appointmentService.listAppointmentSlots(doctorId);
+        const fetchedSlots = await appointmentService.appointmentSlotByDoctor(
+            "4",
+            "1"
+        );
 
-        let formattedSlots = [];
-        for (const [date, slotArray] of Object.entries(slots)) {
-            let slotDetails = slotArray
-                .filter((slot) => !slot.isBooked)
-                .map((slot) => ({
-                    startTime: slot.start,
-                    endTime: slot.end,
-                    id: slot.id,
-                    _version: slot._version,
-                }));
-            if (slotDetails.length > 0) {
-                formattedSlots.push({
-                    date,
-                    slots: slotDetails,
-                });
-            }
-        }
+        console.log("fetched slots", fetchedSlots)
 
-        setAvailableSlots(formattedSlots);
+        setAvailableSlots(fetchedSlots);
     };
 
     /**
@@ -56,6 +47,15 @@ const AvailableAppointmentsFrame = ({ doctorId, selectAppointmentSlot }) => {
             availableSlots[selectedDayIndex].slots[slotIndex]
         );
     };
+
+    // Reset appointment slot
+    useEffect(() => {
+        if (resetAppointmentSlot) {
+            setSelectedDayIndex(null);
+            setSelectedTimeIndex(null);
+            fetchAvailableAppointments();
+        }
+    }, [resetAppointmentSlot]);
 
     useEffect(() => {
         fetchAvailableAppointments();
@@ -96,7 +96,7 @@ const AvailableAppointmentsFrame = ({ doctorId, selectAppointmentSlot }) => {
                                         }`}
                                     >
                                         {moment(slot.date, "YYYY-MM-DD").format(
-                                            "DD MMM"
+                                            "D MMM"
                                         )}
                                     </Text>
                                 </TouchableOpacity>
@@ -131,7 +131,7 @@ const AvailableAppointmentsFrame = ({ doctorId, selectAppointmentSlot }) => {
                                                 "text-light"
                                             }`}
                                         >
-                                            {moment(slot.startTime).format(
+                                            {moment(slot.start).format(
                                                 "h:mm a"
                                             )}
                                         </Text>

@@ -38,7 +38,7 @@ export const onCreateDoctor = /* GraphQL */ `
       awardsRecognition
       website
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -94,7 +94,7 @@ export const onUpdateDoctor = /* GraphQL */ `
       awardsRecognition
       website
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -150,7 +150,7 @@ export const onDeleteDoctor = /* GraphQL */ `
       awardsRecognition
       website
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -242,7 +242,7 @@ export const onCreatePatient = /* GraphQL */ `
       phoneNumber
       address
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -266,7 +266,7 @@ export const onUpdatePatient = /* GraphQL */ `
       phoneNumber
       address
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -290,7 +290,7 @@ export const onDeletePatient = /* GraphQL */ `
       phoneNumber
       address
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -313,7 +313,6 @@ export const onCreateAvailability = /* GraphQL */ `
       doctorID
       startTime
       endTime
-      isAvailable
       doctor {
         doctorID
         firstname
@@ -359,7 +358,6 @@ export const onUpdateAvailability = /* GraphQL */ `
       doctorID
       startTime
       endTime
-      isAvailable
       doctor {
         doctorID
         firstname
@@ -405,7 +403,6 @@ export const onDeleteAvailability = /* GraphQL */ `
       doctorID
       startTime
       endTime
-      isAvailable
       doctor {
         doctorID
         firstname
@@ -442,16 +439,17 @@ export const onDeleteAvailability = /* GraphQL */ `
     }
   }
 `;
-export const onCreateAppointmentSlot = /* GraphQL */ `
-  subscription OnCreateAppointmentSlot(
-    $filter: ModelSubscriptionAppointmentSlotFilterInput
+export const onCreateAppointment = /* GraphQL */ `
+  subscription OnCreateAppointment(
+    $filter: ModelSubscriptionAppointmentFilterInput
   ) {
-    onCreateAppointmentSlot(filter: $filter) {
+    onCreateAppointment(filter: $filter) {
       id
       doctorID
       patientId
       startTime
       endTime
+      type
       isBooked
       doctor {
         doctorID
@@ -504,16 +502,17 @@ export const onCreateAppointmentSlot = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateAppointmentSlot = /* GraphQL */ `
-  subscription OnUpdateAppointmentSlot(
-    $filter: ModelSubscriptionAppointmentSlotFilterInput
+export const onUpdateAppointment = /* GraphQL */ `
+  subscription OnUpdateAppointment(
+    $filter: ModelSubscriptionAppointmentFilterInput
   ) {
-    onUpdateAppointmentSlot(filter: $filter) {
+    onUpdateAppointment(filter: $filter) {
       id
       doctorID
       patientId
       startTime
       endTime
+      type
       isBooked
       doctor {
         doctorID
@@ -566,16 +565,17 @@ export const onUpdateAppointmentSlot = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteAppointmentSlot = /* GraphQL */ `
-  subscription OnDeleteAppointmentSlot(
-    $filter: ModelSubscriptionAppointmentSlotFilterInput
+export const onDeleteAppointment = /* GraphQL */ `
+  subscription OnDeleteAppointment(
+    $filter: ModelSubscriptionAppointmentFilterInput
   ) {
-    onDeleteAppointmentSlot(filter: $filter) {
+    onDeleteAppointment(filter: $filter) {
       id
       doctorID
       patientId
       startTime
       endTime
+      type
       isBooked
       doctor {
         doctorID

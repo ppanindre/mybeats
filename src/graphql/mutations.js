@@ -41,7 +41,7 @@ export const createDoctor = /* GraphQL */ `
       awardsRecognition
       website
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -100,7 +100,7 @@ export const updateDoctor = /* GraphQL */ `
       awardsRecognition
       website
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -159,7 +159,7 @@ export const deleteDoctor = /* GraphQL */ `
       awardsRecognition
       website
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -257,7 +257,7 @@ export const createPatient = /* GraphQL */ `
       phoneNumber
       address
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -284,7 +284,7 @@ export const updatePatient = /* GraphQL */ `
       phoneNumber
       address
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -311,7 +311,7 @@ export const deletePatient = /* GraphQL */ `
       phoneNumber
       address
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -335,7 +335,6 @@ export const createAvailability = /* GraphQL */ `
       doctorID
       startTime
       endTime
-      isAvailable
       doctor {
         doctorID
         firstname
@@ -382,7 +381,6 @@ export const updateAvailability = /* GraphQL */ `
       doctorID
       startTime
       endTime
-      isAvailable
       doctor {
         doctorID
         firstname
@@ -429,7 +427,6 @@ export const deleteAvailability = /* GraphQL */ `
       doctorID
       startTime
       endTime
-      isAvailable
       doctor {
         doctorID
         firstname
@@ -466,17 +463,18 @@ export const deleteAvailability = /* GraphQL */ `
     }
   }
 `;
-export const createAppointmentSlot = /* GraphQL */ `
-  mutation CreateAppointmentSlot(
-    $input: CreateAppointmentSlotInput!
-    $condition: ModelAppointmentSlotConditionInput
+export const createAppointment = /* GraphQL */ `
+  mutation CreateAppointment(
+    $input: CreateAppointmentInput!
+    $condition: ModelAppointmentConditionInput
   ) {
-    createAppointmentSlot(input: $input, condition: $condition) {
+    createAppointment(input: $input, condition: $condition) {
       id
       doctorID
       patientId
       startTime
       endTime
+      type
       isBooked
       doctor {
         doctorID
@@ -529,17 +527,18 @@ export const createAppointmentSlot = /* GraphQL */ `
     }
   }
 `;
-export const updateAppointmentSlot = /* GraphQL */ `
-  mutation UpdateAppointmentSlot(
-    $input: UpdateAppointmentSlotInput!
-    $condition: ModelAppointmentSlotConditionInput
+export const updateAppointment = /* GraphQL */ `
+  mutation UpdateAppointment(
+    $input: UpdateAppointmentInput!
+    $condition: ModelAppointmentConditionInput
   ) {
-    updateAppointmentSlot(input: $input, condition: $condition) {
+    updateAppointment(input: $input, condition: $condition) {
       id
       doctorID
       patientId
       startTime
       endTime
+      type
       isBooked
       doctor {
         doctorID
@@ -592,17 +591,18 @@ export const updateAppointmentSlot = /* GraphQL */ `
     }
   }
 `;
-export const deleteAppointmentSlot = /* GraphQL */ `
-  mutation DeleteAppointmentSlot(
-    $input: DeleteAppointmentSlotInput!
-    $condition: ModelAppointmentSlotConditionInput
+export const deleteAppointment = /* GraphQL */ `
+  mutation DeleteAppointment(
+    $input: DeleteAppointmentInput!
+    $condition: ModelAppointmentConditionInput
   ) {
-    deleteAppointmentSlot(input: $input, condition: $condition) {
+    deleteAppointment(input: $input, condition: $condition) {
       id
       doctorID
       patientId
       startTime
       endTime
+      type
       isBooked
       doctor {
         doctorID

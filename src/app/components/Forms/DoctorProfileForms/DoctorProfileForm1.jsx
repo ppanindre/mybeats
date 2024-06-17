@@ -1,15 +1,16 @@
 import { ScrollView, View } from "react-native";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ProfileImageButton from "../../Buttons/ProfileImageButton";
-import { launchImageLibrary } from 'react-native-image-picker';
+import { launchImageLibrary } from "react-native-image-picker";
+
 import FormInput from "../../Inputs/FormInput";
 import PhoneInput from "../../Inputs/PhoneInput";
 import AppButton from "../../Buttons/AppButton";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
 // Form Schema for validation
 const formSchema = z.object({
@@ -25,63 +26,35 @@ const formSchema = z.object({
         .string()
         .min(5, "License number must be at least 5 characters")
         .max(20, "License number must not exceed 20 characters"),
-        upiId: z.string().regex(/^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/, "Please enter a valid UPI ID"),
-    });
+    upiId: z
+        .string()
+        .regex(
+            /^[a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}$/,
+            "Please enter a valid UPI ID"
+        ),
+});
 
-const DoctorProfileForm1 = ({ handlePressNext, initialData ={} }) => {
-
-    // getting user detais from redux for email
+const DoctorProfileForm1 = ({ handlePressNext, initialData }) => {
     const user = useSelector((state) => state.UserReducer);
 
-    // image constants for picture
     const [imageUri, setImageUri] = useState(null);
 
-    // pick image from gallery 
-    const selectImage = () => {
-        const options = {
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-            },
-        };
-
-        launchImageLibrary(options, response => {
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            } else {
-                const source = { uri: response.assets[0].uri };
-                setImageUri(source.uri);
-            }
-        });
-    };
-    /**
-     * function to handle when user presses next
-     */
     const onSubmit = (data) => {
         // send the form data to the parent component
-        handlePressNext(data);
+        handlePressNext(data, imageUri);
     };
 
     const { control, handleSubmit, setValue } = useForm({
         defaultValues: {
-            email: initialData.email || "",
-            firstName: initialData.firstName || "",
-            lastName: initialData.lastName || "",
+            email: user.email || "",
+            firstName: initialData.firstname || "",
+            lastName: initialData.lastname || "",
             phoneNumber: initialData.phoneNumber || "",
             licenseNumber: initialData.licenseNumber || "",
             upiId: initialData.upiId || "",
         },
         resolver: zodResolver(formSchema),
     });
-    // Setting the default value for email after fetching from redux
-    useEffect(() => {
-        if (user && user.email) {
-            setValue("email", user.email);
-        }
-    }, [user, setValue]);
-
 
     return (
         <View className="h-[100%] space-y-5">
@@ -89,7 +62,12 @@ const DoctorProfileForm1 = ({ handlePressNext, initialData ={} }) => {
                 <View className="space-y-5">
                     {/* Profile Image Button */}
                     <View className="items-center">
-                        <ProfileImageButton imageUri={imageUri} selectImage={selectImage} />
+                        <ProfileImageButton
+                            imageUri={
+                                "https://mybeats-profile-imagesefa9b-dev.s3.amazonaws.com/public/album/2024/1.jpg"
+                            }
+                            onSelectImage={(uri) => setImageUri(uri)}
+                        />
                     </View>
 
                     {/* Inputs */}

@@ -132,14 +132,14 @@ export const schema = {
                     "name": "availableForVideoConsultation",
                     "isArray": false,
                     "type": "Boolean",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "feeForVideoConsultation": {
                     "name": "feeForVideoConsultation",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "educationExperience": {
@@ -170,11 +170,11 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "appointmentSlots": {
-                    "name": "appointmentSlots",
+                "appointments": {
+                    "name": "appointments",
                     "isArray": true,
                     "type": {
-                        "model": "AppointmentSlot"
+                        "model": "Appointment"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -331,6 +331,14 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
+                        "fields": [
+                            "id"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
                         "name": "byName",
                         "queryField": "specialtyByName",
                         "fields": [
@@ -408,11 +416,11 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "appointmentSlots": {
-                    "name": "appointmentSlots",
+                "appointments": {
+                    "name": "appointments",
                     "isArray": true,
                     "type": {
-                        "model": "AppointmentSlot"
+                        "model": "Appointment"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -447,6 +455,14 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "fields": [
+                            "id"
+                        ]
+                    }
                 },
                 {
                     "type": "auth",
@@ -497,13 +513,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "isAvailable": {
-                    "name": "isAvailable",
-                    "isArray": false,
-                    "type": "Boolean",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "doctor": {
                     "name": "doctor",
                     "isArray": false,
@@ -546,6 +555,14 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
+                        "fields": [
+                            "id"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
                         "name": "byDoctor",
                         "queryField": "availabilityByDoctor",
                         "fields": [
@@ -572,8 +589,8 @@ export const schema = {
                 }
             ]
         },
-        "AppointmentSlot": {
-            "name": "AppointmentSlot",
+        "Appointment": {
+            "name": "Appointment",
             "fields": {
                 "id": {
                     "name": "id",
@@ -608,6 +625,13 @@ export const schema = {
                     "isArray": false,
                     "type": "AWSDateTime",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "type": {
+                    "name": "type",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "isBooked": {
@@ -665,7 +689,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "AppointmentSlots",
+            "pluralName": "Appointments",
             "attributes": [
                 {
                     "type": "model",
@@ -674,10 +698,19 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
+                        "fields": [
+                            "id"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
                         "name": "byDoctor",
                         "queryField": "slotsByDoctor",
                         "fields": [
-                            "doctorID"
+                            "doctorID",
+                            "startTime"
                         ]
                     }
                 },
@@ -687,7 +720,8 @@ export const schema = {
                         "name": "byPatient",
                         "queryField": "slotsByPatient",
                         "fields": [
-                            "patientId"
+                            "patientId",
+                            "startTime"
                         ]
                     }
                 },
@@ -827,5 +861,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "ee2455494c6ef49aa9e4359c01fb2003"
+    "version": "d159498cdb80aef52b6186d9d2f333c0"
 };

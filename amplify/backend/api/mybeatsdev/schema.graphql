@@ -20,38 +20,38 @@ type Doctor @model @auth(rules: [{ allow: public }]) {
     state: String
     experience: String
     secondarySpecialization: String
-    availableForVideoConsultation: Boolean
-    feeForVideoConsultation: String
+    availableForVideoConsultation: Boolean!
+    feeForVideoConsultation: String!
     educationExperience: String
     awardsRecognition: String
     website: String
     zipcode: String! @index(name: "byzipcode", queryField: "doctorByZipcode")
-    appointmentSlots: [AppointmentSlot]
+    appointments: [Appointment]
         @hasMany(indexName: "byDoctor", fields: ["doctorID"])
     availability: [Availability]
         @hasMany(indexName: "byDoctor", fields: ["doctorID"])
 }
 
 type Specialty @model @auth(rules: [{ allow: public }]) {
-    id: ID!
+    id: ID! @primaryKey
     name: String! @index(name: "byName", queryField: "specialtyByName")
     doctors: [Doctor] @manyToMany(relationName: "DoctorSpecialties")
 }
 
 type Patient @model @auth(rules: [{ allow: public }]) {
-    id: ID!
+    id: ID! @primaryKey
     firstname: String!
     lastname: String!
     email: String
     phoneNumber: String
     address: String
     zipcode: String
-    appointmentSlots: [AppointmentSlot]
+    appointments: [Appointment]
         @hasMany(indexName: "byPatient", fields: ["id"])
 }
 
 type Availability @model @auth(rules: [{ allow: public }]) {
-    id: ID!
+    id: ID! @primaryKey
     doctorID: ID!
         @index(
             name: "byDoctor"
@@ -60,18 +60,27 @@ type Availability @model @auth(rules: [{ allow: public }]) {
         )
     startTime: AWSDateTime!
     endTime: AWSDateTime!
-    isAvailable: Boolean!
     doctor: Doctor @belongsTo(fields: ["doctorID"])
 }
 
-type AppointmentSlot @model @auth(rules: [{ allow: public }]) {
-    id: ID!
-    doctorID: ID! @index(name: "byDoctor", queryField: "slotsByDoctor")
-    patientId: ID! @index(name: "byPatient", queryField: "slotsByPatient")
-
+type Appointment @model @auth(rules: [{ allow: public }]) {
+    id: ID! @primaryKey
+    doctorID: ID!
+        @index(
+            name: "byDoctor"
+            queryField: "slotsByDoctor"
+            sortKeyFields: ["startTime"]
+        )
+    patientId: ID!
+        @index(
+            name: "byPatient"
+            queryField: "slotsByPatient"
+            sortKeyFields: ["startTime"]
+        )
     startTime: AWSDateTime!
     endTime: AWSDateTime!
+    type: String
     isBooked: Boolean!
     doctor: Doctor @belongsTo(fields: ["doctorID"])
-    patient: Patient @belongsTo(fields: ["patientId"]) # Added patient relationship
+    patient: Patient @belongsTo(fields: ["patientId"])
 }

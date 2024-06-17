@@ -12,8 +12,6 @@ import moment from "moment";
 
 const client = generateClient();
 
-let doctorAvailabilityNextToken = null;
-
 export const availabilityService = {
     /**
      * create availability
@@ -35,7 +33,8 @@ export const availabilityService = {
                 },
             });
 
-            console.log("response", response);
+            return response.data.createAvailability;
+
         } catch (error) {
             console.error("Error while creating availability", error);
             Sentry.captureException(error, {
@@ -44,21 +43,29 @@ export const availabilityService = {
         }
     },
 
-    availabilityByDoctor: async (doctorId) => {
+    /**
+     * fetch availability by Doctor Id
+     * @param {String} doctorId
+     * @param {String} nextToken
+     * @returns {{Array, String}}
+     */
+    availabilityByDoctor: async (doctorId, nextToken) => {
         try {
-
             const response = await client.graphql({
                 query: availabilityByDoctor,
                 variables: {
                     doctorID: doctorId,
                     sortDirection: "ASC",
-                    nextToken: doctorAvailabilityNextToken,
-                    limit: 10,
+                    nextToken: nextToken,
+                    filter: {
+                        _deleted: { ne: true },
+                    },
                 },
             });
 
             const availabilities = response.data.availabilityByDoctor.items;
-            doctorAvailabilityNextToken =
+
+            const doctorAvailabilityNextToken =
                 response.data.availabilityByDoctor.nextToken;
             const groupedAvailabilities = availabilities.reduce(
                 (acc, availability) => {
@@ -66,6 +73,7 @@ export const availabilityService = {
                         const dateKey = moment(availability.startTime).format(
                             "YYYY-MM-DD"
                         );
+
                         if (!acc[dateKey]) {
                             acc[dateKey] = [];
                         }
@@ -89,7 +97,10 @@ export const availabilityService = {
                 })
             );
 
-            return formattedResponse;
+            return {
+                fetchedAvailability: formattedResponse,
+                nextToken: doctorAvailabilityNextToken,
+            };
         } catch (error) {
             console.error("Error while fetching availability", error);
             Sentry.captureException(error, {
@@ -110,7 +121,6 @@ export const availabilityService = {
                 },
             });
 
-            console.log("response", response);
         } catch (error) {
             console.error("Error while creating availability", error);
             Sentry.captureException(error, {
