@@ -126,17 +126,19 @@ const DoctorProfileForm2 = ({
     //         });
     //     }
 
-        if (initialData.state) {
-            const selectedState = countryStates.list.find(state => state.value === initialData.state);
-            if (selectedState) {
-                setCountryStates({
-                    ...countryStates,
-                    value: selectedState.value,
-                    selectedList: [selectedState],
-                });
-            }
-        }
-    }, [initialData, specialties]);
+    //     if (initialData.countryState) {
+    //         const selectedState = countryStates.list.find(
+    //             (state) => state.value === initialData.countryState
+    //         );
+    //         if (selectedState) {
+    //             setCountryStates({
+    //                 ...countryStates,
+    //                 value: selectedState.value,
+    //                 selectedList: [selectedState],
+    //             });
+    //         }
+    //     }
+    // }, [initialData, specialties]);
 
     const handlePrimarySelection = (value) => {
         setPrimarySpecialization({

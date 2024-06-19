@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const apiKey = 'AIzaSyC1hiS3sXkvQPqEodYESWOLBYkUsyR8Tv4'; // Google Maps API key
-
+// file in types - gecodingtype - geocoding_getrequest
+// name geocoding_getRequest
 export const GEOCODE_REQUEST = 'GEOCODE_REQUEST';
 export const GEOCODE_SUCCESS = 'GEOCODE_SUCCESS';
 export const GEOCODE_FAILURE = 'GEOCODE_FAILURE';

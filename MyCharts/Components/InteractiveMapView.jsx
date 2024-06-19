@@ -6,7 +6,7 @@ import { geocodeAddress } from '../../store/GeocodingReducer/GeocodingActions';
 
 const InteractiveMapView = ({ name, city, address, state, zipcode }) => {
   const dispatch = useDispatch();
-  const { coordinates, loading, error } = useSelector((state) => state.geocoding);
+  const { coordinates, loading, error } = useSelector((state) => state.geocodingGetReducer);
 
   useEffect(() => {
     dispatch(geocodeAddress(address, city, state, zipcode));

@@ -35,8 +35,9 @@ import {
     appointmentListAvailableReducer,
     appointmentListReducer,
     appointmentsListByDoctorReducer,
-} from "./reducers/appointmentReducers";import  GeocodingReducer  from "./GeocodingReducer/GeocodingReducer";
-import ImageRecognitionReducer from "./ImageRecognitionReducer/ImageRecognitionReducer";
+} from "./reducers/appointmentReducers";
+import geocodingGetReducer from "./reducers/geocodingGetReducer";
+import imageRecognitionGetReducer from "./reducers/imageRecognitionGetReducer";
 
 
 // Combining every reducer
@@ -50,8 +51,8 @@ const reducers = combineReducers({
     SleepReducer,
     FoodReducer,
     DashboardReducer,
-  geocoding: GeocodingReducer,
-  imageRecognition: ImageRecognitionReducer,
+    geocodingGetReducer: geocodingGetReducer,
+    imageRecognitionGetReducer: imageRecognitionGetReducer,
     PatientReducer,
     DoctorReducer,
     patientCreateReducer: patientCreateReducer,

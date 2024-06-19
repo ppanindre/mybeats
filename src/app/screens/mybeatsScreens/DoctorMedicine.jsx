@@ -5,9 +5,9 @@ import { customTheme } from "../../../../constants/themeConstants";
 import { useNavigation } from '@react-navigation/native';
 import ScreenContainer from "../../components/Containers/ScreenContainer";
 import { useDispatch, useSelector } from 'react-redux';
-import { analyzeImage } from "../../../../store/ImageRecognitionReducer/ImageRecognitionActions";
 import CollapsibleItem from "../../../../components/CollapsibleItem";
 import moment from 'moment';
+import { analyzeImage } from "../../../../store/actions/imageRecognitionActions";
 
 const DoctorMedicine = ({ route }) => {
     const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const DoctorMedicine = ({ route }) => {
         { id: 6, name: "Amoxillin" },
     ]);
     const [userAddedMedicines, setUserAddedMedicines] = useState([]);
-    const { recognizedTexts, loading, error } = useSelector((state) => state.imageRecognition);
+    const { recognizedTexts, loading, error } = useSelector((state) => state.imageRecognitionGetReducer);
     const navigation = useNavigation();
 
 
