@@ -1,30 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Image, Alert, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { customTheme } from "../../../../constants/themeConstants";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import ScreenContainer from "../../components/Containers/ScreenContainer";
 import { useDispatch, useSelector } from 'react-redux';
-import CollapsibleItem from "../../../../components/CollapsibleItem";
-import moment from 'moment';
 import { analyzeImage } from "../../../../store/actions/imageRecognitionActions";
+import * as Sentry from "@sentry/react-native";
+import { createPrescriptionActionCreator, listPrescriptionsActionCreator } from "../../../../store/actions/prescriptionActions";
+import MedicineItem from "../../components/UploadPrescriptionComponents/MedicineItem";
+import AppButton from "../../components/Buttons/AppButton";
+import Loader from "../../components/Utils/Loader";
+import { clearImageUri } from '../../../../store/actions/imageActions';
+import { clearNewMedicine } from "../../../../store/actions/medicineActions";
 
-const DoctorMedicine = ({ route }) => {
+const DoctorMedicine = () => {
     const dispatch = useDispatch();
-    const { newMedicine } = route.params || {};
-    const { imageUri } = route.params;
+    const navigation = useNavigation();
     const [medicineItems, setMedicineItems] = useState([
         { id: 1, name: "Amoxxiellin" },
         { id: 2, name: "Ciprofloxacin" },
-        // { id: 3, name: "Ibuprofen" },
         { id: 4, name: "Dolo" },
         { id: 5, name: "Ibup" },
         { id: 6, name: "Amoxillin" },
     ]);
+    const newMedicine = useSelector(state => state.medicineReducer?.newMedicine);
+    const imageUri = useSelector(state => state.imageReducer?.imageUri); 
     const [userAddedMedicines, setUserAddedMedicines] = useState([]);
-    const { recognizedTexts, loading, error } = useSelector((state) => state.imageRecognitionGetReducer);
-    const navigation = useNavigation();
+    const { recognizedTexts = [], loading, error } = useSelector((state) => state.imageRecognitionGetReducer);
 
+    useEffect(() => {
+        // redux dispatch to fetch medicines from backend
+        dispatch(listPrescriptionsActionCreator());
+    }, [dispatch]);
 
     useEffect(() => {
         if (newMedicine) {
@@ -54,32 +61,38 @@ const DoctorMedicine = ({ route }) => {
     // To analyze image when component mounts
     useEffect(() => {
         if (imageUri) {
-          dispatch(analyzeImage(imageUri));
+            dispatch(analyzeImage(imageUri));
         }
-    }, [dispatch, imageUri]);   
-    
-    useEffect(() => {
-        if (recognizedTexts.length === 0 && !loading && !error) {
-          Alert.alert('No text detected.');
-        }
-      }, [recognizedTexts, loading, error]);      
+    }, [dispatch, imageUri]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            return () => {
+                dispatch(clearNewMedicine());
+            };
+        }, [dispatch])
+    );
 
     // Function to handle deletion of a medicine item
     const handleDelete = (id) => {
         setMedicineItems(currentItems => currentItems.filter(item => item.id !== id));
         setUserAddedMedicines(currentItems => currentItems.filter(item => item.id !== id));
+        dispatch(clearNewMedicine()); 
     };
 
     // Function to normalize text by removing special characters and converting to lowercase
     const normalizeText = (text) => {
         return text.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase();
     };
-    const normalizedRecognizedText = recognizedTexts.map(text => normalizeText(text));
+
+    //  mappingp recognizedTexts
+    const normalizedRecognizedText = Array.isArray(recognizedTexts) ? recognizedTexts.map(text => normalizeText(text)) : [];
 
     // Filtering medicines that match recognized text
     const matchedMedicines = medicineItems.filter(item =>
         normalizedRecognizedText.some(text => text.includes(normalizeText(item.name)))
     );
+
     const allMedicines = [...matchedMedicines, ...userAddedMedicines];
 
     // Function to format days with commas or "All" if all days are selected
@@ -93,106 +106,57 @@ const DoctorMedicine = ({ route }) => {
     console.log('Matched Medicines:', matchedMedicines);
     const isDetailsComplete = (item) => item.period && item.days && item.meals && item.startDate && item.endDate;
     const isSubmitEnabled = allMedicines.every(item => item.period && item.days && item.meals && item.startDate && item.endDate);
-    const SubmitButton = (isEnabled) => ({
-        backgroundColor: isEnabled ? customTheme.colors.primary : customTheme.colors.primary,
-        opacity: isEnabled ? 1 : 0.5,
-        cursor: isEnabled ? 'pointer' : 'not-allowed'
-    });
+
+    const handleSubmit = async () => {
+        if (isSubmitEnabled) {
+            const prescriptions = allMedicines.map(medicine => ({
+                medicineName: medicine.name,
+                type: medicine.type,
+                dosage: medicine.period,
+                days: Array.from(medicine.days).join(', '),
+                dosageQuantity: JSON.stringify(medicine.meals),
+                startDate: medicine.startDate,
+                endDate: medicine.endDate,
+                doctorID: '5', // Update the doctor ID
+                patientID: '5' // Update the patient ID
+            }));
+
+            try {
+                await Promise.all(prescriptions.map(prescription =>
+                    dispatch(createPrescriptionActionCreator(prescription))
+                ));
+                alert('Prescriptions sent to Patient');
+                dispatch(clearImageUri()); // Clearing the image URI after submission
+                dispatch(clearNewMedicine()); // clearing the medicine list after submission
+                navigation.navigate('doctorMedicine');
+            } catch (error) {
+                console.error('Error creating prescriptions:', error);
+                Sentry.captureException(error);
+                alert('Error creating prescriptions');
+            }
+        }
+    };
 
     return (
         <ScreenContainer>
             {loading ? (
-                <View className="flex-1 items-center justify-center">
-                    <ActivityIndicator size="large" color={customTheme.colors.primary} />
-                </View>
+                <Loader/>
             ) : allMedicines.length > 0 ? (
-                <ScrollView className="bg-light flex-1 mb-20">
+                <ScrollView className="flex-1 mb-20">
                     <View className="flex-row items-center justify-between m-2">
                         <Text className="flex-1 text-xl font-[appfont-semi]">
                             List of medicines
                         </Text>
                     </View>
-                    <View className="bg-light">
-
+                    <View>
                         {allMedicines.map((item) => (
-                            <View key={item.id} className="p-3 border-b border-darkSecondary">
-                                <View className="flex-row items-center justify-between">
-                                    <View className="flex-row items-center">
-                                        <Image
-                                            className="h-12 w-12 rounded-full"
-                                            source={require("../../assets/wellness_product.jpeg")}
-                                        />
-                                        <View className="ml-4">
-                                            <Text className="text-lg font-[appfont-semi]">
-                                                {item.name}
-                                            </Text>
-                                        </View>
-                                    </View>
-                                    <View className="flex-row">
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                navigation.navigate('doctorPrescription', { selectedMedicine: item })
-                                            }}
-                                            className="p-2"
-                                        >
-                                            <Ionicons
-                                                name="pencil"
-                                                style={{ color: customTheme.colors.primary }}
-                                                size={24}
-                                            />
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={() => handleDelete(item.id)}
-                                            className="p-2"
-                                        >
-                                            <Ionicons
-                                                name="trash"
-                                                style={{ color: customTheme.colors.primary }}
-                                                size={24}
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-
-                                <CollapsibleItem titleComponent={
-                                    <Text className={`text-sm font-[appfont-semi] ${isDetailsComplete(item) ? 'text-dark' : 'text-primary'}`}>
-                                        {isDetailsComplete(item) ? "Dosage Details" : "Dosage Details Missing"}
-                                    </Text>
-                                }>
-                                    <Text className="text-sm font-[appfont-semi] text-dark">
-                                        {formatDays(item.days)}
-                                    </Text>
-                                    <Text className="text-sm font-[appfont-semi] text-dark">
-                                        {item.period || "Period not specified"}
-                                    </Text>
-                                    {item.meals && Object.keys(item.meals).length > 0 ? (
-                                        <Text className="text-sm font-[appfont-semi] text-dark">
-                                            {Object.entries(item.meals).map(([meal, dosage], index) => (
-                                                `${meal} - ${dosage}`
-                                            )).join("\n")}
-                                        </Text>
-                                    ) : (
-                                        <Text className="text-sm font-[appfont-semi] text-dark">
-                                            Dosage not specified
-                                        </Text>
-                                    )}
-                                    <Text className="text-sm font-[appfont-semi] text-dark">
-                                        {`Start Date: ${item.startDate ? moment(item.startDate).format('MMMM D, YYYY') : 'not specified'}`}
-                                    </Text>
-                                    <Text className="text-sm font-[appfont-semi] text-dark">
-                                        {`End Date: ${item.endDate ? moment(item.endDate).format('MMMM D, YYYY') : 'not specified'}`}
-                                    </Text>
-                                    {item.note ? (
-                                        <Text className="text-sm font-[appfont-semi] text-dark">
-                                            Note: {item.note}
-                                        </Text>
-                                    ) : (
-                                        <Text className="text-sm font-[appfont-semi] text-dark">
-                                            Notes not specified
-                                        </Text>
-                                    )}
-                                </CollapsibleItem>
-                            </View>
+                            <MedicineItem
+                                key={item.id}
+                                item={item}
+                                handleDelete={handleDelete}
+                                isDetailsComplete={isDetailsComplete}
+                                formatDays={formatDays}
+                            />
                         ))}
                     </View>
                 </ScrollView>
@@ -203,39 +167,31 @@ const DoctorMedicine = ({ route }) => {
                     </Text>
                 </View>
             )}
-            <View className="absolute bottom-0 left-0 right-0 flex-row justify-between py-3 bg-white">
-                {allMedicines.length > 0 ? (
-                    <>
-                        <TouchableOpacity
-                            className="flex-1 m-1 mx-5 py-4 rounded-lg flex-row justify-center items-center mr-2 bg-lightPrimary"
+
+            {allMedicines.length > 0 ? (
+                <View className="flex-row space-x-3">
+                    <View className="flex-1">
+                        <AppButton
+                            btnLabel="Add more"
                             onPress={() => navigation.navigate('doctorPrescription')}
-                        >
-                            <Text className=" ml-2 font-[appfont-semi] text-light">
-                                Add more
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => alert('Prescription has been sent to the patient and pharmacy')}
-                            className="flex-1 m-1 mx-5 py-3 rounded-lg flex-row justify-center items-center bg-primary"
-                            style={SubmitButton(isSubmitEnabled)}
-                            disabled={!isSubmitEnabled}
-                        >
-                            <Text className="text-center text-lg font-[appfont-semi] text-light">
-                                Submit
-                            </Text>
-                        </TouchableOpacity>
-                    </>
-                ) : (
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('doctorPrescription')}
-                        className="flex-1 m-1 mx-5 py-3 rounded-lg flex-row justify-center items-center bg-primary"
-                    >
-                        <Text className="text-center text-lg font-[appfont-semi] text-light">
-                            Add Medicine
-                        </Text>
-                    </TouchableOpacity>
-                )}
-            </View>
+                            variant="light"
+                        />
+                    </View>
+                    <View className="flex-1">
+                        <AppButton
+                            btnLabel="Submit"
+                            onPress={handleSubmit}
+                            variant={isSubmitEnabled ? "primary" : "disabled"}
+                        />
+                    </View>
+                </View>
+            ) : (
+                <AppButton
+                    btnLabel="Add Medicine"
+                    onPress={() => navigation.navigate('doctorPrescription')}
+                    variant="primary"
+                />
+            )}
         </ScreenContainer>
     );
 };

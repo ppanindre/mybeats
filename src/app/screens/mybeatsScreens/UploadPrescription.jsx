@@ -4,8 +4,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { launchImageLibrary } from 'react-native-image-picker';
 import CameraView from './CameraView';
 import { useNavigation } from '@react-navigation/native';
-import { customTheme } from '../../../../constants/themeConstants';
 import ScreenContainer from '../../components/Containers/ScreenContainer';
+import { useDispatch } from 'react-redux';
+import { setImageUri, clearImageUri } from '../../../../store/actions/imageActions';
+import { theme } from '../../../../tailwind.config';
+import AppButton from '../../components/Buttons/AppButton';
 
 // Items array
 const checklistItems = [
@@ -17,13 +20,10 @@ const checklistItems = [
 ];
 
 const UploadPrescription = () => {
+    const dispatch = useDispatch();
 
     const [showCamera, setShowCamera] = useState(false);
     const navigation = useNavigation();
-    const handleCapture = (uri) => {
-        setSelectedImage({ uri });
-        setShowCamera(false);
-    };
 
     const [selectedImage, setSelectedImage] = useState(null);
 
@@ -41,6 +41,7 @@ const UploadPrescription = () => {
             } else {
                 const source = { uri: response.assets[0].uri };
                 setSelectedImage(source);
+                dispatch(setImageUri(source.uri));
             }
         });
     };
@@ -56,7 +57,7 @@ const UploadPrescription = () => {
     return (
         <ScreenContainer>
             <ScrollView>
-                <View className="bg-white">
+                <View className="space-y-5">
                     <View className="relative rounded-lg p-5 mx-10 max-w-xs min-h-lg shadow-lg bg-primary">
                         <View className="absolute top-0 right-0 w-16 h-16 transform rotate-115  translate-x-8 -translate-y-8 z-0"></View>
                         <View style={{
@@ -72,15 +73,15 @@ const UploadPrescription = () => {
                             borderLeftWidth: 35,
                             borderTopWidth: 34,
                             borderLeftColor: 'transparent',
-                            borderTopColor: customTheme.colors.lightPrimary,
+                            borderTopColor: theme.colors.lightPrimary,
                             transform: [{ translateX: 5 }, { translateY: -10 }, { rotate: '180deg' }],
                         }} />
 
-                        <Text className="text-white font-[appfont-bold] text-lg mb-4 z-20">Requirements</Text>
+                        <Text className="text-white font-[appfont-bold] text-lg  z-20">Requirements</Text>
 
                         {checklistItems.map((item, index) => (
                             <View key={index} className="flex-row items-center mb-2 z-20">
-                                <Ionicons name="checkmark-circle" size={24} style={{ color: customTheme.colors.light }} />
+                                <Ionicons name="checkmark-circle" size={24} style={{ color: theme.colors.light }} />
                                 <Text className="text-white font-[appfont-semi] pl-2">{item}</Text>
                             </View>
                         ))}
@@ -88,10 +89,10 @@ const UploadPrescription = () => {
                     </View>
                 </View>
 
-                <View className="bg-white p-6 rounded-2xl">
+                <View className="p-6 rounded-2xl">
 
                     {/* Upload file section */}
-                    <View className="m-4 mt-1 p-2 border-dashed border-2 rounded-lg flex justify-center items-center h-[320px] border-primary"
+                    <View className="m-4 p-2 border-dashed border-2 rounded-lg flex justify-center items-center h-[320px] border-primary"
                     >
                         {selectedImage ? (
                             <>
@@ -103,41 +104,53 @@ const UploadPrescription = () => {
                             </>
                         ) : (
                             <>
-                                <Ionicons name="document-attach" size={30} style={{ color: customTheme.colors.primary }} />
+                                <Ionicons name="document-attach" size={30} style={{ color: theme.colors.primary }} />
                                 <Text className="font-[appfont-bold] mt-2 text-primary">Upload file here</Text>
                             </>
                         )}
                     </View>
 
                     {selectedImage ? (
-                        <View className="flex-row justify-between mb-5 space-x-3">
-                            <TouchableOpacity className="flex flex-row text-white text-sm py-4 px-14 rounded-lg items-center bg-lightPrimary"
-                                onPress={() => setSelectedImage(null)}
-                            >
-                                <Text className="ml-2 font-[appfont-bold] text-light">Cancel</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity className="flex flex-row text-sm px-14 rounded-lg items-center bg-primary"
-                                //  onPress={() => navigation.navigate('ImageAnalyzeDisplay', { imageUri: selectedImage.uri })}
-                                onPress={() => navigation.navigate('doctorMedicine', { imageUri: selectedImage.uri })}
-                            >
-                                <Text className="ml-2 font-[appfont-bold] text-light">Analyze</Text>
-                            </TouchableOpacity>
+                        <View className="flex-row justify-between space-x-3">
+                            <View className="flex-1">
+                                <AppButton
+                                    btnLabel="Cancel"
+                                    onPress={() => {
+                                        setSelectedImage(null);
+                                        dispatch(clearImageUri());
+                                    }}
+                                    variant="light"
+                                />
+                            </View>
+                            <View className="flex-1">
+                                <AppButton
+                                    btnLabel="Analyze"
+                                    onPress={() => navigation.navigate('doctorMedicine')}
+                                    variant="primary"
+                                />
+                            </View>
                         </View>
-
                     ) : (
-                        <View className="flex-row justify-around space-x-5">
-                            <TouchableOpacity className="flex flex-row text-white text-sm py-4 px-11 rounded-lg items-center bg-lightPrimary"
-                                onPress={() => setShowCamera(true)} >
-                                <Ionicons name="camera" size={20} style={{ color: customTheme.colors.light }} />
-                                <Text className="ml-2 font-semibold text-light">Camera</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity className="flex flex-row text-white text-sm py-4 px-11 rounded-lg items-center bg-primary"
-                                onPress={pickImageFromLibrary}>
-                                <Ionicons name="images" size={20} style={{ color: customTheme.colors.light }} />
-                                <Text className="ml-2 font-semibold text-light">Gallery</Text>
-                            </TouchableOpacity>
+                        <View className="flex-row justify-around space-x-3">
+                            <View className="flex-1">
+                                <AppButton
+                                    btnLabel="Camera"
+                                    onPress={() => setShowCamera(true)}
+                                    variant="light"
+                                    btnLeftIcon={<Ionicons name="camera" size={20} style={{ color: theme.colors.lightPrimary }} />}
+                                />
+                            </View>
+                            <View className="flex-1">
+                                <AppButton
+                                    btnLabel="Gallery"
+                                    onPress={pickImageFromLibrary}
+                                    variant="primary"
+                                    btnLeftIcon={<Ionicons name="images" size={20} style={{ color: theme.colors.light }} />}
+                                />
+                            </View>
                         </View>
                     )}
+
                 </View>
             </ScrollView>
         </ScreenContainer>

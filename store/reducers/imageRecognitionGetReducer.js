@@ -1,16 +1,10 @@
 import {
     IMAGE_RECOGNITION_GET_REQUEST,
     IMAGE_RECOGNITION_GET_SUCCESS,
-    IMAGE_RECOGNITION_GET_FAILURE
+    IMAGE_RECOGNITION_GET_FAILURE,
 } from '../types/imageRecognitionActionTypes';
 
-const initialState = {
-    loading: false,
-    recognizedTexts: [],
-    error: null,
-};
-
-const imageRecognitionGetReducer = (state = initialState, action) => {
+const imageRecognitionGetReducer = (state = {}, action) => {
     switch (action.type) {
         case IMAGE_RECOGNITION_GET_REQUEST:
             return {

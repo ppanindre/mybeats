@@ -4,9 +4,9 @@ import { CheckBox } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
 import { Calendar } from 'react-native-calendars';
-import MultiLineInput from '../src/app/components/Inputs/MultiLineInput';
-import DatePicker from './DatePicker';
-import { customTheme } from '../constants/themeConstants';
+import MultiLineInput from '../Inputs/MultiLineInput';
+import DatePicker from '../../../../components/DatePicker';
+import { customTheme } from '../../../../constants/themeConstants';
 const MedicineSelector = ({
     searchInput, setSearchInput, // Props for search input state
     selectedMedicine, setSelectedMedicine, // Props for selected medicine state
