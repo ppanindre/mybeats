@@ -1,29 +1,15 @@
 import {
     IMAGE_RECOGNITION_GET_REQUEST,
     IMAGE_RECOGNITION_GET_SUCCESS,
-    IMAGE_RECOGNITION_GET_FAILURE
+    IMAGE_RECOGNITION_GET_FAILURE,
 } from '../types/imageRecognitionActionTypes';
 import axios from 'axios';
 import * as FileSystem from 'expo-file-system';
 
 const apiKey = 'AIzaSyC1hiS3sXkvQPqEodYESWOLBYkUsyR8Tv4'; // Google Vision API key
 
-export const imageRecognitionGetRequest = () => ({
-    type: IMAGE_RECOGNITION_GET_REQUEST,
-});
-
-export const imageRecognitionGetSuccess = (recognizedTexts) => ({
-    type: IMAGE_RECOGNITION_GET_SUCCESS,
-    payload: recognizedTexts,
-});
-
-export const imageRecognitionGetFailure = (error) => ({
-    type: IMAGE_RECOGNITION_GET_FAILURE,
-    payload: error,
-});
-
 export const analyzeImage = (imageUri) => async (dispatch) => {
-    dispatch(imageRecognitionGetRequest());
+    dispatch({ type: IMAGE_RECOGNITION_GET_REQUEST });
 
     try {
         const base64ImageData = await FileSystem.readAsStringAsync(imageUri, {
@@ -43,11 +29,20 @@ export const analyzeImage = (imageUri) => async (dispatch) => {
 
         if (response.data.responses[0].textAnnotations) {
             const recognizedTexts = response.data.responses[0].textAnnotations.map(annotation => annotation.description);
-            dispatch(imageRecognitionGetSuccess(recognizedTexts));
+            dispatch({
+                type: IMAGE_RECOGNITION_GET_SUCCESS,
+                payload: recognizedTexts,
+            });
         } else {
-            dispatch(imageRecognitionGetFailure('No text detected.'));
+            dispatch({
+                type: IMAGE_RECOGNITION_GET_FAILURE,
+                payload: 'No text detected.',
+            });
         }
     } catch (error) {
-        dispatch(imageRecognitionGetFailure(`Error analyzing image: ${error.message}`));
+        dispatch({
+            type: IMAGE_RECOGNITION_GET_FAILURE,
+            payload: `Error analyzing image: ${error.message}`,
+        });
     }
 };

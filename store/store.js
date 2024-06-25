@@ -38,6 +38,13 @@ import {
 } from "./reducers/appointmentReducers";
 import geocodingGetReducer from "./reducers/geocodingGetReducer";
 import imageRecognitionGetReducer from "./reducers/imageRecognitionGetReducer";
+import {
+  prescriptionCreateReducer,
+  prescriptionGetReducer,
+  prescriptionListReducer
+} from "./reducers/prescriptionReducers"
+import imageReducer from "./reducers/imageReducer";
+import medicineReducer from "./reducers/medicineReducer";
 
 
 // Combining every reducer
@@ -55,6 +62,8 @@ const reducers = combineReducers({
     imageRecognitionGetReducer: imageRecognitionGetReducer,
     PatientReducer,
     DoctorReducer,
+    imageReducer,
+    medicineReducer,
     patientCreateReducer: patientCreateReducer,
     patientUpdateReducer: patientUpdateReducer,
     patientGetReducer: patientGetReducer,
@@ -70,6 +79,9 @@ const reducers = combineReducers({
     availabilityDeleteReducer: availabilityDeleteReducer,
     availabilityExistsReducer: availabilityExistsReducer,
     availabilitiesDeleteReducer: availabilitiesDeleteReducer,
+    prescriptionCreate: prescriptionCreateReducer,
+    prescriptionGet: prescriptionGetReducer,
+    prescriptionList: prescriptionListReducer,
 });
 
 // Redux store containing reducers and the middleware

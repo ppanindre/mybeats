@@ -6,10 +6,13 @@ import { Ionicons } from '@expo/vector-icons';
 import Modal from 'react-native-modal';
 import { useNavigation } from "@react-navigation/native";
 import { Calendar } from 'react-native-calendars';
-import MedicineSelector from '../../../../components/MedicineSelector';
+import MedicineSelector from '../../components/UploadPrescriptionComponents/MedicineSelector';
+import { setNewMedicine } from '../../../../store/actions/medicineActions';
+import { useDispatch } from 'react-redux';
 
 const DoctorPrescription = ({ route }) => {
     const navigation = useNavigation()
+    const dispatch = useDispatch();
     const { selectedMedicine: initialSelectedMedicine } = route.params || {};
     const [searchInput, setSearchInput] = useState('');
     const [selectedPeriod, setSelectedPeriod] = useState(null);
@@ -111,7 +114,8 @@ const DoctorPrescription = ({ route }) => {
                 startDate,
                 endDate,
             };
-            navigation.navigate('doctorMedicine', { newMedicine });
+            dispatch(setNewMedicine(newMedicine));  
+            navigation.navigate('doctorMedicine');
         }
     };
 

@@ -3,7 +3,7 @@ import { View, Keyboard } from "react-native";
 import { TextInput } from "react-native-paper";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
-import { customTheme } from "../constants/themeConstants";
+import { customTheme } from "../../../../constants/themeConstants";
 
 const PrescriptionDatepicker = ({ label, currVal, onConfirm, minDate }) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
