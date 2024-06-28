@@ -44,6 +44,7 @@ export const mybeatsStackConfig = {
             headerTitle: "Search Doctors",
             name: "searchDoctors",
             component: SearchDoctors,
+            showHeader: false,
         },
         {
             headerTitle: "Search Medicines",

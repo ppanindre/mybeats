@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, TextInput } from "react-native";
 import { customTheme } from "../../constants/themeConstants";
 
-const TextInputBoxWithIcon = ({ placeholder, icon, onFocus, onChangeText }) => {
+const TextInputBoxWithIcon = ({ placeholder, icon, onFocus, onChangeText, onSubmitEditing }) => {
     // STATES
     const [isFocused, setIsFocused] = useState(false); // is focused state
 
@@ -33,6 +33,8 @@ const TextInputBoxWithIcon = ({ placeholder, icon, onFocus, onChangeText }) => {
                 onFocus={handleOnFocus}
                 onBlur={() => setIsFocused(false)}
                 placeholder={placeholder}
+                onSubmitEditing={onSubmitEditing}
+                returnKeyType="search"
                 className="flex-1 font-[appfont] mx-2"
             />
         </View>

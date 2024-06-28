@@ -1,136 +1,158 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
-
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 import CustomSafeView from "../../../../components/CustomSafeView";
 import TextInputBoxWithIcon from "../../../../components/Utilities/TextInputBoxWithIcon";
-import { customTheme } from "../../../../constants/themeConstants";
-import { useNavigation } from "@react-navigation/native";
 import DoctorCard from "../../../../components/Cards/DoctorCard";
-import { doctorData } from "../../../../constants/doctorConstants";
-
-const recommendationsData = [
-    {
-        id: "1",
-        name: "John Doe",
-        specialization: "Cardiology",
-        hospital: "Southern California Hospital",
-        zipcode: "12345",
-        rating: 4.8,
-        experience: 5,
-    },
-    {
-        id: "2",
-        name: "Jane Smith",
-        specialization: "Neurology",
-        hospital: "Northern California Hospital",
-        zipcode: "67890",
-        rating: 4.5,
-        experience: 2,
-    },
-    {
-        id: "3",
-        name: "Jane Doe",
-        hospital: "New York Hospital",
-        specialization: "Neurology",
-        zipcode: "67390",
-        rating: 3.1,
-        experience: 3,
-    },
-];
+import { listDoctorsActionCreator } from "../../../../store/actions/doctorActions";
+import { theme } from "../../../../tailwind.config";
+import DoctorFilters from "../../components/PatientDashboardComponents/DoctorFilters";
 
 const SearchDoctors = () => {
-    // STATES
-    const [results, setResults] = useState([]); // set the search results here
-    const [searchRecommendations, setSearchRecommendations] =
-        useState(recommendationsData); // set search recommendations
+    const [searchInput, setSearchInput] = useState("");
+    const [results, setResults] = useState([]);
+    const [originalResults, setOriginalResults] = useState([]);
+    const [searchRecommendations, setSearchRecommendations] = useState([]);
+    const [searchText, setSearchText] = useState("");
+    const [isFilterModalVisible, setFilterModalVisible] = useState(false);
+    const [selectedFilters, setSelectedFilters] = useState({
+        experience: false,
+        videoConsultation: false,
+        inPerson: false,
+        distance: false,
+        ratings: false
+    });
 
-    // Declare navigation instance
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
-    const handleSearchInput = (searchInput) => {
-        setResults([]);
-        // Convert the search input to lower case
-        const lowerCaseSearchInput = searchInput.toLowerCase();
+    const { doctors } = useSelector((state) => state.doctorsListReducer);
 
-        // Filter the dummy data to match any attribute
-        const filteredData = recommendationsData.filter((doctor) => {
-            return (
-                doctor.name.toLowerCase().includes(lowerCaseSearchInput) ||
-                doctor.specialization
-                    .toLowerCase()
-                    .includes(lowerCaseSearchInput) ||
-                doctor.pinCode == searchInput
-            );
+    useEffect(() => {
+        dispatch(listDoctorsActionCreator());
+    }, [dispatch]);
 
-            // set the filtered results
-        });
-        setSearchRecommendations(filteredData);
-    };
+    useEffect(() => {
+        if (doctors) {
+            setSearchRecommendations(doctors.slice(0, 5)); // searcy recommendations to 5 
+        }
+    }, [doctors]);
 
-    // Function to display result search
-    const displayResult = (query) => {
-        const filteredData = doctorData.filter((doctor) => {
-            return (
-                doctor.name.toLowerCase().includes(query.name) ||
-                doctor.specialization.includes(query.specialization)
-            );
-        });
-
-        setSearchRecommendations([]);
-
+    const handleDoctorSelect = (doctor) => {
+        const filteredData = [doctor];
         setResults(filteredData);
+        setOriginalResults(filteredData);
+        setSearchText(`${doctor.firstname} ${doctor.lastname}`);
+        setSearchRecommendations([]);
     };
 
-    console.log("results", results);
+    const handleSearchInput = (input) => {
+        setSearchInput(input);
+        setResults([]);
+        setOriginalResults([]);
+        setSelectedFilters({
+            experience: false,
+            videoConsultation: false,
+            inPerson: false,
+            distance: false,
+            ratings: false
+        }); // to reset filters if user starts typing
+
+        if (input) {
+            const lowerCaseSearchInput = input.toLowerCase();
+            const filteredData = doctors.filter((doctor) => {
+                const fullName = `${doctor.firstname ?? ""} ${doctor.lastname ?? ""}`.toLowerCase();
+                const zipcode = doctor.zipcode ? doctor.zipcode.toLowerCase() : "";
+                const secondarySpecialization = doctor.secondarySpecialization ? doctor.secondarySpecialization.toLowerCase() : "";
+                return fullName.includes(lowerCaseSearchInput) || zipcode.includes(lowerCaseSearchInput) || secondarySpecialization.includes(lowerCaseSearchInput);
+            });
+            console.log("Filtered Recommendations:", filteredData.slice(0, 5));
+            setSearchRecommendations(filteredData.slice(0, 5)); 
+        } else {
+            setSearchRecommendations([]);
+        }
+    };
+
+    const handleSearchSubmit = () => {
+        const lowerCaseSearchInput = searchInput.toLowerCase();
+        const filteredData = doctors.filter((doctor) => {
+            const fullName = `${doctor.firstname ?? ""} ${doctor.lastname ?? ""}`.toLowerCase();
+            const zipcode = doctor.zipcode ? doctor.zipcode.toLowerCase() : "";
+            const secondarySpecialization = doctor.secondarySpecialization ? doctor.secondarySpecialization.toLowerCase() : "";
+            return fullName.includes(lowerCaseSearchInput) || zipcode.includes(lowerCaseSearchInput) || secondarySpecialization.includes(lowerCaseSearchInput);
+        });
+        setResults(filteredData);
+        setOriginalResults(filteredData);  // Storing the original search results
+        setSearchRecommendations([]);
+        setSearchText(searchInput);
+    };
+
+    const parseExperience = (experience) => {
+        const match = experience.match(/(\d+)/);
+        return match ? parseInt(match[0], 10) : 0;
+    };
+
+    const handleApplyFilters = (filters) => {
+        let filteredData = [...originalResults];  // maintaing original results state and applying filter for thatr 
+        // since experience is in string, parsing it so that filter could be applied 
+        if (filters.experience) {
+            filteredData = filteredData.sort((a, b) => parseExperience(b.experience) - parseExperience(a.experience));
+        }
+        if (filters.videoConsultation) {
+            filteredData = filteredData.filter(doctor => doctor.availableForVideoConsultation);
+        }
+        if (filters.inPerson) {
+            filteredData = filteredData.filter(doctor => !doctor.availableForVideoConsultation || doctor.availableForVideoConsultation);
+        }
+        setResults(filteredData);
+        setFilterModalVisible(false);
+    };
 
     return (
         <CustomSafeView>
-            {/* Header */}
-            <View className="relative px-5 pb-3 flex-row items-center space-x-3 border-b border-gray-300">
-                {/* Go back button */}
+            <View className="relative px-5 pb-3 flex-row items-center space-x-3 border-b border-darkSecondary">
                 <View>
                     <TouchableOpacity onPress={() => navigation.goBack()}>
                         <Ionicons
-                            color={customTheme.colors.dark}
+                            color={theme.colors.dark}
                             name="arrow-back"
                             size={24}
                         />
                     </TouchableOpacity>
                 </View>
 
-                {/* Search Input Box */}
                 <View className="h-[50] flex-1">
                     <TextInputBoxWithIcon
-                        onChangeText={(searchInput) =>
-                            handleSearchInput(searchInput)
-                        }
+                        onChangeText={handleSearchInput}
+                        value={searchInput}
                         placeholder="Search Doctor, Condition, Pincode"
+                        onSubmitEditing={handleSearchSubmit}
                     />
                 </View>
             </View>
 
-            {/* View to render the searched items */}
-            <ScrollView className="py-5 h-[100%] bg-gray-100">
-                {/* Dropdown */}
-                {recommendationsData.length > 0 && (
+            <ScrollView className="py-5 h-[100%]">
+                {searchRecommendations.length > 0 && (
                     <View className="px-4">
-                        <View className="bg-white rounded-lg shadow-lg">
+                        <View className="rounded-lg shadow-lg space-y-3">
                             {searchRecommendations.map((recommendation) => (
-                                <View className="p-4 border-b border-gray-100">
+                                <View
+                                    key={recommendation.doctorID}
+                                    className="p-4 border-b border-darkSecondary"
+                                >
                                     <TouchableOpacity
-                                        onPress={() =>
-                                            displayResult(recommendation)
-                                        }
+                                        onPress={() => handleDoctorSelect(recommendation)}
                                     >
                                         <View className="flex-row items-center space-x-3">
                                             <Ionicons
                                                 size={16}
                                                 name="search-outline"
-                                                color={customTheme.colors.dark}
+                                                color={theme.colors.dark}
                                             />
                                             <Text className="font-[appfont]">
-                                                {recommendation.name}
+                                                {`${recommendation.firstname} ${recommendation.lastname}`}
                                             </Text>
                                         </View>
                                     </TouchableOpacity>
@@ -141,23 +163,44 @@ const SearchDoctors = () => {
                 )}
                 {results.length > 0 && (
                     <View className="space-y-3 px-4">
-                        {results.length > 0 &&
-                            results.map((doctor) => (
-                                <View>
-                                    <DoctorCard
-                                        doctorName={doctor.name}
-                                        doctorHospital={doctor.hospital}
-                                        doctorRating={doctor.rating}
-                                        doctorExperience={doctor.experience}
-                                        doctorSpecialist={doctor.specialization}
-                                    />
-                                </View>
-                            ))}
+                        <View className="flex-row items-center justify-between">
+                            <Text className="font-[appfont-bold] text-lg">Results for "{searchText}"</Text>
+                            <TouchableOpacity onPress={() => setFilterModalVisible(true)}>
+                                <Ionicons
+                                    size={20}
+                                    name="filter"
+                                    color={theme.colors.primary}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        {results.map((doctor) => (
+                            <TouchableOpacity
+                                key={doctor.doctorID}
+                                onPress={() => handleDoctorSelect(doctor)}
+                            >
+                                <DoctorCard
+                                    doctorName={`${doctor.firstname ?? ""} ${doctor.lastname ?? ""}`}
+                                    doctorSpecialist={doctor.secondarySpecialization || "No specialization"}
+                                    doctorRating={doctor.rating}
+                                    doctorExperience={doctor.experience}
+                                    doctoravailableforVideoConsultation={doctor.availableForVideoConsultation}
+                                />
+                            </TouchableOpacity>
+                        ))}
                     </View>
                 )}
             </ScrollView>
+
+            <DoctorFilters
+                isVisible={isFilterModalVisible}
+                onClose={() => setFilterModalVisible(false)}
+                onApply={handleApplyFilters}
+                selectedFilters={selectedFilters}
+                setSelectedFilters={setSelectedFilters}
+            />
         </CustomSafeView>
     );
 };
 
 export default SearchDoctors;
+
