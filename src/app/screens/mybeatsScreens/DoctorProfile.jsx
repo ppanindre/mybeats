@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DoctorProfileForm1 from "../../components/Forms/DoctorProfileForms/DoctorProfileForm1";
 import DoctorProfileForm2 from "../../components/Forms/DoctorProfileForms/DoctorProfileForm2";
 import DoctorProfileForm3 from "../../components/Forms/DoctorProfileForms/DoctorProfileForm3";
@@ -10,7 +10,7 @@ import {
     updateDoctorActionCreator,
 } from "../../../../store/actions/doctorActions";
 import getImageData from "../../utils/getImageData";
-import { uploadData } from "aws-amplify/storage";
+import { uploadData, getUrl } from "aws-amplify/storage";
 
 function DoctorProfile() {
     const { loading, doctor, error } = useSelector(
@@ -78,6 +78,8 @@ function DoctorProfile() {
     if (loading) {
         return <Loader />;
     }
+
+    
 
     return (
         <ScreenContainer>

@@ -1,5 +1,5 @@
 import { ScrollView, View } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -11,6 +11,7 @@ import FormInput from "../../Inputs/FormInput";
 import PhoneInput from "../../Inputs/PhoneInput";
 import AppButton from "../../Buttons/AppButton";
 import { useSelector } from "react-redux";
+import { downloadData, getUrl } from "aws-amplify/storage";
 
 // Form Schema for validation
 const formSchema = z.object({
@@ -56,6 +57,31 @@ const DoctorProfileForm1 = ({ handlePressNext, initialData }) => {
         resolver: zodResolver(formSchema),
     });
 
+    const convertBlobToBase64 = (blob) =>
+        new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onerror = reject;
+            reader.onload = () => {
+                resolve(reader.result);
+            };
+            reader.readAsDataURL(blob);
+        });
+
+    const getUrlForImage = async () => {
+        const downloadResult = await downloadData({
+            key: "album/2024/1.jpg",
+        }).result;
+
+        const imageBlob = await downloadResult.body.blob();
+
+        const base64Data = await convertBlobToBase64(imageBlob);
+        setImageUri(base64Data);
+    };
+
+    useEffect(() => {
+        getUrlForImage();
+    }, []);
+
     return (
         <View className="h-[100%] space-y-5">
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -63,9 +89,7 @@ const DoctorProfileForm1 = ({ handlePressNext, initialData }) => {
                     {/* Profile Image Button */}
                     <View className="items-center">
                         <ProfileImageButton
-                            imageUri={
-                                "https://mybeats-profile-imagesefa9b-dev.s3.amazonaws.com/public/album/2024/1.jpg"
-                            }
+                            imageUri={imageUri}
                             onSelectImage={(uri) => setImageUri(uri)}
                         />
                     </View>
