@@ -41,7 +41,7 @@ const ProfileImageButton = ({imageUri, onSelectImage}) => {
                                 : require("../../assets/add-avatar.png")
                         }
                         className="h-[150] w-[150] rounded-full"
-                    />
+                    />  
                     {!imageUri && (
                         <View
                             className="absolute z-30 bg-primary rounded-md p-1"

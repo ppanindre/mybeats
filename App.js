@@ -9,7 +9,7 @@ import { Amplify} from "aws-amplify";
 import { store } from "./store/store";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import MainStack from "./src/app/configs/MainStack";
-import config from "./src/amplifyconfiguration.json";
+import amplifyConfigure from "./src/amplifyconfiguration.json";
 
 const theme = {
     ...DefaultTheme,
@@ -17,12 +17,13 @@ const theme = {
         ...DefaultTheme.colors,
         text: "#4a4a4a",
     },
-};
+}; 
 
-Amplify.configure(config);
+
 
 
 const App = () => {
+    Amplify.configure(amplifyConfigure);
     // Load Fonts
     const [fontsLoaded] = useFonts({
         appfont: require("./assets/fonts/Nunito-Regular.ttf"),

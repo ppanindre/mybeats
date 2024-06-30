@@ -29,9 +29,13 @@ const DoctorScrollView = () => {
             </View>
 
             <ScrollView showsHorizontalScrollIndicator={false} horizontal>
-                <View className="space-x-3">
+                <View className="flex-row space-x-3">
                     {doctors &&
-                        doctors.map((doctor) => <DoctorCard doctor={doctor} />)}
+                        doctors.map((doctor) => (
+                            <View>
+                                <DoctorCard doctor={doctor} />
+                            </View>
+                        ))}
                 </View>
             </ScrollView>
         </View>
