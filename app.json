@@ -2,7 +2,7 @@
   "expo": {
     "name": "mybeats",
     "slug": "mybeats",
-    "version": "0.0.2",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -17,7 +17,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.mybeats",
-      "buildNumber": "6"
+      "buildNumber": "4"
     },
     "android": {
       "adaptiveIcon": {
@@ -31,8 +31,12 @@
     },
     "extra": {
       "eas": {
-        "projectId": "2f02b1ae-f561-49e0-a1bd-12ac30cf5d68"
+        "projectId": "933d1575-8fca-4d05-8ddf-f5b38787d9d4"
       }
-    }
+    },
+    "owner": "firebeats",
+    "plugins": [
+      "expo-localization"
+    ]
   }
 }
