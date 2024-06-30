@@ -34,6 +34,9 @@
         "projectId": "93ff4e6a-debe-4cf4-960b-f5a3c9068aca"
       }
     },
-    "owner": "firebeats"
+    "owner": "firebeats",
+    "plugins": [
+      "expo-localization"
+    ]
   }
 }
