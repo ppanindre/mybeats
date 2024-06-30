@@ -17,7 +17,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.mybeats",
-      "buildNumber": "6"
+      "buildNumber": "8"
     },
     "android": {
       "adaptiveIcon": {
@@ -31,8 +31,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "2f02b1ae-f561-49e0-a1bd-12ac30cf5d68"
+        "projectId": "93ff4e6a-debe-4cf4-960b-f5a3c9068aca"
       }
-    }
+    },
+    "owner": "firebeats"
   }
 }
