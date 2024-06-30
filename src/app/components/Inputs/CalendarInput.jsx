@@ -15,7 +15,7 @@ const CalendarInput = ({ onDayPress, markedDates }) => {
     return (
         <Calendar
             minDate={getMinDate()}
-            onDayPress={onDayPress}
+            onDayPress={(date) => onDayPress(date.dateString)}
             markedDates={markedDates}
             theme={{
                 arrowColor: theme.colors.primary,

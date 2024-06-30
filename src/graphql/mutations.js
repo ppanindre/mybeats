@@ -32,6 +32,7 @@ export const createDoctor = /* GraphQL */ `
       }
       address
       city
+      state
       experience
       secondarySpecialization
       availableForVideoConsultation
@@ -40,7 +41,12 @@ export const createDoctor = /* GraphQL */ `
       awardsRecognition
       website
       zipcode
-      appointmentSlots {
+      appointments {
+        nextToken
+        startedAt
+        __typename
+      }
+      availability {
         nextToken
         startedAt
         __typename
@@ -85,6 +91,7 @@ export const updateDoctor = /* GraphQL */ `
       }
       address
       city
+      state
       experience
       secondarySpecialization
       availableForVideoConsultation
@@ -93,7 +100,12 @@ export const updateDoctor = /* GraphQL */ `
       awardsRecognition
       website
       zipcode
-      appointmentSlots {
+      appointments {
+        nextToken
+        startedAt
+        __typename
+      }
+      availability {
         nextToken
         startedAt
         __typename
@@ -138,6 +150,7 @@ export const deleteDoctor = /* GraphQL */ `
       }
       address
       city
+      state
       experience
       secondarySpecialization
       availableForVideoConsultation
@@ -146,7 +159,12 @@ export const deleteDoctor = /* GraphQL */ `
       awardsRecognition
       website
       zipcode
-      appointmentSlots {
+      appointments {
+        nextToken
+        startedAt
+        __typename
+      }
+      availability {
         nextToken
         startedAt
         __typename
@@ -239,7 +257,7 @@ export const createPatient = /* GraphQL */ `
       phoneNumber
       address
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -266,7 +284,7 @@ export const updatePatient = /* GraphQL */ `
       phoneNumber
       address
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -293,7 +311,7 @@ export const deletePatient = /* GraphQL */ `
       phoneNumber
       address
       zipcode
-      appointmentSlots {
+      appointments {
         nextToken
         startedAt
         __typename
@@ -307,17 +325,156 @@ export const deletePatient = /* GraphQL */ `
     }
   }
 `;
-export const createAppointmentSlot = /* GraphQL */ `
-  mutation CreateAppointmentSlot(
-    $input: CreateAppointmentSlotInput!
-    $condition: ModelAppointmentSlotConditionInput
+export const createAvailability = /* GraphQL */ `
+  mutation CreateAvailability(
+    $input: CreateAvailabilityInput!
+    $condition: ModelAvailabilityConditionInput
   ) {
-    createAppointmentSlot(input: $input, condition: $condition) {
+    createAvailability(input: $input, condition: $condition) {
+      id
+      doctorID
+      startTime
+      endTime
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateAvailability = /* GraphQL */ `
+  mutation UpdateAvailability(
+    $input: UpdateAvailabilityInput!
+    $condition: ModelAvailabilityConditionInput
+  ) {
+    updateAvailability(input: $input, condition: $condition) {
+      id
+      doctorID
+      startTime
+      endTime
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteAvailability = /* GraphQL */ `
+  mutation DeleteAvailability(
+    $input: DeleteAvailabilityInput!
+    $condition: ModelAvailabilityConditionInput
+  ) {
+    deleteAvailability(input: $input, condition: $condition) {
+      id
+      doctorID
+      startTime
+      endTime
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createAppointment = /* GraphQL */ `
+  mutation CreateAppointment(
+    $input: CreateAppointmentInput!
+    $condition: ModelAppointmentConditionInput
+  ) {
+    createAppointment(input: $input, condition: $condition) {
       id
       doctorID
       patientId
       startTime
       endTime
+      type
       isBooked
       doctor {
         doctorID
@@ -330,6 +487,7 @@ export const createAppointmentSlot = /* GraphQL */ `
         primarySpecializationId
         address
         city
+        state
         experience
         secondarySpecialization
         availableForVideoConsultation
@@ -369,17 +527,18 @@ export const createAppointmentSlot = /* GraphQL */ `
     }
   }
 `;
-export const updateAppointmentSlot = /* GraphQL */ `
-  mutation UpdateAppointmentSlot(
-    $input: UpdateAppointmentSlotInput!
-    $condition: ModelAppointmentSlotConditionInput
+export const updateAppointment = /* GraphQL */ `
+  mutation UpdateAppointment(
+    $input: UpdateAppointmentInput!
+    $condition: ModelAppointmentConditionInput
   ) {
-    updateAppointmentSlot(input: $input, condition: $condition) {
+    updateAppointment(input: $input, condition: $condition) {
       id
       doctorID
       patientId
       startTime
       endTime
+      type
       isBooked
       doctor {
         doctorID
@@ -392,6 +551,7 @@ export const updateAppointmentSlot = /* GraphQL */ `
         primarySpecializationId
         address
         city
+        state
         experience
         secondarySpecialization
         availableForVideoConsultation
@@ -431,17 +591,18 @@ export const updateAppointmentSlot = /* GraphQL */ `
     }
   }
 `;
-export const deleteAppointmentSlot = /* GraphQL */ `
-  mutation DeleteAppointmentSlot(
-    $input: DeleteAppointmentSlotInput!
-    $condition: ModelAppointmentSlotConditionInput
+export const deleteAppointment = /* GraphQL */ `
+  mutation DeleteAppointment(
+    $input: DeleteAppointmentInput!
+    $condition: ModelAppointmentConditionInput
   ) {
-    deleteAppointmentSlot(input: $input, condition: $condition) {
+    deleteAppointment(input: $input, condition: $condition) {
       id
       doctorID
       patientId
       startTime
       endTime
+      type
       isBooked
       doctor {
         doctorID
@@ -454,6 +615,7 @@ export const deleteAppointmentSlot = /* GraphQL */ `
         primarySpecializationId
         address
         city
+        state
         experience
         secondarySpecialization
         availableForVideoConsultation
@@ -513,6 +675,7 @@ export const createDoctorSpecialties = /* GraphQL */ `
         primarySpecializationId
         address
         city
+        state
         experience
         secondarySpecialization
         availableForVideoConsultation
@@ -567,6 +730,7 @@ export const updateDoctorSpecialties = /* GraphQL */ `
         primarySpecializationId
         address
         city
+        state
         experience
         secondarySpecialization
         availableForVideoConsultation
@@ -621,6 +785,7 @@ export const deleteDoctorSpecialties = /* GraphQL */ `
         primarySpecializationId
         address
         city
+        state
         experience
         secondarySpecialization
         availableForVideoConsultation

@@ -6,7 +6,7 @@ import AppButton from "../../Buttons/AppButton";
 import FormInput from "../../Inputs/FormInput";
 import SwitchInput from "../../Inputs/SwitchInput";
 
-const DoctorProfileForm3 = ({ handlePressSubmit, handlePressBack, initialData = {} }) => {
+const DoctorProfileForm3 = ({ handlePressSubmit, handlePressBack, initialData }) => {
     const [isAvailable, setIsAvailable] = useState(initialData.availableForVideoConsultation || false);
 
     const { control, handleSubmit, setValue, getValues } = useForm({
@@ -17,12 +17,6 @@ const DoctorProfileForm3 = ({ handlePressSubmit, handlePressBack, initialData = 
             awardsRecognition: initialData.awardsRecognition || "",
         },
     });
-
-    useEffect(() => {
-        if (initialData.availableForVideoConsultation) {
-            setIsAvailable(initialData.availableForVideoConsultation);
-        }
-    }, [initialData.availableForVideoConsultation]);
 
     const onPressSubmit = (data) => {
         const finalData = {

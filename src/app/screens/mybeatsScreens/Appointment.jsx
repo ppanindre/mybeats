@@ -2,15 +2,12 @@ import React, { Component } from "react";
 import {
     View,
     Text,
-    TextInput,
     TouchableOpacity,
     ScrollView,
     Image,
-    FlatList,
-    Dimensions,
     Alert,
 } from "react-native";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import BookingSection from "../../../../MyCharts/Components/BookingSection";
 import ActionButton from "../../../../MyCharts/Components/ActionButton";
@@ -19,10 +16,13 @@ import { customTheme } from "../../../../constants/themeConstants";
 import ScreenContainer from "../../components/Containers/ScreenContainer";
 import AppButton from "../../components/Buttons/AppButton";
 import { theme } from "../../../../tailwind.config";
-import { Flex } from "@aws-amplify/ui-react";
 import PatientStory from "../../../../components/Cards/PatientStory";
-import AvailableAppointmentsFrame from "../../components/Frames/AvailableAppointmentsFrame";
-import { doctorAvailabilityService } from "../../api/services/doctorAvailaibiityService";
+import { useDispatch, useSelector } from "react-redux";
+import ClinicAppointmentFrame from "../../components/PatientAppointmentCO/ClinicAppointmentFrame";
+import AvailableAppointmentsFrame from "../../components/PatientAppointmentCO/AvailableAppointmentsFrame";
+import { createAppointmentActionCreators } from "../../../../store/actions/appointmentActions";
+import Loader from "../../components/Utils/Loader";
+import VideoAppointmentFrame from "../../components/PatientAppointmentCO/VideoAppointmentFrame";
 
 const CollapsibleItem = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -46,12 +46,12 @@ const CollapsibleItem = ({ title, children }) => {
     );
 };
 
-export default Appointment = ({ route, navigation }) => {
+export default Appointment = ({ route }) => {
     // use amplify to fetch the doctor
 
     // dont need it
     const {
-        // id - required
+        doctor,
         name,
         specialization,
         zipcode,
@@ -67,11 +67,6 @@ export default Appointment = ({ route, navigation }) => {
         website,
     } = route.params;
     // doint need it
-
-    // State for clinic bookings
-    const [clinicDate, setClinicDate] = useState();
-    const [clinicTime, setClinicTime] = useState();
-    const [appointmentSlot, setAppointmentSlot] = useState(null);
 
     // State for video consultation bookings
     const [videoDate, setVideoDate] = useState();
@@ -96,18 +91,33 @@ export default Appointment = ({ route, navigation }) => {
         },
     ];
 
-    const handleSelectAppointmentSlot = (slot) => {
-        setAppointmentSlot(slot);
-    };
+    const { loading, error, appointment } = useSelector(
+        (state) => state.appointmentCreateReducer
+    );
+
+    const [selectedSlot, setSelectedSlot] = useState(null);
+    const [appointmentType, setAppointmentType] = useState("clinic");
+
+    const dispatch = useDispatch();
 
     const bookAppointment = async () => {
-        await doctorAvailabilityService.bookAppointmentSlot(
-            appointmentSlot.id,
-            appointmentSlot._version
+        dispatch(
+            createAppointmentActionCreators(
+                doctor.doctorID,
+                appointmentType,
+                selectedSlot
+            )
         );
 
-        Alert.alert("", "Your appointment has been booked!")
+        Alert.alert("", "Your appointment has been booked");
     };
+
+    const selectAppointmentSlot = (appointmentType, slot) => {
+        setAppointmentType(appointmentType);
+        setSelectedSlot(slot);
+    };
+
+    if (loading) return <Loader />;
 
     return (
         <ScreenContainer>
@@ -157,91 +167,36 @@ export default Appointment = ({ route, navigation }) => {
                     </View>
 
                     <View>
-                        {/* Clinic Appointment Section */}
-                        <View
-                            className="flex-row justify-between items-center bg-cyan-100 p-5 rounded-lg shadow"
-                            style={{
-                                backgroundColor: customTheme.colors.primary,
-                            }}
-                        >
-                            <View className="flex-row items-center">
-                                <Ionicons
-                                    name="business"
-                                    size={24}
-                                    style={{ color: customTheme.colors.light }}
-                                    className="bg-blue-100 p-1 rounded-full"
-                                />
-                                <Text
-                                    className="text-sm ml-2 font-[appfont-semi]"
-                                    style={{ color: customTheme.colors.light }}
-                                >
-                                    Clinic Appointment
-                                </Text>
-                            </View>
-                        </View>
+                        <ClinicAppointmentFrame />
                     </View>
 
-                    {/* Clinic Appointment Time Slots */}
                     <View>
                         <AvailableAppointmentsFrame
-                            doctorId="4"
-                            selectAppointmentSlot={handleSelectAppointmentSlot}
+                            onSelectSlot={(slot) =>
+                                selectAppointmentSlot("clinic", slot)
+                            }
+                            reset={appointmentType === "video"}
+                            doctorId={doctor.doctorID}
                         />
                     </View>
 
-                    <View>
-                        {availableForVideoConsultation && (
-                            <>
-                                <View
-                                    className="flex-row justify-between items-center mt-3  p-5 rounded-lg shadow"
-                                    style={{
-                                        backgroundColor:
-                                            customTheme.colors.lightPrimary,
-                                    }}
-                                >
-                                    <View className="flex-row items-center">
-                                        <Ionicons
-                                            name="videocam"
-                                            size={24}
-                                            style={{
-                                                color: customTheme.colors.light,
-                                            }}
-                                            className="bg-blue-100 p-1 rounded-full"
-                                        />
-                                        <Text
-                                            className="text-sm ml-2 font-[appfont-semi]"
-                                            style={{
-                                                color: customTheme.colors.light,
-                                            }}
-                                        >
-                                            Video Consultation
-                                        </Text>
-                                    </View>
-                                    <Text
-                                        className="text-lg font-[appfont-semi] text-gray-800"
-                                        style={{
-                                            color: customTheme.colors.light,
-                                        }}
-                                    >{`$${feeForVideoConsultation} Fee`}</Text>
-                                </View>
-                                <View
-                                    style={{
-                                        backgroundColor:
-                                            customTheme.colors.light,
-                                    }}
-                                    className=" p-2 rounded-lg"
-                                >
-                                    <BookingSection
-                                        type="video"
-                                        selectedDate={videoDate}
-                                        setSelectedDate={setVideoDate}
-                                        selectedTime={videoTime}
-                                        setSelectedTime={setVideoTime}
-                                    />
-                                </View>
-                            </>
-                        )}
-                    </View>
+                    {doctor.availableForVideoConsultation && (
+                        <View>
+                            <View>
+                                <VideoAppointmentFrame />
+                            </View>
+
+                            <View>
+                                <AvailableAppointmentsFrame
+                                    onSelectSlot={(slot) =>
+                                        selectAppointmentSlot("video", slot)
+                                    }
+                                    reset={appointmentType === "clinic"}
+                                    doctorId={doctor.doctorId}
+                                />
+                            </View>
+                        </View>
+                    )}
 
                     {/* Clinic Details Section */}
                     <View
@@ -320,37 +275,19 @@ export default Appointment = ({ route, navigation }) => {
                 </View>
             </ScrollView>
 
-            <View className="flex-row bg-light space-x-3">
-                {availableForVideoConsultation && (
-                    <View className="flex-1">
-                        <AppButton
-                            variant="light"
-                            btnLabel="Video"
-                            btnLeftIcon={
-                                <Ionicons
-                                    name="videocam"
-                                    size={20}
-                                    color={theme.colors.primary}
-                                />
-                            }
+            <View>
+                <AppButton
+                    onPress={bookAppointment}
+                    variant={`${selectedSlot ? "primary" : "disabled"}`}
+                    btnLabel="Book"
+                    btnLeftIcon={
+                        <Ionicons
+                            name="calendar"
+                            size={20}
+                            color={theme.colors.light}
                         />
-                    </View>
-                )}
-
-                <View className="flex-1">
-                    <AppButton
-                        onPress={bookAppointment}
-                        variant="primary"
-                        btnLabel="Book"
-                        btnLeftIcon={
-                            <Ionicons
-                                name="calendar"
-                                size={20}
-                                color={theme.colors.light}
-                            />
-                        }
-                    />
-                </View>
+                    }
+                />
             </View>
         </ScreenContainer>
     );
