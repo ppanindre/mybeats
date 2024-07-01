@@ -48,6 +48,10 @@ const SearchDoctors = () => {
         setSearchRecommendations([]);
     };
 
+    const handleDoctorCardPress = (doctorId) => {
+        navigation.navigate('appointment', { doctorId });
+    };
+
     const handleSearchInput = (input) => {
         setSearchInput(input);
         setResults([]);
@@ -95,7 +99,7 @@ const SearchDoctors = () => {
     };
 
     const handleApplyFilters = (filters) => {
-        let filteredData = [...originalResults];  // maintaing original results state and applying filter for thatr 
+        let filteredData = [...originalResults];  // maintaining original results state and applying filter for that 
         // since experience is in string, parsing it so that filter could be applied 
         if (filters.experience) {
             filteredData = filteredData.sort((a, b) => parseExperience(b.experience) - parseExperience(a.experience));
@@ -176,7 +180,7 @@ const SearchDoctors = () => {
                         {results.map((doctor) => (
                             <TouchableOpacity
                                 key={doctor.doctorID}
-                                onPress={() => handleDoctorSelect(doctor)}
+                                onPress={() => handleDoctorCardPress(doctor.doctorID)}
                             >
                                 <DoctorCard
                                     doctorName={`${doctor.firstname ?? ""} ${doctor.lastname ?? ""}`}
@@ -203,4 +207,3 @@ const SearchDoctors = () => {
 };
 
 export default SearchDoctors;
-

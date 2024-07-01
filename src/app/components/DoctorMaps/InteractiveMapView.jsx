@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { View, Text, Platform, Linking } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
-import { geocodeAddress } from '../../store/GeocodingReducer/GeocodingActions';
+import { geocodeAddress } from '../../../../store/actions/geocodingActions';
+import Loader from '../Utils/Loader';
 
 const InteractiveMapView = ({ name, city, address, state, zipcode }) => {
   const dispatch = useDispatch();
@@ -26,47 +27,41 @@ const InteractiveMapView = ({ name, city, address, state, zipcode }) => {
   if (loading) {
     return (
       <View>
-        <Text>Loading map...</Text>
+        <Loader />
       </View>
     );
   }
 
-  if (error) {
-    return (
-      <View>
-        <Text>Error loading map: {error}</Text>
-      </View>
-    );
+  if (error || !coordinates) {
+    return null;
   }
 
-  if (!coordinates) {
-    return (
-      <View>
-        <Text>No coordinates available</Text>
-      </View>
-    );
-  }
 
   return (
-    <View style={{ marginTop: 10, height: 200 }}>
-      <MapView
-        style={{ flex: 1 }}
-        initialRegion={{
-          latitude: coordinates.latitude,
-          longitude: coordinates.longitude,
-          latitudeDelta: 0.015,
-          longitudeDelta: 0.0121,
-        }}
-        showsUserLocation={true}
-        onPress={() => openMaps(coordinates.latitude, coordinates.longitude, name)}
-      >
-        <Marker
-          coordinate={{ latitude: coordinates.latitude, longitude: coordinates.longitude }}
-          title={name}
-          description={`${address}, ${city}, ${state}, ${zipcode}`}
-        />
-      </MapView>
-    </View>
+    <>
+      <Text className="text-xl mb-3 font-[appfont-semi]">
+        Clinic Location
+      </Text>
+      <View style={{ marginTop: 10, height: 200 }}>
+        <MapView
+          style={{ flex: 1 }}
+          initialRegion={{
+            latitude: coordinates.latitude,
+            longitude: coordinates.longitude,
+            latitudeDelta: 0.015,
+            longitudeDelta: 0.0121,
+          }}
+          showsUserLocation={true}
+          onPress={() => openMaps(coordinates.latitude, coordinates.longitude, name)}
+        >
+          <Marker
+            coordinate={{ latitude: coordinates.latitude, longitude: coordinates.longitude }}
+            title={name}
+            description={`${address}, ${city}, ${state}, ${zipcode}`}
+          />
+        </MapView>
+      </View>
+    </>
   );
 };
 

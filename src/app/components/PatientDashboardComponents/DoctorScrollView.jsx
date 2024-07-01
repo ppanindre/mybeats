@@ -32,7 +32,7 @@ const DoctorScrollView = () => {
                 <View className="flex-row space-x-3">
                     {doctors &&
                         doctors.map((doctor) => (
-                            <View>
+                            <View key={doctor.doctorID}> 
                                 <DoctorCard doctor={doctor} />
                             </View>
                         ))}

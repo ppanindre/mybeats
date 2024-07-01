@@ -59,7 +59,7 @@ const DoctorFilters = ({ isVisible, onClose, onApply, selectedFilters, setSelect
                 ))}
                 <View className="flex justify-center items-center">
                     <AppButton
-                        btnLabel="Apply Filters"
+                        btnLabel="Apply"
                         onPress={applyFilters}
                         variant={isAnyFilterSelected ? "primary" : "disabled"}
                     />
