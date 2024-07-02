@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import BookingSection from "../../../../MyCharts/Components/BookingSection";
-import ActionButton from "../../../../MyCharts/Components/ActionButton";
+import ActionButton from "../../components/PatientDashboardComponents/ActionButton";
 import InteractiveMapView from "../../components/DoctorMaps/InteractiveMapView";
 import { customTheme } from "../../../../constants/themeConstants";
 import ScreenContainer from "../../components/Containers/ScreenContainer";
@@ -97,7 +97,7 @@ const Appointment = ({ route }) => {
                 <View className="space-y-5">
                     <DoctorInfo doctor={doctor} />
                     <View>
-                        <ActionButton website={doctor.website} phoneNumber={doctor.phoneNumber} />
+                        <ActionButton website={doctor.website} excludeId2={true}/>
                     </View>
 
                     <View>
