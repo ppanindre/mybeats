@@ -36,6 +36,9 @@ import {
     appointmentListReducer,
     appointmentsListByDoctorReducer,
 } from "./reducers/appointmentReducers";
+import {
+    patientListReducer
+} from "./reducers/patientReducers"
 
 // Combining every reducer
 const reducers = combineReducers({
@@ -65,6 +68,7 @@ const reducers = combineReducers({
     availabilityDeleteReducer: availabilityDeleteReducer,
     availabilityExistsReducer: availabilityExistsReducer,
     availabilitiesDeleteReducer: availabilitiesDeleteReducer,
+    patientListReducer: patientListReducer
 });
 
 // Redux store containing reducers and the middleware

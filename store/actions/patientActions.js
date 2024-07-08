@@ -11,9 +11,13 @@ import {
     PATIENT_GET_FAILURE,
     PATIENT_GET_SUCCESS,
     PATIENT_CREATE_FAILURE,
+    PATIENT_LIST_REQUEST,
+    PATIENT_LIST_SUCCESS,
+    PATIENT_LIST_FAILURE,
 } from "../types/patientActionTypes";
 import { createPatient, updatePatient } from "../../src/graphql/mutations";
 import { getPatient } from "../../src/graphql/queries";
+import { listPatients } from "../../src/graphql/queries";
 
 const client = generateClient();
 
@@ -117,6 +121,25 @@ export const getPatientActionCreator = () => async (dispatch, getState) => {
         dispatch({
             type: PATIENT_GET_FAILURE,
             payload: error.message || "Error while fetching patient details",
+        });
+    }
+};
+
+export const listPatientsActionCreator = () => async (dispatch) => {
+    dispatch({ type: PATIENT_LIST_REQUEST });
+    try {
+        const response = await client.graphql({
+            query: listPatients
+        });
+        dispatch({
+            type: PATIENT_LIST_SUCCESS,
+            payload: response.data.listPatients.items
+        });
+    } catch (error) {
+        console.error("Error while getting patients", error);
+        dispatch({
+            type: PATIENT_LIST_FAILURE,
+            payload: error.message || "Error while getting patients"
         });
     }
 };

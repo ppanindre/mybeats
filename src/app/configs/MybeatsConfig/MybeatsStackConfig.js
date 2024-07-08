@@ -21,6 +21,7 @@ import DoctorProfile from "../../screens/mybeatsScreens/DoctorProfile";
 import DoctorMedicine from "../../screens/mybeatsScreens/DoctorMedicine";
 import DoctorDashboard from "../../screens/mybeatsScreens/DoctorDashboard";
 import PatientDashboard from "../../screens/mybeatsScreens/PatientDashboard";
+import SearchPatients from "../../screens/mybeatsScreens/SearchPatients";
 
 export const mybeatsStackConfig = {
     screens: [
@@ -43,6 +44,12 @@ export const mybeatsStackConfig = {
             headerTitle: "Search Doctors",
             name: "searchDoctors",
             component: SearchDoctors,
+        },
+        {
+            headerTitle: "Search Patients",
+            name: "searchPatients",
+            component: SearchPatients,
+            showHeader: false,
         },
         {
             headerTitle: "Search Medicines",
@@ -96,7 +103,7 @@ export const mybeatsStackConfig = {
         },
         {
             headerTitle: "Patient",
-            name: "patient",
+            name: "patientInfo",
             component: Patient,
         },
         {

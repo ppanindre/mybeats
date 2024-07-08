@@ -25,7 +25,7 @@ const PatientCard = ({ name, age, gender, bloodGroup, totalAppointments, pnumber
                 </View>
             </View>
             <TouchableOpacity style={{ backgroundColor: customTheme.colors.primary }} className="text-white py-2 px-4 rounded"
-                onPress={() => navigation.navigate('PatientInfo', {
+                onPress={() => navigation.navigate('patientInfo', {
                     name: name,
                     age: age,
                     gender: gender,

@@ -27,6 +27,7 @@ import DoctorAvailability from "../../screens/mybeatsScreens/DoctorAvailability"
 import RolesNav from "./RolesNav";
 import DoctorProfile from "../../screens/mybeatsScreens/DoctorProfile";
 import DoctorMedicine from "../../screens/mybeatsScreens/DoctorMedicine";
+import SearchPatients from "../../screens/mybeatsScreens/SearchPatients";
 
 // Declare icon size
 const ICON_SIZE = 24;
@@ -179,6 +180,14 @@ const MybeatsStack = () => {
                 component={SearchDoctors}
                 options={{ headerShown: false }}
             />
+ 
+            {/* Search Patients */}
+            <Stack.Screen
+                name="searchPatients"
+                component={SearchPatients}
+                options={{ headerShown: false }}
+            />
+
 
             <Stack.Screen
                 name="searchMedicines"
