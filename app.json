@@ -1,39 +1,43 @@
 {
-  "expo": {
-    "name": "mybeats",
-    "slug": "mybeats",
-    "version": "1.1.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.mybeats",
-      "buildNumber": "8"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.mybeats"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "93ff4e6a-debe-4cf4-960b-f5a3c9068aca"
-      }
-    },
-    "owner": "firebeats"
-  }
+    "expo": {
+        "name": "mybeats",
+        "slug": "mybeats",
+        "version": "1.1.0",
+        "orientation": "portrait",
+        "icon": "./assets/icon.png",
+        "userInterfaceStyle": "light",
+        "splash": {
+            "image": "./assets/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "assetBundlePatterns": ["**/*"],
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "com.nyu.mybeats",
+            "buildNumber": "9",
+            "infoPlist": {
+                "NSCameraUsageDescription": "We need access to your camera to allow you to take and upload photos for profile picture.",
+                "NSPhotoLibraryUsageDescription": "We need access to your photo library to allow you to upload photos for profile picture.",
+                "NSHealthShareUsageDescription": "Read and understand health data.",
+                "NSHealthUpdateUsageDescription": "Share workout data with other apps."
+            }
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/adaptive-icon.png",
+                "backgroundColor": "#ffffff"
+            },
+            "package": "com.nyu.mybeats"
+        },
+        "web": {
+            "favicon": "./assets/favicon.png"
+        },
+        "extra": {
+            "eas": {
+                "projectId": "93ff4e6a-debe-4cf4-960b-f5a3c9068aca"
+            }
+        },
+        "owner": "firebeats"
+    }
 }

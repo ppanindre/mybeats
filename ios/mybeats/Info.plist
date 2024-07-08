@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>We need your location to show the map</string>
     <key>CADisableMinimumFrameDurationOnPhone</key>
     <true/>
     <key>CFBundleDevelopmentRegion</key>
@@ -21,7 +19,7 @@
     <key>CFBundlePackageType</key>
     <string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
     <key>CFBundleShortVersionString</key>
-    <string>0.0.2</string>
+    <string>1.1.0</string>
     <key>CFBundleSignature</key>
     <string>????</string>
     <key>CFBundleURLTypes</key>
@@ -29,12 +27,12 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>com.mybeats</string>
+          <string>com.nyu.mybeats</string>
         </array>
       </dict>
     </array>
     <key>CFBundleVersion</key>
-    <string>8</string>
+    <string>9</string>
     <key>LSRequiresIPhoneOS</key>
     <true/>
     <key>NSAppTransportSecurity</key>
@@ -44,6 +42,16 @@
       <key>NSAllowsLocalNetworking</key>
       <true/>
     </dict>
+    <key>NSCameraUsageDescription</key>
+    <string>We need access to your camera to allow you to take and upload photos for profile picture.</string>
+    <key>NSHealthShareUsageDescription</key>
+    <string>Read and understand health data.</string>
+    <key>NSHealthUpdateUsageDescription</key>
+    <string>Share workout data with other apps.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>We need your location to show the map</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>We need access to your photo library to allow you to upload photos for profile picture.</string>
     <key>UILaunchStoryboardName</key>
     <string>SplashScreen</string>
     <key>UIRequiredDeviceCapabilities</key>
