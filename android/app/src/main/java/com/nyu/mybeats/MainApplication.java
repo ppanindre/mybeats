@@ -1,4 +1,4 @@
-package com.mybeats;
+package com.nyu.mybeats;
 
 import android.app.Application;
 import android.content.res.Configuration;

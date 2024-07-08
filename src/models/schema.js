@@ -432,6 +432,41 @@ export const schema = {
                         ]
                     }
                 },
+                "age": {
+                    "name": "age",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "weight": {
+                    "name": "weight",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "height": {
+                    "name": "height",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "profession": {
+                    "name": "profession",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "underlyingCondition": {
+                    "name": "underlyingCondition",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -861,5 +896,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "d159498cdb80aef52b6186d9d2f333c0"
+    "version": "f910e1b1690a7cc9c2f27c995f4a6b41"
 };
