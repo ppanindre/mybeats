@@ -262,6 +262,11 @@ export const createPatient = /* GraphQL */ `
         startedAt
         __typename
       }
+      age
+      weight
+      height
+      profession
+      underlyingCondition
       createdAt
       updatedAt
       _version
@@ -289,6 +294,11 @@ export const updatePatient = /* GraphQL */ `
         startedAt
         __typename
       }
+      age
+      weight
+      height
+      profession
+      underlyingCondition
       createdAt
       updatedAt
       _version
@@ -316,6 +326,11 @@ export const deletePatient = /* GraphQL */ `
         startedAt
         __typename
       }
+      age
+      weight
+      height
+      profession
+      underlyingCondition
       createdAt
       updatedAt
       _version
@@ -511,6 +526,11 @@ export const createAppointment = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        age
+        weight
+        height
+        profession
+        underlyingCondition
         createdAt
         updatedAt
         _version
@@ -575,6 +595,11 @@ export const updateAppointment = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        age
+        weight
+        height
+        profession
+        underlyingCondition
         createdAt
         updatedAt
         _version
@@ -639,6 +664,11 @@ export const deleteAppointment = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        age
+        weight
+        height
+        profession
+        underlyingCondition
         createdAt
         updatedAt
         _version
