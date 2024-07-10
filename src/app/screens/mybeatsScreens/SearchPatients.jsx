@@ -30,6 +30,10 @@ const SearchPatients = () => {
         }
     }, [patients, loading, error]);
 
+    const handleDoctorCardPress = (patientId) => {
+        navigation.navigate('patientInfo', { patientId });
+    };
+
     const handlePatientSelect = (patient) => {
         const filteredData = [patient];
         setResults(filteredData);
@@ -39,6 +43,8 @@ const SearchPatients = () => {
 
     const handleSearchInput = (input) => {
         setSearchInput(input);
+        setResults([]);
+        
         if (input) {
             const lowerCaseInput = input.toLowerCase();
             const filteredData = patients.filter((patient) =>
@@ -104,11 +110,11 @@ const SearchPatients = () => {
                         {results.map((patient) => (
                             <TouchableOpacity
                                 key={patient.id}
-                                onPress={() => handlePatientSelect(patient)}
+                                onPress={() => handleDoctorCardPress(patient.id)}
                             >
                                 <PatientCard
                                      patientName={`${patient.firstname ?? ""} ${patient.lastname ?? ""}`}
-                                     patientZipcode={patient.zipcode}
+                                     patientAge={patient.age}
                                 />
                             </TouchableOpacity>
                         ))}

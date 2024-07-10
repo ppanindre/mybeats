@@ -12,7 +12,7 @@ import UploadPrescription from "../../screens/mybeatsScreens/UploadPrescription"
 import Payment from "../../screens/mybeatsScreens/Payment";
 import Appointments from "../../screens/mybeatsScreens/Appointments";
 import Patients from "../../screens/mybeatsScreens/Patients";
-import Patient from "../../screens/mybeatsScreens/Patient";
+import Patient from "../../screens/mybeatsScreens/PatientInfo";
 import DoctorPrescription from "../../screens/mybeatsScreens/DoctorPrescription";
 import DoctorAvailability from "../../screens/mybeatsScreens/DoctorAvailability";
 import ShippingAddress from "../../screens/mybeatsScreens/ShippingAddress";

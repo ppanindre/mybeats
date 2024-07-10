@@ -5,7 +5,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 const PatientCard = ({
     patientName,
-    patientZipcode
+    patientAge
 }) => {
     return (
         <View className="rounded-lg p-5 h-[150] w-[100%] justify-center shadow-md"
@@ -24,7 +24,7 @@ const PatientCard = ({
                             numberOfLines={1}>
                             {patientName}
                         </Text>
-                        <Text className="font-[appfont]">Zipcode: {patientZipcode}</Text>
+                        <Text className="font-[appfont]">Age: {patientAge}</Text>
                     </View>
                 </View>
             </TouchableOpacity>

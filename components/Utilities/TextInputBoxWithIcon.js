@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, TextInput } from "react-native";
-import { customTheme } from "../../constants/themeConstants";
+import { theme } from "../../tailwind.config";
 
 const TextInputBoxWithIcon = ({ placeholder, icon, onFocus, onChangeText, onSubmitEditing }) => {
     // STATES
@@ -15,13 +15,13 @@ const TextInputBoxWithIcon = ({ placeholder, icon, onFocus, onChangeText, onSubm
 
     return (
         <View
-            className="flex-row items-center p-2 rounded-lg flex-1 bg-white shadow-lg h-[100%]"
+            className="flex-row items-center p-2 rounded-lg flex-1 bg-light shadow-lg h-[100%]"
             style={{
                 borderWidth: 0,
                 // if input box is focused, change the color to blue
                 borderColor: isFocused
-                    ? customTheme.colors.primary
-                    : customTheme.colors.darkSecondary,
+                    ? theme.colors.primary
+                    : theme.colors.darkSecondary,
             }}
         >
             {/* Left Icon */}

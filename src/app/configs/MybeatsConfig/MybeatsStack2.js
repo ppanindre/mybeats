@@ -21,7 +21,7 @@ import Medicines from "../../screens/mybeatsScreens/Medicines";
 import DoctorDashboard from "../../screens/mybeatsScreens/DoctorDashboard2";
 import AppointmentList from "../../screens/mybeatsScreens/Appointments";
 import Patients from "../../screens/mybeatsScreens/Patients";
-import PatientInfo from "../../screens/mybeatsScreens/Patient";
+import PatientInfo from "../../screens/mybeatsScreens/PatientInfo";
 import DoctorPrescription from "../../screens/mybeatsScreens/DoctorPrescription";
 import DoctorAvailability from "../../screens/mybeatsScreens/DoctorAvailability";
 import RolesNav from "./RolesNav";

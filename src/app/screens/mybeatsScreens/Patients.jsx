@@ -4,7 +4,7 @@ import { patientData } from '../../../../constants/PatientConstants';
 import PatientCard from '../../../../components/Cards/PatientCard';
 import TextInputBoxWithIcon from "../../../../components/Utilities/TextInputBoxWithIcon";
 import { Ionicons } from "@expo/vector-icons";
-import { customTheme } from '../../../../constants/themeConstants';
+import { theme } from '../../../../tailwind.config';
 
 const Patients = () => {
 
@@ -16,25 +16,27 @@ const Patients = () => {
     );
 
     return (
-        <ScrollView className="p-2">
-            <View className="flex-row items-center justify-between mt-2 mb-4 h-[50] space-x-3 px-2">
+        <ScrollView className="p-2 space-y-3">
+            <View className="flex-row items-center justify-between h-[50] space-x-3 px-2">
                 {/* Search Input Box */}
                 <TextInputBoxWithIcon
                     icon={
                         <Ionicons
                             name="search-outline"
                             size={24}
-                            color={customTheme.colors.darkSecondary}
+                            color={theme.colors.darkSecondary}
                         />
                     }
                     placeholder="Type name"
-                    onChangeText={setSearchQuery}  // Set the search query to the state
+                    onChangeText={setSearchQuery}  
                     value={searchQuery}
                 />
             </View>
-            {filteredPatients.map(patient => (
-                <PatientCard key={patient.id} {...patient} />
-            ))}
+            <View>
+                {filteredPatients.map(patient => (
+                    <PatientCard key={patient.id} {...patient} />
+                ))}
+            </View>
         </ScrollView>
     );
 };
