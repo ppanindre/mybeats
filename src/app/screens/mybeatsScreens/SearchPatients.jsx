@@ -113,8 +113,7 @@ const SearchPatients = () => {
                                 onPress={() => handleDoctorCardPress(patient.id)}
                             >
                                 <PatientCard
-                                     patientName={`${patient.firstname ?? ""} ${patient.lastname ?? ""}`}
-                                     patientAge={patient.age}
+                                     {...patient}
                                 />
                             </TouchableOpacity>
                         ))}

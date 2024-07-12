@@ -3,10 +3,7 @@ import React from "react";
 import { theme } from "../../../../tailwind.config";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const PatientCard = ({
-    patientName,
-    patientAge
-}) => {
+const PatientCard = (patient) => {
     return (
         <View className="rounded-lg p-5 h-[150] w-[100%] justify-center shadow-md"
             style={{ backgroundColor: theme.colors.lightPrimary }}>
@@ -22,9 +19,9 @@ const PatientCard = ({
                     <View className="flex-1">
                         <Text className="text-lg font-[appfont-bold]"
                             numberOfLines={1}>
-                            {patientName}
+                            {patient.firstname} {patient.lastname}
                         </Text>
-                        <Text className="font-[appfont]">Age: {patientAge}</Text>
+                        <Text className="font-[appfont]">Age: {patient.age}</Text>
                     </View>
                 </View>
             </TouchableOpacity>

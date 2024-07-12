@@ -40,6 +40,9 @@ export const createPatientActionCreator =
                         phoneNumber: "123-456-7890",
                         address: "123 Main St",
                         zipcode: "12345",
+                        age: patientDetails.age,
+                        weight: patientDetails.weight,
+                        height: patientDetails.height,
                     },
                 },
             });
@@ -66,34 +69,73 @@ export const updatePatientActionCreator =
 
             const patientId = auth().currentUser.uid;
 
-            console.log("patient id", patientId);
+            // Checking if the patient exists
+            const existingPatientResponse = await client.graphql({
+                query: getPatient,
+                variables: { id: patientId },
+            });
 
-            const email = auth().currentUser.email;
+            const existingPatient = existingPatientResponse.data.getPatient;
 
-            const response = await client.graphql({
-                query: createPatient,
-                variables: {
-                    input: {
-                        id: patientId,
-                        firstname: patientDetails.firstName,
-                        lastname: patientDetails.lastName,
-                        email: email,
-                        phoneNumber: "123-456-7890",
-                        address: "123 Main St",
-                        zipcode: "12345",
+            let response;
+
+            if (existingPatient) {
+                // If patient exists, update the details 
+                response = await client.graphql({
+                    query: updatePatient,
+                    variables: {
+                        input: {
+                            id: patientId,
+                            firstname: patientDetails.firstName,
+                            lastname: patientDetails.lastName,
+                            email: existingPatient.email,
+                            phoneNumber: "123-456-7890",
+                            address: "123 Main St",
+                            zipcode: "12345",
+                            age: patientDetails.age,
+                            weight: patientDetails.weight,
+                            height: patientDetails.height,
+                            _version: existingPatient._version, 
+                        },
                     },
-                },
-            });
+                });
 
-            dispatch({
-                type: PATIENT_UPDATE_SUCCESS,
-                payload: response.data.updatePatient,
-            });
+                dispatch({
+                    type: PATIENT_UPDATE_SUCCESS,
+                    payload: response.data.updatePatient,
+                });
+            } else {
+                // If the patient does not exist, create the patient
+                response = await client.graphql({
+                    query: createPatient,
+                    variables: {
+                        input: {
+                            id: patientId,
+                            firstname: patientDetails.firstName,
+                            lastname: patientDetails.lastName,
+                            email: auth().currentUser.email,
+                            phoneNumber: "123-456-7890",
+                            address: "123 Main St",
+                            zipcode: "12345",
+                            age: patientDetails.age,
+                            weight: patientDetails.weight,
+                            height: patientDetails.height,
+                            profession: patientDetails.profession,
+                            underlyingCondition: patientDetails.underlyingCondition,
+                        },
+                    },
+                });
+
+                dispatch({
+                    type: PATIENT_CREATE_SUCCESS,
+                    payload: response.data.createPatient,
+                });
+            }
         } catch (error) {
-            console.error("Error while upadting patient", error);
+            console.error("Error while updating or creating patient", error);
             dispatch({
                 type: PATIENT_UPDATE_FAILURE,
-                payload: error.message || "Error while creating patient",
+                payload: error.message || "Error while updating or creating patient",
             });
         }
     };
