@@ -32,7 +32,7 @@ const AppointmentCard = ({ appointment, patient }) => {
     };
 
     return (
-        <View className="relative bg-light p-5 items-center justify-center rounded-lg shadow-lg">
+        <View className="relative bg-lightPrimary p-5 items-center justify-center rounded-lg shadow-lg">
             <ModalContainer
                 visible={showModal}
                 onClose={() => setShowModal(false)}
@@ -93,7 +93,7 @@ const AppointmentCard = ({ appointment, patient }) => {
                     <Ionicons
                         name="close-circle"
                         size={20}
-                        color={theme.colors.primary}
+                        color={theme.colors.light}
                     />
                 </TouchableOpacity>
             </View>

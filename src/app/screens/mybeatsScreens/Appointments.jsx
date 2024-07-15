@@ -8,9 +8,11 @@ import DoctorAppointmentsFrame from "../../components/DoctorAppointmentsComponen
 import { useDispatch, useSelector } from "react-redux";
 import { listAppointmentsByDoctorActionCreators } from "../../../../store/actions/appointmentActions";
 import Loader from "../../components/Utils/Loader";
-const Appointments = () => {
+
+const Appointments = ({ route }) => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const { patientId } = route.params || {};
 
     const { loading, error, appointmentsByDoctor } = useSelector(
         (state) => state.appointmentsListByDoctorReducer
@@ -20,9 +22,13 @@ const Appointments = () => {
 
     useEffect(() => {
         dispatch(listAppointmentsByDoctorActionCreators());
-    }, []);
+    }, [dispatch]);
 
     if (loading) return <Loader />;
+
+    const filteredAppointments = patientId && appointmentsByDoctor
+        ? appointmentsByDoctor.filter((appointment) => appointment.patientId === patientId)
+        : appointmentsByDoctor;
 
     return (
         <ScreenContainer>
@@ -43,10 +49,10 @@ const Appointments = () => {
             </View>
 
             <View className="flex-1">
-                {appointmentsByDoctor && (
+                {filteredAppointments && (
                     <DoctorAppointmentsFrame
                         selectedTab={selectedTab}
-                        appointments={appointmentsByDoctor}
+                        appointments={filteredAppointments}
                     />
                 )}
             </View>

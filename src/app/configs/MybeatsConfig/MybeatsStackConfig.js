@@ -22,6 +22,8 @@ import DoctorMedicine from "../../screens/mybeatsScreens/DoctorMedicine";
 import DoctorDashboard from "../../screens/mybeatsScreens/DoctorDashboard";
 import PatientDashboard from "../../screens/mybeatsScreens/PatientDashboard";
 import SearchPatients from "../../screens/mybeatsScreens/SearchPatients";
+import HealthTracking from "../../components/PatientInfo/HealthTracking";
+import HealthHistory from "../../components/PatientInfo/HealthHistory";
 
 export const mybeatsStackConfig = {
     screens: [
@@ -90,6 +92,7 @@ export const mybeatsStackConfig = {
             headerTitle: "Payment",
             name: "payment",
             component: Payment,
+            showHeader: false
         },
         {
             headerTitle: "Appointments",
@@ -147,6 +150,16 @@ export const mybeatsStackConfig = {
             headerTitle: "Doctor Medicine",
             name: "doctorMedicine",
             component: DoctorMedicine,
+        },
+        {
+            headerTitle: "Health Tracking",
+            name: "healthTracking",
+            component: HealthTracking,
+        },
+        {
+            headerTitle: "Health History",
+            name: "healthHistory",
+            component: HealthHistory,
         },
     ],
 };

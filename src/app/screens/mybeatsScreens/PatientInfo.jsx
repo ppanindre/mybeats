@@ -20,6 +20,16 @@ const Patient = ({ route }) => {
         const bmi = weight / (heightInMeters * heightInMeters);
         return bmi.toFixed(2); 
     };
+
+    const healthHistory = {
+        conditions: ['Hypertension', 'Diabetes'],
+        procedures: [
+            { procedure: 'Appendectomy', date: '15 March 2019' },
+            { procedure: 'Knee Replacement', date: '22 July 2020' }
+        ],
+        allergies: ['Peanuts', 'Penicillin'],
+        immunizations: ['Hepatitis B', 'Influenza']
+    };
     
     return (
         <ScreenContainer>
@@ -58,32 +68,32 @@ const Patient = ({ route }) => {
 
                 {/* history card section */}
                 <View className="space-y-5">
-                    <Text className="text-lg font-[appfont-bold]">Current diagnosis</Text>
                     <PatientHistoryCard
-                        title="Septic embolization"
-                        date="24 May 2021"
-                        iconName="medkit-outline"
-                        iconBgColor="bg-blue-100"
+                        title="Appointments"
+                        iconName="time-outline"
+                        onPress={() => navigation.navigate('appointments', { patientId })}
                     />
-
-                    <Text className="text-lg font-[appfont-bold]">History of survey</Text>
                     <PatientHistoryCard
-                        title="Blood Pressure"
-                        date="21 May 2021"
+                        title="Health Tracking"
                         iconName="heart-outline"
-                        iconBgColor="bg-red-100"
+                        onPress={() => navigation.navigate('healthTracking')}
                     />
                     <PatientHistoryCard
-                        title="Laboratory tests"
-                        date="18 May 2021"
+                        title="Medications"
+                        iconName="bandage-outline"
+                    />
+                    <PatientHistoryCard
+                        title="Lab Test Results"
                         iconName="flask-outline"
-                        iconBgColor="bg-blue-100"
                     />
                     <PatientHistoryCard
-                        title="Body Temperature"
-                        date="12 May 2021"
-                        iconName="thermometer"
-                        iconBgColor="bg-yellow-100"
+                        title="Health history"
+                        iconName="medkit-outline"
+                        onPress={() => navigation.navigate('healthHistory', { history: healthHistory })}
+                    />
+                     <PatientHistoryCard
+                        title="Payments"
+                        iconName="cash-outline"
                     />
                 </View>
             </ScrollView>

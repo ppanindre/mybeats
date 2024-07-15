@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import AppointmentCard from "../Cards/AppointmentCard";
@@ -23,18 +23,15 @@ const DoctorAppointmentsFrame = ({ selectedTab, appointments = [] }) => {
 
     useEffect(() => {
         divideAppointments();
-    }, []);
-
-    console.log("upcoming appts", upcomingAppointments);
+    }, [appointments]);
 
     return (
         <View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View className="space-y-5">
                     {selectedTab === "upcoming" &&
-                        upcomingAppointments &&
                         upcomingAppointments.map((appointment) => (
-                            <View>
+                            <View key={appointment.id}>
                                 <AppointmentCard
                                     appointment={appointment}
                                     patient={appointment.patient}
@@ -44,7 +41,7 @@ const DoctorAppointmentsFrame = ({ selectedTab, appointments = [] }) => {
 
                     {selectedTab === "past" &&
                         pastAppointments.map((appointment) => (
-                            <View>
+                            <View key={appointment.id}>
                                 <AppointmentCard
                                     appointment={appointment}
                                     patient={appointment.patient}
