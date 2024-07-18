@@ -12,9 +12,12 @@ import {
     APPOINTMENT_LIST_BY_DOCTOR_FAILURE,
     APPOINTMENT_LIST_BY_DOCTOR_REQUEST,
     APPOINTMENT_LIST_BY_DOCTOR_SUCCESS,
+    APPOINTMENT_LIST_BY_PATIENT_REQUEST,
+    APPOINTMENT_LIST_BY_PATIENT_SUCCESS,
+    APPOINTMENT_LIST_BY_PATIENT_FAILURE
 } from "../types/appointmentActionTypes.js";
 import moment from "moment";
-import { getPatient, listAppointments } from "../../src/graphql/queries.js";
+import { getPatient, getDoctor, listAppointments } from "../../src/graphql/queries.js";
 import {
     createAppointment,
     deleteAppointment,
@@ -117,6 +120,65 @@ export const listAppointmentsByDoctorActionCreators =
             console.error("Error while listing appointments", error);
             dispatch({
                 type: APPOINTMENT_LIST_BY_DOCTOR_FAILURE,
+                payload: error,
+            });
+        }
+    };
+
+    export const listAppointmentsByPatientActionCreators = (patientId) => async (dispatch) => {
+        try {
+            dispatch({ type: APPOINTMENT_LIST_BY_PATIENT_REQUEST });
+            console.log('Fetching appointments for patient:', patientId);
+    
+            const response = await client.graphql({
+                query: listAppointments,
+                variables: {
+                    filter: {
+                        patientId: { eq: patientId },
+                        _deleted: { ne: true },
+                    },
+                },
+            });
+        
+            if (response.data && response.data.listAppointments && response.data.listAppointments.items) {
+                const appointments = response.data.listAppointments.items;
+                console.log('Fetched appointments:', appointments);
+    
+                if (appointments.length > 0) {
+                    const appointmentsWithDoctorData = await Promise.all(
+                        appointments.map(async (appointment) => {
+                            const doctorResponse = await client.graphql({
+                                query: getDoctor,
+                                variables: { doctorID: appointment.doctorID },
+                            });
+    
+                            appointment.doctor = doctorResponse.data.getDoctor;
+                            return appointment;
+                        })
+                    );
+    
+                    dispatch({
+                        type: APPOINTMENT_LIST_BY_PATIENT_SUCCESS,
+                        payload: appointmentsWithDoctorData,
+                    });
+                } else {
+                    console.log('No appointments found for patient:', patientId);
+                    dispatch({
+                        type: APPOINTMENT_LIST_BY_PATIENT_SUCCESS,
+                        payload: [],
+                    });
+                }
+            } else {
+                console.error('Failed to fetch appointments:', response.data);
+                dispatch({
+                    type: APPOINTMENT_LIST_BY_PATIENT_FAILURE,
+                    payload: 'Failed to fetch appointments',
+                });
+            }
+        } catch (error) {
+            console.error("Error while listing appointments", error);
+            dispatch({
+                type: APPOINTMENT_LIST_BY_PATIENT_FAILURE,
                 payload: error,
             });
         }

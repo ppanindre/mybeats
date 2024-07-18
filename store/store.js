@@ -35,6 +35,7 @@ import {
     appointmentListAvailableReducer,
     appointmentListReducer,
     appointmentsListByDoctorReducer,
+    appointmentsListByPatientReducer,
 } from "./reducers/appointmentReducers";
 import {
     patientListReducer
@@ -63,6 +64,7 @@ const reducers = combineReducers({
     appointmentListAvailableReducer: appointmentListAvailableReducer,
     appointmentListReducer: appointmentListReducer,
     appointmentsListByDoctorReducer: appointmentsListByDoctorReducer,
+    appointmentsListByPatientReducer: appointmentsListByPatientReducer,
     appointmentDeleteReducer: appointmentDeleteReducer,
     availabilitesByDoctorReducer: availabilitesByDoctorReducer,
     availabilityDeleteReducer: availabilityDeleteReducer,

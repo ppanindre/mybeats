@@ -24,6 +24,7 @@ import PatientDashboard from "../../screens/mybeatsScreens/PatientDashboard";
 import SearchPatients from "../../screens/mybeatsScreens/SearchPatients";
 import HealthTracking from "../../components/PatientInfo/HealthTracking";
 import HealthHistory from "../../components/PatientInfo/HealthHistory";
+import PatientAppointments from "../../screens/mybeatsScreens/PatientAppointments";
 
 export const mybeatsStackConfig = {
     screens: [
@@ -98,6 +99,11 @@ export const mybeatsStackConfig = {
             headerTitle: "Appointments",
             name: "appointments",
             component: Appointments,
+        },
+        {
+            headerTitle: "Appointments",
+            name: "patientAppointments",
+            component: PatientAppointments,
         },
         {
             headerTitle: "Patients",
