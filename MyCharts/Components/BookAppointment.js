@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, FlatList } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import ActionButton from './ActionButton';
+import ActionButton from '../../src/app/components/PatientDashboardComponents/ActionButton';
 import { ActivityIndicator } from 'react-native-paper';
 import { generateClient } from 'aws-amplify/api';
 import { getDoctor, getPatient } from '../../src/graphql/queries';

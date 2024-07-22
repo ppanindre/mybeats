@@ -49,26 +49,36 @@ const AvailableAppointmentsFrame = ({
         }
     }, [reset]);
 
+    // to check if any slots are there
+    const hasAvailableSlots = availableAppointments 
+        && Object.keys(availableAppointments).some(
+            (date) => availableAppointments[date].length > 0
+        );
+        
     return (
         <View className="space-y-5">
-            <View>
+        <View>
+            {hasAvailableSlots ? (
                 <AvailableDayFrame
                     appointments={availableAppointments}
                     onSelectDate={(date) => setSelectedDate(date)}
                     selectedDate={selectedDate}
                 />
-            </View>
-            {selectedDate && (
-                <View>
-                    <AvailableTimeFrame
-                        appointments={availableAppointments}
-                        selectedDate={selectedDate}
-                        selectedSlot={selectedSlot}
-                        onSelectSlot={handleSelectSlot}
-                    />
-                </View>
+            ) : (
+                <Text className="font-[appfont-bold]">No slots available</Text>
             )}
         </View>
+        {selectedDate && (
+            <View>
+                <AvailableTimeFrame
+                    appointments={availableAppointments}
+                    selectedDate={selectedDate}
+                    selectedSlot={selectedSlot}
+                    onSelectSlot={handleSelectSlot}
+                />
+            </View>
+        )}
+    </View>
     );
 };
 
