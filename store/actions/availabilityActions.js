@@ -147,12 +147,10 @@ export const getAvailabilitiesByDoctorActionCreator =
                 filter: {
                     _deleted: { ne: true },
                 },
+                limit: 5,
             };
 
             // Conditionally add the limit parameter if it is provided
-            if (limit !== undefined) {
-                variables.limit = limit;
-            }
 
             const response = await client.graphql({
                 query: availabilityByDoctor,
