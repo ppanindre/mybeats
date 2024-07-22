@@ -65,6 +65,7 @@ export default Appointment = ({ route }) => {
         availableForVideoConsultation,
         feeForVideoConsultation,
         website,
+        state
     } = route.params;
     // doint need it
 
@@ -132,8 +133,7 @@ export default Appointment = ({ route }) => {
                             <View style={{ flex: 1 }} className="ml-6">
                                 <Text className="text-xl font-[appfont-semi]">{`${name}`}</Text>
                                 <Text
-                                    style={{ color: customTheme.colors.dark }}
-                                    className="text-sm text-gray-500 font-[appfont]"
+                                    className="text-sm text-gray-500 font-[appfont] text-dark"
                                 >
                                     {specialization}
                                 </Text>
@@ -143,7 +143,7 @@ export default Appointment = ({ route }) => {
                                         size={15}
                                         color="#ffd700"
                                     />
-                                    <Text className="text-black text-s ml-1 mr-6 font-[appfont]">
+                                    <Text className="text-dark text-s ml-1 mr-6 font-[appfont]">
                                         {rating}(500+ Ratings)
                                     </Text>
                                     <Ionicons
@@ -153,10 +153,7 @@ export default Appointment = ({ route }) => {
                                         className="ml-2"
                                     />
                                     <Text
-                                        style={{
-                                            color: customTheme.colors.dark,
-                                        }}
-                                        className="text-s ml-1 font-[appfont]"
+                                        className="text-s ml-1 font-[appfont] text-dark"
                                     >{`${experience} Year Exp`}</Text>
                                 </View>
                             </View>
@@ -200,8 +197,7 @@ export default Appointment = ({ route }) => {
 
                     {/* Clinic Details Section */}
                     <View
-                        style={{ backgroundColor: customTheme.colors.light }}
-                        className="mt-4 mb-2 p-4 rounded-lg shadow mx-2 space-y-3"
+                        className="mt-4 mb-2 p-4 rounded-lg shadow mx-2 space-y-3 bg-light"
                     >
                         <Text className="text-xl mb-3 font-[appfont-semi]">
                             Clinic Location
@@ -213,13 +209,11 @@ export default Appointment = ({ route }) => {
                             city={city}
                             address={address}
                             zipcode={zipcode}
+                            state={state}
                         />
 
                         <TouchableOpacity
-                            style={{
-                                backgroundColor: customTheme.colors.primary,
-                            }}
-                            className="mt-3 text-white rounded-md py-2 px-4"
+                            className="mt-3 text-white rounded-md py-2 px-4 bg-primary"
                         >
                             <View className="flex-row justify-center items-center">
                                 <Ionicons
@@ -228,8 +222,7 @@ export default Appointment = ({ route }) => {
                                     style={{ color: customTheme.colors.light }}
                                 />
                                 <Text
-                                    style={{ color: customTheme.colors.light }}
-                                    className="ml-2 font-[appfont-semi]"
+                                    className="ml-2 font-[appfont-semi] text-light"
                                 >
                                     Write a review
                                 </Text>
@@ -249,8 +242,7 @@ export default Appointment = ({ route }) => {
 
                     <View className="flex-row justify-center mb-4">
                         <Text
-                            style={{ color: customTheme.colors.primary }}
-                            className="font-semibold"
+                            className="font-semibol text-primary"
                         >
                             View All Stories{" "}
                         </Text>

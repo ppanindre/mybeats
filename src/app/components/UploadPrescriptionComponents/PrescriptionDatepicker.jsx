@@ -3,9 +3,9 @@ import { View, Keyboard } from "react-native";
 import { TextInput } from "react-native-paper";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
-import { customTheme } from "../constants/themeConstants";
+import { customTheme } from "../../../../constants/themeConstants";
 
-const DatePicker = ({ label, currVal, onConfirm, minDate, maxDate, mode }) => {
+const PrescriptionDatepicker = ({ label, currVal, onConfirm, minDate }) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const showDatePicker = () => {
@@ -30,7 +30,6 @@ const DatePicker = ({ label, currVal, onConfirm, minDate, maxDate, mode }) => {
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
         minimumDate={minDate}
-        maximumDate={mode === 'dob' ? new Date() : maxDate}
       />
       <View>
         <TextInput
@@ -54,4 +53,4 @@ const DatePicker = ({ label, currVal, onConfirm, minDate, maxDate, mode }) => {
   );
 };
 
-export default DatePicker;
+export default PrescriptionDatepicker;
