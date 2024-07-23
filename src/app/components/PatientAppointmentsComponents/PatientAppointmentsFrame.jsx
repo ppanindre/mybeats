@@ -1,7 +1,7 @@
 import { View, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-import PatientAppointmentCard from "../Cards/PatientAppointmentCard";
+import PatientAppointmentCard from "./PatientAppointmentCard";
 
 const PatientAppointmentsFrame = ({ selectedTab, appointments = [] }) => {
     const [upcomingAppointments, setUpcomingAppointments] = useState([]);
@@ -34,6 +34,7 @@ const PatientAppointmentsFrame = ({ selectedTab, appointments = [] }) => {
                             <View key={appointment.id}>
                                 <PatientAppointmentCard
                                     appointment={appointment}
+                                    isPast={false}
                                 />
                             </View>
                         ))}
@@ -43,6 +44,7 @@ const PatientAppointmentsFrame = ({ selectedTab, appointments = [] }) => {
                             <View key={appointment.id}>
                                 <PatientAppointmentCard
                                     appointment={appointment}
+                                    isPast={true}
                                 />
                             </View>
                         ))}

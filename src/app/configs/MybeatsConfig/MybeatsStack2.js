@@ -19,7 +19,7 @@ import PharmacyInfo from "../../screens/mybeatsScreens/Pharmacy";
 import LabInfo from "../../screens/mybeatsScreens/Lab";
 import Medicines from "../../screens/mybeatsScreens/Medicines";
 import DoctorDashboard from "../../screens/mybeatsScreens/DoctorDashboard2";
-import AppointmentList from "../../screens/mybeatsScreens/Appointments";
+import AppointmentList from "../../screens/mybeatsScreens/DoctorAppointments";
 import Patients from "../../screens/mybeatsScreens/Patients";
 import PatientInfo from "../../screens/mybeatsScreens/PatientInfo";
 import DoctorPrescription from "../../screens/mybeatsScreens/DoctorPrescription";

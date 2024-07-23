@@ -6,16 +6,18 @@ import moment from "moment";
 import { useDispatch } from "react-redux";
 import {
     deleteAppointmentActionCreator,
-    listAppointmentsByPatientActionCreators,
+    listAppointmentsByDoctorActionCreators,
 } from "../../../../store/actions/appointmentActions";
 import ModalContainer from "../Containers/ModalContainer";
 import MultiLineInput from "../Inputs/MultiLineInput";
 import AppButton from "../Buttons/AppButton";
+import { useNavigation } from "@react-navigation/native";
 
 const ICON_SIZE = 20;
 
-const PatientAppointmentCard = ({ appointment }) => {
+const AppointmentCard = ({ appointment, patient, isPast, patientId }) => {
     const dispatch = useDispatch();
+    const navigation = useNavigation();
 
     const [showModal, setShowModal] = useState(false);
     const [reason, setReason] = useState("");
@@ -24,7 +26,7 @@ const PatientAppointmentCard = ({ appointment }) => {
         await dispatch(
             deleteAppointmentActionCreator(appointment.id, appointment._version)
         );
-        dispatch(listAppointmentsByPatientActionCreators(appointment.patientId));
+        dispatch(listAppointmentsByDoctorActionCreators());
     };
 
     const deleteAppointment = () => {
@@ -32,7 +34,9 @@ const PatientAppointmentCard = ({ appointment }) => {
     };
 
     return (
-        <View className="relative bg-lightPrimary p-5 items-center justify-center rounded-lg shadow-lg">
+        <TouchableOpacity className="relative bg-lightPrimary p-5 items-center justify-center rounded-lg shadow-lg"
+        onPress={() => navigation.navigate('doctorAppointmentInfo', { appointment, patient })}
+        >
             <ModalContainer
                 visible={showModal}
                 onClose={() => setShowModal(false)}
@@ -78,27 +82,27 @@ const PatientAppointmentCard = ({ appointment }) => {
                     className="h-16 w-16 rounded-full"
                 />
                 <View className="flex-1">
-                    <Text className="font-[appfont-semi] text-lg">
-                        {appointment.doctor?.firstname} {appointment.doctor?.lastname}
-                    </Text>
+                    {patientId ? null : (
+                        <Text className="font-[appfont-semi] text-lg">
+                            {patient.firstname} {patient.lastname}
+                        </Text>
+                    )}
                     <Text className="font-[appfont-semi]">
-                        {moment(appointment.startTime).format("D MMM")}
-                    </Text>
-                    <Text className="font-[appfont]">
-                        {moment(appointment.startTime).format("H:mm a")}
+                        {moment(appointment.startTime).format("D MMM YYYY")},  {moment(appointment.startTime).format("H:mm a")}
                     </Text>
                 </View>
-
-                <TouchableOpacity onPress={deleteAppointment}>
-                    <Ionicons
-                        name="close-circle"
-                        size={20}
-                        color={theme.colors.light}
-                    />
-                </TouchableOpacity>
+                {!isPast && (
+                    <TouchableOpacity onPress={deleteAppointment}>
+                        <Ionicons
+                            name="close-circle"
+                            size={20}
+                            color={theme.colors.light}
+                        />
+                    </TouchableOpacity>
+                )}
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 
-export default PatientAppointmentCard;
+export default AppointmentCard;

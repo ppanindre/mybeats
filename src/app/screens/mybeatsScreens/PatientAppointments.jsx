@@ -13,9 +13,6 @@ const PatientAppointments = ({ route }) => {
     const dispatch = useDispatch();
     const { patientId } = route.params || {};
 
-    // console.log('Route Params:', route.params);
-    // console.log('Patient ID:', patientId);
-
     const { loading, error, appointmentsByPatient } = useSelector(
         (state) => state.appointmentsListByPatientReducer
     );

@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { listAppointmentsByDoctorActionCreators } from "../../../../store/actions/appointmentActions";
 import Loader from "../../components/Utils/Loader";
 
-const Appointments = ({ route }) => {
+const DoctorAppointments = ({ route }) => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const { patientId } = route.params || {};
@@ -53,6 +53,7 @@ const Appointments = ({ route }) => {
                     <DoctorAppointmentsFrame
                         selectedTab={selectedTab}
                         appointments={filteredAppointments}
+                        patientId={patientId}
                     />
                 )}
             </View>
@@ -68,4 +69,4 @@ const Appointments = ({ route }) => {
     );
 };
 
-export default Appointments;
+export default DoctorAppointments;

@@ -10,7 +10,7 @@ import ConfirmAddress from "../../screens/mybeatsScreens/ConfirmAddress";
 import Cart from "../../screens/mybeatsScreens/Cart";
 import UploadPrescription from "../../screens/mybeatsScreens/UploadPrescription";
 import Payment from "../../screens/mybeatsScreens/Payment";
-import Appointments from "../../screens/mybeatsScreens/Appointments";
+import Appointments from "../../screens/mybeatsScreens/DoctorAppointments";
 import Patients from "../../screens/mybeatsScreens/Patients";
 import Patient from "../../screens/mybeatsScreens/PatientInfo";
 import DoctorPrescription from "../../screens/mybeatsScreens/DoctorPrescription";
@@ -25,6 +25,8 @@ import SearchPatients from "../../screens/mybeatsScreens/SearchPatients";
 import HealthTracking from "../../components/PatientInfo/HealthTracking";
 import HealthHistory from "../../components/PatientInfo/HealthHistory";
 import PatientAppointments from "../../screens/mybeatsScreens/PatientAppointments";
+import PatientAppointmentInfoScreen from "../../components/PatientAppointmentsComponents/PatientAppointmentInfoScreen";
+import DoctorAppointmentDetailScreen from "../../components/DoctorAppointmentsComponents/DoctorAppointmentDetailScreen";
 
 export const mybeatsStackConfig = {
     screens: [
@@ -104,6 +106,16 @@ export const mybeatsStackConfig = {
             headerTitle: "Appointments",
             name: "patientAppointments",
             component: PatientAppointments,
+        },
+        {
+            headerTitle: "Appointment Info",
+            name: "appointmentInfo",
+            component: PatientAppointmentInfoScreen,
+        },
+        {
+            headerTitle: "Appointment Info",
+            name: "doctorAppointmentInfo",
+            component: DoctorAppointmentDetailScreen,
         },
         {
             headerTitle: "Patients",
