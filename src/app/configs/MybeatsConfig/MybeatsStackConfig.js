@@ -21,6 +21,7 @@ import DoctorProfile from "../../screens/mybeatsScreens/DoctorProfile";
 import DoctorMedicine from "../../screens/mybeatsScreens/DoctorMedicine";
 import DoctorDashboard from "../../screens/mybeatsScreens/DoctorDashboard";
 import PatientDashboard from "../../screens/mybeatsScreens/PatientDashboard";
+import ImageAnalyzeDisplay from "../../../../MyCharts/Components/ImageAnalyzeDisplay";
 
 export const mybeatsStackConfig = {
     screens: [
@@ -43,6 +44,7 @@ export const mybeatsStackConfig = {
             headerTitle: "Search Doctors",
             name: "searchDoctors",
             component: SearchDoctors,
+            showHeader: false,
         },
         {
             headerTitle: "Search Medicines",
@@ -100,7 +102,7 @@ export const mybeatsStackConfig = {
             component: Patient,
         },
         {
-            headerTitle: "Doctor Prescription",
+            headerTitle: "Search Medicines",
             name: "doctorPrescription",
             component: DoctorPrescription,
         },
@@ -137,9 +139,14 @@ export const mybeatsStackConfig = {
             component: DoctorProfile,
         },
         {
-            headerTitle: "Doctor Medicine",
+            headerTitle: "Prescription",
             name: "doctorMedicine",
             component: DoctorMedicine,
+        },
+        {
+            headerTitle: "Image Analyzer",
+            name: "ImageAnalyzeDisplay",
+            component: ImageAnalyzeDisplay,
         },
     ],
 };

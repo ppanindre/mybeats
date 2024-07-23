@@ -3,32 +3,23 @@ import { View, Keyboard } from "react-native";
 import { TextInput } from "react-native-paper";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
-
 import { customTheme } from "../constants/themeConstants";
 
-const DatePicker = (props) => {
-  let date = props.currVal;
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false); // is date picker visible
+const DatePicker = ({ label, currVal, onConfirm, minDate, maxDate, mode }) => {
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const showDatePicker = () => {
     Keyboard.dismiss();
     setDatePickerVisibility(true);
   };
 
-  const hideDatePicker = () => {    
+  const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
 
-  // Handle confirm
-  const handleConfirm = (date_) => {
+  const handleConfirm = (date) => {
     hideDatePicker();
-    date_ = date_.toString().split(" ");
-    props.onConfirm(date_[1] + " " + date_[2] + ", " + date_[3]);
-  };
-
-  // Handle change
-  const handleChange = (event) => {
-    props.onchange(event.target.value);
+    onConfirm(moment(date).format("YYYY-MM-DD"));
   };
 
   return (
@@ -36,16 +27,15 @@ const DatePicker = (props) => {
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="date"
-        onConfirm={(text) => {
-          handleConfirm(text);
-        }}
+        onConfirm={handleConfirm}
         onCancel={hideDatePicker}
-        maximumDate={new Date(moment().format("YYYY-MM-DD"))}
+        minimumDate={minDate}
+        maximumDate={mode === 'dob' ? new Date() : maxDate}
       />
       <View>
         <TextInput
-          label="Date Of Birth"
-          value={date}
+          label={label}
+          value={currVal ? moment(currVal).format("MMMM D, YYYY") : ""}
           outlineColor={customTheme.colors.dark}
           onFocus={showDatePicker}
           mode="outlined"
@@ -53,13 +43,9 @@ const DatePicker = (props) => {
           theme={{
             colors: { primary: customTheme.colors.primary, error: "#E32A17" },
           }}
-          onChange={handleChange}
-          contentStyle={{
-            color: customTheme.colors.dark,
-          }}
           style={{
             height: 55,
-            width: 325,
+            width: '100%',
             backgroundColor: customTheme.colors.light,
           }}
         />

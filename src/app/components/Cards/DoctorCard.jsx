@@ -13,7 +13,7 @@ const DoctorCard = ({ doctor }) => {
         <TouchableOpacity
             onPress={() =>
                 navigation.navigate("appointment", {
-                    doctor: doctor,
+                    doctorId: doctor.doctorID,
                 })
             }
             className="rounded-lg  bg-white p-5 h-[150] w-[300] justify-center shadow-lg bg-lightPrimary"
@@ -22,7 +22,10 @@ const DoctorCard = ({ doctor }) => {
                 {/* Doctor Information */}
                 <View className="flex-row items-center space-x-3">
                     {/* Doctor Image */}
-
+                    <Image
+                        source={require("../../assets/doc1.webp")}
+                        className="w-20 h-20 rounded-full border border-primary"
+                    />
                     {/* Doctor Name */}
                     <View className="flex-1">
                         <Text className="text-lg font-[appfont-bold]">
@@ -30,13 +33,13 @@ const DoctorCard = ({ doctor }) => {
                         </Text>
                         <View className="flex-row justify-between items-center">
                             <Text className="text-md font-[appfont-bold] text-dark">
-                                {doctor.specialization}
+                                {doctor.secondarySpecialization}
                             </Text>
-                            {doctor.isAvailableForVideoConsultation && (
+                            {doctor.availableForVideoConsultation && (
                                 <Ionicons
                                     name="videocam"
                                     size={ICON_SIZE}
-                                    color={theme.colors.primary}
+                                    color={theme.colors.light}
                                 />
                             )}
                         </View>
@@ -75,3 +78,4 @@ const DoctorCard = ({ doctor }) => {
 };
 
 export default DoctorCard;
+

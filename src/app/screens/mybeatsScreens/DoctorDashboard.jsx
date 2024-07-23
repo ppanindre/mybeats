@@ -115,7 +115,7 @@ const DoctorDashboard = () => {
                                 <TouchableOpacity
                                     onPress={() =>
                                         navigation.navigate(
-                                            "UploadPrescription"
+                                            "uploadPrescription"
                                         )
                                     }
                                     className="bg-light py-3 px-6 rounded-full shadow-lg"
