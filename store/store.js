@@ -80,7 +80,7 @@ const reducers = combineReducers({
     availabilityDeleteReducer: availabilityDeleteReducer,
     availabilityExistsReducer: availabilityExistsReducer,
     availabilitiesDeleteReducer: availabilitiesDeleteReducer,
-    primarySpecializationReducer
+    primarySpecializationReducer,
     prescriptionCreate: prescriptionCreateReducer,
     prescriptionGet: prescriptionGetReducer,
     prescriptionList: prescriptionListReducer,
