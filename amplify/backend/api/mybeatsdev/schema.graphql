@@ -30,8 +30,6 @@ type Doctor @model @auth(rules: [{ allow: public }]) {
         @hasMany(indexName: "byDoctor", fields: ["doctorID"])
     availability: [Availability]
         @hasMany(indexName: "byDoctor", fields: ["doctorID"])
-    prescriptions: [Prescription] 
-        @hasMany(indexName: "byDoctor", fields: ["doctorID"])
 }
 
 type Specialty @model @auth(rules: [{ allow: public }]) {
@@ -49,8 +47,6 @@ type Patient @model @auth(rules: [{ allow: public }]) {
     address: String
     zipcode: String
     appointments: [Appointment]
-        @hasMany(indexName: "byPatient", fields: ["id"])
-    prescriptions: [Prescription] 
         @hasMany(indexName: "byPatient", fields: ["id"])
     age: String
     weight: String
@@ -92,19 +88,4 @@ type Appointment @model @auth(rules: [{ allow: public }]) {
     isBooked: Boolean!
     doctor: Doctor @belongsTo(fields: ["doctorID"])
     patient: Patient @belongsTo(fields: ["patientId"])
-}
-
-type Prescription @model @auth(rules: [{ allow: public }]) {
-    id: ID! @primaryKey
-    medicineName: String!
-    type: String!
-    dosage: String!
-    days: String!
-    dosageQuantity: String!
-    startDate: String!
-    endDate: String!
-    doctorID: ID! @index(name: "byDoctor")
-    doctor: Doctor @belongsTo(fields: ["doctorID"])
-    patientID: ID! @index(name: "byPatient")
-    patient: Patient @belongsTo(fields: ["patientID"])
 }

@@ -48,11 +48,6 @@ export const onCreateDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
-      prescriptions {
-        nextToken
-        startedAt
-        __typename
-      }
       createdAt
       updatedAt
       _version
@@ -109,11 +104,6 @@ export const onUpdateDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
-      prescriptions {
-        nextToken
-        startedAt
-        __typename
-      }
       createdAt
       updatedAt
       _version
@@ -166,11 +156,6 @@ export const onDeleteDoctor = /* GraphQL */ `
         __typename
       }
       availability {
-        nextToken
-        startedAt
-        __typename
-      }
-      prescriptions {
         nextToken
         startedAt
         __typename
@@ -262,11 +247,6 @@ export const onCreatePatient = /* GraphQL */ `
         startedAt
         __typename
       }
-      prescriptions {
-        nextToken
-        startedAt
-        __typename
-      }
       age
       weight
       height
@@ -296,11 +276,6 @@ export const onUpdatePatient = /* GraphQL */ `
         startedAt
         __typename
       }
-      prescriptions {
-        nextToken
-        startedAt
-        __typename
-      }
       age
       weight
       height
@@ -326,11 +301,6 @@ export const onDeletePatient = /* GraphQL */ `
       address
       zipcode
       appointments {
-        nextToken
-        startedAt
-        __typename
-      }
-      prescriptions {
         nextToken
         startedAt
         __typename
@@ -672,407 +642,6 @@ export const onDeleteAppointment = /* GraphQL */ `
         height
         profession
         underlyingCondition
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const onCreatePrescription = /* GraphQL */ `
-  subscription OnCreatePrescription(
-    $filter: ModelSubscriptionPrescriptionFilterInput
-  ) {
-    onCreatePrescription(filter: $filter) {
-      id
-      medicineName
-      type
-      dosage
-      days
-      dosageQuantity
-      startDate
-      endDate
-      doctorID
-      doctor {
-        doctorID
-        firstname
-        lastname
-        email
-        phoneNumber
-        licenseNumber
-        upiId
-        primarySpecializationId
-        address
-        city
-        state
-        experience
-        secondarySpecialization
-        availableForVideoConsultation
-        feeForVideoConsultation
-        educationExperience
-        awardsRecognition
-        website
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      patientID
-      patient {
-        id
-        firstname
-        lastname
-        email
-        phoneNumber
-        address
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const onUpdatePrescription = /* GraphQL */ `
-  subscription OnUpdatePrescription(
-    $filter: ModelSubscriptionPrescriptionFilterInput
-  ) {
-    onUpdatePrescription(filter: $filter) {
-      id
-      medicineName
-      type
-      dosage
-      days
-      dosageQuantity
-      startDate
-      endDate
-      doctorID
-      doctor {
-        doctorID
-        firstname
-        lastname
-        email
-        phoneNumber
-        licenseNumber
-        upiId
-        primarySpecializationId
-        address
-        city
-        state
-        experience
-        secondarySpecialization
-        availableForVideoConsultation
-        feeForVideoConsultation
-        educationExperience
-        awardsRecognition
-        website
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      patientID
-      patient {
-        id
-        firstname
-        lastname
-        email
-        phoneNumber
-        address
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const onDeletePrescription = /* GraphQL */ `
-  subscription OnDeletePrescription(
-    $filter: ModelSubscriptionPrescriptionFilterInput
-  ) {
-    onDeletePrescription(filter: $filter) {
-      id
-      medicineName
-      type
-      dosage
-      days
-      dosageQuantity
-      startDate
-      endDate
-      doctorID
-      doctor {
-        doctorID
-        firstname
-        lastname
-        email
-        phoneNumber
-        licenseNumber
-        upiId
-        primarySpecializationId
-        address
-        city
-        state
-        experience
-        secondarySpecialization
-        availableForVideoConsultation
-        feeForVideoConsultation
-        educationExperience
-        awardsRecognition
-        website
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      patientID
-      patient {
-        id
-        firstname
-        lastname
-        email
-        phoneNumber
-        address
-        zipcode
-        age
-        weight
-        height
-        profession
-        underlyingCondition
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const onCreatePrescription = /* GraphQL */ `
-  subscription OnCreatePrescription(
-    $filter: ModelSubscriptionPrescriptionFilterInput
-  ) {
-    onCreatePrescription(filter: $filter) {
-      id
-      medicineName
-      type
-      dosage
-      days
-      dosageQuantity
-      startDate
-      endDate
-      doctorID
-      doctor {
-        doctorID
-        firstname
-        lastname
-        email
-        phoneNumber
-        licenseNumber
-        upiId
-        primarySpecializationId
-        address
-        city
-        state
-        experience
-        secondarySpecialization
-        availableForVideoConsultation
-        feeForVideoConsultation
-        educationExperience
-        awardsRecognition
-        website
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      patientID
-      patient {
-        id
-        firstname
-        lastname
-        email
-        phoneNumber
-        address
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const onUpdatePrescription = /* GraphQL */ `
-  subscription OnUpdatePrescription(
-    $filter: ModelSubscriptionPrescriptionFilterInput
-  ) {
-    onUpdatePrescription(filter: $filter) {
-      id
-      medicineName
-      type
-      dosage
-      days
-      dosageQuantity
-      startDate
-      endDate
-      doctorID
-      doctor {
-        doctorID
-        firstname
-        lastname
-        email
-        phoneNumber
-        licenseNumber
-        upiId
-        primarySpecializationId
-        address
-        city
-        state
-        experience
-        secondarySpecialization
-        availableForVideoConsultation
-        feeForVideoConsultation
-        educationExperience
-        awardsRecognition
-        website
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      patientID
-      patient {
-        id
-        firstname
-        lastname
-        email
-        phoneNumber
-        address
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const onDeletePrescription = /* GraphQL */ `
-  subscription OnDeletePrescription(
-    $filter: ModelSubscriptionPrescriptionFilterInput
-  ) {
-    onDeletePrescription(filter: $filter) {
-      id
-      medicineName
-      type
-      dosage
-      days
-      dosageQuantity
-      startDate
-      endDate
-      doctorID
-      doctor {
-        doctorID
-        firstname
-        lastname
-        email
-        phoneNumber
-        licenseNumber
-        upiId
-        primarySpecializationId
-        address
-        city
-        state
-        experience
-        secondarySpecialization
-        availableForVideoConsultation
-        feeForVideoConsultation
-        educationExperience
-        awardsRecognition
-        website
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      patientID
-      patient {
-        id
-        firstname
-        lastname
-        email
-        phoneNumber
-        address
-        zipcode
         createdAt
         updatedAt
         _version

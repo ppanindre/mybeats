@@ -51,11 +51,6 @@ export const createDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
-      prescriptions {
-        nextToken
-        startedAt
-        __typename
-      }
       createdAt
       updatedAt
       _version
@@ -115,11 +110,6 @@ export const updateDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
-      prescriptions {
-        nextToken
-        startedAt
-        __typename
-      }
       createdAt
       updatedAt
       _version
@@ -175,11 +165,6 @@ export const deleteDoctor = /* GraphQL */ `
         __typename
       }
       availability {
-        nextToken
-        startedAt
-        __typename
-      }
-      prescriptions {
         nextToken
         startedAt
         __typename
@@ -277,11 +262,6 @@ export const createPatient = /* GraphQL */ `
         startedAt
         __typename
       }
-      prescriptions {
-        nextToken
-        startedAt
-        __typename
-      }
       age
       weight
       height
@@ -314,11 +294,6 @@ export const updatePatient = /* GraphQL */ `
         startedAt
         __typename
       }
-      prescriptions {
-        nextToken
-        startedAt
-        __typename
-      }
       age
       weight
       height
@@ -347,11 +322,6 @@ export const deletePatient = /* GraphQL */ `
       address
       zipcode
       appointments {
-        nextToken
-        startedAt
-        __typename
-      }
-      prescriptions {
         nextToken
         startedAt
         __typename
@@ -699,413 +669,6 @@ export const deleteAppointment = /* GraphQL */ `
         height
         profession
         underlyingCondition
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const createPrescription = /* GraphQL */ `
-  mutation CreatePrescription(
-    $input: CreatePrescriptionInput!
-    $condition: ModelPrescriptionConditionInput
-  ) {
-    createPrescription(input: $input, condition: $condition) {
-      id
-      medicineName
-      type
-      dosage
-      days
-      dosageQuantity
-      startDate
-      endDate
-      doctorID
-      doctor {
-        doctorID
-        firstname
-        lastname
-        email
-        phoneNumber
-        licenseNumber
-        upiId
-        primarySpecializationId
-        address
-        city
-        state
-        experience
-        secondarySpecialization
-        availableForVideoConsultation
-        feeForVideoConsultation
-        educationExperience
-        awardsRecognition
-        website
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      patientID
-      patient {
-        id
-        firstname
-        lastname
-        email
-        phoneNumber
-        address
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const updatePrescription = /* GraphQL */ `
-  mutation UpdatePrescription(
-    $input: UpdatePrescriptionInput!
-    $condition: ModelPrescriptionConditionInput
-  ) {
-    updatePrescription(input: $input, condition: $condition) {
-      id
-      medicineName
-      type
-      dosage
-      days
-      dosageQuantity
-      startDate
-      endDate
-      doctorID
-      doctor {
-        doctorID
-        firstname
-        lastname
-        email
-        phoneNumber
-        licenseNumber
-        upiId
-        primarySpecializationId
-        address
-        city
-        state
-        experience
-        secondarySpecialization
-        availableForVideoConsultation
-        feeForVideoConsultation
-        educationExperience
-        awardsRecognition
-        website
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      patientID
-      patient {
-        id
-        firstname
-        lastname
-        email
-        phoneNumber
-        address
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const deletePrescription = /* GraphQL */ `
-  mutation DeletePrescription(
-    $input: DeletePrescriptionInput!
-    $condition: ModelPrescriptionConditionInput
-  ) {
-    deletePrescription(input: $input, condition: $condition) {
-      id
-      medicineName
-      type
-      dosage
-      days
-      dosageQuantity
-      startDate
-      endDate
-      doctorID
-      doctor {
-        doctorID
-        firstname
-        lastname
-        email
-        phoneNumber
-        licenseNumber
-        upiId
-        primarySpecializationId
-        address
-        city
-        state
-        experience
-        secondarySpecialization
-        availableForVideoConsultation
-        feeForVideoConsultation
-        educationExperience
-        awardsRecognition
-        website
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      patientID
-      patient {
-        id
-        firstname
-        lastname
-        email
-        phoneNumber
-        address
-        zipcode
-        age
-        weight
-        height
-        profession
-        underlyingCondition
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const createPrescription = /* GraphQL */ `
-  mutation CreatePrescription(
-    $input: CreatePrescriptionInput!
-    $condition: ModelPrescriptionConditionInput
-  ) {
-    createPrescription(input: $input, condition: $condition) {
-      id
-      medicineName
-      type
-      dosage
-      days
-      dosageQuantity
-      startDate
-      endDate
-      doctorID
-      doctor {
-        doctorID
-        firstname
-        lastname
-        email
-        phoneNumber
-        licenseNumber
-        upiId
-        primarySpecializationId
-        address
-        city
-        state
-        experience
-        secondarySpecialization
-        availableForVideoConsultation
-        feeForVideoConsultation
-        educationExperience
-        awardsRecognition
-        website
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      patientID
-      patient {
-        id
-        firstname
-        lastname
-        email
-        phoneNumber
-        address
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const updatePrescription = /* GraphQL */ `
-  mutation UpdatePrescription(
-    $input: UpdatePrescriptionInput!
-    $condition: ModelPrescriptionConditionInput
-  ) {
-    updatePrescription(input: $input, condition: $condition) {
-      id
-      medicineName
-      type
-      dosage
-      days
-      dosageQuantity
-      startDate
-      endDate
-      doctorID
-      doctor {
-        doctorID
-        firstname
-        lastname
-        email
-        phoneNumber
-        licenseNumber
-        upiId
-        primarySpecializationId
-        address
-        city
-        state
-        experience
-        secondarySpecialization
-        availableForVideoConsultation
-        feeForVideoConsultation
-        educationExperience
-        awardsRecognition
-        website
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      patientID
-      patient {
-        id
-        firstname
-        lastname
-        email
-        phoneNumber
-        address
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-  }
-`;
-export const deletePrescription = /* GraphQL */ `
-  mutation DeletePrescription(
-    $input: DeletePrescriptionInput!
-    $condition: ModelPrescriptionConditionInput
-  ) {
-    deletePrescription(input: $input, condition: $condition) {
-      id
-      medicineName
-      type
-      dosage
-      days
-      dosageQuantity
-      startDate
-      endDate
-      doctorID
-      doctor {
-        doctorID
-        firstname
-        lastname
-        email
-        phoneNumber
-        licenseNumber
-        upiId
-        primarySpecializationId
-        address
-        city
-        state
-        experience
-        secondarySpecialization
-        availableForVideoConsultation
-        feeForVideoConsultation
-        educationExperience
-        awardsRecognition
-        website
-        zipcode
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        __typename
-      }
-      patientID
-      patient {
-        id
-        firstname
-        lastname
-        email
-        phoneNumber
-        address
-        zipcode
         createdAt
         updatedAt
         _version

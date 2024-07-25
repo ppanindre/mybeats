@@ -60,12 +60,6 @@ export const mybeatsStackConfig = {
             showHeader: false,
         },
         {
-            headerTitle: "Search Patients",
-            name: "searchPatients",
-            component: SearchPatients,
-            showHeader: false,
-        },
-        {
             headerTitle: "Search Medicines",
             name: "searchMedicines",
             component: SearchMedicines,
