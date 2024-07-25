@@ -10,9 +10,9 @@ import ConfirmAddress from "../../screens/mybeatsScreens/ConfirmAddress";
 import Cart from "../../screens/mybeatsScreens/Cart";
 import UploadPrescription from "../../screens/mybeatsScreens/UploadPrescription";
 import Payment from "../../screens/mybeatsScreens/Payment";
-import Appointments from "../../screens/mybeatsScreens/Appointments";
+import Appointments from "../../screens/mybeatsScreens/DoctorAppointments";
 import Patients from "../../screens/mybeatsScreens/Patients";
-import Patient from "../../screens/mybeatsScreens/Patient";
+import Patient from "../../screens/mybeatsScreens/PatientInfo";
 import DoctorPrescription from "../../screens/mybeatsScreens/DoctorPrescription";
 import DoctorAvailability from "../../screens/mybeatsScreens/DoctorAvailability";
 import ShippingAddress from "../../screens/mybeatsScreens/ShippingAddress";
@@ -21,6 +21,13 @@ import DoctorProfile from "../../screens/mybeatsScreens/DoctorProfile";
 import DoctorMedicine from "../../screens/mybeatsScreens/DoctorMedicine";
 import DoctorDashboard from "../../screens/mybeatsScreens/DoctorDashboard";
 import PatientDashboard from "../../screens/mybeatsScreens/PatientDashboard";
+import SearchPatients from "../../screens/mybeatsScreens/SearchPatients";
+import HealthTracking from "../../components/PatientInfo/HealthTracking";
+import HealthHistory from "../../components/PatientInfo/HealthHistory";
+import PatientAppointments from "../../screens/mybeatsScreens/PatientAppointments";
+import PatientAppointmentInfoScreen from "../../components/PatientAppointmentsComponents/PatientAppointmentInfoScreen";
+import DoctorAppointmentDetailScreen from "../../components/DoctorAppointmentsComponents/DoctorAppointmentDetailScreen";
+import DoctorAppointmentNotesScreen from "../../screens/mybeatsScreens/DoctorAppointmentNotesScreen";
 import ImageAnalyzeDisplay from "../../../../MyCharts/Components/ImageAnalyzeDisplay";
 
 export const mybeatsStackConfig = {
@@ -44,6 +51,18 @@ export const mybeatsStackConfig = {
             headerTitle: "Search Doctors",
             name: "searchDoctors",
             component: SearchDoctors,
+            showHeader: false,
+        },
+        {
+            headerTitle: "Search Patients",
+            name: "searchPatients",
+            component: SearchPatients,
+            showHeader: false,
+        },
+        {
+            headerTitle: "Search Patients",
+            name: "searchPatients",
+            component: SearchPatients,
             showHeader: false,
         },
         {
@@ -85,11 +104,32 @@ export const mybeatsStackConfig = {
             headerTitle: "Payment",
             name: "payment",
             component: Payment,
+            showHeader: false
         },
         {
             headerTitle: "Appointments",
             name: "appointments",
             component: Appointments,
+        },
+        {
+            headerTitle: "Appointments",
+            name: "patientAppointments",
+            component: PatientAppointments,
+        },
+        {
+            headerTitle: "Appointment Info",
+            name: "appointmentInfo",
+            component: PatientAppointmentInfoScreen,
+        },
+        {
+            headerTitle: "Appointment Info",
+            name: "doctorAppointmentInfo",
+            component: DoctorAppointmentDetailScreen,
+        },
+        {
+            headerTitle: "Write Notes",
+            name: "doctorAppointmentNotes",
+            component: DoctorAppointmentNotesScreen,
         },
         {
             headerTitle: "Patients",
@@ -98,7 +138,7 @@ export const mybeatsStackConfig = {
         },
         {
             headerTitle: "Patient",
-            name: "patient",
+            name: "patientInfo",
             component: Patient,
         },
         {
@@ -142,6 +182,16 @@ export const mybeatsStackConfig = {
             headerTitle: "Prescription",
             name: "doctorMedicine",
             component: DoctorMedicine,
+        },
+        {
+            headerTitle: "Health Tracking",
+            name: "healthTracking",
+            component: HealthTracking,
+        },
+        {
+            headerTitle: "Health History",
+            name: "healthHistory",
+            component: HealthHistory,
         },
         {
             headerTitle: "Image Analyzer",

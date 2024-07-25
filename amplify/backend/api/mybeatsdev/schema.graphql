@@ -52,6 +52,11 @@ type Patient @model @auth(rules: [{ allow: public }]) {
         @hasMany(indexName: "byPatient", fields: ["id"])
     prescriptions: [Prescription] 
         @hasMany(indexName: "byPatient", fields: ["id"])
+    age: String
+    weight: String
+    height: String
+    profession: String
+    underlyingCondition: String
 }
 
 type Availability @model @auth(rules: [{ allow: public }]) {

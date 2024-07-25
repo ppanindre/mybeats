@@ -81,9 +81,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace 'com.mybeats'
+    namespace 'com.nyu.mybeats'
     defaultConfig {
-        applicationId 'com.mybeats'
+        applicationId 'com.nyu.mybeats'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

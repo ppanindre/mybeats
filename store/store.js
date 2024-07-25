@@ -35,7 +35,11 @@ import {
     appointmentListAvailableReducer,
     appointmentListReducer,
     appointmentsListByDoctorReducer,
+    appointmentsListByPatientReducer,
 } from "./reducers/appointmentReducers";
+import {
+    patientListReducer
+} from "./reducers/patientReducers"
 import { primarySpecializationReducer } from "./reducers/primarySpecializationReducers";
 import geocodingGetReducer from "./reducers/geocodingGetReducer";
 import imageRecognitionGetReducer from "./reducers/imageRecognitionGetReducer";
@@ -75,11 +79,13 @@ const reducers = combineReducers({
     appointmentListAvailableReducer: appointmentListAvailableReducer,
     appointmentListReducer: appointmentListReducer,
     appointmentsListByDoctorReducer: appointmentsListByDoctorReducer,
+    appointmentsListByPatientReducer: appointmentsListByPatientReducer,
     appointmentDeleteReducer: appointmentDeleteReducer,
     availabilitesByDoctorReducer: availabilitesByDoctorReducer,
     availabilityDeleteReducer: availabilityDeleteReducer,
     availabilityExistsReducer: availabilityExistsReducer,
     availabilitiesDeleteReducer: availabilitiesDeleteReducer,
+    patientListReducer: patientListReducer,
     primarySpecializationReducer,
     prescriptionCreate: prescriptionCreateReducer,
     prescriptionGet: prescriptionGetReducer,

@@ -282,6 +282,11 @@ export const createPatient = /* GraphQL */ `
         startedAt
         __typename
       }
+      age
+      weight
+      height
+      profession
+      underlyingCondition
       createdAt
       updatedAt
       _version
@@ -314,6 +319,11 @@ export const updatePatient = /* GraphQL */ `
         startedAt
         __typename
       }
+      age
+      weight
+      height
+      profession
+      underlyingCondition
       createdAt
       updatedAt
       _version
@@ -346,6 +356,11 @@ export const deletePatient = /* GraphQL */ `
         startedAt
         __typename
       }
+      age
+      weight
+      height
+      profession
+      underlyingCondition
       createdAt
       updatedAt
       _version
@@ -541,6 +556,11 @@ export const createAppointment = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        age
+        weight
+        height
+        profession
+        underlyingCondition
         createdAt
         updatedAt
         _version
@@ -605,6 +625,11 @@ export const updateAppointment = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        age
+        weight
+        height
+        profession
+        underlyingCondition
         createdAt
         updatedAt
         _version
@@ -669,6 +694,217 @@ export const deleteAppointment = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        age
+        weight
+        height
+        profession
+        underlyingCondition
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createPrescription = /* GraphQL */ `
+  mutation CreatePrescription(
+    $input: CreatePrescriptionInput!
+    $condition: ModelPrescriptionConditionInput
+  ) {
+    createPrescription(input: $input, condition: $condition) {
+      id
+      medicineName
+      type
+      dosage
+      days
+      dosageQuantity
+      startDate
+      endDate
+      doctorID
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      patientID
+      patient {
+        id
+        firstname
+        lastname
+        email
+        phoneNumber
+        address
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updatePrescription = /* GraphQL */ `
+  mutation UpdatePrescription(
+    $input: UpdatePrescriptionInput!
+    $condition: ModelPrescriptionConditionInput
+  ) {
+    updatePrescription(input: $input, condition: $condition) {
+      id
+      medicineName
+      type
+      dosage
+      days
+      dosageQuantity
+      startDate
+      endDate
+      doctorID
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      patientID
+      patient {
+        id
+        firstname
+        lastname
+        email
+        phoneNumber
+        address
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deletePrescription = /* GraphQL */ `
+  mutation DeletePrescription(
+    $input: DeletePrescriptionInput!
+    $condition: ModelPrescriptionConditionInput
+  ) {
+    deletePrescription(input: $input, condition: $condition) {
+      id
+      medicineName
+      type
+      dosage
+      days
+      dosageQuantity
+      startDate
+      endDate
+      doctorID
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      patientID
+      patient {
+        id
+        firstname
+        lastname
+        email
+        phoneNumber
+        address
+        zipcode
+        age
+        weight
+        height
+        profession
+        underlyingCondition
         createdAt
         updatedAt
         _version

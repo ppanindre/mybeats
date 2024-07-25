@@ -1,9 +1,9 @@
 import { View, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-import AppointmentCard from "./AppointmentCard";
+import PatientAppointmentCard from "./PatientAppointmentCard";
 
-const DoctorAppointmentsFrame = ({ selectedTab, appointments = [], patientId }) => {
+const PatientAppointmentsFrame = ({ selectedTab, appointments = [] }) => {
     const [upcomingAppointments, setUpcomingAppointments] = useState([]);
     const [pastAppointments, setPastAppointments] = useState([]);
 
@@ -32,11 +32,9 @@ const DoctorAppointmentsFrame = ({ selectedTab, appointments = [], patientId }) 
                     {selectedTab === "upcoming" &&
                         upcomingAppointments.map((appointment) => (
                             <View key={appointment.id}>
-                                <AppointmentCard
+                                <PatientAppointmentCard
                                     appointment={appointment}
-                                    patient={appointment.patient}
                                     isPast={false}
-                                    patientId={patientId}
                                 />
                             </View>
                         ))}
@@ -44,11 +42,9 @@ const DoctorAppointmentsFrame = ({ selectedTab, appointments = [], patientId }) 
                     {selectedTab === "past" &&
                         pastAppointments.map((appointment) => (
                             <View key={appointment.id}>
-                                <AppointmentCard
+                                <PatientAppointmentCard
                                     appointment={appointment}
-                                    patient={appointment.patient}
                                     isPast={true}
-                                    patientId={patientId}
                                 />
                             </View>
                         ))}
@@ -58,4 +54,4 @@ const DoctorAppointmentsFrame = ({ selectedTab, appointments = [], patientId }) 
     );
 };
 
-export default DoctorAppointmentsFrame;
+export default PatientAppointmentsFrame;

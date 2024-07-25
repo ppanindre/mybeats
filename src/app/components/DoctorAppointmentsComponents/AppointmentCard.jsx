@@ -11,11 +11,13 @@ import {
 import ModalContainer from "../Containers/ModalContainer";
 import MultiLineInput from "../Inputs/MultiLineInput";
 import AppButton from "../Buttons/AppButton";
+import { useNavigation } from "@react-navigation/native";
 
 const ICON_SIZE = 20;
 
-const AppointmentCard = ({ appointment, patient }) => {
+const AppointmentCard = ({ appointment, patient, isPast, patientId }) => {
     const dispatch = useDispatch();
+    const navigation = useNavigation();
 
     const [showModal, setShowModal] = useState(false);
     const [reason, setReason] = useState("");
@@ -32,7 +34,9 @@ const AppointmentCard = ({ appointment, patient }) => {
     };
 
     return (
-        <View className="relative bg-light p-5 items-center justify-center rounded-lg shadow-lg">
+        <TouchableOpacity className="relative bg-lightPrimary p-5 items-center justify-center rounded-lg shadow-lg"
+        onPress={() => navigation.navigate('doctorAppointmentInfo', { appointment, patient })}
+        >
             <ModalContainer
                 visible={showModal}
                 onClose={() => setShowModal(false)}
@@ -78,26 +82,26 @@ const AppointmentCard = ({ appointment, patient }) => {
                     className="h-16 w-16 rounded-full"
                 />
                 <View className="flex-1">
-                    <Text className="font-[appfont-semi] text-lg">
-                        {patient.firstname} {patient.lastname}
-                    </Text>
+                    {patientId ? null : (
+                        <Text className="font-[appfont-semi] text-lg">
+                            {patient.firstname} {patient.lastname}
+                        </Text>
+                    )}
                     <Text className="font-[appfont-semi]">
-                        {moment(appointment.startTime).format("D MMM")}
-                    </Text>
-                    <Text className="font-[appfont]">
-                        {moment(appointment.startTime).format("H:mm a")}
+                        {moment(appointment.startTime).format("D MMM YYYY")},  {moment(appointment.startTime).format("H:mm a")}
                     </Text>
                 </View>
-
-                <TouchableOpacity onPress={deleteAppointment}>
-                    <Ionicons
-                        name="close-circle"
-                        size={20}
-                        color={theme.colors.primary}
-                    />
-                </TouchableOpacity>
+                {!isPast && (
+                    <TouchableOpacity onPress={deleteAppointment}>
+                        <Ionicons
+                            name="close-circle"
+                            size={20}
+                            color={theme.colors.light}
+                        />
+                    </TouchableOpacity>
+                )}
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 

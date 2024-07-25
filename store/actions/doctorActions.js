@@ -87,7 +87,7 @@ export const updateDoctorActionCreator =
                         lastname: doctorDetails.lastName,
                         email: doctorDetails.email,
                         phoneNumber: doctorDetails.phoneNumber,
-                        licenseNumber: doctorDetails.licenseNumber, 
+                        licenseNumber: doctorDetails.licenseNumber,
                         address: doctorDetails.address,
                         city: doctorDetails.city,
                         state: doctorDetails.state,

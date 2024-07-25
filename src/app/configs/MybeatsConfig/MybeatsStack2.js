@@ -19,14 +19,15 @@ import PharmacyInfo from "../../screens/mybeatsScreens/Pharmacy";
 import LabInfo from "../../screens/mybeatsScreens/Lab";
 import Medicines from "../../screens/mybeatsScreens/Medicines";
 import DoctorDashboard from "../../screens/mybeatsScreens/DoctorDashboard2";
-import AppointmentList from "../../screens/mybeatsScreens/Appointments";
+import AppointmentList from "../../screens/mybeatsScreens/DoctorAppointments";
 import Patients from "../../screens/mybeatsScreens/Patients";
-import PatientInfo from "../../screens/mybeatsScreens/Patient";
+import PatientInfo from "../../screens/mybeatsScreens/PatientInfo";
 import DoctorPrescription from "../../screens/mybeatsScreens/DoctorPrescription";
 import DoctorAvailability from "../../screens/mybeatsScreens/DoctorAvailability";
 import RolesNav from "./RolesNav";
 import DoctorProfile from "../../screens/mybeatsScreens/DoctorProfile";
 import DoctorMedicine from "../../screens/mybeatsScreens/DoctorMedicine";
+import SearchPatients from "../../screens/mybeatsScreens/SearchPatients";
 
 // Declare icon size
 const ICON_SIZE = 24;
@@ -179,6 +180,14 @@ const MybeatsStack = () => {
                 component={SearchDoctors}
                 options={{ headerShown: false }}
             />
+ 
+            {/* Search Patients */}
+            <Stack.Screen
+                name="searchPatients"
+                component={SearchPatients}
+                options={{ headerShown: false }}
+            />
+
 
             <Stack.Screen
                 name="searchMedicines"
