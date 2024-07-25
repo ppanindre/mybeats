@@ -12,13 +12,13 @@ import ScreenContainer from '../../components/Containers/ScreenContainer';
 const Patient = ({ route }) => {
     const navigation = useNavigation();
     const { patientId } = route.params;
-    const patient = useSelector((state) => state.patientListReducer.patients.find(patient => patient.id === patientId));
+    const patient = useSelector((state) => state.patientListReducer.patients?.find(patient => patient.id === patientId));
 
     const calculateBMI = (height, weight) => {
         if (!height || !weight) return 'N/A';
         const heightInMeters = height / 100;
         const bmi = weight / (heightInMeters * heightInMeters);
-        return bmi.toFixed(2); 
+        return bmi.toFixed(2);
     };
 
     const healthHistory = {
@@ -30,7 +30,7 @@ const Patient = ({ route }) => {
         allergies: ['Peanuts', 'Penicillin'],
         immunizations: ['Hepatitis B', 'Influenza']
     };
-    
+
     return (
         <ScreenContainer>
             <ScrollView
@@ -45,7 +45,9 @@ const Patient = ({ route }) => {
                     <View className="flex-row justify-around space-x-12 items-center mt-[-29] bg-lightPrimary rounded-full py-4 shadow-md">
                         <View className="flex-row items-center justify-start space-x-2">
                             <Ionicons name="person" size={24} className="font-[appfont-semi]" />
-                            <Text className="font-[appfont-semi] text-lg">{`${patient.age} Years`}</Text>
+                            <Text className="font-[appfont-semi] text-lg">
+                                {patient.age ? `${patient.age} Years` : 'Age null'}
+                            </Text>
                         </View>
                         <View className="flex-row items-center space-x-2">
                             {/* <Ionicons name="water" size={24} className="font-[appfont-semi]" /> */}
@@ -91,7 +93,7 @@ const Patient = ({ route }) => {
                         iconName="medkit-outline"
                         onPress={() => navigation.navigate('healthHistory', { history: healthHistory })}
                     />
-                     <PatientHistoryCard
+                    <PatientHistoryCard
                         title="Payments"
                         iconName="cash-outline"
                     />
@@ -109,7 +111,7 @@ const Patient = ({ route }) => {
                         btnLabel="Give Prescription"
                         onPress={() => navigation.navigate('doctorPrescription')}
                         variant="primary"
-                        // btnLeftIcon={<Ionicons name="pencil" size={20} style={{ color: theme.colors.light }} />}
+                    // btnLeftIcon={<Ionicons name="pencil" size={20} style={{ color: theme.colors.light }} />}
                     />
                 </View>
             </View>

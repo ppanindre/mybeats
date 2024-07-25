@@ -27,6 +27,7 @@ import HealthHistory from "../../components/PatientInfo/HealthHistory";
 import PatientAppointments from "../../screens/mybeatsScreens/PatientAppointments";
 import PatientAppointmentInfoScreen from "../../components/PatientAppointmentsComponents/PatientAppointmentInfoScreen";
 import DoctorAppointmentDetailScreen from "../../components/DoctorAppointmentsComponents/DoctorAppointmentDetailScreen";
+import DoctorAppointmentNotesScreen from "../../screens/mybeatsScreens/DoctorAppointmentNotesScreen";
 
 export const mybeatsStackConfig = {
     screens: [
@@ -116,6 +117,11 @@ export const mybeatsStackConfig = {
             headerTitle: "Appointment Info",
             name: "doctorAppointmentInfo",
             component: DoctorAppointmentDetailScreen,
+        },
+        {
+            headerTitle: "Write Notes",
+            name: "doctorAppointmentNotes",
+            component: DoctorAppointmentNotesScreen,
         },
         {
             headerTitle: "Patients",

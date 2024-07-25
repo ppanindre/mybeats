@@ -47,12 +47,13 @@ const DoctorAppointmentDetailScreen = () => {
                         className="w-full h-72"
                         resizeMode='contain'
                     />
-                    <View className="flex-row justify-around space-x-12 items-center mt-[-29] bg-lightPrimary rounded-full py-4 shadow-md">
+                    <TouchableOpacity className="flex-row justify-around space-x-12 items-center mt-[-29] bg-lightPrimary rounded-full py-4 shadow-md"
+                        onPress={() => navigation.navigate('patientInfo', { patientId: patient.id })}>
                         <View className="flex-row items-center justify-start space-x-2">
                             <Ionicons name="person" size={24} className="font-[appfont-semi]" />
                             <Text className="font-[appfont-semi] text-lg">{`${patient.firstname} ${patient.lastname}`}</Text>
                         </View>
-                    </View>
+                    </TouchableOpacity>
                 </View>
 
                 <View className="space-y-5">
@@ -105,7 +106,7 @@ const DoctorAppointmentDetailScreen = () => {
                 </View>
             </ModalContainer>
             {!isPastAppointment ? (
-                <View className="flex-row justify-around">
+                <View className="flex-row">
                     <View className="flex-1">
                         <AppButton
                             btnLabel="Cancel Appointment"
@@ -115,11 +116,11 @@ const DoctorAppointmentDetailScreen = () => {
                     </View>
                 </View>
             ) : (
-                <View className="flex-row justify-around">
+                <View className="flex-row">
                     <View className="flex-1">
                         <AppButton
-                            btnLabel="Write notes"
-                            onPress={() => { }}
+                            btnLabel="Write Doctor's notes"
+                            onPress={() => navigation.navigate('doctorAppointmentNotes', { appointmentId: appointment.id })}
                             variant="primary"
                         />
                     </View>
