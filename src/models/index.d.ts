@@ -121,12 +121,12 @@ type EagerPatient = {
   readonly address?: string | null;
   readonly zipcode?: string | null;
   readonly appointments?: (Appointment | null)[] | null;
-  readonly prescriptions?: (Prescription | null)[] | null;
   readonly age?: string | null;
   readonly weight?: string | null;
   readonly height?: string | null;
   readonly profession?: string | null;
   readonly underlyingCondition?: string | null;
+  readonly prescriptions?: (Prescription | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -144,12 +144,12 @@ type LazyPatient = {
   readonly address?: string | null;
   readonly zipcode?: string | null;
   readonly appointments: AsyncCollection<Appointment>;
-  readonly prescriptions: AsyncCollection<Prescription>;
   readonly age?: string | null;
   readonly weight?: string | null;
   readonly height?: string | null;
   readonly profession?: string | null;
   readonly underlyingCondition?: string | null;
+  readonly prescriptions: AsyncCollection<Prescription>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

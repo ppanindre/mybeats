@@ -448,22 +448,6 @@ export const schema = {
                         ]
                     }
                 },
-                "prescriptions": {
-                    "name": "prescriptions",
-                    "isArray": true,
-                    "type": {
-                        "model": "Prescription"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "patient"
-                        ]
-                    }
-                },
                 "age": {
                     "name": "age",
                     "isArray": false,
@@ -498,6 +482,22 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
+                },
+                "prescriptions": {
+                    "name": "prescriptions",
+                    "isArray": true,
+                    "type": {
+                        "model": "Prescription"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "patient"
+                        ]
+                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -1099,5 +1099,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "f910e1b1690a7cc9c2f27c995f4a6b41"
+    "version": "024362a918044cf4d72a89e8de8ef7fa"
 };
