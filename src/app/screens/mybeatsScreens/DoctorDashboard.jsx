@@ -51,7 +51,8 @@ const DoctorDashboard = () => {
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View className="space-y-5">
                         <View>
-                            <FormInput label="Search Patient, Health Condition, Pincode" />
+                            <FormInput label="Search Patient"
+                             onFocus={() => navigation.navigate("searchPatients")}/>
                         </View>
 
                         {/* Image slider component */}
@@ -90,7 +91,7 @@ const DoctorDashboard = () => {
                                     cardTitle="Patients"
                                     cardContent="Know your patients"
                                     onPress={() =>
-                                        navigation.navigate("Patients")
+                                        navigation.navigate("patients")
                                     }
                                 />
                             </View>
@@ -115,7 +116,7 @@ const DoctorDashboard = () => {
                                 <TouchableOpacity
                                     onPress={() =>
                                         navigation.navigate(
-                                            "UploadPrescription"
+                                            "uploadPrescription"
                                         )
                                     }
                                     className="bg-light py-3 px-6 rounded-full shadow-lg"

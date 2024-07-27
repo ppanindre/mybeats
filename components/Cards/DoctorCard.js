@@ -1,20 +1,19 @@
 import { View, Text, Touchable, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { customTheme } from "../../constants/themeConstants";
+import { theme } from "../../tailwind.config";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const DoctorCard = ({
     doctorName,
     doctorSpecialist,
-    doctorHospital,
     doctorRating,
     doctorExperience,
     doctoravailableforVideoConsultation
 }) => {
     return (
-        <View className="rounded-lg  bg-white p-5 h-[150] w-[96%] justify-center shadow-md"
-            style={{ backgroundColor: customTheme.colors.lightPrimary }}>
+        <View className="rounded-lg p-5 h-[150] w-[100%] justify-center shadow-md"
+            style={{ backgroundColor: theme.colors.lightPrimary }}>
             <TouchableOpacity className="space-y-3">
                 {/* Doctor Information */}
                 <View className="flex-row items-center space-x-3">
@@ -31,13 +30,13 @@ const DoctorCard = ({
                         </Text>
                     <View className="flex-row justify-between items-center">
                         <Text
-                            style={{ color: customTheme.colors.dark }}
+                            style={{ color: theme.colors.dark }}
                             className="text-md font-[appfont-bold]"
                         >
                             {doctorSpecialist}
                         </Text>
                         {doctoravailableforVideoConsultation && (
-                        <Ionicons name="videocam" size={24} style={{ color: customTheme.colors.light }} />
+                        <Ionicons name="videocam" size={24} style={{ color: theme.colors.light }} />
                     )}
                     </View>
                     </View>
@@ -49,7 +48,7 @@ const DoctorCard = ({
                     <View className="flex-row space-x-2">
                         <Ionicons
                             name="star"
-                            color={customTheme.colors.primary}
+                            color={theme.colors.primary}
                             size={14}
                         />
                         <Text
@@ -63,11 +62,11 @@ const DoctorCard = ({
                     <View className="flex-row space-x-2">
                         <Ionicons
                             name="time"
-                            color={customTheme.colors.dark}
+                            color={theme.colors.dark}
                             size={14}
                         />
                         <Text
-                            style={{ color: customTheme.colors.dark }}
+                            style={{ color: theme.colors.dark }}
                             className="text-xs font-[appfont]"
                         >
                             {doctorExperience} years

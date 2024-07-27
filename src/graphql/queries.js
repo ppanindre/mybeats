@@ -48,6 +48,11 @@ export const getDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
+      prescriptions {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -250,6 +255,11 @@ export const getPatient = /* GraphQL */ `
       height
       profession
       underlyingCondition
+      prescriptions {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -569,6 +579,151 @@ export const syncAppointments = /* GraphQL */ `
         endTime
         type
         isBooked
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const getPrescription = /* GraphQL */ `
+  query GetPrescription($id: ID!) {
+    getPrescription(id: $id) {
+      id
+      medicineName
+      type
+      dosage
+      days
+      dosageQuantity
+      startDate
+      endDate
+      doctorID
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      patientID
+      patient {
+        id
+        firstname
+        lastname
+        email
+        phoneNumber
+        address
+        zipcode
+        age
+        weight
+        height
+        profession
+        underlyingCondition
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listPrescriptions = /* GraphQL */ `
+  query ListPrescriptions(
+    $id: ID
+    $filter: ModelPrescriptionFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listPrescriptions(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        medicineName
+        type
+        dosage
+        days
+        dosageQuantity
+        startDate
+        endDate
+        doctorID
+        patientID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncPrescriptions = /* GraphQL */ `
+  query SyncPrescriptions(
+    $filter: ModelPrescriptionFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncPrescriptions(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        medicineName
+        type
+        dosage
+        days
+        dosageQuantity
+        startDate
+        endDate
+        doctorID
+        patientID
         createdAt
         updatedAt
         _version
@@ -917,6 +1072,84 @@ export const slotsByPatient = /* GraphQL */ `
         endTime
         type
         isBooked
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const prescriptionsByDoctorID = /* GraphQL */ `
+  query PrescriptionsByDoctorID(
+    $doctorID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelPrescriptionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    prescriptionsByDoctorID(
+      doctorID: $doctorID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        medicineName
+        type
+        dosage
+        days
+        dosageQuantity
+        startDate
+        endDate
+        doctorID
+        patientID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const prescriptionsByPatientID = /* GraphQL */ `
+  query PrescriptionsByPatientID(
+    $patientID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelPrescriptionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    prescriptionsByPatientID(
+      patientID: $patientID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        medicineName
+        type
+        dosage
+        days
+        dosageQuantity
+        startDate
+        endDate
+        doctorID
+        patientID
         createdAt
         updatedAt
         _version

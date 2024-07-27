@@ -23,7 +23,6 @@ export const createDoctorActionCreator =
     (doctorDetails, imageData) => async (dispatch, getState) => {
         try {
             const user = getState().UserReducer;
-
             const doctorId = user.userId;
 
             dispatch({ type: DOCTOR_CREATE_REQUEST });
@@ -37,11 +36,12 @@ export const createDoctorActionCreator =
                         lastname: doctorDetails.lastName,
                         email: doctorDetails.email,
                         phoneNumber: doctorDetails.phoneNumber,
-                        licenseNumber: doctorDetails.licenseNumber, // Ensure this field exists in doctorDetails
+                        licenseNumber: doctorDetails.licenseNumber,
                         address: doctorDetails.address,
                         city: doctorDetails.city,
                         state: doctorDetails.state,
                         experience: doctorDetails.experience,
+                        primarySpecializationId: doctorDetails.primarySpecializationId,
                         secondarySpecialization:
                             doctorDetails.secondarySpecialization,
                         upiId: doctorDetails.upiId,
@@ -87,11 +87,12 @@ export const updateDoctorActionCreator =
                         lastname: doctorDetails.lastName,
                         email: doctorDetails.email,
                         phoneNumber: doctorDetails.phoneNumber,
-                        licenseNumber: doctorDetails.licenseNumber, // Ensure this field exists in doctorDetails
+                        licenseNumber: doctorDetails.licenseNumber,
                         address: doctorDetails.address,
                         city: doctorDetails.city,
                         state: doctorDetails.state,
                         experience: doctorDetails.experience,
+                        primarySpecializationId: doctorDetails.primarySpecializationId,
                         secondarySpecialization:
                             doctorDetails.secondarySpecialization,
                         upiId: doctorDetails.upiId,
@@ -120,8 +121,14 @@ export const updateDoctorActionCreator =
                 payload: response.data.updateDoctor,
             });
         } catch (error) {
-            console.error("Error while updating doctor", error);
-            dispatch({ type: DOCTOR_UPDATE_FAILURE, payload: error });
+            if (error.errors && error.errors[0] && error.errors[0].errorType === "ConflictUnhandled") {
+                // Handling conflict
+                console.error("Conflict error while updating doctor. Refetching data.", error);
+                dispatch(getDoctorActionCreator());
+            } else {
+                console.error("Error while updating doctor", error);
+                dispatch({ type: DOCTOR_UPDATE_FAILURE, payload: error });
+            }
         }
     };
 

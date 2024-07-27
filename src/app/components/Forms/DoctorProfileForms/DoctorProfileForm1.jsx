@@ -48,8 +48,8 @@ const DoctorProfileForm1 = ({ handlePressNext, initialData }) => {
     const { control, handleSubmit, setValue } = useForm({
         defaultValues: {
             email: user.email || "",
-            firstName: initialData.firstname || "",
-            lastName: initialData.lastname || "",
+            firstName: initialData.firstName || initialData.firstname || "",
+            lastName: initialData.lastName || initialData.lastname || "",
             phoneNumber: initialData.phoneNumber || "",
             licenseNumber: initialData.licenseNumber || "",
             upiId: initialData.upiId || "",

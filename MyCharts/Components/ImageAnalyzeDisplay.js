@@ -18,7 +18,7 @@ const ImageAnalyzeDisplay = ({ route }) => {
   const analyzeImage = async () => {
     setAnalyzing(true); 
     try {
-      const apiKey = "AIzaSyBvWzAkoyGpuDrJUMB3K9eUr16DOJ9U6LA"; // Replace with your actual API key
+      const apiKey = "AIzaSyC1hiS3sXkvQPqEodYESWOLBYkUsyR8Tv4"; 
       const apiURL = `https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`;
 
       const base64ImageData = await FileSystem.readAsStringAsync(imageUri, {

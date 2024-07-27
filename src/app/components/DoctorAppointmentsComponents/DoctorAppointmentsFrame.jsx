@@ -1,9 +1,9 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-import AppointmentCard from "../Cards/AppointmentCard";
+import AppointmentCard from "./AppointmentCard";
 
-const DoctorAppointmentsFrame = ({ selectedTab, appointments = [] }) => {
+const DoctorAppointmentsFrame = ({ selectedTab, appointments = [], patientId }) => {
     const [upcomingAppointments, setUpcomingAppointments] = useState([]);
     const [pastAppointments, setPastAppointments] = useState([]);
 
@@ -23,31 +23,32 @@ const DoctorAppointmentsFrame = ({ selectedTab, appointments = [] }) => {
 
     useEffect(() => {
         divideAppointments();
-    }, []);
-
-    console.log("upcoming appts", upcomingAppointments);
+    }, [appointments]);
 
     return (
         <View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View className="space-y-5">
                     {selectedTab === "upcoming" &&
-                        upcomingAppointments &&
                         upcomingAppointments.map((appointment) => (
-                            <View>
+                            <View key={appointment.id}>
                                 <AppointmentCard
                                     appointment={appointment}
                                     patient={appointment.patient}
+                                    isPast={false}
+                                    patientId={patientId}
                                 />
                             </View>
                         ))}
 
                     {selectedTab === "past" &&
                         pastAppointments.map((appointment) => (
-                            <View>
+                            <View key={appointment.id}>
                                 <AppointmentCard
                                     appointment={appointment}
                                     patient={appointment.patient}
+                                    isPast={true}
+                                    patientId={patientId}
                                 />
                             </View>
                         ))}

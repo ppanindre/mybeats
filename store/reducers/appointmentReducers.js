@@ -14,6 +14,9 @@ import {
     APPOINTMENT_LIST_BY_DOCTOR_FAILURE,
     APPOINTMENT_LIST_BY_DOCTOR_REQUEST,
     APPOINTMENT_LIST_BY_DOCTOR_SUCCESS,
+    APPOINTMENT_LIST_BY_PATIENT_FAILURE,
+    APPOINTMENT_LIST_BY_PATIENT_REQUEST,
+    APPOINTMENT_LIST_BY_PATIENT_SUCCESS,
     APPOINTMENT_LIST_FAILURE,
     APPOINTMENT_LIST_REQUEST,
     APPOINTMENT_LIST_SUCCESS,
@@ -155,6 +158,35 @@ export const appointmentsListByDoctorReducer = (state = {}, action) => {
         }
 
         case APPOINTMENT_LIST_BY_DOCTOR_FAILURE: {
+            return {
+                loading: false,
+                error: action.payload,
+            };
+        }
+
+        default: {
+            return state;
+        }
+    }
+};
+
+export const appointmentsListByPatientReducer = (state = {}, action) => {
+    switch (action.type) {
+        case APPOINTMENT_LIST_BY_PATIENT_REQUEST: {
+            return {
+                loading: true,
+            };
+        }
+
+        case APPOINTMENT_LIST_BY_PATIENT_SUCCESS: {
+            return {
+                loading: false,
+                success: true,
+                appointmentsByPatient: action.payload,
+            };
+        }
+
+        case APPOINTMENT_LIST_BY_PATIENT_FAILURE: {
             return {
                 loading: false,
                 error: action.payload,

@@ -3,24 +3,27 @@ import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import TabButton from "../../components/Buttons/TabButton";
 import ScreenContainer from "../../components/Containers/ScreenContainer";
-import AppButton from "../../components/Buttons/AppButton";
-import DoctorAppointmentsFrame from "../../components/DoctorAppointmentsComponents/DoctorAppointmentsFrame";
+import PatientAppointmentsFrame from "../../components/PatientAppointmentsComponents/PatientAppointmentsFrame";
 import { useDispatch, useSelector } from "react-redux";
-import { listAppointmentsByDoctorActionCreators } from "../../../../store/actions/appointmentActions";
+import { listAppointmentsByPatientActionCreators } from "../../../../store/actions/appointmentActions";
 import Loader from "../../components/Utils/Loader";
-const Appointments = () => {
+
+const PatientAppointments = ({ route }) => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const { patientId } = route.params || {};
 
-    const { loading, error, appointmentsByDoctor } = useSelector(
-        (state) => state.appointmentsListByDoctorReducer
+    const { loading, error, appointmentsByPatient } = useSelector(
+        (state) => state.appointmentsListByPatientReducer
     );
 
     const [selectedTab, setSelectedTab] = useState("upcoming");
 
     useEffect(() => {
-        dispatch(listAppointmentsByDoctorActionCreators());
-    }, []);
+        if (patientId) {
+            dispatch(listAppointmentsByPatientActionCreators(patientId));
+        }
+    }, [dispatch, patientId]);
 
     if (loading) return <Loader />;
 
@@ -33,7 +36,6 @@ const Appointments = () => {
                     isActive={selectedTab === "upcoming"}
                     onPress={() => setSelectedTab("upcoming")}
                 />
-
                 <TabButton
                     label="Past"
                     isLeftTab={false}
@@ -43,23 +45,15 @@ const Appointments = () => {
             </View>
 
             <View className="flex-1">
-                {appointmentsByDoctor && (
-                    <DoctorAppointmentsFrame
+                {appointmentsByPatient && (
+                    <PatientAppointmentsFrame
                         selectedTab={selectedTab}
-                        appointments={appointmentsByDoctor}
+                        appointments={appointmentsByPatient}
                     />
                 )}
-            </View>
-
-            <View>
-                <AppButton
-                    btnLabel="Set availability"
-                    variant="primary"
-                    onPress={() => navigation.navigate("doctorAvailability")}
-                />
             </View>
         </ScreenContainer>
     );
 };
 
-export default Appointments;
+export default PatientAppointments;

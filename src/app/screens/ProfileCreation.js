@@ -220,14 +220,15 @@ const ProfileCreation = () => {
                                     />
                                 </View>
 
-                                {/* Date of birth */}
-                                <View className="mb-3">
-                                    <DatePicker
-                                        sentry-label="profile-creation-dob"
-                                        onConfirm={(dob) => setDob(dob)}
-                                        currVal={dob}
-                                    />
-                                </View>
+                {/* Date of birth */}
+                <View className="mb-3">
+                  <DatePicker
+                    sentry-label="profile-creation-dob"
+                    onConfirm={(dob) => setDob(dob)}
+                    currVal={dob}
+                    mode="dob"
+                  />
+                </View>
 
                                 {/* Gender component */}
                                 <View

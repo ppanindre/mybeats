@@ -4,9 +4,9 @@ import { useState, useEffect, useRef } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native'
 import BookingSection from '../../../../MyCharts/Components/BookingSection';
-import ActionButton from '../../../../MyCharts/Components/ActionButton'
+import ActionButton from '../../components/PatientDashboardComponents/ActionButton'
 import HorizontalLine from '../../../../MyCharts/Components/HorizontalLine'
-import InteractiveMapView from '../../../../MyCharts/Components/InteractiveMapView';
+import InteractiveMapView from '../../components/DoctorMaps/InteractiveMapView';
 import { customTheme } from '../../../../constants/themeConstants';
 
 const PatientStory = ({ story }) => {

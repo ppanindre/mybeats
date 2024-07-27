@@ -8,6 +8,9 @@ import {
     PATIENT_GET_REQUEST,
     PATIENT_GET_SUCCESS,
     PATIENT_GET_FAILURE,
+    PATIENT_LIST_REQUEST,
+    PATIENT_LIST_SUCCESS,
+    PATIENT_LIST_FAILURE,
 } from "../types/patientActionTypes";
 
 export const patientCreateReducer = (state = {}, action) => {
@@ -94,5 +97,27 @@ export const patientGetReducer = (state = {}, action) => {
         default: {
             return state;
         }
+    }
+};
+
+export const patientListReducer = (state = {}, action) => {
+    switch (action.type) {
+        case PATIENT_LIST_REQUEST:
+            return {
+                loading: true,
+            };
+        case PATIENT_LIST_SUCCESS:
+            return {
+                loading: false,
+                success: true,
+                patients: action.payload,
+            };
+        case PATIENT_LIST_FAILURE:
+            return {
+                loading: false,
+                error: action.payload,
+            };
+        default:
+            return state;
     }
 };

@@ -243,13 +243,10 @@ const EditProfile = () => {
                                     />
                                 </View>
 
-                                {/* Date of Birth Handler */}
-                                <View className="mb-3">
-                                    <DatePicker
-                                        onConfirm={(dob) => setDob(dob)}
-                                        currVal={dob}
-                                    />
-                                </View>
+                {/* Date of Birth Handler */}
+                <View className="mb-3 w-[325]">
+                  <DatePicker label="Date Of Birth" onConfirm={(dob) => setDob(dob)} currVal={dob} mode="dob"/>
+                </View>
 
                                 {/* Gender */}
                                 <View

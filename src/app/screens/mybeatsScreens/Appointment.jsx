@@ -1,28 +1,21 @@
-import React, { Component } from "react";
-import {
-    View,
-    Text,
-    TouchableOpacity,
-    ScrollView,
-    Image,
-    Alert,
-} from "react-native";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
 import BookingSection from "../../../../MyCharts/Components/BookingSection";
-import ActionButton from "../../../../MyCharts/Components/ActionButton";
-import InteractiveMapView from "../../../../MyCharts/Components/InteractiveMapView";
+import ActionButton from "../../components/PatientDashboardComponents/ActionButton";
+import InteractiveMapView from "../../components/DoctorMaps/InteractiveMapView";
 import { customTheme } from "../../../../constants/themeConstants";
 import ScreenContainer from "../../components/Containers/ScreenContainer";
 import AppButton from "../../components/Buttons/AppButton";
 import { theme } from "../../../../tailwind.config";
 import PatientStory from "../../../../components/Cards/PatientStory";
-import { useDispatch, useSelector } from "react-redux";
 import ClinicAppointmentFrame from "../../components/PatientAppointmentCO/ClinicAppointmentFrame";
 import AvailableAppointmentsFrame from "../../components/PatientAppointmentCO/AvailableAppointmentsFrame";
 import { createAppointmentActionCreators } from "../../../../store/actions/appointmentActions";
 import Loader from "../../components/Utils/Loader";
 import VideoAppointmentFrame from "../../components/PatientAppointmentCO/VideoAppointmentFrame";
+import DoctorInfo from "../../components/PatientDashboardComponents/DoctorInfo";
 
 const CollapsibleItem = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -46,31 +39,14 @@ const CollapsibleItem = ({ title, children }) => {
     );
 };
 
-export default Appointment = ({ route }) => {
-    // use amplify to fetch the doctor
+const Appointment = ({ route }) => {
+    const { doctorId } = route.params;
 
-    // dont need it
-    const {
-        doctor,
-        name,
-        specialization,
-        zipcode,
-        rating,
-        experience,
-        city,
-        address,
-        secondarySpecialization,
-        educationExperience,
-        awardsRecognition,
-        availableForVideoConsultation,
-        feeForVideoConsultation,
-        website,
-    } = route.params;
-    // doint need it
+    const doctor = useSelector((state) => state.doctorsListReducer.doctors.find(doc => doc.doctorID === doctorId));
 
-    // State for video consultation bookings
     const [videoDate, setVideoDate] = useState();
     const [videoTime, setVideoTime] = useState();
+
 
     const patientStories = [
         {
@@ -78,22 +54,18 @@ export default Appointment = ({ route }) => {
             name: "Raj",
             date: "5 days ago",
             rating: "4.9",
-            comment:
-                "This doctor has been a beacon of hope for my family and me through some challenging times. His exceptional expertise in internal medicine, combined with her warm and empathetic bedside manner, made each consultation comforting. His ability to explain complex health issues in simple terms is remarkable.",
+            comment: "This doctor has been a beacon of hope for my family and me through some challenging times. His exceptional expertise in internal medicine, combined with her warm and empathetic bedside manner, made each consultation comforting. His ability to explain complex health issues in simple terms is remarkable.",
         },
         {
             id: "2",
             name: "Revanth",
             date: "7 days ago",
             rating: "4.0",
-            comment:
-                "This doctor has been a beacon of hope for my family and me through some challenging times. His exceptional expertise in internal medicine, combined with her warm and empathetic bedside manner, made each consultation comforting. His ability to explain complex health issues in simple terms is remarkable.",
+            comment: "This doctor has been a beacon of hope for my family and me through some challenging times. His exceptional expertise in internal medicine, combined with her warm and empathetic bedside manner, made each consultation comforting. His ability to explain complex health issues in simple terms is remarkable.",
         },
     ];
 
-    const { loading, error, appointment } = useSelector(
-        (state) => state.appointmentCreateReducer
-    );
+    const { loading, error, appointment } = useSelector((state) => state.appointmentCreateReducer);
 
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [appointmentType, setAppointmentType] = useState("clinic");
@@ -123,47 +95,9 @@ export default Appointment = ({ route }) => {
         <ScreenContainer>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View className="space-y-5">
+                    <DoctorInfo doctor={doctor} />
                     <View>
-                        <View className="flex-row items-center">
-                            <Image
-                                source={require("../../assets/doc1.webp")}
-                                className="w-24 h-24 rounded-full border border-primary"
-                            />
-                            <View style={{ flex: 1 }} className="ml-6">
-                                <Text className="text-xl font-[appfont-semi]">{`${name}`}</Text>
-                                <Text
-                                    style={{ color: customTheme.colors.dark }}
-                                    className="text-sm text-gray-500 font-[appfont]"
-                                >
-                                    {specialization}
-                                </Text>
-                                <View className="flex-row items-center mt-1">
-                                    <Ionicons
-                                        name="star"
-                                        size={15}
-                                        color="#ffd700"
-                                    />
-                                    <Text className="text-black text-s ml-1 mr-6 font-[appfont]">
-                                        {rating}(500+ Ratings)
-                                    </Text>
-                                    <Ionicons
-                                        name="time"
-                                        size={15}
-                                        color="#4b5563"
-                                        className="ml-2"
-                                    />
-                                    <Text
-                                        style={{
-                                            color: customTheme.colors.dark,
-                                        }}
-                                        className="text-s ml-1 font-[appfont]"
-                                    >{`${experience} Year Exp`}</Text>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                    <View>
-                        <ActionButton website={website} />
+                        <ActionButton website={doctor.website} excludeId2={true}/>
                     </View>
 
                     <View>
@@ -171,73 +105,37 @@ export default Appointment = ({ route }) => {
                     </View>
 
                     <View>
-                        <AvailableAppointmentsFrame
-                            onSelectSlot={(slot) =>
-                                selectAppointmentSlot("clinic", slot)
-                            }
-                            reset={appointmentType === "video"}
-                            doctorId={doctor.doctorID}
-                        />
+                        <AvailableAppointmentsFrame onSelectSlot={(slot) => selectAppointmentSlot("clinic", slot)} reset={appointmentType === "video"} doctorId={doctor.doctorID} />
                     </View>
 
                     {doctor.availableForVideoConsultation && (
-                        <View>
+                        <View className="space-y-5">
                             <View>
                                 <VideoAppointmentFrame />
                             </View>
 
                             <View>
-                                <AvailableAppointmentsFrame
-                                    onSelectSlot={(slot) =>
-                                        selectAppointmentSlot("video", slot)
-                                    }
-                                    reset={appointmentType === "clinic"}
-                                    doctorId={doctor.doctorId}
-                                />
+                                <AvailableAppointmentsFrame onSelectSlot={(slot) => selectAppointmentSlot("video", slot)} reset={appointmentType === "clinic"} doctorId={doctor.doctorID} />
                             </View>
                         </View>
                     )}
 
-                    {/* Clinic Details Section */}
-                    <View
-                        style={{ backgroundColor: customTheme.colors.light }}
-                        className="mt-4 mb-2 p-4 rounded-lg shadow mx-2 space-y-3"
-                    >
-                        <Text className="text-xl mb-3 font-[appfont-semi]">
-                            Clinic Location
-                        </Text>
-
-                        {/* Map Section */}
+                    <View className="mt-4 mb-2 p-4 rounded-lg shadow mx-2 space-y-3 bg-light">
                         <InteractiveMapView
-                            name={name}
-                            city={city}
-                            address={address}
-                            zipcode={zipcode}
+                            name={`${doctor.firstname} ${doctor.lastname}`}
+                            city={doctor.city}
+                            address={doctor.address}
+                            zipcode={doctor.zipcode}
+                            state={doctor.state}
                         />
-
-                        <TouchableOpacity
-                            style={{
-                                backgroundColor: customTheme.colors.primary,
-                            }}
-                            className="mt-3 text-white rounded-md py-2 px-4"
-                        >
+                        <TouchableOpacity className="mt-3 text-white rounded-md py-2 px-4 bg-primary">
                             <View className="flex-row justify-center items-center">
-                                <Ionicons
-                                    name="create-sharp"
-                                    size={20}
-                                    style={{ color: customTheme.colors.light }}
-                                />
-                                <Text
-                                    style={{ color: customTheme.colors.light }}
-                                    className="ml-2 font-[appfont-semi]"
-                                >
-                                    Write a review
-                                </Text>
+                                <Ionicons name="create-sharp" size={20} style={{ color: customTheme.colors.light }} />
+                                <Text className="ml-2 font-[appfont-semi] text-light">Write a review</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
 
-                    {/* Patient Stories Section */}
                     <View className="p-2">
                         <Text className="text-lg mt-5 font-[appfont-semi]">
                             Patient Stories (+250)
@@ -248,28 +146,21 @@ export default Appointment = ({ route }) => {
                     </View>
 
                     <View className="flex-row justify-center mb-4">
-                        <Text
-                            style={{ color: customTheme.colors.primary }}
-                            className="font-semibold"
-                        >
+                        <Text className="font-semibol text-primary">
                             View All Stories{" "}
                         </Text>
-                        <Ionicons
-                            name="chevron-forward"
-                            size={16}
-                            style={{ color: customTheme.colors.primary }}
-                        />
+                        <Ionicons name="chevron-forward" size={16} style={{ color: customTheme.colors.primary }} />
                     </View>
 
                     <View className="mt-4 mb-24 p-4 bg-white rounded-lg">
                         <CollapsibleItem title="Secondary Specializations">
-                            {secondarySpecialization}
+                            {doctor.secondarySpecialization}
                         </CollapsibleItem>
                         <CollapsibleItem title="Education">
-                            {educationExperience}
+                            {doctor.educationExperience}
                         </CollapsibleItem>
                         <CollapsibleItem title="Awards and Recognitions">
-                            {awardsRecognition}
+                            {doctor.awardsRecognition}
                         </CollapsibleItem>
                     </View>
                 </View>
@@ -280,15 +171,11 @@ export default Appointment = ({ route }) => {
                     onPress={bookAppointment}
                     variant={`${selectedSlot ? "primary" : "disabled"}`}
                     btnLabel="Book"
-                    btnLeftIcon={
-                        <Ionicons
-                            name="calendar"
-                            size={20}
-                            color={theme.colors.light}
-                        />
-                    }
+                    btnLeftIcon={<Ionicons name="calendar" size={20} color={theme.colors.light} />}
                 />
             </View>
         </ScreenContainer>
     );
 };
+
+export default Appointment;
