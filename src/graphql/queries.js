@@ -513,6 +513,7 @@ export const getAppointment = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      doctorNotes
       createdAt
       updatedAt
       _version
@@ -545,6 +546,7 @@ export const listAppointments = /* GraphQL */ `
         endTime
         type
         isBooked
+        doctorNotes
         createdAt
         updatedAt
         _version
@@ -579,6 +581,7 @@ export const syncAppointments = /* GraphQL */ `
         endTime
         type
         isBooked
+        doctorNotes
         createdAt
         updatedAt
         _version
@@ -1034,6 +1037,7 @@ export const slotsByDoctor = /* GraphQL */ `
         endTime
         type
         isBooked
+        doctorNotes
         createdAt
         updatedAt
         _version
@@ -1072,6 +1076,7 @@ export const slotsByPatient = /* GraphQL */ `
         endTime
         type
         isBooked
+        doctorNotes
         createdAt
         updatedAt
         _version

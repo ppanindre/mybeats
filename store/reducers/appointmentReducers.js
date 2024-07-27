@@ -23,6 +23,9 @@ import {
     APPOINTMENT_UPDATE_FAILURE,
     APPOINTMENT_UPDATE_REQUEST,
     APPOINTMENT_UPDATE_SUCCESS,
+    APPOINTMENT_UPDATE_NOTES_REQUEST,
+    APPOINTMENT_UPDATE_NOTES_SUCCESS,
+    APPOINTMENT_UPDATE_NOTES_FAILURE,
 } from "../types/appointmentActionTypes.js";
 
 export const appointmentCreateReducer = (state = {}, action) => {
@@ -56,30 +59,20 @@ export const appointmentCreateReducer = (state = {}, action) => {
 
 export const appointmentUpdateReducer = (state = {}, action) => {
     switch (action.type) {
-        case APPOINTMENT_UPDATE_REQUEST: {
-            return {
-                loading: true,
-            };
-        }
+        case APPOINTMENT_UPDATE_REQUEST:
+        case APPOINTMENT_UPDATE_NOTES_REQUEST:
+            return { loading: true };
 
-        case APPOINTMENT_UPDATE_SUCCESS: {
-            return {
-                loading: false,
-                success: true,
-                appointment: action.payload,
-            };
-        }
+        case APPOINTMENT_UPDATE_SUCCESS:
+        case APPOINTMENT_UPDATE_NOTES_SUCCESS:
+            return { loading: false, success: true, appointment: action.payload };
 
-        case APPOINTMENT_UPDATE_FAILURE: {
-            return {
-                loading: false,
-                error: action.payload,
-            };
-        }
+        case APPOINTMENT_UPDATE_FAILURE:
+        case APPOINTMENT_UPDATE_NOTES_FAILURE:
+            return { loading: false, error: action.payload };
 
-        default: {
+        default:
             return state;
-        }
     }
 };
 

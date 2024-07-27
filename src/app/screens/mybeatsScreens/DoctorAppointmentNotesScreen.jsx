@@ -7,11 +7,15 @@ import ScreenContainer from '../../components/Containers/ScreenContainer';
 import MultiLineInput from '../../components/Inputs/MultiLineInput';
 import AppButton from '../../components/Buttons/AppButton';
 import { theme } from '../../../../tailwind.config';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateAppointmentNotes, getAppointmentAction } from '../../../../store/actions/appointmentActions';
+import Loader from '../../components/Utils/Loader';
 
 const DoctorAppointmentNotesScreen = () => {
     const route = useRoute();
     const navigation = useNavigation();
-    const { appointmentId } = route.params;
+    const dispatch = useDispatch();
+    const { appointment } = route.params;
 
     const [notes, setNotes] = useState('');
     const [images, setImages] = useState([]);
@@ -31,6 +35,13 @@ const DoctorAppointmentNotesScreen = () => {
         setImages(images.filter(image => image.uri !== uri));
     };
 
+    const handleSubmit = async () => {
+        if (appointment) {
+            await dispatch(updateAppointmentNotes(appointment.id, notes));
+            navigation.goBack();
+            await dispatch(getAppointmentAction(appointment.id));   
+        }
+    };
     const isSubmitDisabled = notes.length === 0 && images.length === 0;
 
     return (
@@ -80,6 +91,7 @@ const DoctorAppointmentNotesScreen = () => {
                 </View>
                 <View className="flex-1">
                     <AppButton
+                        onPress={handleSubmit}
                         variant={isSubmitDisabled ? "disabled" : "primary"}
                         btnLabel="Submit"
                         disabled={isSubmitDisabled}

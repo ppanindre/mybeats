@@ -208,6 +208,7 @@ type EagerAppointment = {
   readonly isBooked: boolean;
   readonly doctor?: Doctor | null;
   readonly patient?: Patient | null;
+  readonly doctorNotes?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -226,6 +227,7 @@ type LazyAppointment = {
   readonly isBooked: boolean;
   readonly doctor: AsyncItem<Doctor | undefined>;
   readonly patient: AsyncItem<Patient | undefined>;
+  readonly doctorNotes?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

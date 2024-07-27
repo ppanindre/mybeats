@@ -6,6 +6,9 @@ import {
     APPOINTMENT_DELETE_FAILURE,
     APPOINTMENT_DELETE_REQUEST,
     APPOINTMENT_DELETE_SUCCESS,
+    APPOINTMENT_GET_REQUEST,
+    APPOINTMENT_GET_SUCCESS,
+    APPOINTMENT_GET_FAILURE,
     APPOINTMENT_LIST_AVAILABLE_FAILURE,
     APPOINTMENT_LIST_AVAILABLE_REQUEST,
     APPOINTMENT_LIST_AVAILABLE_SUCCESS,
@@ -14,13 +17,17 @@ import {
     APPOINTMENT_LIST_BY_DOCTOR_SUCCESS,
     APPOINTMENT_LIST_BY_PATIENT_REQUEST,
     APPOINTMENT_LIST_BY_PATIENT_SUCCESS,
-    APPOINTMENT_LIST_BY_PATIENT_FAILURE
+    APPOINTMENT_LIST_BY_PATIENT_FAILURE,
+    APPOINTMENT_UPDATE_NOTES_REQUEST,
+    APPOINTMENT_UPDATE_NOTES_SUCCESS,
+    APPOINTMENT_UPDATE_NOTES_FAILURE
 } from "../types/appointmentActionTypes.js";
 import moment from "moment";
-import { getPatient, getDoctor, listAppointments } from "../../src/graphql/queries.js";
+import { getPatient, getDoctor, listAppointments, getAppointment } from "../../src/graphql/queries.js";
 import {
     createAppointment,
     deleteAppointment,
+    updateAppointment
 } from "../../src/graphql/mutations.js";
 
 const client = generateClient();
@@ -56,6 +63,51 @@ export const createAppointmentActionCreators =
             dispatch({ type: APPOINTMENT_CREATE_FAILURE, payload: error });
         }
     };
+
+    export const updateAppointmentNotes = (appointmentId, notes) => async (dispatch) => {
+        try {
+            dispatch({ type: APPOINTMENT_UPDATE_NOTES_REQUEST });
+    
+            // Fetching the latest appointment
+            const response = await client.graphql({
+                query: getAppointment,
+                variables: { id: appointmentId },
+            });
+            const latestAppointment = response.data.getAppointment;
+            dispatch({
+                type: APPOINTMENT_GET_SUCCESS,
+                payload: latestAppointment,
+            });
+    
+            const latestVersion = latestAppointment?._version;
+    
+            if (latestVersion !== undefined) {
+                const updateResponse = await client.graphql({
+                    query: updateAppointment,
+                    variables: {
+                        input: {
+                            id: appointmentId,
+                            doctorNotes: notes,
+                            _version: latestVersion
+                        },
+                    },
+                });
+    
+                dispatch({
+                    type: APPOINTMENT_UPDATE_NOTES_SUCCESS,
+                    payload: updateResponse.data.updateAppointment,
+                });
+            } else {
+                console.error('Failed to fetch the latest appointment version.');
+                dispatch({ type: APPOINTMENT_UPDATE_NOTES_FAILURE, payload: 'Failed to fetch the latest appointment version.' });
+            }
+        } catch (error) {
+            console.error("Error updating appointment notes", error);
+            dispatch({ type: APPOINTMENT_UPDATE_NOTES_FAILURE, payload: error });
+        }
+    };
+    
+    
 
 export const deleteAppointmentActionCreator =
     (appointmentId, version = 1) =>
@@ -240,5 +292,28 @@ export const listAvailableAppointmentsActionCreators =
                 type: APPOINTMENT_LIST_AVAILABLE_FAILURE,
                 payload: error,
             });
+        }
+    };
+
+    export const getAppointmentAction = (appointmentId) => async (dispatch) => {
+        try {
+            dispatch({ type: APPOINTMENT_GET_REQUEST });
+    
+            const response = await client.graphql({
+                query: getAppointment,
+                variables: { id: appointmentId },
+            });
+    
+            const appointmentData = response.data.getAppointment;
+            dispatch({
+                type: APPOINTMENT_GET_SUCCESS,
+                payload: appointmentData,
+            });
+    
+            // Return the fetched appointment data
+            return appointmentData;
+        } catch (error) {
+            console.error("Error fetching appointment details", error);
+            dispatch({ type: APPOINTMENT_GET_FAILURE, payload: error });
         }
     };
