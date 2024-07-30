@@ -71,6 +71,24 @@ const PatientDashboard = () => {
                             </TouchableOpacity>
                         </View>
 
+                         {/* Payments */}
+                         <View>
+                            <TouchableOpacity
+                                className="flex-row items-center justify-between p-5 rounded-lg shadow-md bg-lightPrimary"
+                                onPress={() => navigation.navigate("payment")}
+                            >
+                                <View className="flex-1">
+                                    <Text className="text-lg font-[appfont-semi] text-dark">
+                                        Payments
+                                    </Text>
+                                    <Text className="text-sm font-[appfont-semi] text-dark">
+                                        Manage payments
+                                    </Text>
+                                </View>
+
+                            </TouchableOpacity>
+                        </View>
+
                         <View>
                             <DoctorScrollView />
                         </View>
