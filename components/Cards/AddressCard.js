@@ -1,8 +1,8 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { customTheme } from "../../constants/themeConstants";
 import { useNavigation } from "@react-navigation/native";
+import { theme } from "../../tailwind.config";
 
 const AddressCard = ({ type, address, phone, onPress, isSelected, onEdit }) => {
     const navigation = useNavigation();
@@ -12,14 +12,14 @@ const AddressCard = ({ type, address, phone, onPress, isSelected, onEdit }) => {
             onPress={onPress}
             style={{
                 borderWidth: 2,
-                borderColor: isSelected ? customTheme.colors.primary : "#FFFFFF",
+                borderColor: isSelected ? theme.colors.primary :theme.colors.darkSecondary,
             }}
-            className="bg-white shadow-lg rounded-lg p-5 space-y-3"
+            className="bg-white shadow-lg p-3 rounded-lg space-y-3"
         >
             <View className="flex-row items-center space-x-3">
                 <Ionicons
                     name="home"
-                    color={customTheme.colors.primary}
+                    color={theme.colors.primary}
                     size={30}
                 />
                 <Text className="font-[appfont-bold]">Home</Text>
@@ -36,7 +36,7 @@ const AddressCard = ({ type, address, phone, onPress, isSelected, onEdit }) => {
             <TouchableOpacity onPress={onEdit}>
                 <Text
                     className="font-[appfont-bold]"
-                    style={{ color: customTheme.colors.primary }}
+                    style={{ color: theme.colors.primary }}
                 >
                     Edit
                 </Text>

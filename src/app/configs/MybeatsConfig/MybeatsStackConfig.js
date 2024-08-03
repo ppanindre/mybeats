@@ -95,10 +95,10 @@ export const mybeatsStackConfig = {
             component: UploadPrescription,
         },
         {
-            headerTitle: "Payment",
+            headerTitle: "Checkout",
             name: "payment",
             component: Payment,
-            showHeader: false
+            showHeader: true
         },
         {
             headerTitle: "Appointments",
