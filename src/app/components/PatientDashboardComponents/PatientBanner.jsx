@@ -1,7 +1,9 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const PatientBanner = () => {
+    const navigation = useNavigation();
     return (
         <View className="h-[150] rounded-lg shadow-lg p-5 bg-primary">
             <TouchableOpacity
