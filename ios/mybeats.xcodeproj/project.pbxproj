@@ -437,8 +437,8 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.nyu.mybeats";
-				PRODUCT_NAME = "mybeats";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nyu.mybeats;
+				PRODUCT_NAME = mybeats;
 				SWIFT_OBJC_BRIDGING_HEADER = "mybeats/mybeats-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -469,8 +469,8 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.nyu.mybeats";
-				PRODUCT_NAME = "mybeats";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nyu.mybeats;
+				PRODUCT_NAME = mybeats;
 				SWIFT_OBJC_BRIDGING_HEADER = "mybeats/mybeats-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
