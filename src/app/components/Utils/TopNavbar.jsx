@@ -234,8 +234,8 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                 >
                     <TouchableOpacity
                         sentry-label="sync-btn"
-                        // onPress={() => navigation.navigate("confirmAddress")}
-                        onPress={() => setModalVisible(true)}
+                        onPress={() => navigation.navigate("confirmAddress")}
+                        // onPress={() => setModalVisible(true)}
                     >
                         <Text
                             style={{ color: customTheme.colors.primary }}
