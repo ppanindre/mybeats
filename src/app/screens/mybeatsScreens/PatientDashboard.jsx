@@ -113,8 +113,8 @@ const PatientDashboard = () => {
                                     <TouchableOpacity
                                         onPress={() =>
                                             navigation.navigate(
-                                                "PharmacyInfo",
-                                                pharmacy
+                                                "pharmacyInfo",
+                                                { pharmacy }
                                             )
                                         }
                                     >

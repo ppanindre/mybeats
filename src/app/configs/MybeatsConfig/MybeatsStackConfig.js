@@ -71,7 +71,7 @@ export const mybeatsStackConfig = {
         },
         {
             headerTitle: "Pharmacy",
-            name: "pharmacy",
+            name: "pharmacyInfo",
             component: Pharmacy,
         },
         {
