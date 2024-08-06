@@ -543,6 +543,7 @@ export const onCreateAppointment = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      doctorNotes
       createdAt
       updatedAt
       _version
@@ -611,6 +612,7 @@ export const onUpdateAppointment = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      doctorNotes
       createdAt
       updatedAt
       _version
@@ -679,6 +681,7 @@ export const onDeleteAppointment = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      doctorNotes
       createdAt
       updatedAt
       _version

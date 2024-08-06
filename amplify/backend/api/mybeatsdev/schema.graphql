@@ -92,6 +92,7 @@ type Appointment @model @auth(rules: [{ allow: public }]) {
     isBooked: Boolean!
     doctor: Doctor @belongsTo(fields: ["doctorID"])
     patient: Patient @belongsTo(fields: ["patientId"])
+    doctorNotes: String
 }
 
 type Prescription @model @auth(rules: [{ allow: public }]) {

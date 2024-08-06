@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -11,8 +11,9 @@ import moment from 'moment';
 import {
     deleteAppointmentActionCreator,
     listAppointmentsByDoctorActionCreators,
+    getAppointmentAction,
 } from '../../../../store/actions/appointmentActions';
-
+import Loader from '../Utils/Loader';
 
 const DoctorAppointmentDetailScreen = () => {
     const route = useRoute();
@@ -20,19 +21,27 @@ const DoctorAppointmentDetailScreen = () => {
     const dispatch = useDispatch();
     const { appointment, patient } = route.params;
 
-    const isPastAppointment = moment(appointment.startTime).isBefore(moment());
+    const { appointment: updatedAppointment, loading } = useSelector(state => state.appointmentGetReducer);
+
+    const isPastAppointment = moment(updatedAppointment?.startTime || appointment.startTime).isBefore(moment());
 
     const [showModal, setShowModal] = useState(false);
     const [reason, setReason] = useState("");
+
+    useEffect(() => {
+        dispatch(getAppointmentAction(appointment.id));
+    }, [dispatch, appointment.id]);
 
     const onConfirmDeleteAppointment = async () => {
         await dispatch(
             deleteAppointmentActionCreator(appointment.id, appointment._version)
         );
         setShowModal(false);
-        navigation.goBack();
         dispatch(listAppointmentsByDoctorActionCreators());
+        navigation.goBack();
     };
+
+    if (loading) return <Loader />;
 
     return (
         <ScreenContainer>
@@ -60,19 +69,19 @@ const DoctorAppointmentDetailScreen = () => {
                     <View className="flex-row items-center justify-between">
                         <Text className="font-[appfont-semi] text-lg">Date:</Text>
                         <Text className="font-[appfont-semi] text-lg">
-                            {moment(appointment.startTime).format("D MMM YYYY")}
+                            {moment(updatedAppointment?.startTime || appointment.startTime).format("D MMM YYYY")}
                         </Text>
                     </View>
                     <View className="flex-row items-center justify-between">
                         <Text className="font-[appfont-semi] text-lg">Time:</Text>
                         <Text className="font-[appfont-semi] text-lg">
-                            {moment(appointment.startTime).format("H:mm a")}
+                            {moment(updatedAppointment?.startTime || appointment.startTime).format("H:mm a")}
                         </Text>
                     </View>
                     <View className="flex-row items-center justify-between">
                         <Text className="font-[appfont-semi] text-lg">Type:</Text>
                         <Text className="font-[appfont-semi] text-lg">
-                            {appointment.type || "Clinic"}
+                            {updatedAppointment?.type || appointment.type || "Clinic"}
                         </Text>
                     </View>
                     <View className="flex-row items-center justify-between">
@@ -81,6 +90,12 @@ const DoctorAppointmentDetailScreen = () => {
                             {patient.phoneNumber}
                         </Text>
                     </View>
+                    {updatedAppointment?.doctorNotes && (
+                        <View className="space-y-2">
+                            <Text className="font-[appfont-semi] text-lg">Your Notes:</Text>
+                            <Text className="font-[appfont-semi] text-md">{updatedAppointment.doctorNotes}</Text>
+                        </View>
+                    )}
                 </View>
             </ScrollView>
             <ModalContainer
@@ -120,7 +135,7 @@ const DoctorAppointmentDetailScreen = () => {
                     <View className="flex-1">
                         <AppButton
                             btnLabel="Write Doctor's notes"
-                            onPress={() => navigation.navigate('doctorAppointmentNotes', { appointmentId: appointment.id })}
+                            onPress={() => navigation.navigate('doctorAppointmentNotes', { appointment })}
                             variant="primary"
                         />
                     </View>

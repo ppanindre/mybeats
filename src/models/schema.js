@@ -738,6 +738,13 @@ export const schema = {
                         ]
                     }
                 },
+                "doctorNotes": {
+                    "name": "doctorNotes",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1099,5 +1106,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "024362a918044cf4d72a89e8de8ef7fa"
+    "version": "a8b29118b7f9b968a7785faace2d833d"
 };
