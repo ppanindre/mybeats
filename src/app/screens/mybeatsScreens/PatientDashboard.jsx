@@ -157,7 +157,7 @@ const PatientDashboard = () => {
                                 <View key={lab.id} className="w-[300]">
                                     <TouchableOpacity
                                         onPress={() =>
-                                            navigation.navigate("LabInfo", lab)
+                                            navigation.navigate("labInfo", { lab })
                                         }
                                     >
                                         <LabCard

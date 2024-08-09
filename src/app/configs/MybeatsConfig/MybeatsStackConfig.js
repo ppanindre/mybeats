@@ -76,7 +76,7 @@ export const mybeatsStackConfig = {
         },
         {
             headerTitle: "Lab",
-            name: "lab",
+            name: "labInfo",
             component: Lab,
         },
         {

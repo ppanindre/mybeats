@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
+import BookingSection from "../../../../MyCharts/Components/BookingSection";
 import ActionButton from "../../components/PatientDashboardComponents/ActionButton";
 import HorizontalLine from "../../../../MyCharts/Components/HorizontalLine";
 import InteractiveMapView from "../../components/DoctorMaps/InteractiveMapView";
@@ -11,9 +12,9 @@ import { patientStoriesData } from "../../../../constants/patientStoryConstants"
 import ScreenContainer from "../../components/Containers/ScreenContainer";
 import AppButton from "../../components/Buttons/AppButton";
 
-const Pharmacy = ({ navigation }) => {
+const Lab = ({ navigation }) => {
     const route = useRoute();
-    const { pharmacy } = route.params;
+    const { lab } = route.params; 
 
     const [clinicDate, setClinicDate] = useState();
     const [clinicTime, setClinicTime] = useState();
@@ -33,10 +34,10 @@ const Pharmacy = ({ navigation }) => {
                             />
                             <View className="space-y-1">
                                 <Text className="text-xl font-[appfont-semi]">
-                                    {pharmacy.name}
+                                    {lab.name}
                                 </Text>
                                 <Text className="text-sm text-dark font-[appfont]">
-                                    {pharmacy.zipcode}
+                                    {lab.zipcode}
                                 </Text>
                                 <View className="flex-row items-center space-x-1">
                                     <Ionicons name="star" size={15} color="#ffd700" />
@@ -44,7 +45,7 @@ const Pharmacy = ({ navigation }) => {
                                         style={{ color: theme.colors.dark }}
                                         className="text-s font-[appfont]"
                                     >
-                                        {pharmacy.rating}(500+ Ratings)
+                                        {lab.rating} ({lab.labStoryCount} Ratings)
                                     </Text>
                                 </View>
                             </View>
@@ -56,6 +57,36 @@ const Pharmacy = ({ navigation }) => {
                         <ActionButton excludeId3={true} />
 
                         <HorizontalLine />
+                    </View>
+
+                    <View
+                        className="flex-row justify-between items-center bg-lightPrimary p-5 rounded-lg shadow"
+                    >
+                        <View className="flex-row items-center space-x-2">
+                            <Ionicons
+                                name="business"
+                                size={24}
+                                style={{ color: theme.colors.light }}
+                            />
+                            <Text
+                                className="text-sm font-[appfont-semi] text-light"
+                            >
+                                Lab Appointment
+                            </Text>
+                        </View>
+                        <Text className="text-lg font-[appfont-semi] text-light">
+                            $50 Fee
+                        </Text>
+                    </View>
+
+                    <View className="rounded-lg">
+                        <BookingSection
+                            type="clinic"
+                            selectedDate={clinicDate}
+                            setSelectedDate={setClinicDate}
+                            selectedTime={clinicTime}
+                            setSelectedTime={setClinicTime}
+                        />
                     </View>
 
                     <View className="space-y-5">
@@ -79,30 +110,29 @@ const Pharmacy = ({ navigation }) => {
                         </View>
                     </View>
 
-
                     <View
                         className="rounded-lg p-4 shadow bg-light border border-lightPrimary space-y-3"
                     >
-                        <Text className="text-xl font-[appfont-semi]">Pharmacy Details</Text>
+                        <Text className="text-xl font-[appfont-semi]">Lab Details</Text>
                         <View className="flex-row justify-between items-center">
                             <Text className="text-lg font-[appfont-semi]">
-                                {pharmacy.zipcode}
+                                {lab.zipcode}
                             </Text>
                             <View className="flex-row items-center space-x-1">
                                 <Ionicons name="star" size={15} color="#ffd700" />
                                 <Text className="text-md font-medium">
-                                    {pharmacy.rating}
+                                    {lab.rating}
                                 </Text>
                             </View>
                         </View>
                         <Text className="text-sm font-[appfont-semi]">
-                            {pharmacy.name}
+                            {lab.name}
                         </Text>
                         <InteractiveMapView
                             latitude={37.78825}
                             longitude={-122.4324}
-                            name={pharmacy.name}
-                            zipcode={pharmacy.zipcode}
+                            name={lab.name}
+                            zipcode={lab.zipcode}
                         />
                         <View className="flex-row justify-between items-center">
                             <View>
@@ -122,7 +152,7 @@ const Pharmacy = ({ navigation }) => {
                             <View className="flex-row justify-center items-center space-x-2">
                                 <Ionicons name="call" size={20} style={{ color: theme.colors.light }} />
                                 <Text className="font-[appfont-semi] text-light">
-                                    Contact Pharmacy
+                                    Contact Lab
                                 </Text>
                             </View>
                         </TouchableOpacity>
@@ -134,8 +164,16 @@ const Pharmacy = ({ navigation }) => {
             <View className="flex-row space-x-3">
                 <View className="flex-1">
                     <AppButton
+                        variant="light"
+                        btnLabel="Search Lab   Tests"
+                    />
+                </View>
+
+                <View className="flex-1">
+                    <AppButton
                         variant="primary"
-                        btnLabel="Search Medicines"
+                        btnLabel="Book Appointment"
+                        onPress={() => alert("Appointment Booked Sucessfully")}
                     />
                 </View>
             </View>
@@ -143,4 +181,4 @@ const Pharmacy = ({ navigation }) => {
     );
 };
 
-export default Pharmacy;
+export default Lab;
