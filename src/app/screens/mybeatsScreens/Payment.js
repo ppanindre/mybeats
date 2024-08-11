@@ -5,7 +5,7 @@ import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import CustomSafeView from "../../../../components/CustomSafeView";
 import { customTheme } from "../../../../constants/themeConstants";
 import { useNavigation } from "@react-navigation/native";
-import { CreditCardInput } from "react-native-credit-card-input";
+// import { CreditCardInput } from "react-native-credit-card-input"
 import PrimaryButton from "../../../../components/Buttons/PrimaryButton";
 import AddressCard from "../../../../components/Cards/AddressCard";
 
@@ -86,7 +86,7 @@ const Payment = () => {
 
                                 {/* Credit Card input */}
                                 <View>
-                                    <CreditCardInput
+                                    {/* <CreditCardInput
                                         inputStyle={{
                                             backgroundColor:
                                                 customTheme.colors
@@ -106,7 +106,7 @@ const Payment = () => {
                                         requiresName={true}
                                         requiresCVC={true}
                                         allowScroll={true}
-                                    />
+                                    /> */}
                                 </View>
                             </View>
                         </View>

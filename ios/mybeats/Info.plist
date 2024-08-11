@@ -43,20 +43,20 @@
       <true/>
     </dict>
     <key>NSCameraUsageDescription</key>
-    <string>We need access to your camera to allow you to take and upload photos for profile picture.</string>
+    <string>Allow $(PRODUCT_NAME) to access your camera</string>
     <key>NSHealthShareUsageDescription</key>
     <string>Read and understand health data.</string>
     <key>NSHealthUpdateUsageDescription</key>
     <string>Share workout data with other apps.</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>We need your location to show the map</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your microphone</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>We need access to your photo library to allow you to upload photos for profile picture.</string>
     <key>UILaunchStoryboardName</key>
     <string>SplashScreen</string>
     <key>UIRequiredDeviceCapabilities</key>
     <array>
-      <string>armv7</string>
+      <string>arm64</string>
     </array>
     <key>UIRequiresFullScreen</key>
     <false/>

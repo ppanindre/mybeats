@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>159173208911-b3d0l62nv01a49jifsojtelc4pmog6os.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.159173208911-b3d0l62nv01a49jifsojtelc4pmog6os</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>159173208911-7cbiv91a3njofpcp8b6npsfu9dlpc4lm.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -11,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.mybeats</string>
+	<string>com.vr1126.firebeats</string>
 	<key>PROJECT_ID</key>
 	<string>firebeats-43aaf</string>
 	<key>STORAGE_BUCKET</key>
@@ -27,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:159173208911:ios:c63a81f0dca3fee685333a</string>
+	<string>1:159173208911:ios:d09f64c02b28c64785333a</string>
 	<key>DATABASE_URL</key>
 	<string>https://firebeats-43aaf-default-rtdb.firebaseio.com</string>
 </dict>
