@@ -11,6 +11,7 @@ import { avatarList } from "../../../constants/avatarConstants";
 import { userQueries } from "../../../apis/userQueries";
 import { customTheme } from "../../../constants/themeConstants";
 
+
 const AddAvatar = () => {
   // get user listener
   const user = useSelector((state) => state.UserReducer);

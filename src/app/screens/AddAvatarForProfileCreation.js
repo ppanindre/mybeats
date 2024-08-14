@@ -11,6 +11,7 @@ import { profileActionTypes } from "../../../store/ProfileReducer/ProfileActionT
 import { avatarList } from "../../../constants/avatarConstants";
 import { customTheme } from "../../../constants/themeConstants";
 
+
 const AddAvatarForProfileCreation = () => {
   // define dispatch & navigation instance
   const dispatch = useDispatch();

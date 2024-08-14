@@ -64,7 +64,8 @@ export const UserAuthActionCreators = {
           payload: { showSkip: true },
         });
       } catch (error) {
-        console.log("error", error);
+
+        console.log('error type', error.type)
 
         // Error handling with firebase
         let errorMsg = "";
@@ -83,7 +84,7 @@ export const UserAuthActionCreators = {
             break;
           }
           default: {
-            errorMsg = "Please terminate the app & try again.";
+            errorMsg = "Oops!! Something went wrong. Please restart the app";
             break;
           }
         }
@@ -131,7 +132,7 @@ export const UserAuthActionCreators = {
         // Dispatch that the user has been logged out
         dispatch({ type: userAuthActionTypes.LOGOUT_USER });
       } catch (error) {
-        Alert.alert("", "Please terminate the app & try again.");
+        Alert.alert("", "Oops!! Something went wrong. Please restart the app");
       }
     };
   },

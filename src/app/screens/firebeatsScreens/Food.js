@@ -31,19 +31,26 @@ import { USER_TABLE } from "../../../../constants/firebaseCollections";
 import { useDispatch, useSelector } from "react-redux";
 import { FoodActionCreators } from "../../../../store/FoodReducer/FoodActionCreators";
 import { foodActionTypes } from "../../../../store/FoodReducer/FoodActionTypes";
-
-const dateRender = (date) => {
-  return moment(date).format("MMM DD, YYYY").toString();
-};
+import { ChevronLeftIcon } from "react-native-heroicons/outline";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useCameraPermissions } from "expo-camera";
+import Modal from "react-native-modal";
+import { CheckBox } from "react-native-elements";
+import { theme } from "../../../../tailwind.config";
+import AppButton from "../../components/Buttons/AppButton";
 
 const INCREMENT_WEEK = WEEK;
 const INCREMENT_MONTH = MONTH;
 const INCREMENT_YEAR = YEAR;
 
+const dateRender = (date) => {
+  return moment(date).format("MMM DD, YYYY").toString();
+};
+
 const Food = () => {
   const dispatch = useDispatch();
 
-  const { foodCache, foodTrendCard } = useSelector(
+  const { foodCache, foodTrendCard, foodData, isDeleted } = useSelector(
     (state) => state.FoodReducer
   );
   //state variable to decide whether to show food edit screen or not
@@ -84,8 +91,18 @@ const Food = () => {
   });
 
   useEffect(() => {
+    if (isDeleted) {
+      fetchData((forceFood = true));
+
+      dispatch({
+        type: foodActionTypes.DELETE_FOOD_DATA,
+        payload: { isDeleted: false },
+      });
+    }
+  }, [isDeleted]);
+
+  useEffect(() => {
     getLastSyncTime();
-    // fetchData();
   }, []);
 
   //effect that will run whenever the dateOffsetChanges
@@ -93,19 +110,20 @@ const Food = () => {
     fetchData();
   }, [dateOffset]);
 
-  const fetchData = () => {
+  const fetchData = (forceFood = false) => {
     setNutirentLoading(true);
     const date = moment().subtract(dateOffset, "d").startOf("d");
     setDisplayDate(date.toDate().getTime());
 
     const dateFormatted = moment(date).format("YYYY-MM-DD");
 
-    // console.log("food cache", foodCache[dateFormatted])
-
-    if (foodCache[dateFormatted]) {
+    if (foodCache[dateFormatted] && !forceFood) {
       dispatch({
         type: foodActionTypes.FETCH_FOOD_DATA,
-        payload: { foodData: foodCache[dateFormatted], date: dateFormatted },
+        payload: {
+          foodData: foodCache[dateFormatted],
+          date: dateFormatted,
+        },
       });
       setNutirentLoading(false);
     } else {
@@ -118,8 +136,6 @@ const Food = () => {
 
     dispatch(FoodActionCreators.getDataForFoodTrendCard(date));
   };
-
-  //alert(JSON.stringify(foodTrendCardData))
 
   //called when the offset changes based on date range swipe.
   useEffect(() => {
@@ -134,6 +150,13 @@ const Food = () => {
     setNextDate(nextDate.toDate().getTime());
     fetchFoodTrendDate(prevDate, nextDate);
   }, [rangeDateOffset]);
+
+  useEffect(() => {
+    fetchFoodTrendDate(
+      moment().startOf("w").toDate().getTime(),
+      moment().startOf("w").add(6, "d").toDate().getTime()
+    );
+  }, [foodData]);
 
   //Called whenever a change in date increment format changes.
   useEffect(() => {
@@ -343,7 +366,18 @@ const Food = () => {
     if (direction == "left") {
       setDateOffset(dateOffset + 1);
     } else {
-      setDateOffset(dateOffset - 1);
+      // When swiping right, we reduce the offset to go back in time, but ensure it does not go below 1
+      const potentialNewDate = moment()
+        .subtract(dateOffset, "days")
+        .startOf("day");
+
+      // Log the date for debugging
+      console.log("date", potentialNewDate);
+
+      // Ensure the date we're trying to navigate to is not the current day or in the future
+      if (!potentialNewDate.isSame(moment().startOf("day"), "day")) {
+        setDateOffset(dateOffset - 1);
+      }
     }
 
     setSelectedSlice({
@@ -382,27 +416,122 @@ const Food = () => {
       moment(date).format("YYYY-MM-DD") ===
       moment(auth().currentUser?.metadata?.creationTime).format("YYYY-MM-DD")
     );
-
-    // if (userStartDate) {
-    //   return moment(userStartDate)
-    //     .startOf("D")
-    //     .isSameOrAfter(moment(date).startOf("D"));
-    // }
-    // console.log("food date", moment(date).startOf("D"));
-    // moment(auth().currentUser.metadata.creationTime).format("YYYY-MM-DD") ===
-    //   moment(date).format("YYYY-MM-DD")
   };
 
   const datePickedThroughModal = (date) => {
     const currentDay = moment().toDate().getTime();
-
     const daysDiff = moment(currentDay).diff(moment(date), "days");
+    setDateOffset(daysDiff);
+  };
 
-    setDateOffset(daysDiff)
-  }
+  const navigation = useNavigation();
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedPlateSize, setSelectedPlateSize] = useState(null);
+  const [type, setType] = useState("back");
+  const [permission, requestPermission] = useCameraPermissions();
+
+  // Envable take photo when user plate size is selected
+  // Have checkbox when selected
+  // Store the image on firebase storage
+
+  const handleOnClickEdit = () => {
+    setShowModal(true);
+  };
+
+  const PLATE_DATA = [
+    {
+      title: "Large (12 inches)",
+      size: "12",
+    },
+    {
+      title: "Medium (9 inches)",
+      size: "9",
+    },
+    {
+      title: "Small (6 inches)",
+      size: "6",
+    },
+  ];
+
+  const selectPlate = (size) => {
+    setSelectedPlateSize(size);
+  };
+
+  const route = useRoute();
+  const params = route.params;
+
+  useEffect(() => {
+    if (params && params !== null) {
+      setShowFoodEdit(true);
+    }
+  }, [params]);
+
+  const handleClearParams = () => {
+    navigation.navigate("food");
+    setShowFoodEdit(true);
+    setShowModal(false);
+  };
+
+  const takePhoto = () => {
+    if (!permission.granted) {
+      requestPermission();
+    } else {
+      navigation.navigate("camera", { plateSize: selectedPlateSize });
+    }
+    setShowModal(false);
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
+      <Modal
+        isVisible={showModal}
+        onBackdropPress={() => setShowModal(false)}
+        style={{ margin: 0 }}
+      >
+        <View className="bg-white w-[100%] absolute bottom-0 rounded-lg p-5 pb-0 space-y-5">
+          <Text className="text-lg font-bold">Select Plate size</Text>
+
+          <View>
+            {PLATE_DATA.map((size, index) => (
+              <CheckBox
+                key={size.title}
+                title={size.title}
+                checkedColor={theme.colors.primary}
+                checked={selectedPlateSize === size.size}
+                onPress={() => selectPlate(size.size)}
+                textStyle={{
+                  fontFamily: "appfont-bold",
+                }}
+                containerStyle={{
+                  marginTop: 10,
+                  marginLeft: 0,
+                }}
+              />
+            ))}
+          </View>
+
+          <View className="flex-row space-x-3 items-center">
+            <View className="flex-1">
+              <AppButton
+                variant={`${
+                  selectedPlateSize !== null ? "primary" : "disabled"
+                }`}
+                btnLabel="Take photo"
+                onPress={takePhoto}
+              />
+            </View>
+            <View className="flex-1">
+              <AppButton
+                variant="light"
+                btnLabel="Enter manually"
+                onPress={handleClearParams}
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
+
       {newDataAvailable && (
         <View
           style={{
@@ -437,15 +566,7 @@ const Food = () => {
                     setShowEdit(false);
                   }}
                 >
-                  <Avatar.Icon
-                    size={24}
-                    style={{
-                      backgroundColor: "white",
-                      borderWidth: 0.6,
-                      marginTop: 20,
-                    }}
-                    icon={require("../../assets/back.png")}
-                  />
+                  <ChevronLeftIcon />
                 </TouchableOpacity>
               </View>
             ) : (
@@ -474,9 +595,7 @@ const Food = () => {
                   showArrows={dateOffset != 0}
                   data={foodTrendCard}
                   showEdit={true}
-                  onEdit={() => {
-                    setShowFoodEdit(!showFoodEdit);
-                  }}
+                  onEdit={handleOnClickEdit}
                 />
                 <View>
                   <View
@@ -600,6 +719,7 @@ const Food = () => {
         </View>
       ) : (
         <FoodEditComponent
+          autoFillFoodData={params ? params.autoFillFoodData : null}
           onClickingSave={onClickingSave}
           date={moment()
             .startOf("d")

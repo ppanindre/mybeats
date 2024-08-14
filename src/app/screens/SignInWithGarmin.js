@@ -115,6 +115,7 @@ const SignInWithGarmin = ({}) => {
                   device: "garmin",
                   message: "Your device has been added successfully!",
                   timestamp: moment().toDate().getTime(),
+                  approvedTime: moment().toDate().getTime(),
                 });
 
               Alert.alert("", "Your device has been added successfully!");
@@ -125,7 +126,7 @@ const SignInWithGarmin = ({}) => {
               navigation.navigate("BottomTabNav");
             })
             .catch((error) => {
-              Alert.alert("", "Please terminate the app & try again.");
+              Alert.alert("", "Oops!! Something went wrong. Please restart the app");
             });
           return;
         }
@@ -146,7 +147,7 @@ const SignInWithGarmin = ({}) => {
               );
             })
             .catch((error) => {
-              Alert.alert("", "Please terminate the app & try again.");
+              Alert.alert("", "Oops!! Something went wrong. Please restart the app");
             });
         }
       });

@@ -226,7 +226,6 @@ export const getActivityTrendCardData = async (
     }
   }
 
-  console.log("current steps", currentSteps)
 
   return [
     {

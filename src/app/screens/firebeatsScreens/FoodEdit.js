@@ -82,10 +82,15 @@ const DIVIDER_HEIGHT = 8;
 
 const EMPTY_ERROR_MESSAGE = "Please enter a value";
 
-const FoodEditComponent = ({ editCallback, date = null, onClickingSave }) => {
+const FoodEditComponent = ({
+  editCallback,
+  date = null,
+  onClickingSave,
+  autoFillFoodData,
+}) => {
   const dispatch = useDispatch();
 
-  const userId = auth().currentUser.uid;
+  const userId = auth().currentUser?.uid;
 
   const [protein, setProtein] = useState("");
   const [carb, setCarb] = useState("");
@@ -160,19 +165,33 @@ const FoodEditComponent = ({ editCallback, date = null, onClickingSave }) => {
     } else {
       setCalorie(0);
     }
+
     setProtein("");
     setCarb("");
     setFat("");
+
+    if (autoFillFoodData && autoFillFoodData !== null) {
+      setProtein(parseFloat(autoFillFoodData.protein));
+      setCarb(parseFloat(autoFillFoodData.carbs));
+      setFat(parseFloat(autoFillFoodData.fat));
+    }
     setProteinError(false);
     setCarbError(false);
     setFatError(false);
   }, [detailed]);
 
   useEffect(() => {
+    if (autoFillFoodData !== null) {
+      setDetailed(true);
+    }
+  }, [autoFillFoodData]);
+
+  useEffect(() => {
     const p = protein == "" ? 0 : protein;
     const f = fat == "" ? 0 : fat;
     const c = carb == "" ? 0 : carb;
     const cal = (p + c) * 4 + f * 9;
+    console.log("cal calculated", cal);
     if (cal == 0) {
       setCalorie("");
     } else {
@@ -318,9 +337,6 @@ const FoodEditComponent = ({ editCallback, date = null, onClickingSave }) => {
   };
 
   const deleteLog = () => {
-    // Alert.alert("", "Are you sure you want to delete these details?", [
-
-    // ])
     Alert.alert(
       "",
       "Are you sure you want to delete these details?",
@@ -333,12 +349,9 @@ const FoodEditComponent = ({ editCallback, date = null, onClickingSave }) => {
           text: "OK",
           onPress: () => {
             // Handle deletion logic here
-            console.log("Log deleted!");
             const data = logs[editingIndex].data();
 
             const dateToFetch = moment(date).format("YYYY-MM-DD");
-
-            console.log("deleting", -data.carbs);
 
             //update the calories
             firestore()
@@ -366,6 +379,12 @@ const FoodEditComponent = ({ editCallback, date = null, onClickingSave }) => {
             setFat("");
             setWater("");
             setCalorie("");
+
+            dispatch({
+              type: foodActionTypes.DELETE_FOOD_DATA,
+              payload: { isDeleted: true },
+            });
+
             dispatch(FoodActionCreators.getDataForFoodTrendCard(dateToFetch));
             dispatch({
               type: dashboardActionTypes.FORCE_FOOD,
@@ -545,11 +564,6 @@ const FoodEditComponent = ({ editCallback, date = null, onClickingSave }) => {
     setShowTimePicker(false);
   };
 
-  // const onChange = (event, selectedTime) => {
-  //   setSelectedTime(selectedTime);
-  //   // Handle the selected time as needed
-  // };
-
   return (
     <View>
       <View className="p-5" style={{ width: "100%" }}>
@@ -558,14 +572,15 @@ const FoodEditComponent = ({ editCallback, date = null, onClickingSave }) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             paddingBottom: 20,
-            width: "100%"
+            width: "100%",
           }}
         >
           <View>
             <View
               style={{
+                marginBottom: 20,
                 borderWidth: 1,
-                padding: 5,                
+                padding: 5,
                 borderRadius: 5,
                 borderColor: "#4a4a4a",
                 backgroundColor: "#FFFFFF",
@@ -573,7 +588,11 @@ const FoodEditComponent = ({ editCallback, date = null, onClickingSave }) => {
             >
               <View>
                 <Text
-                  style={{ color: "#4a4a4a", marginLeft: 10, fontSize: 16 }}
+                  style={{
+                    color: "#4a4a4a",
+                    marginLeft: 10,
+                    fontSize: 16,
+                  }}
                 >
                   Water Consumption
                 </Text>
@@ -616,7 +635,11 @@ const FoodEditComponent = ({ editCallback, date = null, onClickingSave }) => {
                         size={24}
                         color={water != 8 ? "#fb923c" : "white"}
                       />
-                      <Text style={{ color: water != 8 ? "black" : "white" }}>
+                      <Text
+                        style={{
+                          color: water != 8 ? "black" : "white",
+                        }}
+                      >
                         8 oz
                       </Text>
                     </View>
@@ -644,7 +667,11 @@ const FoodEditComponent = ({ editCallback, date = null, onClickingSave }) => {
                         size={35}
                         color={water != 16 ? "#fb923c" : "white"}
                       />
-                      <Text style={{ color: water != 16 ? "black" : "white" }}>
+                      <Text
+                        style={{
+                          color: water != 16 ? "black" : "white",
+                        }}
+                      >
                         16 oz
                       </Text>
                     </View>
@@ -672,7 +699,11 @@ const FoodEditComponent = ({ editCallback, date = null, onClickingSave }) => {
                         size={35}
                         color={water != 24 ? "#fb923c" : "white"}
                       />
-                      <Text style={{ color: water != 24 ? "black" : "white" }}>
+                      <Text
+                        style={{
+                          color: water != 24 ? "black" : "white",
+                        }}
+                      >
                         24 oz
                       </Text>
                     </View>
@@ -681,108 +712,90 @@ const FoodEditComponent = ({ editCallback, date = null, onClickingSave }) => {
               </View>
             </View>
 
-            <TextInput
-              keyboardType="number-pad"
-              label="Carbohydrates (g)"
-              outlineColor="#4a4a4a"
-              value={`${carb}`}
-              onChangeText={(text) => validate(text, setCarb)}
-              mode="outlined"
-              textAlign={"center"}
-              contentStyle={{
-                color: "#4a4a4a",
-              }}
-              style={{
-                marginTop: 10,
-                ...styles.inputBox,
-                display: detailed ? "flex" : "none",
-              }}
-              theme={{ colors: { primary: "#fb923c", error: "#E32A17" } }}
-              error={carbError}
-            />
-            <Text
-              style={{
-                ...styles.errorText,
-                opacity: carbError ? 100 : 0,
-                display: detailed ? "flex" : "none",
-                fontSize: 13,
-              }}
-            >
-              {EMPTY_ERROR_MESSAGE}
-            </Text>
-            <TextInput
-              textAlign={"center"}
-              keyboardType="number-pad"
-              label="Protein (g)"
-              value={`${protein}`}
-              onChangeText={(text) => validate(text, setProtein)}
-              mode="outlined"
-              contentStyle={{
-                color: "#4a4a4a",
-              }}
-              outlineColor="#4a4a4a"
-              style={{
-                ...styles.inputBox,
-                display: detailed ? "flex" : "none",
-              }}
-              theme={{ colors: { primary: "#fb923c", error: "#E32A17" } }}
-              error={proteinError}
-            />
-            <Text
-              style={{
-                ...styles.errorText,
-                opacity: proteinError ? 100 : 0,
-                display: detailed ? "flex" : "none",
-                fontSize: 13,
-              }}
-            >
-              {EMPTY_ERROR_MESSAGE}
-            </Text>
-            <TextInput
-              textAlign={"center"}
-              keyboardType="number-pad"
-              label="Fat (g)"
-              outlineColor="#4a4a4a"
-              value={`${fat}`}
-              onChangeText={(text) => validate(text, setFat)}
-              mode="outlined"
-              contentStyle={{
-                color: "#4a4a4a",
-              }}
-              style={{
-                ...styles.inputBox,
-                display: detailed ? "flex" : "none",
-              }}
-              theme={{ colors: { primary: "#fb923c", error: "#E32A17" } }}
-              error={fatError}
-            />
-            <Text
-              style={{
-                ...styles.errorText,
-                opacity: fatError ? 100 : 0,
-                display: detailed ? "flex" : "none",
-                fontSize: 13,
-              }}
-            >
-              {EMPTY_ERROR_MESSAGE}
-            </Text>
+            {detailed && (
+              <>
+                <View className="mb-3">
+                  <CustomInput
+                    value={carb}
+                    keyboardType="number-pad"
+                    placeholder="Carbohydrates (g)"
+                    onChangeText={(text) => validate(text, setCarb)}
+                  />
+                </View>
 
-            <LineBreak />
-            <TextInput
-              outlineColor="#4a4a4a"
-              textAlign={"center"}
-              keyboardType="number-pad"
-              label="Calorie Intake"
-              value={`${calorie}`}
-              // disabled={calDisabled}
-              editable={!calDisabled}
-              outlineStyle={{ borderColor: "#555555" }}
-              contentStyle={{ color: "#4a4a4a" }}
-              onChangeText={(text) => validate(text, setCalorie)}
-              mode="outlined"
-              style={styles.inputBox}
-              theme={{ colors: { primary: "#fb923c", error: "#E32A17" } }}
-            />
+                <Text
+                  style={{
+                    ...styles.errorText,
+                    opacity: carbError ? 100 : 0,
+                    display: detailed ? "flex" : "none",
+                    fontSize: 13,
+                  }}
+                >
+                  {EMPTY_ERROR_MESSAGE}
+                </Text>
+
+                <View className="mb-3">
+                  <CustomInput
+                    value={protein}
+                    keyboardType="number-pad"
+                    placeholder="Protein (g)"
+                    onChangeText={(text) => validate(text, setProtein)}
+                  />
+                </View>
+                <Text
+                  style={{
+                    ...styles.errorText,
+                    opacity: proteinError ? 100 : 0,
+                    display: detailed ? "flex" : "none",
+                    fontSize: 13,
+                  }}
+                >
+                  {EMPTY_ERROR_MESSAGE}
+                </Text>
+
+                <View>
+                  <CustomInput
+                    value={fat}
+                    keyboardType="number-pad"
+                    placeholder="Fat (g)"
+                    onChangeText={(text) => validate(text, setFat)}
+                  />
+                </View>
+                <Text
+                  style={{
+                    ...styles.errorText,
+                    opacity: fatError ? 100 : 0,
+                    display: detailed ? "flex" : "none",
+                    fontSize: 13,
+                  }}
+                >
+                  {EMPTY_ERROR_MESSAGE}
+                </Text>
+              </>
+            )}
+
+            <View className="mb-3">
+              <TextInput
+                outlineColor="#4a4a4a"
+                textAlign={"center"}
+                keyboardType="number-pad"
+                label="Calorie Intake"
+                value={`${calorie}`}
+                // disabled={calDisabled}
+                editable={!calDisabled}
+                outlineStyle={{ borderColor: "#555555" }}
+                contentStyle={{ color: "#4a4a4a" }}
+                onChangeText={(text) => validate(text, setCalorie)}
+                mode="outlined"
+                style={styles.inputBox}
+                theme={{
+                  colors: {
+                    primary: "#fb923c",
+                    error: "#E32A17",
+                  },
+                }}
+              />
+            </View>
             <LineBreak />
             <TouchableOpacity onPress={() => setShowTimePicker(true)}>
               <TextInput
@@ -799,7 +812,12 @@ const FoodEditComponent = ({ editCallback, date = null, onClickingSave }) => {
                 mode="outlined"
                 editable={false}
                 style={[styles.inputBox]}
-                theme={{ colors: { primary: "#fb923c", error: "#E32A17" } }}
+                theme={{
+                  colors: {
+                    primary: "#fb923c",
+                    error: "#E32A17",
+                  },
+                }}
               />
             </TouchableOpacity>
 
@@ -807,10 +825,6 @@ const FoodEditComponent = ({ editCallback, date = null, onClickingSave }) => {
               <>
                 {showTimePicker ? (
                   <View className="items-center mt-4">
-                    {/* <TouchableOpacity onPress={hidePicker}>
-                      <Text className="text-blue-400 text-lg">Done</Text>
-                    </TouchableOpacity> */}
-
                     <DateTimePickerModal
                       isVisible={showTimePicker}
                       mode="time"
@@ -859,16 +873,12 @@ const FoodEditComponent = ({ editCallback, date = null, onClickingSave }) => {
               )}
               <Text className="text-orange-400 font-bold">
                 {" "}
-                {detailed ? "Show simple view" : "Add details"}
+                {detailed ? "Less details" : "Add details"}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={edting ? updateFood : savefood}
               className="border-2 border-orange-400 bg-orange-400 p-4 rounded-md mb-5 flex-row items-center justify-center"
-              // style={{
-              //   ...styles.signupButton,
-              //   backgroundColor: loading ? "grey" : "#fb923c",
-              // }}
             >
               <Text className="text-white font-lg font-bold">
                 {" "}
@@ -915,22 +925,12 @@ const FoodEditComponent = ({ editCallback, date = null, onClickingSave }) => {
                   }
                 }
               >
-                <Text className="text-red-400 font-lgs font-bold"> Cancel </Text>
+                <Text className="text-red-400 font-lgs font-bold">
+                  {" "}
+                  Cancel{" "}
+                </Text>
               </TouchableOpacity>
             )}
-            {/* {edting && (
-              <TouchableOpacity
-                onPress={() => {
-                  deleteLog();
-                }}
-                style={{
-                  ...styles.signupButton,
-                  backgroundColor: "#FF6666",
-                }}
-              >
-                <Text style={styles.signupButtonText}> Delete </Text>
-              </TouchableOpacity>
-            )} */}
           </View>
           <FoodLog
             onEdit={onEdit}
@@ -953,8 +953,6 @@ const FoodLog = ({ onEdit, isEdit, index, logs, onDelete }) => {
       {logs.map((d, idx) => {
         const data = d.data();
 
-        // console.log("data", data);
-
         const trendData = [
           {
             title: "Calories",
@@ -973,8 +971,6 @@ const FoodLog = ({ onEdit, isEdit, index, logs, onDelete }) => {
           },
         ];
 
-        // console.log("is editing", isEdit)
-
         return (
           <View
             style={{
@@ -982,6 +978,7 @@ const FoodLog = ({ onEdit, isEdit, index, logs, onDelete }) => {
             }}
           >
             <TrendCardComponent
+              isFoodLog={true}
               key={idx}
               title={
                 isEdit

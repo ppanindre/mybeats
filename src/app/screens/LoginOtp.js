@@ -17,11 +17,13 @@ import CustomInput from "../../../components/CustomInput";
 import CustomButton from "../../../components/CustomButton";
 import { userAuthActionTypes } from "../../../store/UserAuthReducer/UserAuthActionTypes";
 
+
 const LoginOtp = () => {
     // define states
     const [email, setEmail] = useState(""); // email entered
     const [emailErrorMessage, setEmailErrorMessage] = useState(""); // error message to show
     const [isLoading, setIsLoading] = useState(false); // loading state when sending the e-mail
+    const [isDisabled, setIsDisabled] = useState(false);
 
     // define dispatch & navigation hooks
     const dispatch = useDispatch();
@@ -41,8 +43,10 @@ const LoginOtp = () => {
             if (validateEmail(email)) {
                 // if email is validated through the regular expression
                 try {
+                    setIsDisabled(false);
                     setEmailErrorMessage("");
                     setIsLoading(true); // show activity indicator when sending the email
+                    navigation.navigate("enterOtp"); // navigate the user to the enter otp screen
                     // send otps to all emails other than the testing email
                     if (email.toLowerCase() !== "cfdpoly@gmail.com") {
                         await axios.get(
@@ -55,7 +59,6 @@ const LoginOtp = () => {
                         type: userAuthActionTypes.SET_EMAIL_FOR_OTP,
                         payload: { enteredEmail: email.toLowerCase() },
                     }); // dispatch the entered email to redux
-                    navigation.navigate("enterOtp"); // navigate the user to the enter otp screen
                 } catch (error) {
                     Sentry.captureException(error, {
                         extra: {
@@ -80,16 +83,18 @@ const LoginOtp = () => {
                     style={{ height: "100%", width: "100%" }}
                     className="p-5 justify-center items-center"
                 >
-                    <View sentry-label="login-otp-email-input" className="mb-2">
+                    <View
+                        style={{ width: 325 }}
+                        sentry-label="login-otp-email-input"
+                        className="mb-2"
+                    >
                         {/* Enter email */}
-                        <View className="w-[325]">
-                            <CustomInput
-                                error={emailErrorMessage !== ""}
-                                placeholder="Enter email"
-                                onChangeText={(email) => setEmail(email)}
-                                value={email}
-                            />
-                        </View>
+                        <CustomInput
+                            error={emailErrorMessage !== ""}
+                            placeholder="Enter email"
+                            onChangeText={(email) => setEmail(email)}
+                            value={email}
+                        />
 
                         {/* Error message to display */}
                         {emailErrorMessage !== "" && (
@@ -114,7 +119,7 @@ const LoginOtp = () => {
                                     "Send One-Time-Password (OTP)" // if the email has been sent
                                 )
                             }
-                            variant="primary"
+                            variant={isDisabled ? "disabled" : "primary"}
                         />
 
                         {/* Button to go back to the previous screen */}

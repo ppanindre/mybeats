@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   Text,
   RefreshControl,
+  Platform,
 } from "react-native";
 import firestore from "@react-native-firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
@@ -18,6 +19,7 @@ import MessageInput from "../../../components/MessageInput";
 import ChatBubble from "../../../components/ChatBubble";
 import { firebaseCollections } from "../../../constants/firebaseCollections";
 import TopNavbar from "../components/Utils/TopNavbar";
+
 
 /**
  * Generate a random string for id
@@ -281,6 +283,14 @@ const Chat = () => {
         .collection(firebaseCollections.MESSAGES_SUB_COLLECTION)
         .doc(messageId)
         .set(data);
+
+      // Add data to local array
+      // const textArray = textRef.current;
+      // textArray.push(data);
+      // setTexts([...textArray]);
+
+      // const updatedTexts = groupTexts([...textArray]);
+      // setDisplayTexts(updatedTexts);
     } catch (error) {
       Sentry.captureException(error, {
         extra: { message: "Error while posting messages" },

@@ -64,8 +64,8 @@ const SignInWithGfit = () => {
       .finally(() => {})
       .catch((err) => {
         setIsLoading(false);
-        Alert.alert("", "Please terminate the app & try again.");
-        console.error("Please terminate the app & try again.", err);
+        Alert.alert("", "Oops!! Something went wrong. Please restart the app");
+        console.error("Oops!! Something went wrong. Please restart the app", err);
       });
   };
 
@@ -167,6 +167,7 @@ const SignInWithGfit = () => {
                   device: "gfit",
                   message: "Your device has been added succesfully!",
                   timestamp: moment().toDate().getTime(),
+                  approvedTime: moment().toDate().getTime(),
                 });
 
               listener = null;

@@ -13,6 +13,7 @@ import { FoodReducer } from "./FoodReducer/FoodReducer";
 import { DashboardReducer } from "./DashboardReducer/DashboardReducer";
 import { PatientReducer } from "./PatientReducer/PatientReducer";
 import { DoctorReducer } from "./DoctorReducer/DoctorReducer";
+import { NotificationReducer } from "./NotificationReducer/NotificationReducer";
 import {
     patientCreateReducer,
     patientGetReducer,
@@ -63,6 +64,7 @@ const reducers = combineReducers({
     SleepReducer,
     FoodReducer,
     DashboardReducer,
+    NotificationReducer,
     geocodingGetReducer: geocodingGetReducer,
     imageRecognitionGetReducer: imageRecognitionGetReducer,
     PatientReducer,

@@ -1,4 +1,4 @@
-import { View, ScrollView, ActivityIndicator } from "react-native";
+import { View, ScrollView, ActivityIndicator, Dimensions, Text } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
@@ -19,16 +19,21 @@ import {
 } from "../../../../apis/sleepQueries";
 import { WEEK_LABELS, YEAR_LABLES } from "../../../../constants/dateConstants";
 
+const { height, width } = Dimensions.get("window");
+
 const Sleep = () => {
   // declare dispatch instance
   const dispatch = useDispatch();
 
   // REDUX STORE
   const { deviceSelected } = useSelector((state) => state.DeviceReducer); // get device selected
-  const { sleepDataStore } = useSelector((state) => state.SleepReducer); //  get sleep data cache
+  const { sleepDataStore, sleepIntradayStore } = useSelector(
+    (state) => state.SleepReducer
+  ); //  get sleep data cache
   const user = useSelector((state) => state.UserReducer); // get user listener
 
   // STATES
+  const [currentDate, setCurrentDate] = useState(moment().format("YYYY-MM-DD"));
   const [isSleepTrendLoading, setIsSleepTrendLoading] = useState(false); // show loading for trend chart
   const [isSleepDataLoading, setIsSleepDataLoading] = useState(false); // show loading for sleep chart
   const [sleepChartData, setSleepChartData] = useState([]); // sleep chart data
@@ -54,50 +59,39 @@ const Sleep = () => {
 
   // whenever date is changed, fetch data for that day
   const changeDate = async (queryDate, forceDataForToday = false) => {
+    setCurrentDate(queryDate);
     try {
       setIsSleepDataLoading(true); // show loading for sleep day chart
-      
+
       // get previous date
       const prevQueryDate = moment(queryDate)
         .subtract(1, "days")
         .format("YYYY-MM-DD");
 
-      // get next date
-      const nextQueryDate = moment(queryDate)
-        .add(1, "days")
-        .format("YYYY-MM-DD");
-
       // define sleep day data, labels, is previous data appended
       let currentSleepDisplayData, labels, isPrevDataAppended;
 
-      if (deviceSelected === "Fitbit") {
-        // if device is fitbit
+      if (deviceSelected !== "garmin") {
+        // if device is fitbit apple or google fit
         ({ currentSleepDisplayData, labels, isPrevDataAppended } =
           await getFitbitSleepDisplayData(
             queryDate,
             deviceSelected,
             user.userId,
-            forceDataForToday
+            sleepIntradayStore,
+            forceDataForToday,
+            dispatch
           ));
-      } else if (deviceSelected === "garmin") {
+      } else {
         // if device selected is garmin
         ({ currentSleepDisplayData, labels, isPrevDataAppended } =
           await getGarminSleepDisplayData(
             queryDate,
             deviceSelected,
             user.userId,
-            forceDataForToday
-          ));
-      } else {
-        // if device selected is apple or gfit
-        ({ currentSleepDisplayData, labels, isPrevDataAppended } =
-          await getSleepDisplayData(
-            queryDate,
-            prevQueryDate,
-            nextQueryDate,
-            deviceSelected,
-            user.userId,
-            forceDataForToday
+            sleepIntradayStore,
+            forceDataForToday,
+            dispatch
           ));
       }
 
@@ -145,7 +139,7 @@ const Sleep = () => {
 
   // fetch data for trend when date range is changed
   const changeDateRange = async (startDate, endDate, selectedMode) => {
-    setIsSleepTrendLoading(true); // 
+    setIsSleepTrendLoading(true); //
 
     // handle the mode of trend chart date for week, month, year
     switch (selectedMode) {
@@ -192,6 +186,17 @@ const Sleep = () => {
   return (
     <View sentry-label="sleep">
       <View className="p-5" style={{ width: "100%" }}>
+        {isSleepDataLoading &&
+          currentDate === moment().format("YYYY-MM-DD") && (
+            <View
+              style={{ height: height * 0.7, width: width }}
+              className=" bg-white items-center justify-center absolute top-0 left-0 z-10"
+            >
+              <Text className="text-md">Syncing your data with AI</Text>
+              <ActivityIndicator color="orange" />
+            </View>
+          )}
+
         {/* Scroll View */}
         <ScrollView
           showsHorizontalScrollIndicator={false}
@@ -202,7 +207,10 @@ const Sleep = () => {
           }}
         >
           {/* Day chart component */}
-          <CustomDayChartComponent sentry-label="sleep-day-chart-date" changeDate={changeDate} />
+          <CustomDayChartComponent
+            sentry-label="sleep-day-chart-date"
+            changeDate={changeDate}
+          />
 
           {/* if sleep data is loading, render an activity indicator */}
           {!isSleepDataLoading ? (

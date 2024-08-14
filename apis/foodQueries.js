@@ -9,16 +9,16 @@ export const getFoodData = async (
   queryDate,
   foodDataStore,
   dispatch,
-  activeDevice,
   userId,
   forceDataForToday
 ) => {
-  // Check if heart rate data store has the data already
+  // Check if the food data store has food already
   if (foodDataStore[queryDate] && !forceDataForToday) {
     return foodDataStore[queryDate];
   }
 
-  // else fetch the data
+  // If food data is not present in the food store, then fetch it from firebase
+  // get the snapshot of the food data for that particular day
   const snap = await firestore()
     .collection(firebaseCollections.USER_COLLECTION)
     .doc(userId)
@@ -26,18 +26,29 @@ export const getFoodData = async (
     .doc(queryDate)
     .get();
 
+  // if the snapshot of the food data exists, dispatch that data to the food store and return it to the Food Screen 
   if (snap.exists) {
+    // get the food data
     const foodData = snap.data();
+
+    // dispatch this food data to the food store for the query date
     dispatch({
       type: foodActionTypes.SET_FOOD_DATA,
       payload: { foodData: foodData, date: queryDate },
     });
+
+    // return this data to render it on the food screen
     return foodData;
   } else {
+
+    // if the snapshot did not exist which means there is no food data for that date
+    // dispatch an empty array of food data
     dispatch({
       type: foodActionTypes.SET_FOOD_DATA,
       payload: { foodData: [], date: queryDate },
     });
+
+    // return an empty data array to the food screen
     return [];
   }
 };
@@ -334,3 +345,13 @@ export const getFoodTrendChartData = async (
 
   return chartData
 };
+
+
+// SAVE FOOD
+export const saveFoodDataOnFirebase  = (
+  foodData,
+  timeEntered,
+  userId
+) => {
+  console.log("saving food data", foodData, timeEntered, userId)
+}
