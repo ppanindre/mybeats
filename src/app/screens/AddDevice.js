@@ -10,6 +10,7 @@ import FitbitButton from "../../../components/FitbitButton";
 import AppleButton from "../../../components/AppleButton";
 import AddDeviceButton from "../../../components/AddDeviceButton";
 import { customTheme } from "../../../constants/themeConstants";
+import HealthConnectButton from "../../../components/HealthConnectButton";
 
 const AddDevice = () => {
   // if new user, show skip button

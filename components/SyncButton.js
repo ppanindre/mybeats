@@ -1,4 +1,4 @@
-import { Text, AppState } from "react-native";
+import { Text, AppState, Platform } from "react-native";
 import React, { useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,9 +10,12 @@ import { getAppleData } from "../apis/appleQueries";
 
 import axios from "axios";
 import { customTheme } from "../constants/themeConstants";
+import { dashboardActionTypes } from "../store/DashboardReducer/DashboardActionTypes";
+import { getHealthConnectData } from "../apis/healthConnectQueries";
 
 const SyncButton = () => {
     const { user } = useSelector((state) => state.UserAuthReducer); //  get user
+    const { isDataLoaded } = useSelector((state) => state.DashboardReducer);
 
     // get device selected
     const { deviceSelected } = useSelector((state) => state.DeviceReducer);
@@ -20,11 +23,20 @@ const SyncButton = () => {
     // define dispatch instance
     const dispatch = useDispatch();
 
+    console.log("device selected", deviceSelected);
+
     // function to sync device
     const syncDevice = async () => {
+
+        // Dispatch an event that dashboard data has not loaded
+        dispatch({
+            type: dashboardActionTypes.IS_DATA_LOADED,
+            payload: { isDataLoaded: false },
+        });
+
         // if device selected is apple
         if (deviceSelected === "apple") {
-            getAppleData(user, dispatch); // get apple data
+            await getAppleData(user, dispatch); // get apple data
         } else if (deviceSelected === "gfit") {
             try {
                 await axios.get(
@@ -36,6 +48,8 @@ const SyncButton = () => {
                     extra: { message: "Error while syncing gfit" },
                 });
             }
+        } else if (deviceSelected === "healthConnect") {
+            await getHealthConnectData(user, dispatch);
         }
     };
 
@@ -43,8 +57,9 @@ const SyncButton = () => {
     useEffect(() => {
         const handleAppStateChange = async (nextAppState) => {
             if (nextAppState === "background") {
-                console.log("syncing");
-                syncDevice();
+                if (deviceSelected === "apple") {
+                    syncDevice();
+                }
             }
         };
 
@@ -60,12 +75,20 @@ const SyncButton = () => {
         };
     }, []);
 
-    return deviceSelected === "apple" || deviceSelected === "gfit" ? (
+    return deviceSelected === "apple" ||
+        deviceSelected === "gfit" ||
+        (deviceSelected === "healthConnect" && Platform.OS === "android") ? (
         <TouchableOpacity
+            disabled={!isDataLoaded} // disable the button until the data is loaded
             sentry-label="sync-btn"
             onPress={syncDevice}
-            className="py-2 px-4 rounded-full shadow-lg items-center justify-center"
-            style={{ backgroundColor: customTheme.colors.primary, width: 80 }}
+            className="bg-orange-400 py-2 px-4 rounded-full shadow-lg items-center justify-center"
+            style={{
+                width: 80,
+                backgroundColor: !isDataLoaded
+                    ? customTheme.colors.darkSecondary
+                    : customTheme.colors.primary,
+            }}
         >
             <Text className="text-lg text-white">Sync</Text>
         </TouchableOpacity>

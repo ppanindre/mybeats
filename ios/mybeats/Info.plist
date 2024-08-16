@@ -43,7 +43,7 @@
       <true/>
       <key>NSAllowsLocalNetworking</key>
       <true/>
-  </dict>
+    </dict>
     <key>NSCameraUsageDescription</key>
     <string>Allow $(PRODUCT_NAME) to access your camera</string>
     <key>NSHealthShareUsageDescription</key>

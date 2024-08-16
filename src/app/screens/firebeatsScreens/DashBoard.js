@@ -5,6 +5,7 @@ import {
   ActivityIndicator,
   Dimensions,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +28,10 @@ import CustomDayChartComponent from "../../../../components/CustomDayChartCompon
 import SummaryChart from "../../../../components/SummaryChart";
 import TrendCardComponent from "../../../../components/TrendCardComponent";
 import { firebaseCollections } from "../../../../constants/firebaseCollections";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import WrappedText from "../../../../components/Utilities/WrappedText";
+import { theme } from "../../../../tailwind.config";
+import { ChevronRightIcon } from "react-native-heroicons/outline";
 
 const Dashboard = () => {
   // Declare navigation & dispatch instance
@@ -497,7 +502,7 @@ const Dashboard = () => {
                                           <MaterialCommunityIcons
                                               name="lightbulb-on-outline"
                                               color={
-                                                  customTheme.colors.primary
+                                                  theme.colors.primary
                                               }
                                               size={18}
                                           />
@@ -527,7 +532,7 @@ const Dashboard = () => {
                                                   <ChevronRightIcon
                                                       size={20}
                                                       color={
-                                                          customTheme.colors
+                                                          theme.colors
                                                               .primary
                                                       }
                                                   />
