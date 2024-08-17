@@ -121,7 +121,7 @@ const ProfileCreation = () => {
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View>
                             {/* Header */}
-                            <View className="p-5 border-b-2 border-gray-200 flex-row items-center justify-between">
+                            <View className="p-5 border-b-2 border-darkSecondary flex-row items-center justify-between">
                                 {/* Create Profile Heading */}
                                 <View className="">
                                     <Text className="text-2xl font-bold">

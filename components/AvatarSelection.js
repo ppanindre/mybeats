@@ -10,7 +10,7 @@ const AvatarSelection = () => {
         width: 150,
         height: 150,
       }}
-      className="bg-gray-100 items-center justify-center rounded-full"
+      className="bg-darkSecondary items-center justify-center rounded-full"
     >
       <UserIcon color="#888888" size={50} />
     </View>

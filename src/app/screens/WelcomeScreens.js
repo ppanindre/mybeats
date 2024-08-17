@@ -12,7 +12,7 @@ const WelcomeScreens = () => {
   return (
     <CustomSafeView sentry-label="welcome">
       {/* Header */}
-      <View className="p-5 border-b-2 border-gray-200 flex-row items-center justify-end">
+      <View className="p-5 border-b-2 borderdarkSecondary flex-row items-center justify-end">
         {/* Skip Button */}
         <TouchableOpacity
           onPress={() => navigation.navigate("addDevice")}

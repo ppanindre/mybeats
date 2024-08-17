@@ -183,7 +183,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                         <TouchableOpacity
                             disabled={startTourGuide} // if tour guide is running disable the button
                             onPress={() => navigation.navigate("profile")} // navigate the user to profile screen
-                            className="bg-gray-100 h-10 w-10 rounded-lg items-center justify-center"
+                            className="bg-darkSecondary h-10 w-10 rounded-lg items-center justify-center"
                         >
                             <Image
                                 source={user.avatar.imgSrc}

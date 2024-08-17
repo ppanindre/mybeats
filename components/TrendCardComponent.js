@@ -6,6 +6,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { CameraIcon, TrashIcon } from "react-native-heroicons/outline";
 import { customTheme } from "../constants/themeConstants";
+import { theme } from "../tailwind.config";
 
 const CARD_VALUE_SIZE = 12;
 const ARROW_SIZE = 13;
@@ -34,224 +35,211 @@ const TrendCardComponent = ({
   const [currentDay, setCurrentDay] = useState(false);
 
   return (
-      <Card
-          className="px-5, py-4 mt-5 bg-white mb-5 border-2 border-orange-400 shadow-none"
-          onPress={onEdit}
-      >
-          <Card.Title
-              right={() =>
-                  data == {} || !data ? (
-                      <ActivityIndicator color="#fb923c" />
-                  ) : (
-                      <TouchableOpacity
-                          style={{
-                              display: isFoodTrendCard ? "flex" : "none",
-                              marginTop: -15,
-                              marginRight: 10,
-                              //borderColor: "green", borderWidth: 1, borderRadius: 15,
-                              padding: 10,
-                              elevation: 0,
-                              backgroundColor: cardColor,
-                          }}
-                      >
-                          {showEdit ? (
-                              // <Entypo
-                              //   name="edit"
-                              //   size={20}
-                              //   color="#fb923c"
-                              //   onPress={onEdit}
-                              // />
-                              isFoodLog ? (
-                                  <Entypo
-                                      name="edit"
-                                      size={20}
-                                      color={customTheme.colors.primary}
-                                  />
-                              ) : (
-                                  <CameraIcon
-                                      size={20}
-                                      color={customTheme.colors.primary}
-                                  />
-                              )
-                          ) : (
-                              <TouchableOpacity onPress={onDelete}>
-                                  <TrashIcon color="#fb923c" size={20} />
-                              </TouchableOpacity>
-                          )}
-                      </TouchableOpacity>
-                  )
-              }
-              subtitleStyle={{ fontWeight: "bold", color: "black" }}
-              titleStyle={{ fontWeight: "bold", color: "#4a4a4a" }}
-              title={title}
-              subtitle={subtitle ? subtitle : ""}
-          />
-
-          <Divider
+    <Card
+      className="px-5, py-4 mt-5 bg-light mb-5 border-2 border-primary shadow-none"
+      onPress={onEdit}
+    >
+      <Card.Title
+        right={() =>
+          data == {} || !data ? (
+            <ActivityIndicator color={theme.colors.primary} />
+          ) : (
+            <TouchableOpacity
               style={{
-                  borderWidth: 2,
-                  marginStart: 15,
-                  marginEnd: 15,
-                  borderColor: data[3]?.trendCardBarColor ?? "#D4d4d4",
+                display: isFoodTrendCard ? "flex" : "none",
+                marginTop: -15,
+                marginRight: 10,
+                //borderColor: "green", borderWidth: 1, borderRadius: 15,
+                padding: 10,
+                elevation: 0,
+                backgroundColor: cardColor,
               }}
-          />
-          <Card.Content>
-              <View
-                  style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      marginTop: 10,
-                  }}
-              >
-                  <View style={{ flexDirection: "column" }}>
-                      <Title
-                          style={{
-                              color: "rgba(67, 67, 67, 0.5)",
-                              fontSize: CARD_VALUE_SIZE,
-                              lineHeight: 19,
-                              width: 85,
-                              fontWeight: "bold",
-                          }}
-                      >
-                          {data[0]?.value ?? ""}
-                      </Title>
+            >
+              {showEdit ? (
+                // <Entypo
+                //   name="edit"
+                //   size={20}
+                //   color="#fb923c"
+                //   onPress={onEdit}
+                // />
+                isFoodLog ? (
+                  <Entypo name="edit" size={20} color={theme.colors.primary} />
+                ) : (
+                  <CameraIcon size={20} color={theme.colors.primary} />
+                )
+              ) : (
+                <TouchableOpacity onPress={onDelete}>
+                  <TrashIcon color="#fb923c" size={20} />
+                </TouchableOpacity>
+              )}
+            </TouchableOpacity>
+          )
+        }
+        subtitleStyle={{ fontWeight: "bold", color: "black" }}
+        titleStyle={{ fontWeight: "bold", color: "#4a4a4a" }}
+        title={title}
+        subtitle={subtitle ? subtitle : ""}
+      />
 
-                      <View
-                          style={{
-                              flexDirection: "row",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                          }}
-                      >
-                          <Text
-                              style={{
-                                  color: "rgba(67, 67, 67, 0.5)",
-                                  fontSize: 12,
-                                  fontWeight: "bold",
-                              }}
-                          >
-                              {data[0]?.title ?? ""}
-                          </Text>
-                          {data[0]?.value != "-" &&
-                              showArrows &&
-                              !currentDay && (
-                                  <AntDesign
-                                      name={data[0]?.arrow ?? "caretup"}
-                                      size={ARROW_SIZE}
-                                      color={data[0]?.color ?? "#fb923d"}
-                                      style={{
-                                          alignSelf: "center",
-                                          marginTop: 3,
-                                      }}
-                                  />
-                              )}
-                      </View>
-                  </View>
-                  <View
-                      style={{
-                          borderRightColor: "rgba(67, 67, 67, 0.3)",
-                          borderRightWidth: 2,
-                          marginTop: 10,
-                          marginBottom: 2,
-                      }}
-                  />
-                  <View style={{ flexDirection: "column" }}>
-                      <Title
-                          style={{
-                              color: "rgba(67, 67, 67, 0.5)",
-                              fontSize: CARD_VALUE_SIZE,
-                              lineHeight: 19,
-                              width: 85,
-                              fontWeight: "bold",
-                          }}
-                      >
-                          {data[1]?.value ?? ""}
-                      </Title>
-                      <View
-                          style={{
-                              flexDirection: "row",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                          }}
-                      >
-                          <Text
-                              style={{
-                                  color: "rgba(67, 67, 67, 0.5)",
-                                  fontSize: 12,
-                                  fontWeight: "bold",
-                              }}
-                          >
-                              {data[1]?.title ?? ""}
-                          </Text>
-                          {data[1]?.value != "-" &&
-                              showArrows &&
-                              !currentDay && (
-                                  <AntDesign
-                                      name={data[1]?.arrow ?? "caretup"}
-                                      size={ARROW_SIZE}
-                                      color={data[1]?.color ?? "#fb923d"}
-                                      style={{
-                                          alignSelf: "center",
-                                          marginTop: 3,
-                                      }}
-                                  />
-                              )}
-                      </View>
-                  </View>
-                  <View
-                      style={{
-                          borderRightColor: "rgba(67, 67, 67, 0.3)",
-                          borderRightWidth: 2,
-                          marginTop: 10,
-                          marginBottom: 2,
-                      }}
-                  />
-                  <View style={{ flexDirection: "column" }}>
-                      <Title
-                          style={{
-                              color: "rgba(67, 67, 67, 0.5)",
-                              fontSize: CARD_VALUE_SIZE,
-                              lineHeight: 19,
-                              width: 85,
-                              fontWeight: "bold",
-                          }}
-                      >
-                          {data[2]?.value ?? ""}
-                      </Title>
-                      <View
-                          style={{
-                              flexDirection: "row",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                          }}
-                      >
-                          <Text
-                              style={{
-                                  color: "rgba(67, 67, 67, 0.5)",
-                                  fontSize: 12,
-                                  fontWeight: "bold",
-                              }}
-                          >
-                              {data[2]?.title ?? ""}
-                          </Text>
-                          {data[2]?.value != "-" &&
-                              showArrows &&
-                              !currentDay && (
-                                  <AntDesign
-                                      name={data[2]?.arrow ?? "caretup"}
-                                      size={ARROW_SIZE}
-                                      color={data[2]?.color ?? "#fb923d"}
-                                      style={{
-                                          alignSelf: "center",
-                                          marginTop: 3,
-                                      }}
-                                  />
-                              )}
-                      </View>
-                  </View>
-              </View>
-          </Card.Content>
-      </Card>
+      <Divider
+        style={{
+          borderWidth: 2,
+          marginStart: 15,
+          marginEnd: 15,
+          borderColor: data[3]?.trendCardBarColor ?? "#D4d4d4",
+        }}
+      />
+      <Card.Content>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginTop: 10,
+          }}
+        >
+          <View style={{ flexDirection: "column" }}>
+            <Title
+              style={{
+                color: "rgba(67, 67, 67, 0.5)",
+                fontSize: CARD_VALUE_SIZE,
+                lineHeight: 19,
+                width: 85,
+                fontWeight: "bold",
+              }}
+            >
+              {data[0]?.value ?? ""}
+            </Title>
+
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  color: "rgba(67, 67, 67, 0.5)",
+                  fontSize: 12,
+                  fontWeight: "bold",
+                }}
+              >
+                {data[0]?.title ?? ""}
+              </Text>
+              {data[0]?.value != "-" && showArrows && !currentDay && (
+                <AntDesign
+                  name={data[0]?.arrow ?? "caretup"}
+                  size={ARROW_SIZE}
+                  color={data[0]?.color ?? "#fb923d"}
+                  style={{
+                    alignSelf: "center",
+                    marginTop: 3,
+                  }}
+                />
+              )}
+            </View>
+          </View>
+          <View
+            style={{
+              borderRightColor: "rgba(67, 67, 67, 0.3)",
+              borderRightWidth: 2,
+              marginTop: 10,
+              marginBottom: 2,
+            }}
+          />
+          <View style={{ flexDirection: "column" }}>
+            <Title
+              style={{
+                color: "rgba(67, 67, 67, 0.5)",
+                fontSize: CARD_VALUE_SIZE,
+                lineHeight: 19,
+                width: 85,
+                fontWeight: "bold",
+              }}
+            >
+              {data[1]?.value ?? ""}
+            </Title>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  color: "rgba(67, 67, 67, 0.5)",
+                  fontSize: 12,
+                  fontWeight: "bold",
+                }}
+              >
+                {data[1]?.title ?? ""}
+              </Text>
+              {data[1]?.value != "-" && showArrows && !currentDay && (
+                <AntDesign
+                  name={data[1]?.arrow ?? "caretup"}
+                  size={ARROW_SIZE}
+                  color={data[1]?.color ?? "#fb923d"}
+                  style={{
+                    alignSelf: "center",
+                    marginTop: 3,
+                  }}
+                />
+              )}
+            </View>
+          </View>
+          <View
+            style={{
+              borderRightColor: "rgba(67, 67, 67, 0.3)",
+              borderRightWidth: 2,
+              marginTop: 10,
+              marginBottom: 2,
+            }}
+          />
+          <View style={{ flexDirection: "column" }}>
+            <Title
+              style={{
+                color: "rgba(67, 67, 67, 0.5)",
+                fontSize: CARD_VALUE_SIZE,
+                lineHeight: 19,
+                width: 85,
+                fontWeight: "bold",
+              }}
+            >
+              {data[2]?.value ?? ""}
+            </Title>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  color: "rgba(67, 67, 67, 0.5)",
+                  fontSize: 12,
+                  fontWeight: "bold",
+                }}
+              >
+                {data[2]?.title ?? ""}
+              </Text>
+              {data[2]?.value != "-" && showArrows && !currentDay && (
+                <AntDesign
+                  name={data[2]?.arrow ?? "caretup"}
+                  size={ARROW_SIZE}
+                  color={data[2]?.color ?? "#fb923d"}
+                  style={{
+                    alignSelf: "center",
+                    marginTop: 3,
+                  }}
+                />
+              )}
+            </View>
+          </View>
+        </View>
+      </Card.Content>
+    </Card>
   );
 };
 

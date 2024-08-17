@@ -151,7 +151,7 @@ const EditProfile = () => {
           <ScrollView showsVerticalScrollIndicator={false}>
             <View>
               {/* Header */}
-              <View className="p-5 border-b-2 border-gray-200 flex-row items-center justify-between">
+              <View className="p-5 border-b-2 border-darkSecondary flex-row items-center justify-between">
                 <View className="flex-row items-center justify-between gap-2">
                   <TouchableOpacity
                     sentry-label="edit-profile-back-btn"
@@ -172,7 +172,7 @@ const EditProfile = () => {
                   >
                     {/* if user has selected avatar, show avatar, otherwise an icon with add avatar button */}
                     {user.avatar ? (
-                      <View className="p-5 bg-gray-100 rounded-full ">
+                      <View className="p-5 border border-dark rounded-full ">
                         <Image
                           source={user.avatar.imgSrc}
                           style={{
@@ -197,13 +197,13 @@ const EditProfile = () => {
                           }}
                         />
                         <View
-                          className="absolute z-30 bg-orange-400 rounded-md p-1"
+                          className="absolute z-30 bg-primary rounded-md p-1"
                           style={{
                             top: 48,
                             left: 20,
                           }}
                         >
-                          <Text className="text-white">Add Avatar</Text>
+                          <Text className="text-light">Add Avatar</Text>
                         </View>
                       </View>
                     )}

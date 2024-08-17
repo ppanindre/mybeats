@@ -9,8 +9,8 @@ import CustomSafeView from "../../../components/CustomSafeView";
 import FitbitButton from "../../../components/FitbitButton";
 import AppleButton from "../../../components/AppleButton";
 import AddDeviceButton from "../../../components/AddDeviceButton";
-import { customTheme } from "../../../constants/themeConstants";
 import HealthConnectButton from "../../../components/HealthConnectButton";
+import { theme } from "../../../tailwind.config";
 
 const AddDevice = () => {
   // if new user, show skip button
@@ -20,98 +20,92 @@ const AddDevice = () => {
   const navigation = useNavigation();
 
   return (
-      <CustomSafeView sentry-label="add-device">
-          {/* Header */}
-          {/* If new user, back button should not be present */}
-          <View className="p-5 border-b-2 border-gray-200 flex-row items-center gap-2">
-              {/* Header */}
-              <View
-                  className="flex-row items-center justify-between"
-                  style={{ width: "100%" }}
+    <CustomSafeView sentry-label="add-device">
+      {/* Header */}
+      {/* If new user, back button should not be present */}
+      <View className="p-5 border-b-2 border-darkSecondary flex-row items-center gap-2">
+        {/* Header */}
+        <View
+          className="flex-row items-center justify-between"
+          style={{ width: "100%" }}
+        >
+          <View className="flex-row items-center gap-2">
+            {!showSkipDevice && (
+              <TouchableOpacity
+                sentry-label="add-device-back-btn"
+                onPress={() => navigation.navigate("profile")}
               >
-                  <View className="flex-row items-center gap-2">
-                      {!showSkipDevice && (
-                          <TouchableOpacity
-                              sentry-label="add-device-back-btn"
-                              onPress={() => navigation.navigate("profile")}
-                          >
-                              {/* chevron lefticon */}
-                              <ChevronLeftIcon
-                                  color={customTheme.colors.dark}
-                              />
-                          </TouchableOpacity>
-                      )}
-                      <Text className="text-2xl font-bold">Add Device</Text>
-                  </View>
-
-                  {/* if new user, show skip btn */}
-                  {showSkipDevice && (
-                      <TouchableOpacity
-                          sentry-label="add-device-skip-btn"
-                          onPress={() => navigation.navigate("BottomTabNav")}
-                      >
-                          <Text className="font-bold mr-3 text-lg text-orange-400">
-                              Skip
-                          </Text>
-                      </TouchableOpacity>
-                  )}
-              </View>
+                {/* chevron lefticon */}
+                <ChevronLeftIcon color={theme.colors.dark} />
+              </TouchableOpacity>
+            )}
+            <Text className="text-2xl font-bold">Add Device</Text>
           </View>
 
-          <View className="p-5 space-y-5" style={{ height: "80%" }}>
-              {/* Device buttons */}
-              <View className="flex-row">
-                  {/* Gfit button */}
-                  <View className="flex-1">
-                      {Platform.OS === "android" ? (
-                          <HealthConnectButton />
-                      ) : (
-                          <AppleButton />
-                      )}
-                  </View>
+          {/* if new user, show skip btn */}
+          {showSkipDevice && (
+            <TouchableOpacity
+              sentry-label="add-device-skip-btn"
+              onPress={() => navigation.navigate("BottomTabNav")}
+            >
+              <Text className="font-bold mr-3 text-lg text-primary">Skip</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      </View>
 
-                  {/* Garmin button */}
-                  <View className="flex-1">
-                      <AddDeviceButton
-                          sentry-label="garmin-btn"
-                          btnIcon="garmin"
-                          deviceName="Garmin"
-                          onPress={() =>
-                              navigation.navigate("signInWithGarmin")
-                          }
-                      />
-                  </View>
-              </View>
-              <View className="flex-row">
-                  {/* Fitbit button */}
-                  <View className="flex-1">
-                      <FitbitButton sentry-label="fitbit-btn" />
-                  </View>
-              </View>
-
-              {/* Tip */}
-              <View
-                  style={{ borderColor: customTheme.colors.primary }}
-                  className="border space-x-3 rounded-lg p-5 flex-row items-center"
-              >
-                  <View>
-                      <MaterialCommunityIcons
-                          name="lightbulb-on-outline"
-                          color={customTheme.colors.primary}
-                          size={20}
-                      />
-                  </View>
-
-                  <View>
-                      <Text>
-                          {Platform.OS === "android"
-                              ? "If you have any other device, please sync your device with Health Connect and then add Health Connect in our app by clicking the button above."
-                              : "If you have any other device, please sync your device with Apple Health and then add Apple Health in our app by clicking the button above."}
-                      </Text>
-                  </View>
-              </View>
+      <View className="p-5 space-y-5" style={{ height: "80%" }}>
+        {/* Device buttons */}
+        <View className="flex-row">
+          {/* Gfit button */}
+          <View className="flex-1">
+            {Platform.OS === "android" ? (
+              <HealthConnectButton />
+            ) : (
+              <AppleButton />
+            )}
           </View>
-      </CustomSafeView>
+
+          {/* Garmin button */}
+          <View className="flex-1">
+            <AddDeviceButton
+              sentry-label="garmin-btn"
+              btnIcon="garmin"
+              deviceName="Garmin"
+              onPress={() => navigation.navigate("signInWithGarmin")}
+            />
+          </View>
+        </View>
+        <View className="flex-row">
+          {/* Fitbit button */}
+          <View className="flex-1">
+            <FitbitButton sentry-label="fitbit-btn" />
+          </View>
+        </View>
+
+        {/* Tip */}
+        <View
+          style={{ borderColor: theme.colors.primary }}
+          className="border space-x-3 rounded-lg p-5 flex-row items-center"
+        >
+          <View>
+            <MaterialCommunityIcons
+              name="lightbulb-on-outline"
+              color={theme.colors.primary}
+              size={20}
+            />
+          </View>
+
+          <View>
+            <Text>
+              {Platform.OS === "android"
+                ? "If you have any other device, please sync your device with Health Connect and then add Health Connect in our app by clicking the button above."
+                : "If you have any other device, please sync your device with Apple Health and then add Apple Health in our app by clicking the button above."}
+            </Text>
+          </View>
+        </View>
+      </View>
+    </CustomSafeView>
   );
 };
 

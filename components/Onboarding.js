@@ -41,7 +41,7 @@ const ScalingDot = ({ isSelected }) => {
   return (
     <View
       className={`w-2 h-2 ${
-        isSelected ? "bg-gray-400" : "bg-gray-200"
+        isSelected ? "bg-gray-400" : "bg-darkSecondary"
       } rounded-full mr-2`} // change color to dark gray if the item is on that screen
     ></View>
   );

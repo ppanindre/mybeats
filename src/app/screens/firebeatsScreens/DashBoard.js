@@ -427,7 +427,7 @@ const Dashboard = () => {
                       {isDashboardLoading && (
                           // Hide the date component until the dashboard loads
                           <View
-                              className="absolute bg-white z-30"
+                              className="absolute bg-light z-30"
                               style={{ height: 50, width: "100%" }}
                           />
                       )}
@@ -497,7 +497,7 @@ const Dashboard = () => {
                           {isVisible &&
                               latestNotification &&
                               notificationCount > 0 && (
-                                  <View className="bg-white border-2 border-orange-400 rounded-lg py-3 px-5 mt-5">
+                                  <View className="bg-light border-2 border-primary rounded-lg py-3 px-5 mt-5">
                                       <View className="flex-row items-center space-x-3">
                                           <MaterialCommunityIcons
                                               name="lightbulb-on-outline"
@@ -526,7 +526,7 @@ const Dashboard = () => {
                                                   }
                                                   className="flex-row items-center space-y"
                                               >
-                                                  <Text className="text-orange-400 font-bold">
+                                                  <Text className="text-primary font-bold">
                                                       Show More
                                                   </Text>
                                                   <ChevronRightIcon

@@ -489,7 +489,7 @@ const Food = () => {
         onBackdropPress={() => setShowModal(false)}
         style={{ margin: 0 }}
       >
-        <View className="bg-white w-[100%] absolute bottom-0 rounded-lg p-5 pb-0 space-y-5">
+        <View className="bg-light w-[100%] absolute bottom-0 rounded-lg p-5 pb-0 space-y-5">
           <Text className="text-lg font-bold">Select Plate size</Text>
 
           <View>

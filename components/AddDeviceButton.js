@@ -9,7 +9,7 @@ const AddDeviceButton = ({ btnIcon, deviceName, onPress }) => {
     return (
         <TouchableOpacity
             sentry-label="add-device-btn-component"
-            className="p-5 rounded-lg shadow-2xl border-2 border-orange-400 items-center justify-center space-y-2 mr-3"
+            className="p-5 rounded-lg shadow-2xl border-2 border-primary items-center justify-center space-y-2 mr-3"
             style={{
                 height: 150,
             }}
@@ -61,7 +61,7 @@ const AddDeviceButton = ({ btnIcon, deviceName, onPress }) => {
             )}
 
             {/* device name */}
-            <Text className="text-orange-400">{deviceName}</Text>
+            <Text className="text-primary">{deviceName}</Text>
         </TouchableOpacity>
     );
 };

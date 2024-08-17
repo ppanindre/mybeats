@@ -46,7 +46,7 @@ const Feedback = () => {
       >
         <View>
           {/* Header */}
-          <View className="p-5 border-b-2 border-gray-200 flex-row items-center gap-2">
+          <View className="p-5 border-b-2 border-darkSecondary flex-row items-center gap-2">
             <TouchableOpacity
               sentry-label="feedback-back-btn"
               onPress={() => navigation.goBack()}
@@ -71,7 +71,7 @@ const Feedback = () => {
             {/* Feedback input */}
             <View className="mb-5">
               <TextInput
-                className="border-2 border-gray-300 rounded-lg p-3 text-lg"
+                className="border border-dark rounded-lg p-3 text-lg"
                 onChangeText={(prevText) => setFeedbackInput(prevText)}
                 multiline={true}
                 numberOfLines={10}

@@ -167,8 +167,8 @@ const CustomTrendDatePicker = ({ changeDateRange, isDataLoading }) => {
                       style={{ fontSize: 16 }}
                       className={`${
                           selectedMode === "week"
-                              ? "text-orange-400 font-bold underline"
-                              : "text-gray-300 font-bold"
+                              ? "text-primary font-bold underline"
+                              : "text-dark font-bold"
                       } `}
                   >
                       Week
@@ -184,8 +184,8 @@ const CustomTrendDatePicker = ({ changeDateRange, isDataLoading }) => {
                       style={{ fontSize: 16 }}
                       className={`${
                           selectedMode === "month"
-                              ? "text-orange-400 font-bold underline"
-                              : "text-gray-300 font-bold"
+                              ? "text-primary font-bold underline"
+                              : "text-dark font-bold"
                       } `}
                   >
                       Month
@@ -201,8 +201,8 @@ const CustomTrendDatePicker = ({ changeDateRange, isDataLoading }) => {
                       style={{ fontSize: 16 }}
                       className={`${
                           selectedMode === "year"
-                              ? "text-orange-400 font-bold underline"
-                              : "text-gray-300 font-bold"
+                              ? "text-primary font-bold underline"
+                              : "text-dark font-bold"
                       } `}
                   >
                       Year
@@ -230,7 +230,7 @@ const CustomTrendDatePicker = ({ changeDateRange, isDataLoading }) => {
 
               {/* Trend Chart label */}
               <View>
-                  <Text className="text-lg font-bold text-gray-800">
+                  <Text className="text-lg font-bold text-dark">
                       {startDate} - {endDate}
                   </Text>
               </View>

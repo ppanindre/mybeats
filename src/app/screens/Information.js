@@ -155,7 +155,7 @@ const Information = () => {
                 style={{ height: "100%" }}
             >
                 {/* Header */}
-                <View className="border-b-2 p-5 border-gray-200">
+                <View className="border-b-2 p-5 border-darkSecondary">
                     <Text className="text-2xl font-bold">Information</Text>
                 </View>
 

@@ -69,7 +69,7 @@ const TermsOfService = () => {
   return (
     <CustomSafeView>
       {/* Header */}
-      <View className="flex-row  items-center  space-x-2 border-b-2 p-5 border-gray-200">
+      <View className="flex-row  items-center  space-x-2 border-b-2 p-5 border-darkSecondary">
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <ChevronLeftIcon color="#000000" />
         </TouchableOpacity>

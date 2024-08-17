@@ -111,7 +111,7 @@ const Survey = () => {
   return (
     <CustomSafeView>
       {/* Header */}
-      <View className="p-5 border-b-2 border-gray-200 flex-row items-center gap-2">
+      <View className="p-5 border-b-2 borderdarkSecondary flex-row items-center gap-2">
         <TouchableOpacity onPress={goBack}>
           <ChevronLeftIcon color="#000000" />
         </TouchableOpacity>

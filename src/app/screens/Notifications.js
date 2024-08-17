@@ -195,7 +195,7 @@ const Notifications = () => {
                                           // notification date
                                           <View key={date}>
                                               <View className="items-center mb-4">
-                                                  <View className="bg-gray-300 items-center justify-center p-2 rounded-lg">
+                                                  <View className="bg-darkSecondary items-center justify-center p-2 rounded-lg">
                                                       <Text className="">
                                                           {date}
                                                       </Text>
@@ -211,7 +211,7 @@ const Notifications = () => {
                                                           "MMM DD, YYYY"
                                                       ) && (
                                                       <View className="mb-6">
-                                                          <View className="border-2 border-orange-400 p-3 rounded-lg">
+                                                          <View className="border-2 border-primary p-3 rounded-lg">
                                                               <View className="flex-row space-x-1">
                                                                   <HandThumbUpIcon
                                                                       color={
@@ -267,7 +267,7 @@ const Notifications = () => {
                                                           key={index}
                                                           className="mb-6"
                                                       >
-                                                          <View className="border-2 border-orange-400 p-3 rounded-lg">
+                                                          <View className="border-2 border-primary p-3 rounded-lg">
                                                               <View className="flex-row space-x-1">
                                                                   <View>
                                                                       {/* <Text>
@@ -355,7 +355,7 @@ const Notifications = () => {
                                                                                             )
                                                                                   }
                                                                               >
-                                                                                  <Text className="text-orange-400 font-bold">
+                                                                                  <Text className="text-primary font-bold">
                                                                                       {show
                                                                                           ? "Show Less"
                                                                                           : "Show More"}
@@ -392,7 +392,7 @@ const Notifications = () => {
                                                               )}
                                                           </View>
                                                           <View className="items-end">
-                                                              <Text className="text-xs mt-3 text-gray-600">
+                                                              <Text className="text-xs mt-3 text-dark">
                                                                   {moment(
                                                                       notify.approvedTime
                                                                   ).format(

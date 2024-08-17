@@ -1,14 +1,15 @@
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import React, { useState } from "react";
 import { ChevronRightIcon } from "react-native-heroicons/solid";
+import { theme } from "../tailwind.config";
 
 const MessageInput = ({ onSubmit }) => {
   const [message, setMessage] = useState("");
 
   const submitMessage = () => {
-    onSubmit(message)
+    onSubmit(message);
     setMessage("");
-  }
+  };
 
   return (
     <View
@@ -16,16 +17,16 @@ const MessageInput = ({ onSubmit }) => {
       style={{ width: "100%" }}
     >
       <TextInput
-        className="flex-1 p-5 bg-gray-200 rounded-full"
+        className="flex-1 p-5 bg-darkSecondary rounded-full"
         placeholder="Enter your message"
         onChangeText={(message) => setMessage(message)}
         value={message}
       />
       <TouchableOpacity
         onPress={submitMessage}
-        className="bg-orange-400 rounded-full p-2 shadow-md"
+        className="bg-primary rounded-full p-2 shadow-md"
       >
-        <ChevronRightIcon color="#ffffff" />
+        <ChevronRightIcon color={theme.colors.light} />
       </TouchableOpacity>
     </View>
   );

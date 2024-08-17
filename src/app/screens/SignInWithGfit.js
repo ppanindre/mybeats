@@ -215,7 +215,7 @@ const SignInWithGfit = () => {
       ) : (
         <>
           <View>
-            <View className="p-5 border-b-2 border-gray-200 flex-row items-center gap-2">
+            <View className="p-5 border-b-2 border-darkSecondary flex-row items-center gap-2">
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <ChevronLeftIcon color="#000000" />
               </TouchableOpacity>

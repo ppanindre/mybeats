@@ -18,15 +18,15 @@ const NotificationBubble = ({ id, message, time, onDelete, index }) => {
       onSwipeableOpen={onDelete}
     >
       <View
-        className={`flex-row items-center bg-white justify-between mb-5 rounded-lg gap-2`}
+        className={`flex-row items-center bg-light justify-between mb-5 rounded-lg gap-2`}
       >
         <View
           style={{
             borderWidth: 1,
           }}
-          className={"p-5 flex-1 rounded-lg border-orange-400"}
+          className={"p-5 flex-1 rounded-lg border-primary"}
         >
-          <Text className="text-gray-900">
+          <Text className="text-dark">
             {message}
           </Text>
 
@@ -35,7 +35,7 @@ const NotificationBubble = ({ id, message, time, onDelete, index }) => {
 
           {/* View more button */}
           <TouchableOpacity className="self-end flex-row items-center gap-2">
-            <Text className="text-orange-400 font-bold">View More</Text>
+            <Text className="text-primary font-bold">View More</Text>
             <ChevronDownIcon color="orange" />
           </TouchableOpacity>
         </View>

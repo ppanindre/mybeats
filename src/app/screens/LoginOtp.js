@@ -143,7 +143,7 @@ const LoginOtp = () => {
                                 navigation.navigate("termsOfService")
                             }
                         >
-                            <Text className="text-orange-400 underline">
+                            <Text className="text-primary underline">
                                 Terms of Service{" "}
                             </Text>
                         </TouchableOpacity>
@@ -152,7 +152,7 @@ const LoginOtp = () => {
                             sentry-label="login-otp-privacy-btn"
                             onPress={() => navigation.navigate("privacyPolicy")}
                         >
-                            <Text className="text-orange-400 underline">
+                            <Text className="text-primary underline">
                                 {" "}
                                 Privacy Policy
                             </Text>

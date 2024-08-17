@@ -30,6 +30,7 @@ import {
   PlusCircleIcon,
 } from "react-native-heroicons/outline";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import CustomInput from "../../../../components/CustomInput";
 
 const styles = StyleSheet.create({
   inputBox: {
@@ -841,7 +842,7 @@ const FoodEditComponent = ({
                 {showTimePicker ? (
                   <View className="items-center mt-4">
                     <TouchableOpacity onPress={hidePicker}>
-                      <Text className="text-blue-400 text-lg">Done</Text>
+                      <Text className="text-primary text-lg">Done</Text>
                     </TouchableOpacity>
                     <RNDateTimePicker
                       isVisible={showTimePicker}
@@ -871,16 +872,16 @@ const FoodEditComponent = ({
               ) : (
                 <PlusCircleIcon color="#fb923c" />
               )}
-              <Text className="text-orange-400 font-bold">
+              <Text className="text-primary font-bold">
                 {" "}
                 {detailed ? "Less details" : "Add details"}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={edting ? updateFood : savefood}
-              className="border-2 border-orange-400 bg-orange-400 p-4 rounded-md mb-5 flex-row items-center justify-center"
+              className="border-2 border-primary bg-primary p-4 rounded-md mb-5 flex-row items-center justify-center"
             >
-              <Text className="text-white font-lg font-bold">
+              <Text className="text-light font-lg font-bold">
                 {" "}
                 {edting ? "Update" : loading ? "Saving ..." : "Save"}
               </Text>
@@ -902,9 +903,9 @@ const FoodEditComponent = ({
                     // backgroundColor: "#FF6666",
                   }
                 }
-                className="border-2 border-red-400 p-4 rounded-md mb-5 flex-row items-center justify-center"
+                className="border-2 border-error p-4 rounded-md mb-5 flex-row items-center justify-center"
               >
-                <Text className="text-red-400 font-lg"> Cancel </Text>
+                <Text className="text-error font-lg"> Cancel </Text>
               </TouchableOpacity>
             )}
             {!edting && (
@@ -917,7 +918,7 @@ const FoodEditComponent = ({
                   setCalorie("");
                   onClickingSave();
                 }}
-                className="border-2 border-red-400 p-4 rounded-md mb-5 flex-row items-center justify-center"
+                className="border-2 border-error p-4 rounded-md mb-5 flex-row items-center justify-center"
                 style={
                   {
                     // ...styles.signupButton,
@@ -925,7 +926,7 @@ const FoodEditComponent = ({
                   }
                 }
               >
-                <Text className="text-red-400 font-lgs font-bold">
+                <Text className="text-error font-lgs font-bold">
                   {" "}
                   Cancel{" "}
                 </Text>

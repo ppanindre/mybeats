@@ -347,7 +347,7 @@ const Chat = () => {
                 Object.keys(displayTexts).map((date, index) => (
                   <View key={index}>
                     <View className="items-center mb-5">
-                      <View className="bg-gray-300 p-2 rounded-lg">
+                      <View className="bg-darkSecondary p-2 rounded-lg">
                         <Text className="text-xs">{date}</Text>
                       </View>
                     </View>
