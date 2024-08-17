@@ -208,7 +208,7 @@ const ActivityLineChart = ({
         />
       </VictoryChart>
 
-      {typeof activityIntraday !== "undefined" && (
+      {activityIntraday.length > 0 && (
         <View
           className="flex-row items-center justify-between px-5 ml-5 absolute bottom-0 right-0"
           style={{ width: "95%" }}

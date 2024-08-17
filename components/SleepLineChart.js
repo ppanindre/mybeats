@@ -53,7 +53,7 @@ const SleepChart = ({
 
   // Convert minutes to hour time
   const minutesToTime = (index) => {
-    if (deviceSelected === "Fitbit" || deviceSelected === "garmin") {
+    if (true) {
       if (isPrevDataAppended) {
         const startTimeSeconds = startTime * 60;
         console.log("index", index, startTimeSeconds);

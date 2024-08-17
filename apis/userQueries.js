@@ -7,13 +7,11 @@ import CryptoJS from "react-native-crypto-js";
 
 import { userAuthActionTypes } from "../store/UserAuthReducer/UserAuthActionTypes";
 import { firebaseCollections } from "../constants/firebaseCollections";
-import { Alert } from "react-native";
 import { heartActionTypes } from "../store/HeartRateReducer/HeartRateActionTypes";
 import { SleepActionTypes } from "../store/SleepReducer/SleepActionTypes";
 import { activityActionTypes } from "../store/ActivityReducer/ActivityActionTypes";
 import { foodActionTypes } from "../store/FoodReducer/FoodActionTypes";
 import { UserActionTypes } from "../store/UserReducer/UserActionTypes";
-import { patientService } from "../src/app/api/services/patientService";
 
 export const userQueries = {
   // validate otp function

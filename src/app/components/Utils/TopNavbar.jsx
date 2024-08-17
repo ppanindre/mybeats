@@ -150,6 +150,8 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
         } else if (vendor === "gfit") {
             // get gfit sync time
             deviceSyncTime = user.devceSyncTime_gfit;
+        } else if (vendor === "healthConnect") {
+            deviceSyncTime = user.deviceSyncTime_healthConnect;
         }
 
         // if there is no device sync time, return null
