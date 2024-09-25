@@ -3,23 +3,20 @@ import {
     Text,
     TouchableOpacity,
     ScrollView,
-    Modal,
     Switch,
-} from "react-native";
-import React, { useState } from "react";
-import { Ionicons, FontAwesome } from "@expo/vector-icons";
-import CustomSafeView from "../../../../components/CustomSafeView";
-import LightButton from "../../../../components/Buttons/LightButton";
-import { customTheme } from "../../../../constants/themeConstants";
-import AddressCard from "../../../../components/Cards/AddressCard";
-import PrimaryButton from "../../../../components/Buttons/PrimaryButton";
-import { useNavigation } from "@react-navigation/native";
-// import { Checkbox } from "react-native-paper";
-import TextInputBoxWithIcon from "../../../../components/Utilities/TextInputBoxWithIcon";
-import { Checkbox } from "react-native-paper";
-// import CheckBox from "@react-native-community/checkbox";
-
-const addressData = [
+  } from "react-native";
+  import React, { useState } from "react";
+  import { Ionicons, FontAwesome } from "@expo/vector-icons";
+  import LightButton from "../../../../components/Buttons/LightButton";
+  import AddressCard from "../../../../components/Cards/AddressCard";
+  import { useNavigation } from "@react-navigation/native";
+  import TextInputBoxWithIcon from "../../../../components/Utilities/TextInputBoxWithIcon";
+  import ScreenContainer from "../../components/Containers/ScreenContainer";
+  import AppButton from "../../components/Buttons/AppButton";
+  import { theme } from "../../../../tailwind.config";
+  import ModalContainer from "../../components/Containers/ModalContainer";
+  
+  const addressData = [
     {
         id: "1",
         type: "home",
@@ -28,7 +25,7 @@ const addressData = [
         phone: "999 999 9999",
     },
     {
-        id: '2',
+        id: "2",
         type: "home",
         address:
             "W3-092 9th Floor, Welington Estate, Near DLF Phase 5 Club, Opposite...",
@@ -55,94 +52,44 @@ const addressData = [
             "W3-092 9th Floor, Welington Estate, Near DLF Phase 5 Club, Opposite...",
         phone: "999 999 9999",
     },
-];
-
-const ConfirmAddress = () => {
+  ];
+  
+  const ShippingAddress = () => {
     const [selectedId, setSelectedId] = useState();
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [isEnabled, setIsEnabled] = useState(true);
-
+    const [isEnabled, setIsEnabled] = useState(false);
+  
     const selectAddress = (id) => {
         setSelectedId(id);
     };
-
+  
     const onEdit = () => {
         setIsModalVisible(true);
     };
-
-    const confirmBillingAddress = () => {
-        if (isEnabled) {
-            navigation.navigate("payment");
-        } else {
-            navigation.navigate("shippingAddress");
-        }
-    };
-
+  
     const navigation = useNavigation();
-
+  
     return (
-        <CustomSafeView>
-            {/* Header */}
-            <View className="px-4 py-2 border-b border-gray-300">
-                <View className="flex-row items-center space-x-3">
-                    <TouchableOpacity onPress={() => navigation.goBack()}>
-                        <Ionicons size={24} name="arrow-back" />
-                    </TouchableOpacity>
-
-                    {/* Header title */}
-                    <View>
-                        <Text className="text-xl font-[appfont-bold]">
-                            Billing Address
-                        </Text>
-                    </View>
-                </View>
-            </View>
-
-            <ScrollView
-                contentContainerStyle={{ paddingBottom: 50 }}
-                className="h-[100%] bg-gray-100 py-5 space-y-4"
-            >
+        <ScreenContainer>
+  
+            <ScrollView showsVerticalScrollIndicator={false}>
                 {/* Add address button */}
-                <View className="px-4">
+                <View>
                     <LightButton>
                         <Ionicons
                             name="add"
                             size={24}
-                            color={customTheme.colors.primary}
+                            color={theme.colors.primary}
                         />
                         <Text
-                            style={{ color: customTheme.colors.primary }}
+                            style={{ color: theme.colors.primary }}
                             className="font-[appfont-bold]"
                         >
                             Add New Address
                         </Text>
                     </LightButton>
                 </View>
-
-                {/* Shipping Address */}
-                <View className="px-4">
-                    <View className="flex-row items-center space-x-2">
-                        <Switch
-                            className="scale-75"
-                            trackColor={{
-                                false: customTheme.colors.darkSecondary,
-                                true: customTheme.colors.primary,
-                            }}
-                            thumbColor={isEnabled ? "#f4f3f4" : "#f4f3f4"}
-                            ios_backgroundColor={
-                                customTheme.colors.darkSecondary
-                            }
-                            onValueChange={() => setIsEnabled(!isEnabled)}
-                            value={isEnabled}
-                        />
-
-                        <Text className="font-[appfont-semi]">
-                            Shipping Address is same as Billing Address
-                        </Text>
-                    </View>
-                </View>
-
-                <View className="px-4 space-y-3">
+                <View className="space-y-3">
                     {/* <Text className="font-[appfont-bold] text-lg">Billing Address</Text> */}
                     {/* Address Cards */}
                     {addressData.map((address) => (
@@ -159,27 +106,23 @@ const ConfirmAddress = () => {
                     ))}
                 </View>
             </ScrollView>
-
-            <View className="px-4 bg-gray-100 py-5">
-                <PrimaryButton
-                    onPress={confirmBillingAddress}
-                    btnLabel={
-                        <Text className="text-white font-[appfont-bold]">
-                            Confirm Billing Address{" "}
-                        </Text>
-                    }
+  
+            <View>
+                <AppButton
+                    onPress={() => navigation.navigate("payment")}
+                    variant='primary'
+                    btnLabel='Confirm Shipping Address'
                 />
             </View>
-
-            <Modal
+  
+            <ModalContainer
                 animationType="slide"
                 visible={isModalVisible}
-                transparent={true}
+                onClose={() => setIsModalVisible(false)}
             >
                 <View className="flex-1 justify-end">
-                    <View className="h-[70%] flex-1 bg-black opacity-40"></View>
                     {/* This View centers the modal content */}
-                    <View className="w-[100%] h-[60%] p-5 shadow-xl bg-gray-100 rounded-lg space-y-3">
+                    <View className=" p- shadow-md rounded-lg space-y-5">
                         <View className="flex-row items-center justify-between">
                             <Text className="text-lg font-[appfont-semi]">
                                 Edit Address
@@ -190,12 +133,12 @@ const ConfirmAddress = () => {
                                 <Ionicons
                                     name="close"
                                     size={20}
-                                    color={customTheme.colors.primary}
+                                    color={theme.colors.primary}
                                 />
                             </TouchableOpacity>
                         </View>
-
-                        <View className="space-y-3">
+  
+                        <View className="space-y-5">
                             <View className="h-[40]">
                                 <TextInputBoxWithIcon placeholder="Address" />
                             </View>
@@ -215,21 +158,18 @@ const ConfirmAddress = () => {
                                 <TextInputBoxWithIcon placeholder="Pincode" />
                             </View>
                         </View>
-
+  
                         <View>
-                            <PrimaryButton
-                                btnLabel={
-                                    <Text className="text-white font-[appfont-semi]">
-                                        Save Address
-                                    </Text>
-                                }
+                            <AppButton
+                            variant='primary'
+                                btnLabel='Save Address'
                             />
                         </View>
                     </View>
                 </View>
-            </Modal>
-        </CustomSafeView>
+            </ModalContainer>
+        </ScreenContainer>
     );
-};
-
-export default ConfirmAddress;
+  };
+  
+  export default ShippingAddress;

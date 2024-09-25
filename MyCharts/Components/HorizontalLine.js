@@ -12,7 +12,7 @@ const colors = {
 export default function HorizontalLine() {
   return (
     <View style={{
-        borderBottomWidth: 1,
+        borderBottomWidth: 2,
         borderColor: colors.LIGHT_GRAY, margin: 5, 
         marginBottom: 15,
         marginTop:15

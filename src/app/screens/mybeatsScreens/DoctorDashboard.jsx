@@ -48,7 +48,7 @@ const DoctorDashboard = () => {
             {/* Top navbar */}
             <TopNavbar isMyBeats={true} showSync={false} />
             <ScreenContainer>
-                <ScrollView showsVerticalScrollIndicator={false}>
+                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 100}}>
                     <View className="space-y-5">
                         <View>
                             <FormInput label="Search Patient"
@@ -153,8 +153,8 @@ const DoctorDashboard = () => {
                                     <TouchableOpacity
                                         onPress={() =>
                                             navigation.navigate(
-                                                "PharmacyInfo",
-                                                pharmacy
+                                                "pharmacyInfo",
+                                                {pharmacy}
                                             )
                                         }
                                     >
@@ -193,7 +193,7 @@ const DoctorDashboard = () => {
                                 <View id={lab.id} className="w-[300]">
                                     <TouchableOpacity
                                         onPress={() =>
-                                            navigation.navigate("LabInfo", lab)
+                                            navigation.navigate("labInfo", {lab} )
                                         }
                                     >
                                         <LabCard

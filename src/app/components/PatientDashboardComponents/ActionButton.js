@@ -1,9 +1,9 @@
-import { View, Text, FlatList, TouchableOpacity, Linking, Modal, SafeAreaView, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Linking, Modal, SafeAreaView, StyleSheet, Share } from 'react-native';
 import React, { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { theme } from '../../../../tailwind.config';
 
-export default function ActionButton({ excludeId2 = false, website }) {
+export default function ActionButton({ excludeId2 = false, doctor }) {
 
     const actionButtonList = [
         {
@@ -38,19 +38,41 @@ export default function ActionButton({ excludeId2 = false, website }) {
         if (excludeId2 && item.id === "2") {
             return false;
         }
-        if (item.name === 'Website' && (!website || website.trim().length === 0)) {
+        if (item.name === 'Website' && (!doctor.website || doctor.website.trim().length === 0)) {
             return false;
         }
         return true;
     });
 
-    const handlePress = (itemName) => {
+    // Universal Link that can be shared
+    const universalLink = `mybeats://doctor/${doctor.doctorID}`;
+
+    const handlePress = async (itemName) => {
         switch (itemName) {
             case 'Phone':
                 Linking.openURL(`tel:${phoneNumber}`);
                 break;
             case 'Website':
-                Linking.openURL(website);
+                Linking.openURL(doctor.website);
+                break;
+            case 'Share':
+                const shareMessage = `Check out this doctor on our app: ${universalLink}`;
+                try {
+                    const result = await Share.share({
+                        message: shareMessage,
+                    });
+                    if (result.action === Share.sharedAction) {
+                        if (result.activityType) {
+                            // Shared with activity type of result.activityType
+                        } else {
+                            // Shared
+                        }
+                    } else if (result.action === Share.dismissedAction) {
+                        // Dismissed
+                    }
+                } catch (error) {
+                    console.error("Error sharing the app link:", error);
+                }
                 break;
             default:
                 console.log('Action not supported');

@@ -18,8 +18,8 @@ const AppButton = ({
       className={`${variant === "primary" && "bg-primary shadow-lg"} ${
         variant === "light" && "border-2 border-primary"
       } p-5 rounded-md mb-5 flex-row items-center justify-center ${
-        variant === "disabled" && "bg-darkSecondary shadow-lg "
-      }`}
+        variant === "disabled" && "bg-darkSecondary shadow-lg"
+      } ${variant === "noborder" && "m-0 p-0"}`}
     >
       {/* Btn left icon */}
       {btnLeftIcon}
@@ -30,7 +30,8 @@ const AppButton = ({
         <Text
           className={`${variant === "primary" && "text-light"} ${
             variant === "light" && "text-primary"
-          } ${variant === "disabled" && "text-light"} font-bold`}
+          } ${variant === "disabled" && "text-light"} font-bold
+          ${variant==="noborder" && "text-primary"}`}
         >
           {btnLabel}
         </Text>

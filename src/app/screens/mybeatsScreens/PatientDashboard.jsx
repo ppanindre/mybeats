@@ -73,15 +73,35 @@ const PatientDashboard = () => {
                   </Text>
                 </View>
 
-                {/* Upload Prescription */}
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("uploadPrescription")}
-                  className="py-3 px-6 rounded-full shadow-md bg-light"
-                >
-                  <Text className="font-[appfont-semi] text-dark">Upload</Text>
-                </TouchableOpacity>
-              </TouchableOpacity>
-            </View>
+                                {/* Upload Prescription */}
+                                <TouchableOpacity
+                                    onPress={() => navigation.navigate("uploadPrescription")}
+                                    className="py-3 px-6 rounded-full shadow-md bg-light"
+                                >
+                                    <Text className="font-[appfont-semi] text-dark">
+                                        Upload
+                                    </Text>
+                                </TouchableOpacity>
+                            </TouchableOpacity>
+                        </View>
+
+                         {/* Payments */}
+                         <View>
+                            <TouchableOpacity
+                                className="flex-row items-center justify-between p-5 rounded-lg shadow-md bg-lightPrimary"
+                                onPress={() => navigation.navigate("payment")}
+                            >
+                                <View className="flex-1">
+                                    <Text className="text-lg font-[appfont-semi] text-dark">
+                                        Payments
+                                    </Text>
+                                    <Text className="text-sm font-[appfont-semi] text-dark">
+                                        Manage payments
+                                    </Text>
+                                </View>
+
+                            </TouchableOpacity>
+                        </View>
 
             <View>
               <DoctorScrollView />
@@ -104,36 +124,40 @@ const PatientDashboard = () => {
               </TouchableOpacity>
             </View>
 
-            {/* Pharmacy Data */}
-            <FlatList
-              data={pharmacyData}
-              keyExtractor={(item, index) =>
-                item.id.toString() || index.toString()
-              }
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              renderItem={({ item: pharmacy }) => (
-                <View
-                  key={pharmacy.id}
-                  className="w-[300] border rounded-lg"
-                  style={{
-                    borderColor: theme.colors.darkSecondary,
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate("PharmacyInfo", pharmacy)
-                    }
-                  >
-                    <PharmacyCard
-                      pharmacyLabel={pharmacy.name}
-                      pharmacyRating={pharmacy.rating}
-                    />
-                  </TouchableOpacity>
-                </View>
-              )}
-              contentContainerStyle={{ padding: 5, gap: 10 }}
-            />
+                        {/* Pharmacy Data */}
+                        <FlatList
+                            data={pharmacyData}
+                            keyExtractor={(item, index) =>
+                                item.id.toString() || index.toString()
+                            }
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                            renderItem={({ item: pharmacy }) => (
+                                <View
+                                    key={pharmacy.id}
+                                    className="w-[300] border rounded-lg"
+                                    style={{
+                                        borderColor:
+                                            theme.colors.darkSecondary,
+                                    }}
+                                >
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            navigation.navigate(
+                                                "pharmacyInfo",
+                                                { pharmacy }
+                                            )
+                                        }
+                                    >
+                                        <PharmacyCard
+                                            pharmacyLabel={pharmacy.name}
+                                            pharmacyRating={pharmacy.rating}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            )}
+                            contentContainerStyle={{ padding: 5, gap: 10 }}
+                        />
 
             {/* Labs based on the zipcode */}
             <View className="flex-row justify-between items-center">
@@ -150,40 +174,42 @@ const PatientDashboard = () => {
               </TouchableOpacity>
             </View>
 
-            {/* Lab Data */}
-            <FlatList
-              data={LabData}
-              keyExtractor={(item, index) =>
-                item.id.toString() || index.toString()
-              }
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              renderItem={({ item: lab }) => (
-                <View key={lab.id} className="w-[300]">
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate("LabInfo", lab)}
-                  >
-                    <LabCard
-                      labName={lab.name}
-                      labRating={lab.rating}
-                      labStoryCount={lab.labStoryCount}
-                      labzipcode={lab.zipcode}
-                    />
-                  </TouchableOpacity>
+                        {/* Lab Data */}
+                        <FlatList
+                            data={LabData}
+                            keyExtractor={(item, index) =>
+                                item.id.toString() || index.toString()
+                            }
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                            renderItem={({ item: lab }) => (
+                                <View key={lab.id} className="w-[300]">
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            navigation.navigate("labInfo", { lab })
+                                        }
+                                    >
+                                        <LabCard
+                                            labName={lab.name}
+                                            labRating={lab.rating}
+                                            labStoryCount={lab.labStoryCount}
+                                            labzipcode={lab.zipcode}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            )}
+                            contentContainerStyle={{ padding: 5, gap: 10 }}
+                        />
+                    </View>
+                </ScrollView>
+                <View className="flex-1 bg-background items-center justify-center">
+                    <Text className="font-[appfont-bold] text-lg">
+                        Please save your profile data
+                    </Text>
                 </View>
-              )}
-              contentContainerStyle={{ padding: 5, gap: 10 }}
-            />
-          </View>
-        </ScrollView>
-        <View className="flex-1 bg-background items-center justify-center">
-          <Text className="font-[appfont-bold] text-lg">
-            Please save your profile data
-          </Text>
-        </View>
-      </ScreenContainer>
-    </CustomSafeView>
-  );
+            </ScreenContainer>
+        </CustomSafeView>
+    );
 };
 
 export default PatientDashboard;

@@ -5,14 +5,10 @@ import { theme } from "../../tailwind.config";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const DoctorCard = ({
-    doctorName,
-    doctorSpecialist,
-    doctorRating,
-    doctorExperience,
-    doctoravailableforVideoConsultation
+    doctor
 }) => {
     return (
-        <View className="rounded-lg p-5 h-[150] w-[100%] justify-center shadow-md"
+        <View className="rounded-lg p-5 h-[215] w-[100%] justify-center shadow-md"
             style={{ backgroundColor: theme.colors.lightPrimary }}>
             <TouchableOpacity className="space-y-3">
                 {/* Doctor Information */}
@@ -26,26 +22,26 @@ const DoctorCard = ({
                     <View style={{ flex: 1 }}>
                         <Text className="flex text-black text-lg font-[appfont-bold]"
                             numberOfLines={1}>
-                            {doctorName}
+                            {`${doctor.firstname ?? ""} ${doctor.lastname ?? ""}`}
                         </Text>
-                    <View className="flex-row justify-between items-center">
-                        <Text
-                            style={{ color: theme.colors.dark }}
-                            className="text-md font-[appfont-bold]"
-                        >
-                            {doctorSpecialist}
-                        </Text>
-                        {doctoravailableforVideoConsultation && (
-                        <Ionicons name="videocam" size={24} style={{ color: theme.colors.light }} />
-                    )}
-                    </View>
+                        <View className="flex-row justify-between items-center">
+                            <Text
+                                style={{ color: theme.colors.dark }}
+                                className="text-md font-[appfont-bold]"
+                            >
+                                {doctor.secondarySpecialization || "No specialization"}
+                            </Text>
+                            {doctor.availableForVideoConsultation && (
+                                <Ionicons name="videocam" size={24} style={{ color: theme.colors.light }} />
+                            )}
+                        </View>
                     </View>
                 </View>
 
                 {/* Doctor Ratings and experience */}
                 <View className="flex-row justify-between">
                     {/* Ratings */}
-                    <View className="flex-row space-x-2">
+                    <View className="flex-row space-x-1">
                         <Ionicons
                             name="star"
                             color={theme.colors.primary}
@@ -54,7 +50,7 @@ const DoctorCard = ({
                         <Text
                             className="text-xs font-[appfont]"
                         >
-                            {doctorRating} (500+ ratings)
+                            {doctor.rating}5.0 (500+ ratings)
                         </Text>
                     </View>
 
@@ -69,10 +65,27 @@ const DoctorCard = ({
                             style={{ color: theme.colors.dark }}
                             className="text-xs font-[appfont]"
                         >
-                            {doctorExperience} years
+                            {doctor.experience} years
                         </Text>
                     </View>
                 </View>
+
+                <View className="border border-light"></View>
+                <View>
+                    <Text
+                        className="text-md font-[appfont-bold] text-dark"
+                    >
+                        {doctor.address} {doctor.city} {doctor.state} {doctor.zipcode}
+                    </Text>
+
+                    <Text
+                        className="text-md font-[appfont-bold] text-dark"
+                    >
+                     ~ ₹ {doctor.feeForVideoConsultation} Consulation fees
+                    </Text>
+                </View>
+
+
             </TouchableOpacity>
         </View>
     );

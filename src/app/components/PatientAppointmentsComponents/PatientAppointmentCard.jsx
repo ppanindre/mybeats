@@ -94,15 +94,6 @@ const PatientAppointmentCard = ({ appointment, isPast }) => {
                         {moment(appointment.startTime).format("D MMM YYYY")}, {moment(appointment.startTime).format("H:mm a")}
                     </Text>
                 </View>
-                {!isPast && (
-                    <TouchableOpacity onPress={deleteAppointment}>
-                        <Ionicons
-                            name="close-circle"
-                            size={20}
-                            color={theme.colors.light}
-                        />
-                    </TouchableOpacity>
-                )}
             </View>
         </TouchableOpacity>
     );
