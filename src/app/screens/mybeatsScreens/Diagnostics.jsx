@@ -12,6 +12,7 @@ import DiagnosticsCheckupCard from "../../components/Cards/DiagnosticsCheckupCar
 import LabCard from "../../components/Cards/LabCard";
 import ScreenContainer from "../../components/Containers/ScreenContainer";
 import FormInput from "../../components/Inputs/FormInput";
+import AppButton from "../../components/Buttons/AppButton";
 
 const Diagnostics = () => {
     const sliderRef = useRef(null);
@@ -85,11 +86,7 @@ const Diagnostics = () => {
                             <Text className="text-xl font-[appfont-bold] text-left">
                                 Top Diagnostic Test
                             </Text>
-                            <TouchableOpacity>
-                                <Text style={{ color: theme.colors.primary }} className="text-sm font-semibold text-left">
-                                    View All
-                                </Text>
-                            </TouchableOpacity>
+                            <AppButton variant="noborder" btnLabel="View all"/>
                         </View>
                         <FlatList
                             data={diagnosticTestData}
@@ -110,14 +107,7 @@ const Diagnostics = () => {
                             <Text className="text-xl font-[appfont-bold]">
                                 Checkup Packages
                             </Text>
-                            <TouchableOpacity>
-                                <Text
-                                    style={{ color: theme.colors.primary }}
-                                    className="text-sm font-[appfont-bold] text-left"
-                                >
-                                    View All
-                                </Text>
-                            </TouchableOpacity>
+                            <AppButton variant="noborder" btnLabel="View all"/>
                         </View>
                         <FlatList
                             data={checkupData}

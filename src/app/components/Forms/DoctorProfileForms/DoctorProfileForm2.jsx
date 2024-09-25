@@ -176,7 +176,7 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, initialData = {}
                                 <FormInput
                                     value={value}
                                     onChangeText={onChange}
-                                    label="Address"
+                                    label="Clinic Address"
                                     error={error}
                                 />
                             )}

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Dimensions } from "react-native";
-import { theme } from "../../../../tailwind.config";
+import AppButton from "../Buttons/AppButton";
 
 const DiagnosticsPromotionalCard = ({ title, description, buttonText }) => {
     return (
@@ -19,11 +19,10 @@ const DiagnosticsPromotionalCard = ({ title, description, buttonText }) => {
             <Text className="text-sm font-[appfont] text-left">
                 {description}
             </Text>
-            <TouchableOpacity style={{ backgroundColor: theme.colors.primary }} className="py-2 px-4 rounded-md">
-                <Text style={{ color: theme.colors.light }} className="text-sm font-[appfont-semi]">
-                    {buttonText}
-                </Text>
-            </TouchableOpacity>
+            <View>
+                <AppButton btnLabel={buttonText} variant="primary"
+                />
+            </View>
         </View>
     );
 };

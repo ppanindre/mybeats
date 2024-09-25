@@ -16,10 +16,10 @@ import { createAppointmentActionCreators } from "../../../../store/actions/appoi
 import Loader from "../../components/Utils/Loader";
 import VideoAppointmentFrame from "../../components/PatientAppointmentCO/VideoAppointmentFrame";
 import DoctorInfo from "../../components/PatientDashboardComponents/DoctorInfo";
+import { useNavigation } from "@react-navigation/native";
 
 const CollapsibleItem = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
-
     return (
         <TouchableOpacity onPress={() => setIsOpen(!isOpen)} className="mt-2">
             <View className="flex-row justify-between items-center">
@@ -41,6 +41,7 @@ const CollapsibleItem = ({ title, children }) => {
 
 const Appointment = ({ route }) => {
     const { doctorId } = route.params;
+    const navigation = useNavigation()
 
     const doctor = useSelector((state) => state.doctorsListReducer.doctors.find(doc => doc.doctorID === doctorId));
 
@@ -97,11 +98,11 @@ const Appointment = ({ route }) => {
                 <View className="space-y-5">
                     <DoctorInfo doctor={doctor} />
                     <View>
-                        <ActionButton website={doctor.website} excludeId2={true}/>
+                        <ActionButton excludeId2={true} doctor={doctor}/>
                     </View>
 
                     <View>
-                        <ClinicAppointmentFrame />
+                        <ClinicAppointmentFrame doctor={doctor}/>
                     </View>
 
                     <View>
@@ -111,7 +112,7 @@ const Appointment = ({ route }) => {
                     {doctor.availableForVideoConsultation && (
                         <View className="space-y-5">
                             <View>
-                                <VideoAppointmentFrame />
+                                <VideoAppointmentFrame doctor={doctor}/>
                             </View>
 
                             <View>
@@ -120,7 +121,7 @@ const Appointment = ({ route }) => {
                         </View>
                     )}
 
-                    <View className="mt-4 mb-2 p-4 rounded-lg shadow mx-2 space-y-3 bg-light">
+                    <View className="mt-4 mb-2 p-4 rounded-lg shadow mx-2 space-y-3 bg-light">                   
                         <InteractiveMapView
                             name={`${doctor.firstname} ${doctor.lastname}`}
                             city={doctor.city}
@@ -168,7 +169,7 @@ const Appointment = ({ route }) => {
 
             <View>
                 <AppButton
-                    onPress={bookAppointment}
+                    onPress={() => navigation.navigate("confirmAppointment", {doctor, selectedTime: selectedSlot, appointmentType})}
                     variant={`${selectedSlot ? "primary" : "disabled"}`}
                     btnLabel="Book"
                     btnLeftIcon={<Ionicons name="calendar" size={20} color={theme.colors.light} />}

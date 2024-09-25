@@ -43,7 +43,7 @@ const DoctorProfileForm3 = ({ handlePressSubmit, handlePressBack, initialData })
                         />
                     </View>
 
-                    {isAvailable && (
+                    {/* {isAvailable && ( */}
                         <View>
                             <Controller
                                 control={control}
@@ -52,13 +52,13 @@ const DoctorProfileForm3 = ({ handlePressSubmit, handlePressBack, initialData })
                                     <FormInput
                                         value={value}
                                         onChangeText={onChange}
-                                        label="Fee for video consultations"
+                                        label="Fee for consultations"
                                         error={error}
                                     />
                                 )}
                             />
                         </View>
-                    )}
+                    {/* )} */}
 
                     <View>
                         <Controller

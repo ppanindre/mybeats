@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import {
     View,
     Text,
@@ -27,6 +27,17 @@ const ConsultDoctor = () => {
     );
 
     const dispatch = useDispatch();
+
+    medical_specialities = [
+        { key: "Women’s Health", icon: appicon, specialization: "Women’s Health" },
+        { key: "Skin & Hair", icon: appicon, specialization: "Skin & Hair" },
+        { key: "Child Specialist", icon: appicon, specialization: "Child Specialist" },
+        { key: "General Medicine", icon: appicon, specialization: "General Medicine" },
+        { key: "Pediatrics", icon: appicon, specialization: "Pediatrics" },
+        { key: "Digestion", icon: appicon, specialization: "Digestion" },
+        { key: "Psychiatry", icon: appicon, specialization: "Psychiatry" },
+        { key: "View All", icon: appicon, specialization: null },
+    ]
 
     useEffect(() => {
         dispatch(listDoctorsActionCreator());
@@ -65,19 +76,13 @@ const ConsultDoctor = () => {
                             Medical Specialties
                         </Text>
                         <FlatList
-                            data={[
-                                { key: "Women’s Health", icon: appicon },
-                                { key: "Skin & Hair", icon: appicon },
-                                { key: "Child Specialist", icon: appicon },
-                                { key: "General Physician", icon: appicon },
-                                { key: "Sexology", icon: appicon },
-                                { key: "Digestion", icon: appicon },
-                                { key: "Psychiatry", icon: appicon },
-                                { key: "View All", icon: appicon },
-                            ]}
+                            data={medical_specialities}
                             numColumns={4}
                             renderItem={({ item }) => (
-                                <TouchableOpacity className="flex-1 items-center p-3">
+                                <TouchableOpacity
+                                    className="flex-1 items-center p-3"
+                                    onPress={() => navigation.navigate("searchDoctors", { specialization: item.specialization })}
+                                >
                                     <Image
                                         source={item.icon}
                                         className="w-16 h-16 mb-2 rounded-md"
@@ -89,6 +94,7 @@ const ConsultDoctor = () => {
                             )}
                             keyExtractor={(item) => item.key}
                         />
+
                     </View>
 
                     <View>

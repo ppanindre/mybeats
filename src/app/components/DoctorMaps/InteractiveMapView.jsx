@@ -42,6 +42,9 @@ const InteractiveMapView = ({ name, city, address, state, zipcode }) => {
       <Text className="text-xl mb-3 font-[appfont-semi]">
         Clinic Location
       </Text>
+      <Text className="text-lg mb-3 font-[appfont-semi]">
+        {address}, {city}, {state}, {zipcode}
+      </Text>
       <View style={{ marginTop: 10, height: 200 }}>
         <MapView
           style={{ flex: 1 }}
