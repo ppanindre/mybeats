@@ -13,6 +13,7 @@ module.exports = {
             lightPrimary: "#FDBF60",
             error: "#FF204E",
             darkSecondary: "#d9d9d9", // grey
+            darkGrey: "#696969",
         },
     },
     plugins: [],

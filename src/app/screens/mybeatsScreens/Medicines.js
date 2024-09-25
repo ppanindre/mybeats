@@ -16,6 +16,7 @@ import { customTheme } from "../../../../constants/themeConstants";
 import { pharmacyData } from "../../../../constants/pharmacyConstants";
 import PharmacyCard from "../../../../components/Cards/PharmacyCard";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppButton from "../../components/Buttons/AppButton";
 
 const Medicines = () => {
     const WellnessData = [
@@ -235,14 +236,7 @@ const Medicines = () => {
                         <Text className="text-xl font-[appfont-bold] text-left">
                             Wellness Product
                         </Text>
-                        <TouchableOpacity>
-                            <Text
-                                style={{ color: customTheme.colors.primary }}
-                                className="text-sm font-[appfont-bold] text-left"
-                            >
-                                View All
-                            </Text>
-                        </TouchableOpacity>
+                        <AppButton variant="noborder" btnLabel="View all"/>
                     </View>
                 </View>
 

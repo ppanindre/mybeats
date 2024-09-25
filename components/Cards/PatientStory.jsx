@@ -2,45 +2,43 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { customTheme } from "../../constants/themeConstants";
+import { theme } from "../../tailwind.config";
 
 const PatientStory = ({ story }) => {
     return (
         <View
-            style={{ backgroundColor: customTheme.colors.light }}
-            className="p-2 rounded-lg mb-4"
+            style={{ backgroundColor: theme.colors.light }}
+            className="rounded-lg space-y-3"
         >
-            <View className="flex-row items-center">
+            <View className="flex-row items-center space-x-5">
                 <Image
                     source={require("../../src/app/assets/doc1.webp")}
                     className="w-12 h-12 rounded-full"
                 />
-                <View className="ml-4 flex-1">
-                    <Text className="text-sm font-[appfont-semi]">
-                        {story.name}
-                    </Text>
-                    <View className="flex-row items-center space-x-40">
-                        <Text
-                            style={{ color: customTheme.colors.dark }}
-                            className="text-xs font-[appfont]"
-                        >
-                            {story.date}
+                <View className="flex-1">
+                    <View className="flex-row items-center justify-between">
+                        <Text className="text-sm font-[appfont-semi]">
+                            {story.name}
                         </Text>
-                        <View className="flex-row items-center -mt-8">
+                        <View className="flex-row items-center space-x-1">
                             <Ionicons name="star" size={14} color="#ffd700" />
                             <Text
-                                style={{ color: customTheme.colors.dark }}
-                                className="text-xs ml-1"
+                                style={{ color: theme.colors.dark }}
+                                className="text-xs"
                             >
                                 {story.rating}
                             </Text>
                         </View>
                     </View>
+                    <Text
+                        className="text-xs font-[appfont] text-dark"
+                    >
+                        {story.date}
+                    </Text>
                 </View>
             </View>
             <Text
-                style={{ color: customTheme.colors.dark }}
-                className="text-sm mt-2 font-[appfont]"
+                className="text-sm font-[appfont] text-dark"
             >
                 {story.comment}
             </Text>

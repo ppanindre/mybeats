@@ -9,6 +9,7 @@ import DoctorCard from "../../../../components/Cards/DoctorCard";
 import { listDoctorsActionCreator } from "../../../../store/actions/doctorActions";
 import { theme } from "../../../../tailwind.config";
 import DoctorFilters from "../../components/PatientDashboardComponents/DoctorFilters";
+import { useRoute } from "@react-navigation/native";
 
 const SearchDoctors = () => {
     const [searchInput, setSearchInput] = useState("");
@@ -26,6 +27,7 @@ const SearchDoctors = () => {
     });
 
     const navigation = useNavigation();
+    const route = useRoute();
     const dispatch = useDispatch();
 
     const { doctors } = useSelector((state) => state.doctorsListReducer);
@@ -40,6 +42,30 @@ const SearchDoctors = () => {
         }
     }, [doctors]);
 
+    useEffect(() => {
+        if (route.params?.specialization && Array.isArray(doctors)) {
+            const specializationFilter = route.params.specialization.toLowerCase();
+    
+            const filteredDoctors = doctors.filter((doctor) => {
+                if (doctor.secondarySpecialization) {
+                    // Splitting the comma-separated specializations and trim any extra spaces
+                    const specializations = doctor.secondarySpecialization
+                        .split(';')
+                        .map(specialization => specialization.trim().toLowerCase());
+    
+                    // if any specialization matches the filter
+                    return specializations.includes(specializationFilter);
+                }
+                return false;
+            });
+    
+            setResults(filteredDoctors);
+            setOriginalResults(filteredDoctors);
+            setSearchText(route.params.specialization);
+            setSearchRecommendations([]); // Clearing recommendations when filtered by specialization
+        }
+    }, [route.params, doctors]);
+    
     const handleDoctorSelect = (doctor) => {
         const filteredData = [doctor];
         setResults(filteredData);
@@ -182,13 +208,7 @@ const SearchDoctors = () => {
                                 key={doctor.doctorID}
                                 onPress={() => handleDoctorCardPress(doctor.doctorID)}
                             >
-                                <DoctorCard
-                                    doctorName={`${doctor.firstname ?? ""} ${doctor.lastname ?? ""}`}
-                                    doctorSpecialist={doctor.secondarySpecialization || "No specialization"}
-                                    doctorRating={doctor.rating}
-                                    doctorExperience={doctor.experience}
-                                    doctoravailableforVideoConsultation={doctor.availableForVideoConsultation}
-                                />
+                                <DoctorCard doctor={doctor}/>
                             </TouchableOpacity>
                         ))}
                     </View>
