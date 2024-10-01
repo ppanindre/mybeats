@@ -25,7 +25,6 @@ const Payment = () => {
                                 Payment Method
                             </Text>
                             <View className="bg-white rounded-lg shadow-lg space-y-2">
-                                {/* UPI - GPAY - PhonePe - Paytm - QR */}
                                 <View className="flex-row items-center justify-between">
                                     {Array(5)
                                         .fill(1)

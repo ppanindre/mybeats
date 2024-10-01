@@ -10,7 +10,7 @@ const PrivacyPolicy = () => {
   return (
     <CustomSafeView>
       {/* Header */}
-      <View className="flex-row  items-center  space-x-2 border-b-2 p-5 borderdarkSecondary">
+      <View className="flex-row items-center space-x-2 border-b-2 p-5 borderdarkSecondary">
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <ChevronLeftIcon color="#000000" />
         </TouchableOpacity>
@@ -22,166 +22,189 @@ const PrivacyPolicy = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 60 }}
       >
+        {/* Last Updated Date */}
         <View>
-          <Text className="font-bold">Effective Date: June 29, 2023</Text>
+          <Text className="font-bold">Last Updated: 29 Sept 2024</Text>
         </View>
 
+        {/* Introduction */}
         <View>
           <Text className="font-bold">Introduction</Text>
           <Text>
-            Welcome! We are committed to protecting the privacy and security of
-            your personal information. This Privacy Policy explains how we
-            collect, use, disclose, and safeguard your personal data when you
-            use our mobile application and related services (collectively
-            referred to as the &quot;Services&quot;). Please read this Privacy
-            Policy carefully to understand our practices regarding your personal
-            information. By using our Services, you consent to the data
-            practices described in this Privacy Policy.
+            This Privacy Policy sets forth the principles governing the
+            collection, use, disclosure, retention, and protection of Personal
+            Information ("PI") as processed by FireBeats Inc. ("FireBeats",
+            "we", "us", "our") within the scope of our mobile application (the
+            "App") designed for health risk mitigation in firefighters. By
+            utilizing our Services, you consent to this Privacy Policy, which is
+            subject to continuous review to ensure compliance with applicable
+            regulations and standards, including but not limited to the General
+            Data Protection Regulation (GDPR), the California Consumer Privacy
+            Act (CCPA), and the Health Insurance Portability and Accountability
+            Act (HIPAA).
           </Text>
         </View>
 
+        {/* Information We Collect */}
         <View>
-          <Text className="font-bold">Information We Collect</Text>
-          <View className="space-y-2">
-            <View>
-              <Text>
-                1. Personal Information: When you use our Services, we may
-                collect personal information that can be used to identify you as
-                an individual or that is associated with you. This may include:
-              </Text>
-              <Text>{`\u2022 Contact information (such as your name, email address, and phone number)`}</Text>
-              <Text>{`\u2022 Demographic information (such as your age, gender, and location)`}</Text>
-              <Text>{`\u2022 Health-related information (such as physiological data from your wearable health tracker)`}</Text>
-            </View>
-            <View>
-              <Text>
-                2. Non-Personal Information: We may also collect non-personal
-                information that does not directly identify you. This may
-                include:
-              </Text>
-              <Text>{`\u2022 Aggregated data about user activity on our Services`}</Text>
-              <Text>{`\u2022 Device information (such as the type of device, operating system, and browser)`}</Text>
-              <Text>{`\u2022 Log data (such as IP addresses, access times, and browsing behavior)`}</Text>
-            </View>
-          </View>
-        </View>
-
-        <View>
-          <Text className="font-bold">Use of Information</Text>
+          <Text className="font-bold">1. Information We Collect</Text>
           <View>
+            <Text className="font-bold">1.1 Personal Information</Text>
             <Text>
-              We use the information we collect for various purposes, including:
+              We process the following categories of Personal Information to
+              provide the Services: Contact Information: Identifiable
+              information such as first name, last name, email, and address.
+              Demographic Data: Age, gender, weight, and height. Health-Related
+              Information: Physiological data derived from wearable devices,
+              including but not limited to heart rate, activity levels, and
+              sleep data, all of which may be classified as health data under
+              relevant laws.
             </Text>
-            <View>
-              <Text>{`\u2022 Providing and personalizing our Services to meet your needs`}</Text>
-              <Text>{`\u2022 Analyzing and improving our Services`}</Text>
-              <Text>{`\u2022 Communicating with you and responding to your inquiries`}</Text>
-              <Text>{`\u2022 Sending you important notifications and updates about the Services`}</Text>
-              <Text>{`\u2022 Detecting and preventing fraudulent or unauthorized activities`}</Text>
-              <Text>{`\u2022 Complying with legal obligations`}</Text>
-            </View>
           </View>
-        </View>
 
-        <View>
-          <Text className="font-bold">Data Sharing and Disclosure</Text>
           <View>
+            <Text className="font-bold">1.2 Non-Personal Information</Text>
             <Text>
-              We may share your personal information in the following
-              circumstances:
+              Device Information: Technical data regarding the user’s device,
+              operating system, and browser information. Usage Data: Information
+              such as app interactions, access times, and browsing patterns,
+              which is aggregated and anonymized to remove identifiable
+              attributes.
             </Text>
-            <View>
-              <Text>{`\u2022 With your consent: We may share your information when you give us explicit permission to do so.`}</Text>
-              <Text>{`\u2022 We may engage trusted third-party service providers who assist us in providing the Services. These service providers have access to your information only to perform specific tasks on our behalf and are obligated to protect your data.`}</Text>
-              <Text>{`\u2022 Communicating with you and responding to your inquiries`}</Text>
-              <Text>{`\u2022 Legal requirements: We may disclose your information if required to do so by law or in response to valid legal requests, such as subpoenas or court orders.`}</Text>
-              <Text>{`\u2022 Protection of rights: We may disclose your information to protect our rights, property, or safety, as well as the rights, property, or safety of others.`}</Text>
-            </View>
           </View>
         </View>
 
+        {/* Legal Basis for Processing */}
         <View>
-          <Text className="font-bold">Data Security</Text>
+          <Text className="font-bold">2. Legal Basis for Processing</Text>
           <Text>
-            We take reasonable measures to protect your personal information
-            from unauthorized access, disclosure, alteration, or destruction.
-            However, please be aware that no security measures are 100% secure,
-            and we cannot guarantee the absolute security of your data.
+            We process Personal Information based on the following legal grounds
+            pursuant to Article 6 of the GDPR and other applicable laws: -
+            Performance of a Contract: To provide our health monitoring and
+            notification services. - Legitimate Interests: To improve, optimize,
+            and personalize our services. - Consent: Explicit consent is
+            required for processing sensitive personal data such as
+            health-related information. - Compliance with Legal Obligations: To
+            comply with relevant statutory or regulatory requirements.
           </Text>
         </View>
 
+        {/* Purpose of Processing */}
         <View>
-          <Text className="font-bold">Data Retention</Text>
+          <Text className="font-bold">3. Purpose of Processing</Text>
           <Text>
-            We retain your personal information for as long as necessary to
-            fulfill the purposes outlined in this Privacy Policy, unless a
-            longer retention period is required or permitted by law. We will
-            securely delete or anonymize your personal information when it is no
-            longer needed.
+            The data collected will be used for: - Health Risk Detection: Our
+            machine learning algorithms analyze heart rate, activity levels, and
+            sleep patterns to detect early signs of cardiovascular diseases such
+            as arrhythmia or hypertension. - Caloric Analysis: Data from the
+            camera is used to calculate caloric intake based on images of food
+            items. - Service Enhancement: Non-personal usage data is analyzed to
+            improve functionality, identify technical issues, and optimize user
+            experience.
           </Text>
         </View>
 
+        {/* Data Sharing and Disclosure */}
         <View>
-          <Text className="font-bold">Your Choices and Rights</Text>
-          <View>
-            <View>
-              <Text>{`\u2022 Opt-out: You may choose to opt-out of receiving promotional communications from us by following the instructions provided in our emails or by contacting us directly.`}</Text>
-              <Text>{`\u2022 Access and Correction: You have the right to access and correct your personal information held by us. You may update your information directly within the mobile application or by contacting us.`}</Text>
-              <Text>{`\u2022 Data Portability: You have the right to request a copy of your personal information in a structured, commonly used, and machine-readable format.`}</Text>
-              <Text>{`\u2022 Deletion: You may request the deletion of your personal information, subject to certain exceptions under applicable laws.`}</Text>
-            </View>
-          </View>
-        </View>
-
-        <View>
-          <Text className="font-bold">Children&#39;s Privacy</Text>
+          <Text className="font-bold">4. Data Sharing and Disclosure</Text>
           <Text>
-            Our Services are not intended for individuals under the age of 18.
-            We do not knowingly collect or solicit personal information from
-            anyone under the age of 18. If we become aware that we have
-            collected personal information from a child under the age of 18
-            without obtaining parental consent, we will take steps to delete
-            that information promptly. If you believe that we may have collected
-            personal information from a child under 18 without parental consent,
-            please contact us immediately.
+            We maintain strict data privacy standards and will only share
+            Personal Information under the following circumstances: -
+            Third-Party Service Providers: We may engage trusted service
+            providers to process data on our behalf. These entities are
+            contractually bound to implement stringent data security measures
+            consistent with the requirements of GDPR Article 28 and
+            HIPAA-compliant data security standards, including pseudonymization,
+            encryption, and access restrictions. - Legal and Regulatory
+            Compliance: We may disclose your Personal Information to
+            governmental authorities, courts, or regulatory bodies when required
+            to do so by law (e.g., compliance with subpoenas or court orders). -
+            With Consent: In certain instances, we may share data with third
+            parties where explicit user consent has been obtained.
           </Text>
         </View>
 
+        {/* Data Security */}
         <View>
-          <Text className="font-bold">Updates to this Privacy Policy</Text>
+          <Text className="font-bold">5. Data Security</Text>
           <Text>
-            We may update this Privacy Policy from time to time to reflect
-            changes in our data practices or legal requirements. We will notify
-            you of any material changes by posting the updated Privacy Policy on
-            our website or through other communication channels. Please review
-            this Privacy Policy periodically for any updates.
+            We utilize robust technical and organizational safeguards in
+            accordance with ISO/IEC 27001 standards and the NIST Cybersecurity
+            Framework to prevent unauthorized access, alteration, or disclosure
+            of Personal Information. These measures include but are not limited
+            to encryption protocols (TLS/SSL), regular security audits, access
+            control, and pseudonymization. Despite these efforts, no data
+            transmission or storage mechanism can be guaranteed as entirely
+            secure, and as such FireBeats disclaims liability for any breaches
+            beyond its control.
           </Text>
         </View>
 
+        {/* Data Retention and Deletion */}
         <View>
-          <Text className="font-bold">Contact Us</Text>
+          <Text className="font-bold">6. Data Retention and Deletion</Text>
           <Text>
-            If you have any questions, concerns, or requests regarding this
-            Privacy Policy or our data practices, please contact us at
-            firebeatsapp@gmail.com. We will respond to your inquiries as soon as
-            reasonably possible.
+            We retain Personal Information for as long as necessary to fulfill
+            the purposes for which it was collected, subject to legal and
+            regulatory retention requirements. Data that is no longer required
+            will be securely anonymized or deleted in accordance with GDPR
+            Article 17 and HIPAA guidelines upon user request or at the
+            conclusion of service provision.
           </Text>
         </View>
 
+        {/* User Rights and Choices */}
         <View>
-          <Text className="font-bold">Conclusion</Text>
+          <Text className="font-bold">7. User Rights and Choices</Text>
           <Text>
-            Protecting your privacy is of utmost importance to us. We strive to
-            handle your personal information responsibly and in accordance with
-            applicable data protection laws. By using our Services, you
-            acknowledge that you have read and understood this Privacy Policy
-            and consent to the collection, use, and disclosure of your personal
-            information as described herein.
+            Users retain the following rights under applicable data protection
+            laws as outlined in GDPR Article 20 and HIPAA guidelines: - Access
+            and Portability: You have the right to request access to the data we
+            process and receive it in a structured, commonly used,
+            machine-readable format. - Rectification: You may request the
+            correction or amendment of inaccurate or incomplete data. - Erasure
+            (Right to be Forgotten): Users may request the deletion of their
+            data except where retention is required by law or for legitimate
+            business interests. - Data Processing Restriction and Objection: You
+            may restrict the processing of your data or object to certain types
+            of processing. - Withdrawal of Consent: Where processing is based on
+            consent, you may withdraw consent at any time without affecting the
+            lawfulness of processing based on consent before its withdrawal.
           </Text>
         </View>
 
-        <Text>Thank you for entrusting us with your personal information.</Text>
-        <Text>FireBeats Privacy Team</Text>
+        {/* Children's Privacy */}
+        <View>
+          <Text className="font-bold">8. Children’s Privacy</Text>
+          <Text>
+            Our Services are not directed towards individuals under the age of
+            18, and we do not knowingly process the data of minors without
+            verified parental consent in accordance with COPPA and applicable
+            child protection laws.
+          </Text>
+        </View>
+
+        {/* Changes to This Privacy Policy */}
+        <View>
+          <Text className="font-bold">9. Changes to This Privacy Policy</Text>
+          <Text>
+            We reserve the right to modify this Privacy Policy to reflect
+            changes in legal requirements or our data handling practices.
+            Material changes will be communicated to users via the app or other
+            appropriate means, with the updated policy available on our website.
+            Continued use of the Services will constitute acceptance of the
+            revised policy.
+          </Text>
+        </View>
+
+        {/* Contact Information */}
+        <View>
+          <Text className="font-bold">Contact Information</Text>
+          <Text>
+            If you have any inquiries or wish to exercise your data protection
+            rights, please contact us at firebeatsapp@gmail.com.
+          </Text>
+        </View>
       </ScrollView>
     </CustomSafeView>
   );

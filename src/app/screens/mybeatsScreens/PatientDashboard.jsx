@@ -19,23 +19,10 @@ import PatientBanner from "../../components/PatientDashboardComponents/PatientBa
 import PatientNavigationFrame from "../../components/PatientDashboardComponents/PatientNavigationFrame";
 import DoctorScrollView from "../../components/PatientDashboardComponents/DoctorScrollView";
 import { theme } from "../../../../tailwind.config";
-import PhonePePaymentSDK from "react-native-phonepe-pg";
+
 
 const PatientDashboard = () => {
   const navigation = useNavigation();
-
-  useEffect(() => {
-    console.log("starting the application");
-    PhonePePaymentSDK.init(
-      "SANDBOX",
-      "MERCHANTUAT1004",
-      "9fa262d3-09d5-4edf-9f93-de27dc8bbcde",
-      true
-    ).then((result) => {
-      // handle promise
-      console.log("result", result);
-    });
-  }, []);
 
   return (
     <CustomSafeView>
