@@ -3,5 +3,8 @@
     "configLevel": "project",
     "useProfile": true,
     "profileName": "default"
+  },
+  "stabledev": {
+    "configLevel": "amplifyAdmin"
   }
 }

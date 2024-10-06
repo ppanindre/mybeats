@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,16 +12,26 @@ import {
     deleteAppointmentActionCreator,
     listAppointmentsByPatientActionCreators,
 } from '../../../../store/actions/appointmentActions';
+import { createPatientStoryActionCreator } from '../../../../store/actions/patientStoriesAction';
+import { Rating } from 'react-native-ratings';
+import { theme } from "../../../../tailwind.config";
+import Loader from '../Utils/Loader';
 
 const PatientAppointmentInfoScreen = () => {
     const route = useRoute();
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const user = useSelector((state) => state.UserReducer);
+    const patientName = `${user.profileData.firstName} ${user.profileData.lastName}`;
     const { appointment } = route.params || {};
+    const [showReviewModal, setshowReviewModal] = useState(false)
+    const [review, setReview] = useState("");
+    const [rating, setRating] = useState(0);
 
     const doctorList = useSelector((state) => state.doctorsListReducer);
     const { doctors } = doctorList;
     const doctor = doctors.find((doc) => doc.doctorID === appointment.doctorID);
+    const { loading, success, error } = useSelector((state) => state.patientStoryCreateReducer);
     const isPastAppointment = moment(appointment.startTime).isBefore(moment());
 
     const [showModal, setShowModal] = useState(false);
@@ -35,6 +45,30 @@ const PatientAppointmentInfoScreen = () => {
         navigation.goBack();
         dispatch(listAppointmentsByPatientActionCreators(appointment.patientId));
     };
+
+    const onSubmitReview = async () => {
+
+        dispatch(createPatientStoryActionCreator(
+            appointment.doctorID, 
+            appointment.patientId, 
+            patientName, 
+            rating.toString(), 
+            review
+        ));
+
+        setshowReviewModal(false);
+
+        if (success) {
+            Alert.alert('Success', 'Your review has been submitted');
+        }
+
+        if (error) {
+            Alert.alert('Error', 'Something went wrong while submitting the review');
+        }
+    };
+
+    if (loading) return <Loader />
+
 
     const getAddress = () => {
         return `${doctor.address}, ${doctor.city}, ${doctor.state}, ${doctor.zipcode}`;
@@ -90,9 +124,9 @@ const PatientAppointmentInfoScreen = () => {
                         <View className="flex-row items-start justify-between space-x-10">
                             <Text className="font-[appfont-semi] text-lg">Clinic Address: </Text>
                             <View className="flex-1">
-                            <Text className="font-[appfont-semi] text-lg text-right">
+                                <Text className="font-[appfont-semi] text-lg text-right">
                                     {getAddress()}
-                                </Text>                         
+                                </Text>
                             </View>
                         </View>
                     )}
@@ -130,6 +164,49 @@ const PatientAppointmentInfoScreen = () => {
                     </View>
                 </View>
             </ModalContainer>
+            <ModalContainer
+                visible={showReviewModal}
+                onClose={() => setshowReviewModal(false)}
+            >
+                <View className="space-y-5">
+                    <View className="flex-row items-center justify-between">
+                        <Rating
+                            type='custom'
+                            ratingCount={5}
+                            imageSize={35}
+                            startingValue={rating}
+                            onFinishRating={(rating) => setRating(rating)}
+                            ratingColor={theme.colors.primary}
+                            ratingBackgroundColor={theme.colors.darkSecondary}
+                        />
+                        <Text className="text-lg font-[appfont-semi] text-dark">Rating: {rating}</Text>
+                    </View>
+
+                    <View>
+                        <MultiLineInput
+                            onChangeText={(text) => setReview(text)}
+                            value={review}
+                            label="Write your review"
+                        />
+                    </View>
+
+                    <View>
+                        {rating ? (
+                            <AppButton
+                                variant="primary"
+                                btnLabel="Submit"
+                                onPress={onSubmitReview}
+                            />
+                        ) : (
+                            <AppButton
+                                variant="disabled"
+                                btnLabel="Submit"
+                            />
+
+                        )}
+                    </View>
+                </View>
+            </ModalContainer>
             {!isPastAppointment ? (
                 <View className="flex-row justify-around">
                     <View className="flex-1">
@@ -141,11 +218,18 @@ const PatientAppointmentInfoScreen = () => {
                     </View>
                 </View>
             ) : (
-                <View className="flex-row justify-around">
+                <View className="flex-row justify-around space-x-5">
                     <View className="flex-1">
                         <AppButton
                             btnLabel="View Doctor's Notes"
                             onPress={() => { }}
+                            variant="primary"
+                        />
+                    </View>
+                    <View className="flex-1">
+                        <AppButton
+                            btnLabel="Write a review"
+                            onPress={() => setshowReviewModal(true)}
                             variant="primary"
                         />
                     </View>

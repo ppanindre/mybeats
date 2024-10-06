@@ -1,14 +1,14 @@
 {
   "providers": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-mybeatsdev-dev-efa9b-authRole",
-      "UnauthRoleArn": "arn:aws:iam::185329004895:role/amplify-mybeatsdev-dev-efa9b-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::185329004895:role/amplify-mybeatsdev-dev-efa9b-authRole",
+      "AuthRoleName": "amplify-mybeatsdev-stabledev-21f51-authRole",
+      "UnauthRoleArn": "arn:aws:iam::185329004895:role/amplify-mybeatsdev-stabledev-21f51-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::185329004895:role/amplify-mybeatsdev-stabledev-21f51-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-mybeatsdev-dev-efa9b-deployment",
-      "UnauthRoleName": "amplify-mybeatsdev-dev-efa9b-unauthRole",
-      "StackName": "amplify-mybeatsdev-dev-efa9b",
-      "StackId": "arn:aws:cloudformation:us-east-1:185329004895:stack/amplify-mybeatsdev-dev-efa9b/48ef1620-121b-11ef-ab27-1230d2a28caf",
+      "DeploymentBucketName": "amplify-mybeatsdev-stabledev-21f51-deployment",
+      "UnauthRoleName": "amplify-mybeatsdev-stabledev-21f51-unauthRole",
+      "StackName": "amplify-mybeatsdev-stabledev-21f51",
+      "StackId": "arn:aws:cloudformation:us-east-1:185329004895:stack/amplify-mybeatsdev-stabledev-21f51/955018a0-7ea6-11ef-bff8-0affed32e8f9",
       "AmplifyAppId": "d4gtesv5z7ofw"
     }
   },
@@ -25,78 +25,78 @@
             "authenticationType": "API_KEY"
           }
         },
-        "GraphQLAPIIdOutput": "heewfprzlza5jfxjx533clppqi",
-        "GraphQLAPIEndpointOutput": "https://aayezbhftjezdlcfxzfcg66qhu.appsync-api.us-east-1.amazonaws.com/graphql",
-        "GraphQLAPIKeyOutput": "da2-byvr7funmjajvpcqkdekmoj6oe"
+        "GraphQLAPIIdOutput": "jfawyooembai7gupawv5a26b4i",
+        "GraphQLAPIEndpointOutput": "https://4u5ihc24qjh23eizmj36hak4ku.appsync-api.us-east-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-qabrh5d6urak3pdjqaftt27tmi"
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync",
-      "lastPushTimeStamp": "2024-07-25T03:29:39.804Z",
       "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-mybeatsdev-dev-efa9b-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-mybeatsdev-stabledev-21f51-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apimybeatsdev"
       },
-      "lastPushDirHash": "U+ntwVPDh2/G5dlzpAoziJzraZs="
+      "lastPushTimeStamp": "2024-10-03T17:07:01.993Z",
+      "lastPushDirHash": "c4VwU/TpszKca6UbcS2Y20ZmATA="
     }
   },
   "auth": {
     "mybeatsdeve7dd89f9": {
-      "service": "Cognito",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [],
       "customAuth": false,
+      "dependsOn": [],
       "frontendAuthConfig": {
-        "socialProviders": [],
-        "usernameAttributes": [
-          "EMAIL"
-        ],
-        "signupAttributes": [
-          "EMAIL"
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
         ],
         "passwordProtectionSettings": {
           "passwordPolicyMinLength": 8,
           "passwordPolicyCharacters": []
         },
-        "mfaConfiguration": "OFF",
-        "mfaTypes": [
-          "SMS"
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
         ],
         "verificationMechanisms": [
           "EMAIL"
         ]
       },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
       "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-mybeatsdev-dev-efa9b-deployment/amplify-cfn-templates/auth/mybeatsdeve7dd89f9-cloudformation-template.json",
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-mybeatsdev-stabledev-21f51-deployment/amplify-cfn-templates/auth/mybeatsdeve7dd89f9-cloudformation-template.json",
         "logicalId": "authmybeatsdeve7dd89f9"
       },
-      "lastPushTimeStamp": "2024-07-25T03:29:36.272Z",
+      "lastPushTimeStamp": "2024-10-03T17:06:55.450Z",
       "output": {
-        "UserPoolId": "us-east-1_xGuCoR5zO",
-        "AppClientIDWeb": "6atqhjo3elkgoiiamif6f1t76o",
-        "AppClientID": "30ipdteffg4anp11d41qajki75",
-        "IdentityPoolId": "us-east-1:a780d1ef-8c87-4896-b42d-52516bf8d883",
-        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:185329004895:userpool/us-east-1_xGuCoR5zO",
-        "IdentityPoolName": "mybeatsdeve7dd89f9_identitypool_e7dd89f9__dev",
+        "UserPoolId": "us-east-1_T2bHaQctn",
+        "AppClientIDWeb": "5mrg5e347aobijqs6kp5vmsebu",
+        "AppClientID": "2p3vi6okng9g05bs4mmraapnkg",
+        "IdentityPoolId": "us-east-1:a0bd92de-eed5-42e7-b19a-b680f14f26d4",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:185329004895:userpool/us-east-1_T2bHaQctn",
+        "IdentityPoolName": "mybeatsdeve7dd89f9_identitypool_e7dd89f9__stabledev",
         "UserPoolName": "mybeatsdeve7dd89f9_userpool_e7dd89f9"
       },
-      "lastPushDirHash": "jzyyJFN9zpNMWJ/5asX/CUX+HZc="
+      "lastPushDirHash": "9MI6fYd6X/s9y/hLbG+dVBJREbg="
     }
   },
   "storage": {
     "ProfileImagesStorage": {
-      "service": "S3",
-      "providerPlugin": "awscloudformation",
       "dependsOn": [],
-      "lastPushTimeStamp": "2024-07-25T03:29:36.273Z",
+      "providerPlugin": "awscloudformation",
+      "service": "S3",
+      "lastPushTimeStamp": "2024-10-03T17:06:55.450Z",
       "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-mybeatsdev-dev-efa9b-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-mybeatsdev-stabledev-21f51-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
         "logicalId": "storageProfileImagesStorage"
       },
       "output": {
-        "BucketName": "mybeats-profile-imagesefa9b-dev",
+        "BucketName": "mybeats-profile-images21f51-stabledev",
         "Region": "us-east-1"
       },
-      "lastPushDirHash": "gptNe1+TOIP3jjY5fJMBcm7F+r8="
+      "lastPushDirHash": "q75KVBHQ54IA+d4aZBSJRiu3K44="
     }
   }
 }

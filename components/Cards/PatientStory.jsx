@@ -3,6 +3,7 @@ import React from "react";
 import { View, Text, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { theme } from "../../tailwind.config";
+import moment from "moment";
 
 const PatientStory = ({ story }) => {
     return (
@@ -18,7 +19,7 @@ const PatientStory = ({ story }) => {
                 <View className="flex-1">
                     <View className="flex-row items-center justify-between">
                         <Text className="text-sm font-[appfont-semi]">
-                            {story.name}
+                            {story.patientName}
                         </Text>
                         <View className="flex-row items-center space-x-1">
                             <Ionicons name="star" size={14} color="#ffd700" />
@@ -33,14 +34,14 @@ const PatientStory = ({ story }) => {
                     <Text
                         className="text-xs font-[appfont] text-dark"
                     >
-                        {story.date}
+                        {moment(story.date).format("MMMM Do, YYYY")}
                     </Text>
                 </View>
             </View>
             <Text
                 className="text-sm font-[appfont] text-dark"
             >
-                {story.comment}
+                {story.story}
             </Text>
         </View>
     );

@@ -53,6 +53,11 @@ export const getDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
+      patientStories {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -737,6 +742,122 @@ export const syncPrescriptions = /* GraphQL */ `
     }
   }
 `;
+export const getPatientStory = /* GraphQL */ `
+  query GetPatientStory($id: ID!) {
+    getPatientStory(id: $id) {
+      id
+      doctorID
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      patientID
+      patientName
+      rating
+      date
+      story
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listPatientStories = /* GraphQL */ `
+  query ListPatientStories(
+    $id: ID
+    $filter: ModelPatientStoryFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listPatientStories(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        doctorID
+        patientID
+        patientName
+        rating
+        date
+        story
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncPatientStories = /* GraphQL */ `
+  query SyncPatientStories(
+    $filter: ModelPatientStoryFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncPatientStories(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        doctorID
+        patientID
+        patientName
+        rating
+        date
+        story
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
 export const getDoctorSpecialties = /* GraphQL */ `
   query GetDoctorSpecialties($id: ID!) {
     getDoctorSpecialties(id: $id) {
@@ -1150,6 +1271,78 @@ export const prescriptionsByPatientID = /* GraphQL */ `
         endDate
         doctorID
         patientID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const storiesByDoctor = /* GraphQL */ `
+  query StoriesByDoctor(
+    $doctorID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelPatientStoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    storiesByDoctor(
+      doctorID: $doctorID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        doctorID
+        patientID
+        patientName
+        rating
+        date
+        story
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const storiesByPatient = /* GraphQL */ `
+  query StoriesByPatient(
+    $patientID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelPatientStoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    storiesByPatient(
+      patientID: $patientID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        doctorID
+        patientID
+        patientName
+        rating
+        date
+        story
         createdAt
         updatedAt
         _version
