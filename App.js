@@ -20,8 +20,6 @@ const theme = {
 }; 
 
 
-
-
 const App = () => {
     Amplify.configure(amplifyConfigure);
     // Load Fonts

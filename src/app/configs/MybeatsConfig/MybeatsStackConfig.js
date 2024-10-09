@@ -69,6 +69,7 @@ export const mybeatsStackConfig = {
             headerTitle: "Appointment",
             name: "appointment",
             component: Appointment,
+            
         },
         {
             headerTitle: "Pharmacy",

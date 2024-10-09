@@ -15,87 +15,87 @@ import { PatientReducer } from "./PatientReducer/PatientReducer";
 import { DoctorReducer } from "./DoctorReducer/DoctorReducer";
 import { NotificationReducer } from "./NotificationReducer/NotificationReducer";
 import {
-    patientCreateReducer,
-    patientGetReducer,
-    patientUpdateReducer,
+  patientCreateReducer,
+  patientGetReducer,
+  patientUpdateReducer,
 } from "./reducers/patientReducers";
 import {
-    doctorGetReducer,
-    doctorsListReducer,
+  doctorGetForProfileViewReducer,
+  doctorGetReducer,
+  doctorsListReducer,
 } from "./reducers/doctorReducers";
 import {
-    availabilitesByDoctorReducer,
-    availabilitiesDeleteReducer,
-    availabilityCreateReducer,
-    availabilityDeleteReducer,
-    availabilityExistsReducer,
+  availabilitesByDoctorReducer,
+  availabilitiesDeleteReducer,
+  availabilityCreateReducer,
+  availabilityDeleteReducer,
+  availabilityExistsReducer,
 } from "./reducers/availabilityReducers";
 import {
-    appointmentCreateReducer,
-    appointmentDeleteReducer,
-    appointmentListAvailableReducer,
-    appointmentListReducer,
-    appointmentsListByDoctorReducer,
-    appointmentsListByPatientReducer,
+  appointmentCreateReducer,
+  appointmentDeleteReducer,
+  appointmentListAvailableReducer,
+  appointmentListReducer,
+  appointmentsListByDoctorReducer,
+  appointmentsListByPatientReducer,
 } from "./reducers/appointmentReducers";
-import {
-    patientListReducer
-} from "./reducers/patientReducers"
+import { patientListReducer } from "./reducers/patientReducers";
 import { primarySpecializationReducer } from "./reducers/primarySpecializationReducers";
 import geocodingGetReducer from "./reducers/geocodingGetReducer";
 import imageRecognitionGetReducer from "./reducers/imageRecognitionGetReducer";
 import {
   prescriptionCreateReducer,
   prescriptionGetReducer,
-  prescriptionListReducer
-} from "./reducers/prescriptionReducers"
+  prescriptionListReducer,
+} from "./reducers/prescriptionReducers";
 import imageReducer from "./reducers/imageReducer";
 import medicineReducer from "./reducers/medicineReducer";
 
-
 // Combining every reducer
 const reducers = combineReducers({
-    UserAuthReducer,
-    UserReducer,
-    ProfileReducer,
-    DeviceReducer,
-    ActivityReducer,
-    HeartRateReducer,
-    SleepReducer,
-    FoodReducer,
-    DashboardReducer,
-    NotificationReducer,
-    geocodingGetReducer: geocodingGetReducer,
-    imageRecognitionGetReducer: imageRecognitionGetReducer,
-    PatientReducer,
-    DoctorReducer,
-    imageReducer,
-    medicineReducer,
-    patientCreateReducer: patientCreateReducer,
-    patientUpdateReducer: patientUpdateReducer,
-    patientGetReducer: patientGetReducer,
-    doctorGetReducer: doctorGetReducer,
-    doctorsListReducer: doctorsListReducer,
-    availabilityCreateReducer: availabilityCreateReducer,
-    appointmentCreateReducer: appointmentCreateReducer,
-    appointmentListAvailableReducer: appointmentListAvailableReducer,
-    appointmentListReducer: appointmentListReducer,
-    appointmentsListByDoctorReducer: appointmentsListByDoctorReducer,
-    appointmentsListByPatientReducer: appointmentsListByPatientReducer,
-    appointmentDeleteReducer: appointmentDeleteReducer,
-    availabilitesByDoctorReducer: availabilitesByDoctorReducer,
-    availabilityDeleteReducer: availabilityDeleteReducer,
-    availabilityExistsReducer: availabilityExistsReducer,
-    availabilitiesDeleteReducer: availabilitiesDeleteReducer,
-    patientListReducer: patientListReducer,
-    primarySpecializationReducer,
-    prescriptionCreate: prescriptionCreateReducer,
-    prescriptionGet: prescriptionGetReducer,
-    prescriptionList: prescriptionListReducer,
+  UserAuthReducer,
+  UserReducer,
+  ProfileReducer,
+  DeviceReducer,
+  ActivityReducer,
+  HeartRateReducer,
+  SleepReducer,
+  FoodReducer,
+  DashboardReducer,
+  NotificationReducer,
+  geocodingGetReducer: geocodingGetReducer,
+  imageRecognitionGetReducer: imageRecognitionGetReducer,
+  PatientReducer,
+  DoctorReducer,
+  imageReducer,
+  medicineReducer,
+  patientCreateReducer: patientCreateReducer,
+  patientUpdateReducer: patientUpdateReducer,
+  patientGetReducer: patientGetReducer,
+  doctorGetReducer: doctorGetReducer,
+  doctorsListReducer: doctorsListReducer,
+  availabilityCreateReducer: availabilityCreateReducer,
+  appointmentCreateReducer: appointmentCreateReducer,
+  appointmentListAvailableReducer: appointmentListAvailableReducer,
+  appointmentListReducer: appointmentListReducer,
+  appointmentsListByDoctorReducer: appointmentsListByDoctorReducer,
+  appointmentsListByPatientReducer: appointmentsListByPatientReducer,
+  appointmentDeleteReducer: appointmentDeleteReducer,
+  availabilitesByDoctorReducer: availabilitesByDoctorReducer,
+  availabilityDeleteReducer: availabilityDeleteReducer,
+  availabilityExistsReducer: availabilityExistsReducer,
+  availabilitiesDeleteReducer: availabilitiesDeleteReducer,
+  patientListReducer: patientListReducer,
+  primarySpecializationReducer,
+  prescriptionCreate: prescriptionCreateReducer,
+  prescriptionGet: prescriptionGetReducer,
+  prescriptionList: prescriptionListReducer,
+
+  doctorGetForProfileViewReducer: doctorGetForProfileViewReducer,
 });
 
 // Redux store containing reducers and the middleware
 export const store = configureStore({
-    reducer: reducers,
-    middleware: [thunk],
+  reducer: reducers,
+  middleware: [thunk],
 });

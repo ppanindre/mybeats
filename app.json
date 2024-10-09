@@ -2,6 +2,7 @@
   "expo": {
     "name": "mybeats",
     "slug": "mybeats",
+    "scheme": "mybeats",
     "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

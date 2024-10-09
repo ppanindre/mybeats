@@ -3,6 +3,9 @@ import {
     DOCTOR_CREATE_REQUEST,
     DOCTOR_CREATE_SUCCESS,
     DOCTOR_GET_FAILURE,
+    DOCTOR_GET_FOR_PROFILE_VIEW_FAILURE,
+    DOCTOR_GET_FOR_PROFILE_VIEW_REQUEST,
+    DOCTOR_GET_FOR_PROFILE_VIEW_SUCCESS,
     DOCTOR_GET_REQUEST,
     DOCTOR_GET_SUCCESS,
     DOCTOR_LIST_FAILURE,
@@ -117,6 +120,36 @@ export const doctorsListReducer = (state = {}, action) => {
         }
 
         case DOCTOR_LIST_FAILURE: {
+            return {
+                loading: false,
+                error: action.payload,
+            };
+        }
+
+        default: {
+            return state;
+        }
+    }
+};
+
+
+export const doctorGetForProfileViewReducer = (state = {}, action) => {
+    switch (action.type) {
+        case DOCTOR_GET_FOR_PROFILE_VIEW_REQUEST: {
+            return {
+                loading: true,
+            };
+        }
+
+        case DOCTOR_GET_FOR_PROFILE_VIEW_SUCCESS: {
+            return {
+                loading: false,
+                success: true,
+                doctor: action.payload,
+            };
+        }
+
+        case DOCTOR_GET_FOR_PROFILE_VIEW_FAILURE: {
             return {
                 loading: false,
                 error: action.payload,

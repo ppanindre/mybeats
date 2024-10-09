@@ -27,6 +27,7 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
+          <string>mybeats</string>
           <string>com.nyu.mybeats</string>
         </array>
       </dict>
