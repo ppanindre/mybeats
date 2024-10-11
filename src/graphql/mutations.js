@@ -583,6 +583,23 @@ export const createAppointment = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      patientStory {
+        id
+        doctorID
+        patientID
+        patientName
+        rating
+        date
+        story
+        appointmentID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      doctorNotes
       createdAt
       updatedAt
       _version
@@ -652,6 +669,23 @@ export const updateAppointment = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      patientStory {
+        id
+        doctorID
+        patientID
+        patientName
+        rating
+        date
+        story
+        appointmentID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      doctorNotes
       createdAt
       updatedAt
       _version
@@ -721,6 +755,23 @@ export const deleteAppointment = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      patientStory {
+        id
+        doctorID
+        patientID
+        patientName
+        rating
+        date
+        story
+        appointmentID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      doctorNotes
       createdAt
       updatedAt
       _version
@@ -986,6 +1037,23 @@ export const createPatientStory = /* GraphQL */ `
       rating
       date
       story
+      appointmentID
+      appointment {
+        id
+        doctorID
+        patientId
+        startTime
+        endTime
+        type
+        isBooked
+        doctorNotes
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -1035,6 +1103,23 @@ export const updatePatientStory = /* GraphQL */ `
       rating
       date
       story
+      appointmentID
+      appointment {
+        id
+        doctorID
+        patientId
+        startTime
+        endTime
+        type
+        isBooked
+        doctorNotes
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -1084,6 +1169,23 @@ export const deletePatientStory = /* GraphQL */ `
       rating
       date
       story
+      appointmentID
+      appointment {
+        id
+        doctorID
+        patientId
+        startTime
+        endTime
+        type
+        isBooked
+        doctorNotes
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version

@@ -210,6 +210,8 @@ type EagerAppointment = {
   readonly isBooked: boolean;
   readonly doctor?: Doctor | null;
   readonly patient?: Patient | null;
+  readonly patientStory?: PatientStory | null;
+  readonly doctorNotes?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -228,6 +230,8 @@ type LazyAppointment = {
   readonly isBooked: boolean;
   readonly doctor: AsyncItem<Doctor | undefined>;
   readonly patient: AsyncItem<Patient | undefined>;
+  readonly patientStory: AsyncItem<PatientStory | undefined>;
+  readonly doctorNotes?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -299,6 +303,8 @@ type EagerPatientStory = {
   readonly rating: string;
   readonly date: string;
   readonly story?: string | null;
+  readonly appointmentID: string;
+  readonly appointment?: Appointment | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -316,6 +322,8 @@ type LazyPatientStory = {
   readonly rating: string;
   readonly date: string;
   readonly story?: string | null;
+  readonly appointmentID: string;
+  readonly appointment: AsyncItem<Appointment | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

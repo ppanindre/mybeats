@@ -754,6 +754,31 @@ export const schema = {
                         ]
                     }
                 },
+                "patientStory": {
+                    "name": "patientStory",
+                    "isArray": false,
+                    "type": {
+                        "model": "PatientStory"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "id"
+                        ]
+                    }
+                },
+                "doctorNotes": {
+                    "name": "doctorNotes",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1064,6 +1089,28 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "appointmentID": {
+                    "name": "appointmentID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "appointment": {
+                    "name": "appointment",
+                    "isArray": false,
+                    "type": {
+                        "model": "Appointment"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "appointmentID"
+                        ]
+                    }
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1113,6 +1160,16 @@ export const schema = {
                         "queryField": "storiesByPatient",
                         "fields": [
                             "patientID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byAppointment",
+                        "queryField": "storiesByAppointment",
+                        "fields": [
+                            "appointmentID"
                         ]
                     }
                 },
@@ -1252,5 +1309,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "9e5052b7d451df5a5db30d4f31c4e8e6"
+    "version": "0c772e56414bf7ccf108bddb5753e560"
 };

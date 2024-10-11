@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -12,10 +12,11 @@ import {
     deleteAppointmentActionCreator,
     listAppointmentsByPatientActionCreators,
 } from '../../../../store/actions/appointmentActions';
-import { createPatientStoryActionCreator } from '../../../../store/actions/patientStoriesAction';
+import { createPatientStoryActionCreator, getPatientStoryActionCreator } from '../../../../store/actions/patientStoriesAction';
 import { Rating } from 'react-native-ratings';
 import { theme } from "../../../../tailwind.config";
 import Loader from '../Utils/Loader';
+import AppointmentDetails from './AppointmentDetails';
 
 const PatientAppointmentInfoScreen = () => {
     const route = useRoute();
@@ -27,6 +28,9 @@ const PatientAppointmentInfoScreen = () => {
     const [showReviewModal, setshowReviewModal] = useState(false)
     const [review, setReview] = useState("");
     const [rating, setRating] = useState(0);
+
+    const patientStoryState = useSelector((state) => state.patientStoryGetReducer);
+    const { storyloading, patientStory, storysuccess } = patientStoryState;
 
     const doctorList = useSelector((state) => state.doctorsListReducer);
     const { doctors } = doctorList;
@@ -46,20 +50,50 @@ const PatientAppointmentInfoScreen = () => {
         dispatch(listAppointmentsByPatientActionCreators(appointment.patientId));
     };
 
+    useEffect(() => {
+        if (success) {
+            dispatch(getPatientStoryActionCreator(appointment.id));
+        }
+    }, [success, appointment.id, dispatch]);
+
+    // Set review and rating when patient story updates
+    useEffect(() => {
+        if (patientStory) {
+            setReview(patientStory.story);
+            setRating(Number(patientStory.rating));
+        }
+    }, [patientStory]);
+
+     const handleShowReviewModal = () => {
+        if (!patientStory) {
+            // If no story exists, reset the review and rating for a new submission
+            setReview("");
+            setRating(0);
+        } else {
+            // If a story exists, load it for viewing in read-only mode
+            setReview(patientStory.story);
+            setRating(Number(patientStory.rating));
+        }
+        setshowReviewModal(true);
+    };
+
     const onSubmitReview = async () => {
 
         dispatch(createPatientStoryActionCreator(
-            appointment.doctorID, 
-            appointment.patientId, 
-            patientName, 
-            rating.toString(), 
-            review
+            appointment.doctorID,
+            appointment.patientId,
+            patientName,
+            rating.toString(),
+            review,
+            appointment.id
         ));
 
         setshowReviewModal(false);
 
         if (success) {
+
             Alert.alert('Success', 'Your review has been submitted');
+            dispatch(getPatientStoryActionCreator(appointment.id));
         }
 
         if (error) {
@@ -67,7 +101,7 @@ const PatientAppointmentInfoScreen = () => {
         }
     };
 
-    if (loading) return <Loader />
+    if (loading || storyloading) return <Loader />
 
 
     const getAddress = () => {
@@ -81,66 +115,12 @@ const PatientAppointmentInfoScreen = () => {
                 className="flex-1 space-y-5"
                 contentContainerStyle={{ paddingBottom: 20 }}
             >
-                <View>
-                    <Image
-                        source={require('../../assets/doc1.webp')}
-                        className="w-full h-72"
-                        resizeMode='contain'
-                    />
-                    <View className="flex-row justify-around space-x-12 items-center mt-[-29] bg-lightPrimary rounded-full py-4 shadow-md">
-                        <View className="flex-row items-center justify-start space-x-2">
-                            <Ionicons name="person" size={24} className="font-[appfont-semi]" />
-                            <Text className="font-[appfont-semi] text-lg">{`${doctor.firstname} ${doctor.lastname}`}</Text>
-                        </View>
-                    </View>
-                </View>
-
-                <View className="space-y-5">
-                    <View className="flex-row items-center justify-between">
-                        <Text className="font-[appfont-semi] text-lg">Date:</Text>
-                        <Text className="font-[appfont-semi] text-lg">
-                            {moment(appointment.startTime).format("D MMM YYYY")}
-                        </Text>
-                    </View>
-                    <View className="flex-row items-center justify-between">
-                        <Text className="font-[appfont-semi] text-lg">Time:</Text>
-                        <Text className="font-[appfont-semi] text-lg">
-                            {moment(appointment.startTime).format("H:mm a")}
-                        </Text>
-                    </View>
-                    <View className="flex-row items-center justify-between">
-                        <Text className="font-[appfont-semi] text-lg">Type:</Text>
-                        <Text className="font-[appfont-semi] text-lg">
-                            {appointment.type || "Clinic"}
-                        </Text>
-                    </View>
-                    <View className="flex-row items-center justify-between">
-                        <Text className="font-[appfont-semi] text-lg">Phone:</Text>
-                        <Text className="font-[appfont-semi] text-lg">
-                            {doctor.phoneNumber}
-                        </Text>
-                    </View>
-                    {!isPastAppointment && (appointment.type === "clinic" || !appointment.type) && (
-                        <View className="flex-row items-start justify-between space-x-10">
-                            <Text className="font-[appfont-semi] text-lg">Clinic Address: </Text>
-                            <View className="flex-1">
-                                <Text className="font-[appfont-semi] text-lg text-right">
-                                    {getAddress()}
-                                </Text>
-                            </View>
-                        </View>
-                    )}
-                    {!isPastAppointment && appointment.type && (
-                        <View className="flex-row items-center justify-between">
-                            <Text className="font-[appfont-semi] text-lg">Meeting Link</Text>
-                            <Text className="font-[appfont-semi] text-lg">
-                                <TouchableOpacity onPress={() => { /* Meeting link */ }}>
-                                    <Text className="text-primary font-[appfont-semi] text-lg">Join Meeting</Text>
-                                </TouchableOpacity>
-                            </Text>
-                        </View>
-                    )}
-                </View>
+                <AppointmentDetails
+                    doctor={doctor}
+                    appointment={appointment}
+                    isPastAppointment={isPastAppointment}
+                    getAddress={getAddress}
+                />
             </ScrollView>
             <ModalContainer
                 visible={showModal}
@@ -164,20 +144,18 @@ const PatientAppointmentInfoScreen = () => {
                     </View>
                 </View>
             </ModalContainer>
-            <ModalContainer
-                visible={showReviewModal}
-                onClose={() => setshowReviewModal(false)}
-            >
+            <ModalContainer visible={showReviewModal} onClose={() => setshowReviewModal(false)}>
                 <View className="space-y-5">
                     <View className="flex-row items-center justify-between">
                         <Rating
-                            type='custom'
+                            type="custom"
                             ratingCount={5}
                             imageSize={35}
                             startingValue={rating}
                             onFinishRating={(rating) => setRating(rating)}
                             ratingColor={theme.colors.primary}
                             ratingBackgroundColor={theme.colors.darkSecondary}
+                            readonly={!!patientStory} // Read-only if the story already exists
                         />
                         <Text className="text-lg font-[appfont-semi] text-dark">Rating: {rating}</Text>
                     </View>
@@ -186,23 +164,18 @@ const PatientAppointmentInfoScreen = () => {
                         <MultiLineInput
                             onChangeText={(text) => setReview(text)}
                             value={review}
-                            label="Write your review"
+                            label={patientStory ? "Your review" : "Write your review"} 
+                            editable={!patientStory} // Noneditable if story already exists
                         />
                     </View>
 
                     <View>
-                        {rating ? (
+                        {!patientStory && (
                             <AppButton
                                 variant="primary"
                                 btnLabel="Submit"
                                 onPress={onSubmitReview}
                             />
-                        ) : (
-                            <AppButton
-                                variant="disabled"
-                                btnLabel="Submit"
-                            />
-
                         )}
                     </View>
                 </View>
@@ -228,9 +201,9 @@ const PatientAppointmentInfoScreen = () => {
                     </View>
                     <View className="flex-1">
                         <AppButton
-                            btnLabel="Write a review"
-                            onPress={() => setshowReviewModal(true)}
                             variant="primary"
+                            btnLabel={patientStory ? "View review" : "Write a review"}
+                            onPress={handleShowReviewModal}
                         />
                     </View>
                 </View>

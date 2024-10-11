@@ -30,6 +30,7 @@ import DoctorAppointmentDetailScreen from "../../components/DoctorAppointmentsCo
 import DoctorAppointmentNotesScreen from "../../screens/mybeatsScreens/DoctorAppointmentNotesScreen";
 import ImageAnalyzeDisplay from "../../../../MyCharts/Components/ImageAnalyzeDisplay";
 import ConfirmAppointment from "../../screens/mybeatsScreens/ConfirmAppointment";
+import AllPatientStories from "../../screens/mybeatsScreens/AllPatientStories";
 
 export const mybeatsStackConfig = {
     screens: [
@@ -197,6 +198,11 @@ export const mybeatsStackConfig = {
             headerTitle: "Image Analyzer",
             name: "ImageAnalyzeDisplay",
             component: ImageAnalyzeDisplay,
+        },
+        {
+            headerTitle: "Patient Stories",
+            name: "allPatientStories",
+            component: AllPatientStories,
         },
     ],
 };

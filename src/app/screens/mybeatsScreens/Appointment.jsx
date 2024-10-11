@@ -55,7 +55,7 @@ const Appointment = ({ route }) => {
 
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [appointmentType, setAppointmentType] = useState("clinic");
-    
+
     useEffect(() => {
         dispatch(patientStoriesListByDoctorsActionCreators(doctorId));
     }, [doctorId]);
@@ -129,12 +129,12 @@ const Appointment = ({ route }) => {
 
                     <View className="p-2">
                         <Text className="text-lg font-[appfont-semi]">
-                            Patient Stories (+250)
+                            Patient Stories ({patientStories.length})
                         </Text>
                         {patientStories && patientStories.length > 0 ? (
-                            patientStories.map((story) => (
+                            patientStories.slice(0, 2).map((story) => (
                                 <View key={story.id} className="mt-3">
-                                    <PatientStory key={story.id} story={story} />
+                                    <PatientStory story={story} />
                                 </View>
                             ))
                         ) : (
@@ -142,12 +142,16 @@ const Appointment = ({ route }) => {
                         )}
                     </View>
 
-                    <View className="flex-row justify-center">
-                        <Text className="font-semibol text-primary">
-                            View All Stories{" "}
-                        </Text>
-                        <Ionicons name="chevron-forward" size={16} style={{ color: customTheme.colors.primary }} />
-                    </View>
+                    {patientStories.length >= 2 && (
+                        <View className="flex-row justify-center">
+                            <AppButton
+                                variant="noborder"
+                                btnLabel="View all Stories"
+                                onPress={() => navigation.navigate("allPatientStories", { doctorId })}
+                            />
+                            <Ionicons name="chevron-forward" size={16} style={{ color: customTheme.colors.primary }} />
+                        </View>
+                    )}
 
                     <View className="mt-4 mb-24 p-4 bg-white rounded-lg">
                         <CollapsibleItem title="Secondary Specializations">

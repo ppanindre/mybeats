@@ -94,6 +94,8 @@ type Appointment @model @auth(rules: [{ allow: public }]) {
     isBooked: Boolean!
     doctor: Doctor @belongsTo(fields: ["doctorID"])
     patient: Patient @belongsTo(fields: ["patientId"])
+    patientStory: PatientStory @hasOne(fields: ["id"])
+    doctorNotes: String
 }
 
 type Prescription @model @auth(rules: [{ allow: public }]) {
@@ -120,4 +122,6 @@ type PatientStory @model @auth(rules: [{ allow: public }]) {
     rating: String! 
     date: AWSDateTime! 
     story: String
+    appointmentID: ID! @index(name: "byAppointment", queryField: "storiesByAppointment")
+    appointment: Appointment @belongsTo(fields: ["appointmentID"])
 }

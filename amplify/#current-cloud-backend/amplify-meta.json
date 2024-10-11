@@ -35,8 +35,8 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-mybeatsdev-stabledev-21f51-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apimybeatsdev"
       },
-      "lastPushTimeStamp": "2024-10-03T17:07:01.993Z",
-      "lastPushDirHash": "c4VwU/TpszKca6UbcS2Y20ZmATA="
+      "lastPushTimeStamp": "2024-10-11T18:44:46.593Z",
+      "lastPushDirHash": "PuqCZR8tmwuVFiXvTQD7Je51Qfg="
     }
   },
   "auth": {
@@ -69,7 +69,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-mybeatsdev-stabledev-21f51-deployment/amplify-cfn-templates/auth/mybeatsdeve7dd89f9-cloudformation-template.json",
         "logicalId": "authmybeatsdeve7dd89f9"
       },
-      "lastPushTimeStamp": "2024-10-03T17:06:55.450Z",
+      "lastPushTimeStamp": "2024-10-11T18:44:40.254Z",
       "output": {
         "UserPoolId": "us-east-1_T2bHaQctn",
         "AppClientIDWeb": "5mrg5e347aobijqs6kp5vmsebu",
@@ -87,7 +87,7 @@
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3",
-      "lastPushTimeStamp": "2024-10-03T17:06:55.450Z",
+      "lastPushTimeStamp": "2024-10-11T18:44:40.256Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-mybeatsdev-stabledev-21f51-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
         "logicalId": "storageProfileImagesStorage"
