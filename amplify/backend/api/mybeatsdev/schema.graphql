@@ -32,6 +32,8 @@ type Doctor @model @auth(rules: [{ allow: public }]) {
         @hasMany(indexName: "byDoctor", fields: ["doctorID"])
     prescriptions: [Prescription] 
         @hasMany(indexName: "byDoctor", fields: ["doctorID"])
+    patientStories: [PatientStory] 
+        @hasMany(indexName: "byDoctor", fields: ["doctorID"]) 
 }
 
 type Specialty @model @auth(rules: [{ allow: public }]) {
@@ -92,6 +94,8 @@ type Appointment @model @auth(rules: [{ allow: public }]) {
     isBooked: Boolean!
     doctor: Doctor @belongsTo(fields: ["doctorID"])
     patient: Patient @belongsTo(fields: ["patientId"])
+    patientStory: PatientStory @hasOne(fields: ["id"])
+    doctorNotes: String
 }
 
 type Prescription @model @auth(rules: [{ allow: public }]) {
@@ -107,4 +111,17 @@ type Prescription @model @auth(rules: [{ allow: public }]) {
     doctor: Doctor @belongsTo(fields: ["doctorID"])
     patientID: ID! @index(name: "byPatient")
     patient: Patient @belongsTo(fields: ["patientID"])
+}
+
+type PatientStory @model @auth(rules: [{ allow: public }]) {
+    id: ID! @primaryKey
+    doctorID: ID! @index(name: "byDoctor", queryField: "storiesByDoctor")
+    doctor: Doctor @belongsTo(fields: ["doctorID"])
+    patientID: ID! @index(name: "byPatient", queryField: "storiesByPatient") 
+    patientName: String!
+    rating: String! 
+    date: AWSDateTime! 
+    story: String
+    appointmentID: ID! @index(name: "byAppointment", queryField: "storiesByAppointment")
+    appointment: Appointment @belongsTo(fields: ["appointmentID"])
 }

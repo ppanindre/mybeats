@@ -71,8 +71,8 @@ const PatientDashboard = () => {
                             </TouchableOpacity>
                         </View>
 
-                         {/* Payments */}
-                         <View>
+                        {/* Payments */}
+                        <View>
                             <TouchableOpacity
                                 className="flex-row items-center justify-between p-5 rounded-lg shadow-md bg-lightPrimary"
                                 onPress={() => navigation.navigate("payment")}
@@ -95,7 +95,7 @@ const PatientDashboard = () => {
 
 
                         {/* Pharmacy based on the zip codes */}
-                        <View className="flex-row justify-between items-center">
+                        {/* <View className="flex-row justify-between items-center">
                             <Text className="text-lg font-[appfont-semi]">
                                 Pharmacy near you
                             </Text>
@@ -109,10 +109,10 @@ const PatientDashboard = () => {
                                     See all
                                 </Text>
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
 
                         {/* Pharmacy Data */}
-                        <FlatList
+                        {/* <FlatList
                             data={pharmacyData}
                             keyExtractor={(item, index) =>
                                 item.id.toString() || index.toString()
@@ -144,10 +144,10 @@ const PatientDashboard = () => {
                                 </View>
                             )}
                             contentContainerStyle={{ padding: 5, gap: 10 }}
-                        />
+                        /> */}
 
                         {/* Labs based on the zipcode */}
-                        <View className="flex-row justify-between items-center">
+                        {/* <View className="flex-row justify-between items-center">
                             <Text className="text-lg font-[appfont-semi]">
                                 Labs near you
                             </Text>
@@ -161,10 +161,10 @@ const PatientDashboard = () => {
                                     See all
                                 </Text>
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
 
                         {/* Lab Data */}
-                        <FlatList
+                        {/* <FlatList
                             data={LabData}
                             keyExtractor={(item, index) =>
                                 item.id.toString() || index.toString()
@@ -188,7 +188,7 @@ const PatientDashboard = () => {
                                 </View>
                             )}
                             contentContainerStyle={{ padding: 5, gap: 10 }}
-                        />
+                        /> */}
                     </View>
                 </ScrollView>
                 <View className="flex-1 bg-background items-center justify-center">

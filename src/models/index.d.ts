@@ -35,6 +35,7 @@ type EagerDoctor = {
   readonly appointments?: (Appointment | null)[] | null;
   readonly availability?: (Availability | null)[] | null;
   readonly prescriptions?: (Prescription | null)[] | null;
+  readonly patientStories?: (PatientStory | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -68,6 +69,7 @@ type LazyDoctor = {
   readonly appointments: AsyncCollection<Appointment>;
   readonly availability: AsyncCollection<Availability>;
   readonly prescriptions: AsyncCollection<Prescription>;
+  readonly patientStories: AsyncCollection<PatientStory>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -208,6 +210,8 @@ type EagerAppointment = {
   readonly isBooked: boolean;
   readonly doctor?: Doctor | null;
   readonly patient?: Patient | null;
+  readonly patientStory?: PatientStory | null;
+  readonly doctorNotes?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -226,6 +230,8 @@ type LazyAppointment = {
   readonly isBooked: boolean;
   readonly doctor: AsyncItem<Doctor | undefined>;
   readonly patient: AsyncItem<Patient | undefined>;
+  readonly patientStory: AsyncItem<PatientStory | undefined>;
+  readonly doctorNotes?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -282,6 +288,50 @@ export declare type Prescription = LazyLoading extends LazyLoadingDisabled ? Eag
 
 export declare const Prescription: (new (init: ModelInit<Prescription>) => Prescription) & {
   copyOf(source: Prescription, mutator: (draft: MutableModel<Prescription>) => MutableModel<Prescription> | void): Prescription;
+}
+
+type EagerPatientStory = {
+  readonly [__modelMeta__]: {
+    identifier: OptionallyManagedIdentifier<PatientStory, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly doctorID: string;
+  readonly doctor?: Doctor | null;
+  readonly patientID: string;
+  readonly patientName: string;
+  readonly rating: string;
+  readonly date: string;
+  readonly story?: string | null;
+  readonly appointmentID: string;
+  readonly appointment?: Appointment | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyPatientStory = {
+  readonly [__modelMeta__]: {
+    identifier: OptionallyManagedIdentifier<PatientStory, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly doctorID: string;
+  readonly doctor: AsyncItem<Doctor | undefined>;
+  readonly patientID: string;
+  readonly patientName: string;
+  readonly rating: string;
+  readonly date: string;
+  readonly story?: string | null;
+  readonly appointmentID: string;
+  readonly appointment: AsyncItem<Appointment | undefined>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type PatientStory = LazyLoading extends LazyLoadingDisabled ? EagerPatientStory : LazyPatientStory
+
+export declare const PatientStory: (new (init: ModelInit<PatientStory>) => PatientStory) & {
+  copyOf(source: PatientStory, mutator: (draft: MutableModel<PatientStory>) => MutableModel<PatientStory> | void): PatientStory;
 }
 
 type EagerDoctorSpecialties = {

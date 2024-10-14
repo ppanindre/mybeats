@@ -163,8 +163,8 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
         deviceSyncTime = moment(deviceSyncTime).format("MMM DD, YYYY h:mmA");
         return isMyBeats
             ? `Last Active as ${selectedRole && selectedRole}: `.concat(
-                  deviceSyncTime
-              )
+                deviceSyncTime
+            )
             : "Last sync: ".concat(deviceSyncTime);
     };
 
@@ -275,7 +275,8 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                     </View>
 
                     {/* Checkboxes for Role Selection */}
-                    {["Doctor", "Patient", "Pharma Manager", "Lab Manager"].map(
+                    {/* {["Doctor", "Patient", "Pharma Manager", "Lab Manager"].map( */}
+                    {["Doctor", "Patient"].map(
                         (role) => (
                             <CheckBox
                                 key={role}

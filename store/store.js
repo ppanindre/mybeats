@@ -38,6 +38,11 @@ import {
     appointmentsListByDoctorReducer,
     appointmentsListByPatientReducer,
 } from "./reducers/appointmentReducers";
+import { 
+    patientStoriesListByDoctorReducer,
+    patientStoryCreateReducer,
+    patientStoryGetReducer
+ } from "./reducers/patientStoriesReducers";
 import {
     patientListReducer
 } from "./reducers/patientReducers"
@@ -92,6 +97,9 @@ const reducers = combineReducers({
     prescriptionCreate: prescriptionCreateReducer,
     prescriptionGet: prescriptionGetReducer,
     prescriptionList: prescriptionListReducer,
+    patientStoriesListByDoctorReducer: patientStoriesListByDoctorReducer,
+    patientStoryCreateReducer: patientStoryCreateReducer,
+    patientStoryGetReducer: patientStoryGetReducer,
 });
 
 // Redux store containing reducers and the middleware

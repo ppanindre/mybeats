@@ -53,6 +53,11 @@ export const onCreateDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
+      patientStories {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -114,6 +119,11 @@ export const onUpdateDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
+      patientStories {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -171,6 +181,11 @@ export const onDeleteDoctor = /* GraphQL */ `
         __typename
       }
       prescriptions {
+        nextToken
+        startedAt
+        __typename
+      }
+      patientStories {
         nextToken
         startedAt
         __typename
@@ -543,6 +558,23 @@ export const onCreateAppointment = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      patientStory {
+        id
+        doctorID
+        patientID
+        patientName
+        rating
+        date
+        story
+        appointmentID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      doctorNotes
       createdAt
       updatedAt
       _version
@@ -611,6 +643,23 @@ export const onUpdateAppointment = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      patientStory {
+        id
+        doctorID
+        patientID
+        patientName
+        rating
+        date
+        story
+        appointmentID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      doctorNotes
       createdAt
       updatedAt
       _version
@@ -679,6 +728,23 @@ export const onDeleteAppointment = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      patientStory {
+        id
+        doctorID
+        patientID
+        patientName
+        rating
+        date
+        story
+        appointmentID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      doctorNotes
       createdAt
       updatedAt
       _version
@@ -885,6 +951,201 @@ export const onDeletePrescription = /* GraphQL */ `
         height
         profession
         underlyingCondition
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onCreatePatientStory = /* GraphQL */ `
+  subscription OnCreatePatientStory(
+    $filter: ModelSubscriptionPatientStoryFilterInput
+  ) {
+    onCreatePatientStory(filter: $filter) {
+      id
+      doctorID
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      patientID
+      patientName
+      rating
+      date
+      story
+      appointmentID
+      appointment {
+        id
+        doctorID
+        patientId
+        startTime
+        endTime
+        type
+        isBooked
+        doctorNotes
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdatePatientStory = /* GraphQL */ `
+  subscription OnUpdatePatientStory(
+    $filter: ModelSubscriptionPatientStoryFilterInput
+  ) {
+    onUpdatePatientStory(filter: $filter) {
+      id
+      doctorID
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      patientID
+      patientName
+      rating
+      date
+      story
+      appointmentID
+      appointment {
+        id
+        doctorID
+        patientId
+        startTime
+        endTime
+        type
+        isBooked
+        doctorNotes
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeletePatientStory = /* GraphQL */ `
+  subscription OnDeletePatientStory(
+    $filter: ModelSubscriptionPatientStoryFilterInput
+  ) {
+    onDeletePatientStory(filter: $filter) {
+      id
+      doctorID
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      patientID
+      patientName
+      rating
+      date
+      story
+      appointmentID
+      appointment {
+        id
+        doctorID
+        patientId
+        startTime
+        endTime
+        type
+        isBooked
+        doctorNotes
         createdAt
         updatedAt
         _version

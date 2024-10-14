@@ -53,6 +53,11 @@ export const getDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
+      patientStories {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -513,6 +518,23 @@ export const getAppointment = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      patientStory {
+        id
+        doctorID
+        patientID
+        patientName
+        rating
+        date
+        story
+        appointmentID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      doctorNotes
       createdAt
       updatedAt
       _version
@@ -545,6 +567,7 @@ export const listAppointments = /* GraphQL */ `
         endTime
         type
         isBooked
+        doctorNotes
         createdAt
         updatedAt
         _version
@@ -579,6 +602,7 @@ export const syncAppointments = /* GraphQL */ `
         endTime
         type
         isBooked
+        doctorNotes
         createdAt
         updatedAt
         _version
@@ -724,6 +748,141 @@ export const syncPrescriptions = /* GraphQL */ `
         endDate
         doctorID
         patientID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const getPatientStory = /* GraphQL */ `
+  query GetPatientStory($id: ID!) {
+    getPatientStory(id: $id) {
+      id
+      doctorID
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      patientID
+      patientName
+      rating
+      date
+      story
+      appointmentID
+      appointment {
+        id
+        doctorID
+        patientId
+        startTime
+        endTime
+        type
+        isBooked
+        doctorNotes
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listPatientStories = /* GraphQL */ `
+  query ListPatientStories(
+    $id: ID
+    $filter: ModelPatientStoryFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listPatientStories(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        doctorID
+        patientID
+        patientName
+        rating
+        date
+        story
+        appointmentID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncPatientStories = /* GraphQL */ `
+  query SyncPatientStories(
+    $filter: ModelPatientStoryFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncPatientStories(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        doctorID
+        patientID
+        patientName
+        rating
+        date
+        story
+        appointmentID
         createdAt
         updatedAt
         _version
@@ -1034,6 +1193,7 @@ export const slotsByDoctor = /* GraphQL */ `
         endTime
         type
         isBooked
+        doctorNotes
         createdAt
         updatedAt
         _version
@@ -1072,6 +1232,7 @@ export const slotsByPatient = /* GraphQL */ `
         endTime
         type
         isBooked
+        doctorNotes
         createdAt
         updatedAt
         _version
@@ -1150,6 +1311,117 @@ export const prescriptionsByPatientID = /* GraphQL */ `
         endDate
         doctorID
         patientID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const storiesByDoctor = /* GraphQL */ `
+  query StoriesByDoctor(
+    $doctorID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelPatientStoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    storiesByDoctor(
+      doctorID: $doctorID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        doctorID
+        patientID
+        patientName
+        rating
+        date
+        story
+        appointmentID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const storiesByPatient = /* GraphQL */ `
+  query StoriesByPatient(
+    $patientID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelPatientStoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    storiesByPatient(
+      patientID: $patientID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        doctorID
+        patientID
+        patientName
+        rating
+        date
+        story
+        appointmentID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const storiesByAppointment = /* GraphQL */ `
+  query StoriesByAppointment(
+    $appointmentID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelPatientStoryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    storiesByAppointment(
+      appointmentID: $appointmentID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        doctorID
+        patientID
+        patientName
+        rating
+        date
+        story
+        appointmentID
         createdAt
         updatedAt
         _version

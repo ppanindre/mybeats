@@ -56,6 +56,11 @@ export const createDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
+      patientStories {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -120,6 +125,11 @@ export const updateDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
+      patientStories {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -180,6 +190,11 @@ export const deleteDoctor = /* GraphQL */ `
         __typename
       }
       prescriptions {
+        nextToken
+        startedAt
+        __typename
+      }
+      patientStories {
         nextToken
         startedAt
         __typename
@@ -568,6 +583,23 @@ export const createAppointment = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      patientStory {
+        id
+        doctorID
+        patientID
+        patientName
+        rating
+        date
+        story
+        appointmentID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      doctorNotes
       createdAt
       updatedAt
       _version
@@ -637,6 +669,23 @@ export const updateAppointment = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      patientStory {
+        id
+        doctorID
+        patientID
+        patientName
+        rating
+        date
+        story
+        appointmentID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      doctorNotes
       createdAt
       updatedAt
       _version
@@ -706,6 +755,23 @@ export const deleteAppointment = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      patientStory {
+        id
+        doctorID
+        patientID
+        patientName
+        rating
+        date
+        story
+        appointmentID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      doctorNotes
       createdAt
       updatedAt
       _version
@@ -915,6 +981,204 @@ export const deletePrescription = /* GraphQL */ `
         height
         profession
         underlyingCondition
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createPatientStory = /* GraphQL */ `
+  mutation CreatePatientStory(
+    $input: CreatePatientStoryInput!
+    $condition: ModelPatientStoryConditionInput
+  ) {
+    createPatientStory(input: $input, condition: $condition) {
+      id
+      doctorID
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      patientID
+      patientName
+      rating
+      date
+      story
+      appointmentID
+      appointment {
+        id
+        doctorID
+        patientId
+        startTime
+        endTime
+        type
+        isBooked
+        doctorNotes
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updatePatientStory = /* GraphQL */ `
+  mutation UpdatePatientStory(
+    $input: UpdatePatientStoryInput!
+    $condition: ModelPatientStoryConditionInput
+  ) {
+    updatePatientStory(input: $input, condition: $condition) {
+      id
+      doctorID
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      patientID
+      patientName
+      rating
+      date
+      story
+      appointmentID
+      appointment {
+        id
+        doctorID
+        patientId
+        startTime
+        endTime
+        type
+        isBooked
+        doctorNotes
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deletePatientStory = /* GraphQL */ `
+  mutation DeletePatientStory(
+    $input: DeletePatientStoryInput!
+    $condition: ModelPatientStoryConditionInput
+  ) {
+    deletePatientStory(input: $input, condition: $condition) {
+      id
+      doctorID
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecialization
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      patientID
+      patientName
+      rating
+      date
+      story
+      appointmentID
+      appointment {
+        id
+        doctorID
+        patientId
+        startTime
+        endTime
+        type
+        isBooked
+        doctorNotes
         createdAt
         updatedAt
         _version

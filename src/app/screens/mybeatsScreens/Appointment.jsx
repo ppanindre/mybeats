@@ -13,6 +13,7 @@ import PatientStory from "../../../../components/Cards/PatientStory";
 import ClinicAppointmentFrame from "../../components/PatientAppointmentCO/ClinicAppointmentFrame";
 import AvailableAppointmentsFrame from "../../components/PatientAppointmentCO/AvailableAppointmentsFrame";
 import { createAppointmentActionCreators } from "../../../../store/actions/appointmentActions";
+import { patientStoriesListByDoctorsActionCreators } from "../../../../store/actions/patientStoriesAction";
 import Loader from "../../components/Utils/Loader";
 import VideoAppointmentFrame from "../../components/PatientAppointmentCO/VideoAppointmentFrame";
 import DoctorInfo from "../../components/PatientDashboardComponents/DoctorInfo";
@@ -42,36 +43,24 @@ const CollapsibleItem = ({ title, children }) => {
 const Appointment = ({ route }) => {
     const { doctorId } = route.params;
     const navigation = useNavigation()
+    const dispatch = useDispatch();
 
     const doctor = useSelector((state) => state.doctorsListReducer.doctors.find(doc => doc.doctorID === doctorId));
+    const { loading: patientStoriesloading, patientStories, error: patientStriesError } = useSelector((state) => state.patientStoriesListByDoctorReducer);  // Select the patient stories
 
     const [videoDate, setVideoDate] = useState();
     const [videoTime, setVideoTime] = useState();
-
-
-    const patientStories = [
-        {
-            id: "1",
-            name: "Raj",
-            date: "5 days ago",
-            rating: "4.9",
-            comment: "This doctor has been a beacon of hope for my family and me through some challenging times. His exceptional expertise in internal medicine, combined with her warm and empathetic bedside manner, made each consultation comforting. His ability to explain complex health issues in simple terms is remarkable.",
-        },
-        {
-            id: "2",
-            name: "Revanth",
-            date: "7 days ago",
-            rating: "4.0",
-            comment: "This doctor has been a beacon of hope for my family and me through some challenging times. His exceptional expertise in internal medicine, combined with her warm and empathetic bedside manner, made each consultation comforting. His ability to explain complex health issues in simple terms is remarkable.",
-        },
-    ];
 
     const { loading, error, appointment } = useSelector((state) => state.appointmentCreateReducer);
 
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [appointmentType, setAppointmentType] = useState("clinic");
 
-    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(patientStoriesListByDoctorsActionCreators(doctorId));
+    }, [doctorId]);
+
+
 
     const bookAppointment = async () => {
         dispatch(
@@ -90,6 +79,7 @@ const Appointment = ({ route }) => {
         setSelectedSlot(slot);
     };
 
+    if (patientStoriesloading) return <Loader />;
     if (loading) return <Loader />;
 
     return (
@@ -98,11 +88,11 @@ const Appointment = ({ route }) => {
                 <View className="space-y-5">
                     <DoctorInfo doctor={doctor} />
                     <View>
-                        <ActionButton excludeId2={true} doctor={doctor}/>
+                        <ActionButton excludeId2={true} doctor={doctor} />
                     </View>
 
                     <View>
-                        <ClinicAppointmentFrame doctor={doctor}/>
+                        <ClinicAppointmentFrame doctor={doctor} />
                     </View>
 
                     <View>
@@ -112,7 +102,7 @@ const Appointment = ({ route }) => {
                     {doctor.availableForVideoConsultation && (
                         <View className="space-y-5">
                             <View>
-                                <VideoAppointmentFrame doctor={doctor}/>
+                                <VideoAppointmentFrame doctor={doctor} />
                             </View>
 
                             <View>
@@ -121,7 +111,7 @@ const Appointment = ({ route }) => {
                         </View>
                     )}
 
-                    <View className="mt-4 mb-2 p-4 rounded-lg shadow mx-2 space-y-3 bg-light">                   
+                    <View className="mt-4 mb-2 p-4 rounded-lg shadow mx-2 space-y-3 bg-light">
                         <InteractiveMapView
                             name={`${doctor.firstname} ${doctor.lastname}`}
                             city={doctor.city}
@@ -138,20 +128,30 @@ const Appointment = ({ route }) => {
                     </View>
 
                     <View className="p-2">
-                        <Text className="text-lg mt-5 font-[appfont-semi]">
-                            Patient Stories (+250)
+                        <Text className="text-lg font-[appfont-semi]">
+                            Patient Stories ({patientStories.length})
                         </Text>
-                        {patientStories.map((story) => (
-                            <PatientStory key={story.id} story={story} />
-                        ))}
+                        {patientStories && patientStories.length > 0 ? (
+                            patientStories.slice(0, 2).map((story) => (
+                                <View key={story.id} className="mt-3">
+                                    <PatientStory story={story} />
+                                </View>
+                            ))
+                        ) : (
+                            <Text className="text-md font-[appfont]">No patient stories available.</Text>
+                        )}
                     </View>
 
-                    <View className="flex-row justify-center mb-4">
-                        <Text className="font-semibol text-primary">
-                            View All Stories{" "}
-                        </Text>
-                        <Ionicons name="chevron-forward" size={16} style={{ color: customTheme.colors.primary }} />
-                    </View>
+                    {patientStories.length >= 2 && (
+                        <View className="flex-row justify-center">
+                            <AppButton
+                                variant="noborder"
+                                btnLabel="View all Stories"
+                                onPress={() => navigation.navigate("allPatientStories", { doctorId })}
+                            />
+                            <Ionicons name="chevron-forward" size={16} style={{ color: customTheme.colors.primary }} />
+                        </View>
+                    )}
 
                     <View className="mt-4 mb-24 p-4 bg-white rounded-lg">
                         <CollapsibleItem title="Secondary Specializations">
@@ -169,7 +169,7 @@ const Appointment = ({ route }) => {
 
             <View>
                 <AppButton
-                    onPress={() => navigation.navigate("confirmAppointment", {doctor, selectedTime: selectedSlot, appointmentType})}
+                    onPress={() => navigation.navigate("confirmAppointment", { doctor, selectedTime: selectedSlot, appointmentType })}
                     variant={`${selectedSlot ? "primary" : "disabled"}`}
                     btnLabel="Book"
                     btnLeftIcon={<Ionicons name="calendar" size={20} color={theme.colors.light} />}
