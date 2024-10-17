@@ -129,9 +129,9 @@ const Appointment = ({ route }) => {
 
                     <View className="p-2">
                         <Text className="text-lg font-[appfont-semi]">
-                            Patient Stories ({patientStories.length})
+                            Patient Stories ({patientStories?.length || 0})
                         </Text>
-                        {patientStories && patientStories.length > 0 ? (
+                        {patientStories && patientStories?.length > 0 ? (
                             patientStories.slice(0, 2).map((story) => (
                                 <View key={story.id} className="mt-3">
                                     <PatientStory story={story} />
@@ -142,7 +142,7 @@ const Appointment = ({ route }) => {
                         )}
                     </View>
 
-                    {patientStories.length >= 2 && (
+                    {patientStories?.length >= 2 && (
                         <View className="flex-row justify-center">
                             <AppButton
                                 variant="noborder"

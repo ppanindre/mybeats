@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -12,6 +12,7 @@ import {
     deleteAppointmentActionCreator,
     listAppointmentsByDoctorActionCreators,
 } from '../../../../store/actions/appointmentActions';
+import { getDoctorNoteActionCreator } from '../../../../store/actions/doctorNoteActions';
 
 
 const DoctorAppointmentDetailScreen = () => {
@@ -32,6 +33,23 @@ const DoctorAppointmentDetailScreen = () => {
         setShowModal(false);
         navigation.goBack();
         dispatch(listAppointmentsByDoctorActionCreators());
+    };
+
+    // doctors notes from Redux
+    const doctorNotes = useSelector((state) => state.doctorNoteGetReducer.doctorNote);
+
+    useEffect(() => {
+        if (appointment.id) {
+            dispatch(getDoctorNoteActionCreator(appointment.id));
+        }
+    }, [dispatch, appointment.id]);
+
+    const handleWriteNotesPress = () => {
+        if (doctorNotes) {
+            navigation.navigate('doctorAppointmentNotes', { appointmentId: appointment.id, existingNotes: doctorNotes });
+        } else {
+            navigation.navigate('doctorAppointmentNotes', { appointmentId: appointment.id });
+        }
     };
 
     return (
@@ -119,8 +137,8 @@ const DoctorAppointmentDetailScreen = () => {
                 <View className="flex-row">
                     <View className="flex-1">
                         <AppButton
-                            btnLabel="Write Doctor's notes"
-                            onPress={() => navigation.navigate('doctorAppointmentNotes', { appointmentId: appointment.id })}
+                            btnLabel={doctorNotes ? "View your notes" : "Write Doctor's notes"}
+                            onPress={handleWriteNotesPress}
                             variant="primary"
                         />
                     </View>

@@ -51,7 +51,7 @@ const PatientAppointmentInfoScreen = () => {
     };
 
     useEffect(() => {
-        if (success) {
+        if (appointment.id) {
             dispatch(getPatientStoryActionCreator(appointment.id));
         }
     }, [success, appointment.id, dispatch]);
@@ -64,7 +64,7 @@ const PatientAppointmentInfoScreen = () => {
         }
     }, [patientStory]);
 
-     const handleShowReviewModal = () => {
+    const handleShowReviewModal = () => {
         if (!patientStory) {
             // If no story exists, reset the review and rating for a new submission
             setReview("");
@@ -101,8 +101,8 @@ const PatientAppointmentInfoScreen = () => {
         }
     };
 
-    if (loading || storyloading) return <Loader />
-
+    if (loading) return <Loader />
+    if (storyloading) return <Loader/>
 
     const getAddress = () => {
         return `${doctor.address}, ${doctor.city}, ${doctor.state}, ${doctor.zipcode}`;
@@ -121,6 +121,21 @@ const PatientAppointmentInfoScreen = () => {
                     isPastAppointment={isPastAppointment}
                     getAddress={getAddress}
                 />
+                <View className="flex-row items-center justify-between">
+                    <Text className="font-[appfont-semi] text-lg">{patientStory ? "View review:" : "Write a review:"}</Text>
+                    <TouchableOpacity onPress={handleShowReviewModal}>
+                        <Rating 
+                            type="custom"
+                            ratingCount={5}
+                            imageSize={35}
+                            startingValue={!patientStory? 0 : rating}
+                            onFinishRating={(rating) => setRating(rating)}
+                            ratingColor={theme.colors.primary}
+                            ratingBackgroundColor={theme.colors.darkSecondary}
+                            readonly={true}
+                        />
+                    </TouchableOpacity>
+                </View>
             </ScrollView>
             <ModalContainer
                 visible={showModal}
@@ -164,7 +179,7 @@ const PatientAppointmentInfoScreen = () => {
                         <MultiLineInput
                             onChangeText={(text) => setReview(text)}
                             value={review}
-                            label={patientStory ? "Your review" : "Write your review"} 
+                            label={patientStory ? "Your review" : "Write your review"}
                             editable={!patientStory} // Noneditable if story already exists
                         />
                     </View>
@@ -172,7 +187,7 @@ const PatientAppointmentInfoScreen = () => {
                     <View>
                         {!patientStory && (
                             <AppButton
-                                variant="primary"
+                                variant={rating? "primary" : "disabled"}
                                 btnLabel="Submit"
                                 onPress={onSubmitReview}
                             />
@@ -202,8 +217,8 @@ const PatientAppointmentInfoScreen = () => {
                     <View className="flex-1">
                         <AppButton
                             variant="primary"
-                            btnLabel={patientStory ? "View review" : "Write a review"}
-                            onPress={handleShowReviewModal}
+                            btnLabel="View Prescription"
+                            // onPress={handleShowReviewModal}
                         />
                     </View>
                 </View>

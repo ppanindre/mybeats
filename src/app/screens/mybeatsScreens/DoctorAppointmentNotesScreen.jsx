@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useDispatch } from 'react-redux';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import ScreenContainer from '../../components/Containers/ScreenContainer';
 import MultiLineInput from '../../components/Inputs/MultiLineInput';
 import AppButton from '../../components/Buttons/AppButton';
 import { theme } from '../../../../tailwind.config';
+import { createDoctorNoteActionCreator } from '../../../../store/actions/doctorNoteActions';
 
 const DoctorAppointmentNotesScreen = () => {
     const route = useRoute();
     const navigation = useNavigation();
-    const { appointmentId } = route.params;
+    const dispatch = useDispatch();
+    const { appointmentId, existingNotes } = route.params;
 
-    const [notes, setNotes] = useState('');
+    const [notes, setNotes] = useState(existingNotes || '');
     const [images, setImages] = useState([]);
 
     const addImage = async () => {
@@ -29,6 +32,13 @@ const DoctorAppointmentNotesScreen = () => {
 
     const removeImage = (uri) => {
         setImages(images.filter(image => image.uri !== uri));
+    };
+
+    const handleSubmit = () => {
+        // Dispatch the action to save the doctor's notes
+        dispatch(createDoctorNoteActionCreator(appointmentId, notes));
+        Alert.alert("Your notes have been submitted.")
+        navigation.goBack();
     };
 
     const isSubmitDisabled = notes.length === 0 && images.length === 0;
@@ -70,22 +80,25 @@ const DoctorAppointmentNotesScreen = () => {
                     </View>
                 </View>
             </View>
-            <View className="flex-row space-x-3">
-                <View className="flex-1">
-                    <AppButton
-                        onPress={addImage}
-                        variant="primary"
-                        btnLabel="Add Picture"
-                    />
+            {!existingNotes && (
+                <View className="flex-row space-x-3">
+                    <View className="flex-1">
+                        <AppButton
+                            onPress={addImage}
+                            variant="primary"
+                            btnLabel="Add Picture"
+                        />
+                    </View>
+                    <View className="flex-1">
+                        <AppButton
+                            onPress={handleSubmit}
+                            variant={isSubmitDisabled ? "disabled" : "primary"}
+                            btnLabel="Submit"
+                            disabled={isSubmitDisabled}
+                        />
+                    </View>
                 </View>
-                <View className="flex-1">
-                    <AppButton
-                        variant={isSubmitDisabled ? "disabled" : "primary"}
-                        btnLabel="Submit"
-                        disabled={isSubmitDisabled}
-                    />
-                </View>
-            </View>
+            )}
         </ScreenContainer>
     );
 };

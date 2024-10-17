@@ -39,6 +39,9 @@ import {
     appointmentsListByPatientReducer,
 } from "./reducers/appointmentReducers";
 import { 
+    doctorNoteGetReducer
+ } from "./reducers/doctorNoteReducers";
+import { 
     patientStoriesListByDoctorReducer,
     patientStoryCreateReducer,
     patientStoryGetReducer
@@ -100,6 +103,7 @@ const reducers = combineReducers({
     patientStoriesListByDoctorReducer: patientStoriesListByDoctorReducer,
     patientStoryCreateReducer: patientStoryCreateReducer,
     patientStoryGetReducer: patientStoryGetReducer,
+    doctorNoteGetReducer: doctorNoteGetReducer,
 });
 
 // Redux store containing reducers and the middleware
