@@ -96,6 +96,7 @@ type Appointment @model @auth(rules: [{ allow: public }]) {
     patient: Patient @belongsTo(fields: ["patientId"])
     patientStory: PatientStory @hasOne(fields: ["id"])
     doctorNotes: String
+    imagePaths: [String]
 }
 
 type Prescription @model @auth(rules: [{ allow: public }]) {

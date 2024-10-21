@@ -575,6 +575,7 @@ export const onCreateAppointment = /* GraphQL */ `
         __typename
       }
       doctorNotes
+      imagePaths
       createdAt
       updatedAt
       _version
@@ -660,6 +661,7 @@ export const onUpdateAppointment = /* GraphQL */ `
         __typename
       }
       doctorNotes
+      imagePaths
       createdAt
       updatedAt
       _version
@@ -745,6 +747,7 @@ export const onDeleteAppointment = /* GraphQL */ `
         __typename
       }
       doctorNotes
+      imagePaths
       createdAt
       updatedAt
       _version
@@ -1016,6 +1019,7 @@ export const onCreatePatientStory = /* GraphQL */ `
         type
         isBooked
         doctorNotes
+        imagePaths
         createdAt
         updatedAt
         _version
@@ -1081,6 +1085,7 @@ export const onUpdatePatientStory = /* GraphQL */ `
         type
         isBooked
         doctorNotes
+        imagePaths
         createdAt
         updatedAt
         _version
@@ -1146,6 +1151,7 @@ export const onDeletePatientStory = /* GraphQL */ `
         type
         isBooked
         doctorNotes
+        imagePaths
         createdAt
         updatedAt
         _version

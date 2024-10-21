@@ -31,6 +31,7 @@ import DoctorAppointmentNotesScreen from "../../screens/mybeatsScreens/DoctorApp
 import ImageAnalyzeDisplay from "../../../../MyCharts/Components/ImageAnalyzeDisplay";
 import ConfirmAppointment from "../../screens/mybeatsScreens/ConfirmAppointment";
 import AllPatientStories from "../../screens/mybeatsScreens/AllPatientStories";
+import AppointmentImagesScreen from "../../components/PatientAppointmentsComponents/AppointmentImagesScreen";
 
 export const mybeatsStackConfig = {
     screens: [
@@ -126,6 +127,11 @@ export const mybeatsStackConfig = {
             headerTitle: "Confirm Appointment",
             name: "confirmAppointment",
             component: ConfirmAppointment,
+        },
+        {
+            headerTitle: "Confirm Appointment",
+            name: "appointmentImages",
+            component: AppointmentImagesScreen,
         },
         {
             headerTitle: "Write Notes",

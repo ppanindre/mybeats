@@ -35,8 +35,8 @@ const DoctorAppointmentNotesScreen = () => {
     };
 
     const handleSubmit = () => {
-        // Dispatch the action to save the doctor's notes
-        dispatch(createDoctorNoteActionCreator(appointmentId, notes));
+        // Dispatching the action to save the doctor's notes
+        dispatch(createDoctorNoteActionCreator(appointmentId, notes, images));
         Alert.alert("Your notes have been submitted.")
         navigation.goBack();
     };

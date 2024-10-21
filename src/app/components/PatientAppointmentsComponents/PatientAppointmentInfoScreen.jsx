@@ -210,7 +210,7 @@ const PatientAppointmentInfoScreen = () => {
                     <View className="flex-1">
                         <AppButton
                             btnLabel="View Doctor's Notes"
-                            onPress={() => { }}
+                            onPress={() => navigation.navigate('appointmentImages', { appointmentId: appointment.id })}
                             variant="primary"
                         />
                     </View>

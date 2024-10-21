@@ -779,6 +779,14 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "imagePaths": {
+                    "name": "imagePaths",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1309,5 +1317,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "0c772e56414bf7ccf108bddb5753e560"
+    "version": "01eb413e441ea3c5310dc538464efffa"
 };

@@ -69,7 +69,7 @@ const DoctorAppointmentDetailScreen = () => {
                         onPress={() => navigation.navigate('patientInfo', { patientId: patient.id })}>
                         <View className="flex-row items-center justify-start space-x-2">
                             <Ionicons name="person" size={24} className="font-[appfont-semi]" />
-                            <Text className="font-[appfont-semi] text-lg">{`${patient.firstname} ${patient.lastname}`}</Text>
+                            <Text className="font-[appfont-semi] text-lg">{`${patient?.firstname} ${patient?.lastname}`}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -96,7 +96,7 @@ const DoctorAppointmentDetailScreen = () => {
                     <View className="flex-row items-center justify-between">
                         <Text className="font-[appfont-semi] text-lg">Phone:</Text>
                         <Text className="font-[appfont-semi] text-lg">
-                            {patient.phoneNumber}
+                            {patient?.phoneNumber}
                         </Text>
                     </View>
                 </View>

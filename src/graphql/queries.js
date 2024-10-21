@@ -535,6 +535,7 @@ export const getAppointment = /* GraphQL */ `
         __typename
       }
       doctorNotes
+      imagePaths
       createdAt
       updatedAt
       _version
@@ -568,6 +569,7 @@ export const listAppointments = /* GraphQL */ `
         type
         isBooked
         doctorNotes
+        imagePaths
         createdAt
         updatedAt
         _version
@@ -603,6 +605,7 @@ export const syncAppointments = /* GraphQL */ `
         type
         isBooked
         doctorNotes
+        imagePaths
         createdAt
         updatedAt
         _version
@@ -808,6 +811,7 @@ export const getPatientStory = /* GraphQL */ `
         type
         isBooked
         doctorNotes
+        imagePaths
         createdAt
         updatedAt
         _version
@@ -1194,6 +1198,7 @@ export const slotsByDoctor = /* GraphQL */ `
         type
         isBooked
         doctorNotes
+        imagePaths
         createdAt
         updatedAt
         _version
@@ -1233,6 +1238,7 @@ export const slotsByPatient = /* GraphQL */ `
         type
         isBooked
         doctorNotes
+        imagePaths
         createdAt
         updatedAt
         _version
