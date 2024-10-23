@@ -21,7 +21,7 @@ const DoctorAppointmentDetailScreen = () => {
     const dispatch = useDispatch();
     const { appointment, patient } = route.params;
 
-    const isPastAppointment = moment(appointment.startTime).isBefore(moment());
+    const isPastAppointment = appointment?.startTime ? moment(appointment.startTime).isBefore(moment()) : false;
 
     const [showModal, setShowModal] = useState(false);
     const [reason, setReason] = useState("");
@@ -37,6 +37,7 @@ const DoctorAppointmentDetailScreen = () => {
 
     // doctors notes from Redux
     const doctorNotes = useSelector((state) => state.doctorNoteGetReducer.doctorNote);
+    const doctorImages = useSelector((state) => state.doctorNoteGetReducer.imageUrls);
 
     useEffect(() => {
         if (appointment.id) {
@@ -45,13 +46,10 @@ const DoctorAppointmentDetailScreen = () => {
     }, [dispatch, appointment.id]);
 
     const handleWriteNotesPress = () => {
-        if (doctorNotes) {
-            navigation.navigate('doctorAppointmentNotes', { appointmentId: appointment.id, existingNotes: doctorNotes });
-        } else {
-            navigation.navigate('doctorAppointmentNotes', { appointmentId: appointment.id });
-        }
+        navigation.navigate('doctorAppointmentNotes', { 
+            appointmentId: appointment.id
+        });
     };
-
     return (
         <ScreenContainer>
             <ScrollView
@@ -78,19 +76,19 @@ const DoctorAppointmentDetailScreen = () => {
                     <View className="flex-row items-center justify-between">
                         <Text className="font-[appfont-semi] text-lg">Date:</Text>
                         <Text className="font-[appfont-semi] text-lg">
-                            {moment(appointment.startTime).format("D MMM YYYY")}
+                            {moment(appointment?.startTime).format("D MMM YYYY")}
                         </Text>
                     </View>
                     <View className="flex-row items-center justify-between">
                         <Text className="font-[appfont-semi] text-lg">Time:</Text>
                         <Text className="font-[appfont-semi] text-lg">
-                            {moment(appointment.startTime).format("H:mm a")}
+                            {moment(appointment?.startTime).format("H:mm a")}
                         </Text>
                     </View>
                     <View className="flex-row items-center justify-between">
                         <Text className="font-[appfont-semi] text-lg">Type:</Text>
                         <Text className="font-[appfont-semi] text-lg">
-                            {appointment.type || "Clinic"}
+                            {appointment?.type || "Clinic"}
                         </Text>
                     </View>
                     <View className="flex-row items-center justify-between">
@@ -137,7 +135,7 @@ const DoctorAppointmentDetailScreen = () => {
                 <View className="flex-row">
                     <View className="flex-1">
                         <AppButton
-                            btnLabel={doctorNotes ? "View your notes" : "Write Doctor's notes"}
+                            btnLabel={(doctorNotes !== "" || (doctorImages && doctorImages.length > 0)) ? "View your notes" : "Write Doctor's notes"}
                             onPress={handleWriteNotesPress}
                             variant="primary"
                         />
