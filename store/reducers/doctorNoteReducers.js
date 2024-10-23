@@ -29,7 +29,7 @@ export const doctorNoteCreateReducer = (state = {}, action) => {
     }
 };
 
-export const doctorNoteGetReducer = (state = { doctorNote: "" }, action) => {
+export const doctorNoteGetReducer = (state = { doctorNote: "", imageUrls: [] }, action) => {
     switch (action.type) {
         case DOCTOR_NOTE_GET_REQUEST:
             return {
@@ -38,7 +38,8 @@ export const doctorNoteGetReducer = (state = { doctorNote: "" }, action) => {
         case DOCTOR_NOTE_GET_SUCCESS:
             return {
                 loading: false,
-                doctorNote: action.payload,
+                doctorNote: action.payload.doctorNotes,
+                imageUrls: action.payload.imageUrls,  
             };
         case DOCTOR_NOTE_GET_FAILURE:
             return {

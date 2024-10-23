@@ -84,7 +84,7 @@ const AppointmentCard = ({ appointment, patient, isPast, patientId }) => {
                 <View className="flex-1">
                     {patientId ? null : (
                         <Text className="font-[appfont-semi] text-lg">
-                            {patient.firstname} {patient.lastname}
+                            {patient?.firstname} {patient?.lastname}
                         </Text>
                     )}
                     <Text className="font-[appfont-semi]">

@@ -212,6 +212,7 @@ type EagerAppointment = {
   readonly patient?: Patient | null;
   readonly patientStory?: PatientStory | null;
   readonly doctorNotes?: string | null;
+  readonly imagePaths?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -232,6 +233,7 @@ type LazyAppointment = {
   readonly patient: AsyncItem<Patient | undefined>;
   readonly patientStory: AsyncItem<PatientStory | undefined>;
   readonly doctorNotes?: string | null;
+  readonly imagePaths?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
