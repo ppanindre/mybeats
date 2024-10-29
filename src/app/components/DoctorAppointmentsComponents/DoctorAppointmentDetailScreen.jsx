@@ -135,7 +135,7 @@ const DoctorAppointmentDetailScreen = () => {
                 <View className="flex-row">
                     <View className="flex-1">
                         <AppButton
-                            btnLabel={(doctorNotes !== "" || (doctorImages && doctorImages.length > 0)) ? "View your notes" : "Write Doctor's notes"}
+                            btnLabel={(doctorNotes !== "" || (doctorImages && doctorImages.length > 0)) ? "View or edit your notes" : "Write Doctor's notes"}
                             onPress={handleWriteNotesPress}
                             variant="primary"
                         />

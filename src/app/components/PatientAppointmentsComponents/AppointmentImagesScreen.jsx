@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity, Alert, PermissionsAndroid, Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDoctorNoteActionCreator } from '../../../../store/actions/doctorNoteActions';
+import RNFS from 'react-native-fs'; 
+import { CameraRoll } from '@react-native-camera-roll/camera-roll'; 
 import Loader from '../Utils/Loader';
 import ScreenContainer from '../Containers/ScreenContainer';
 import MultiLineInput from '../Inputs/MultiLineInput';
@@ -30,6 +32,73 @@ const PatientAppointmentNotesScreen = ({ route }) => {
         }
     };
 
+    // storage permission for android
+    const requestStoragePermission = async () => {
+        if (Platform.OS === 'android') {
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                    {
+                        title: "Storage Permission",
+                        message: "This app needs access to your storage to download images.",
+                        buttonNeutral: "Ask Me Later",
+                        buttonNegative: "Cancel",
+                        buttonPositive: "OK"
+                    }
+                );
+                return granted === PermissionsAndroid.RESULTS.GRANTED;
+            } catch (err) {
+                console.warn(err);
+                return false;
+            }
+        }
+        return true;
+    };
+
+    // handling download image
+    const handleDownloadImage = async () => {
+        const hasPermission = await requestStoragePermission();
+        if (!hasPermission) {
+            Alert.alert('Permission Denied', 'Storage permission is required to download images.');
+            return;
+        }
+
+        const imageUrl = imageUrls[currentImageIndex]?.uri || imageUrls[currentImageIndex]?.url || imageUrls[currentImageIndex];
+        const filename = imageUrl.split('/').pop();
+        const downloadDest = `${RNFS.DocumentDirectoryPath}/${filename}`;
+
+        try {
+            // downloading the image
+            const downloadRes = await RNFS.downloadFile({
+                fromUrl: imageUrl,
+                toFile: downloadDest,
+            }).promise;
+
+            if (downloadRes.statusCode === 200) {
+                if (Platform.OS === 'android') {
+                    // moving to android's Pictures directory
+                    const destPath = `${RNFS.PicturesDirectoryPath}/${filename}`;
+                    await RNFS.moveFile(downloadDest, destPath);
+                    Alert.alert('Download Success', 'Image has been saved to your gallery.');
+                } else if (Platform.OS === 'ios') {
+                    // for iOS, saving the image to the Photos library
+                    try {
+                        await CameraRoll.save(downloadDest, { type: 'photo' });
+                        Alert.alert('Download Success', 'Image has been saved to your Photos library.');
+                    } catch (error) {
+                        console.log('Save error', error);
+                        Alert.alert('Download Error', 'Failed to save image to the Photos library.');
+                    }
+                }
+            } else {
+                Alert.alert('Error', 'Failed to download image.');
+            }
+        } catch (error) {
+            console.log('Download error', error);
+            Alert.alert('Error', 'An error occurred while downloading the image.');
+        }
+    };
+
     if (loading) return <Loader />;
 
     return (
@@ -44,7 +113,6 @@ const PatientAppointmentNotesScreen = ({ route }) => {
                     />
                 </View>
 
-                {/* only if images are available */}
                 {imageUrls && imageUrls.length > 0 && (
                     <View className="space-y-2">
                         <Text className="font-[appfont-semi] text-lg">Pictures</Text>
@@ -56,7 +124,8 @@ const PatientAppointmentNotesScreen = ({ route }) => {
                                     source={{ uri: imageUrls[currentImageIndex]?.uri || imageUrls[currentImageIndex]?.url || imageUrls[currentImageIndex] }}
                                     className="w-full h-full object-contain"
                                 />
-                                 <TouchableOpacity
+                                <TouchableOpacity
+                                    onPress={handleDownloadImage}
                                     className="absolute right-2 top-2"
                                 >
                                     <Ionicons

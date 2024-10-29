@@ -129,12 +129,12 @@ export const mybeatsStackConfig = {
             component: ConfirmAppointment,
         },
         {
-            headerTitle: "Confirm Appointment",
+            headerTitle: "Doctor's Notes",
             name: "appointmentImages",
             component: AppointmentImagesScreen,
         },
         {
-            headerTitle: "Write Notes",
+            headerTitle: "Write your notes",
             name: "doctorAppointmentNotes",
             component: DoctorAppointmentNotesScreen,
         },
