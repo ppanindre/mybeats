@@ -27,7 +27,7 @@ const uriToBlob = async (uri) => {
 };
 
 // creating doctor notes and handling image uploads
-export const createDoctorNoteActionCreator = (appointmentId, doctorNotes, images) => async (dispatch) => {
+export const createDoctorNoteActionCreator = (appointmentId, doctorNotes, images) => async (dispatch, getState) => {
     try {
         dispatch({ type: DOCTOR_NOTE_CREATE_REQUEST });
 
@@ -38,40 +38,51 @@ export const createDoctorNoteActionCreator = (appointmentId, doctorNotes, images
         });
         const appointment = appointmentResponse.data.getAppointment;
         const _version = appointment._version;
+        const existingImagePaths = appointment.imagePaths || [];
 
-        const imagePaths = await Promise.all(
-            images.map(async (image) => {
-                const fileBlob = await uriToBlob(image.uri);
-                const fileExtension = image.uri.split('.').pop();
+        // Extract only the base file names from existing image paths for accurate comparison
+        const existingFileNames = existingImagePaths.map((path) => path.split('/').pop());
 
-                // chcking if the fileName already has an extension, if not appending it 
-                let fileName = `appointments/${appointmentId}/${Date.now()}_${image.fileName || 'image'}`;
-                
-                // adding file extension only if the fileName doesn't already contain it
-                if (!fileName.endsWith(`.${fileExtension}`)) {
-                    fileName += `.${fileExtension}`;
+        // Separate images into new and existing (already uploaded URLs)
+        const newImages = images.filter(
+            (image) => !existingFileNames.includes(image.fileName)
+        );
+
+        const newImagePaths = await Promise.all(
+            newImages.map(async (image) => {
+                //  processing those images with local URIs (not already uploaded URLs)
+                if (image.uri && !existingFileNames.includes(image.fileName)) {
+                    try {
+                        const fileBlob = await uriToBlob(image.uri);
+                        const fileExtension = image.uri.split('.').pop();
+
+                        let fileName = `appointments/${appointmentId}/${Date.now()}_${image.fileName || 'image'}`;
+                        if (!fileName.endsWith(`.${fileExtension}`)) {
+                            fileName += `.${fileExtension}`;
+                        }
+
+                        const result = await uploadData({
+                            key: `${fileName}`,
+                            data: fileBlob,
+                            options: {
+                                accessLevel: 'public',
+                            },
+                        }).result;
+
+                        console.log('New image uploaded to S3:', result);
+                        return result.key;
+                    } catch (error) {
+                        console.warn(`Skipping image upload for ${image.fileName} - Error:`, error);
+                        return null;
+                    }
                 }
-
-                try {
-                    // using uploadData
-                    const result = await uploadData({
-                        key: `${fileName}`,  
-                        data: fileBlob, 
-                        options: {
-                            accessLevel: 'public',  
-                        },
-                    }).result;
-
-                    console.log('Image uploaded to S3:', result);
-                    return result.key;  
-                } catch (uploadError) {
-                    console.error('Error uploading image to S3:', uploadError);
-                    throw uploadError;
-                }
+                // If no local uri, skipping processing
+                return null; 
             })
         );
 
-        console.log('All image paths:', imagePaths);
+        // filering out any null paths from newImagePaths and combine with existing paths
+        const updatedImagePaths = [...existingImagePaths, ...newImagePaths.filter((path) => path !== null)];
 
         const response = await client.graphql({
             query: updateAppointment,
@@ -79,8 +90,8 @@ export const createDoctorNoteActionCreator = (appointmentId, doctorNotes, images
                 input: {
                     id: appointmentId,
                     doctorNotes: doctorNotes,
-                    imagePaths: imagePaths,  
-                    _version: _version,  
+                    imagePaths: updatedImagePaths,
+                    _version: _version,
                 },
             },
         });

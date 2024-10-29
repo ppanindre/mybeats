@@ -181,7 +181,7 @@ const DoctorAppointmentNotesScreen = () => {
                     </View>
                 )}
             </View>
-            {(!doctorNote || !imageUrls) && (
+            {/* {(!doctorNote || !imageUrls) && ( */}
                 <View className="flex-row space-x-3">
                     <View className="flex-1">
                         <AppButton
@@ -199,7 +199,7 @@ const DoctorAppointmentNotesScreen = () => {
                         />
                     </View>
                 </View>
-            )}
+            {/* )} */}
         </ScreenContainer>
     );
 };
