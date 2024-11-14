@@ -97,6 +97,8 @@ type Appointment @model @auth(rules: [{ allow: public }]) {
     patientStory: PatientStory @hasOne(fields: ["id"])
     doctorNotes: String
     imagePaths: [String]
+    prescriptions: [Prescription] @hasMany(indexName: "byAppointment", fields: ["id"])
+    prescriptionImagePaths: [String]
 }
 
 type Prescription @model @auth(rules: [{ allow: public }]) {
@@ -112,6 +114,8 @@ type Prescription @model @auth(rules: [{ allow: public }]) {
     doctor: Doctor @belongsTo(fields: ["doctorID"])
     patientID: ID! @index(name: "byPatient")
     patient: Patient @belongsTo(fields: ["patientID"])
+    appointmentID: ID! @index(name: "byAppointment")
+    appointment: Appointment @belongsTo(fields: ["appointmentID"])
 }
 
 type PatientStory @model @auth(rules: [{ allow: public }]) {

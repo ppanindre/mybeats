@@ -536,6 +536,12 @@ export const getAppointment = /* GraphQL */ `
       }
       doctorNotes
       imagePaths
+      prescriptions {
+        nextToken
+        startedAt
+        __typename
+      }
+      prescriptionImagePaths
       createdAt
       updatedAt
       _version
@@ -570,6 +576,7 @@ export const listAppointments = /* GraphQL */ `
         isBooked
         doctorNotes
         imagePaths
+        prescriptionImagePaths
         createdAt
         updatedAt
         _version
@@ -606,6 +613,7 @@ export const syncAppointments = /* GraphQL */ `
         isBooked
         doctorNotes
         imagePaths
+        prescriptionImagePaths
         createdAt
         updatedAt
         _version
@@ -679,6 +687,25 @@ export const getPrescription = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      appointmentID
+      appointment {
+        id
+        doctorID
+        patientId
+        startTime
+        endTime
+        type
+        isBooked
+        doctorNotes
+        imagePaths
+        prescriptionImagePaths
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -714,6 +741,7 @@ export const listPrescriptions = /* GraphQL */ `
         endDate
         doctorID
         patientID
+        appointmentID
         createdAt
         updatedAt
         _version
@@ -751,6 +779,7 @@ export const syncPrescriptions = /* GraphQL */ `
         endDate
         doctorID
         patientID
+        appointmentID
         createdAt
         updatedAt
         _version
@@ -812,6 +841,7 @@ export const getPatientStory = /* GraphQL */ `
         isBooked
         doctorNotes
         imagePaths
+        prescriptionImagePaths
         createdAt
         updatedAt
         _version
@@ -1199,6 +1229,7 @@ export const slotsByDoctor = /* GraphQL */ `
         isBooked
         doctorNotes
         imagePaths
+        prescriptionImagePaths
         createdAt
         updatedAt
         _version
@@ -1239,6 +1270,7 @@ export const slotsByPatient = /* GraphQL */ `
         isBooked
         doctorNotes
         imagePaths
+        prescriptionImagePaths
         createdAt
         updatedAt
         _version
@@ -1278,6 +1310,7 @@ export const prescriptionsByDoctorID = /* GraphQL */ `
         endDate
         doctorID
         patientID
+        appointmentID
         createdAt
         updatedAt
         _version
@@ -1317,6 +1350,47 @@ export const prescriptionsByPatientID = /* GraphQL */ `
         endDate
         doctorID
         patientID
+        appointmentID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const prescriptionsByAppointmentID = /* GraphQL */ `
+  query PrescriptionsByAppointmentID(
+    $appointmentID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelPrescriptionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    prescriptionsByAppointmentID(
+      appointmentID: $appointmentID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        medicineName
+        type
+        dosage
+        days
+        dosageQuantity
+        startDate
+        endDate
+        doctorID
+        patientID
+        appointmentID
         createdAt
         updatedAt
         _version

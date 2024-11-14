@@ -6,9 +6,9 @@ import { customTheme } from '../../../../constants/themeConstants';
 import { useNavigation } from '@react-navigation/native';
 import CollapsibleItem from '../../../../components/CollapsibleItem';
 
-const MedicineItem = ({ item, handleDelete, isDetailsComplete, formatDays }) => {
+const MedicineItem = ({ item, handleDelete, isDetailsComplete, formatDays, appointmentId, patientId, isUserAdded }) => {
     const navigation = useNavigation();
-    
+
     return (
         <View key={item.id} className="p-3 border-b border-darkSecondary">
             <View className="flex-row items-center justify-between">
@@ -24,18 +24,20 @@ const MedicineItem = ({ item, handleDelete, isDetailsComplete, formatDays }) => 
                     </View>
                 </View>
                 <View className="flex-row">
-                    <TouchableOpacity
-                        onPress={() => {
-                            navigation.navigate('doctorPrescription', { selectedMedicine: item })
-                        }}
-                        className="p-2"
-                    >
-                        <Ionicons
-                            name="pencil"
-                            style={{ color: customTheme.colors.primary }}
-                            size={24}
-                        />
-                    </TouchableOpacity>
+                    {isUserAdded && (
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate('doctorPrescription', { selectedMedicine: item, appointmentId, patientId })
+                            }}
+                            className="p-2"
+                        >
+                            <Ionicons
+                                name="pencil"
+                                style={{ color: customTheme.colors.primary }}
+                                size={24}
+                            />
+                        </TouchableOpacity>
+                    )}
                     <TouchableOpacity
                         onPress={() => handleDelete(item.id)}
                         className="p-2"

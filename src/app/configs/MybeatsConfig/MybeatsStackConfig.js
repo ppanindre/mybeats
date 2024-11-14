@@ -32,6 +32,8 @@ import ImageAnalyzeDisplay from "../../../../MyCharts/Components/ImageAnalyzeDis
 import ConfirmAppointment from "../../screens/mybeatsScreens/ConfirmAppointment";
 import AllPatientStories from "../../screens/mybeatsScreens/AllPatientStories";
 import AppointmentImagesScreen from "../../components/PatientAppointmentsComponents/AppointmentImagesScreen";
+import PrescriptionList from "../../components/UploadPrescriptionComponents/PrescriptionList";
+import PatientPrscriptionImagesScreen from "../../components/PatientAppointmentsComponents/PatientPrescriptionImagesScreen";
 
 export const mybeatsStackConfig = {
     screens: [
@@ -209,6 +211,16 @@ export const mybeatsStackConfig = {
             headerTitle: "Patient Stories",
             name: "allPatientStories",
             component: AllPatientStories,
+        },
+        {
+            headerTitle: "Prescribed Medicines",
+            name: "prescriptionList",
+            component: PrescriptionList,
+        },
+        {
+            headerTitle: "Prescribed Medicines",
+            name: "prescritionImages",
+            component: PatientPrscriptionImagesScreen,
         },
     ],
 };

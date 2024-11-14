@@ -7,6 +7,7 @@ import { Calendar } from 'react-native-calendars';
 import MultiLineInput from '../Inputs/MultiLineInput';
 import DatePicker from '../../../../components/DatePicker';
 import { customTheme } from '../../../../constants/themeConstants';
+import PrescriptionDatepicker from './PrescriptionDatepicker';
 const MedicineSelector = ({
     searchInput, setSearchInput, // Props for search input state
     selectedMedicine, setSelectedMedicine, // Props for selected medicine state
@@ -201,7 +202,7 @@ const MedicineSelector = ({
 
                             {/* Start Date Picker */}
                             <View className="mb-4 mt-6">
-                                <DatePicker
+                                <PrescriptionDatepicker
                                     label="Start Date"
                                     currVal={startDate}
                                     onConfirm={setStartDate}
@@ -213,7 +214,7 @@ const MedicineSelector = ({
                             {/* End Date Picker */}
                             {startDate && (
                                 <View className="mb-3">
-                                    <DatePicker
+                                    <PrescriptionDatepicker
                                         label="End Date"
                                         currVal={endDate}
                                         onConfirm={setEndDate}

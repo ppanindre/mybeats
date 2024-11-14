@@ -8,6 +8,9 @@ import {
     PRESCRIPTION_LIST_REQUEST,
     PRESCRIPTION_LIST_SUCCESS,
     PRESCRIPTION_LIST_FAILURE,
+    PRESCRIPTION_DELETE_REQUEST,
+    PRESCRIPTION_DELETE_SUCCESS,
+    PRESCRIPTION_DELETE_FAILURE,
 } from "../types/prescriptionActionTypes";
 
 export const prescriptionCreateReducer = (state = {}, action) => {
@@ -46,14 +49,27 @@ export const prescriptionListReducer = (state = {}, action) => {
     switch (action.type) {
         case PRESCRIPTION_LIST_REQUEST:
             return { loading: true };
-
         case PRESCRIPTION_LIST_SUCCESS:
             return { loading: false, success: true, prescriptions: action.payload };
-
         case PRESCRIPTION_LIST_FAILURE:
             return { loading: false, error: action.payload };
-
+        
+        case PRESCRIPTION_DELETE_REQUEST:
+            return { ...state, loading: true };
+        case PRESCRIPTION_DELETE_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                success: true,
+                prescriptions: state.prescriptions.filter(
+                    (prescription) => prescription.id !== action.payload
+                ),
+            };
+        case PRESCRIPTION_DELETE_FAILURE:
+            return { ...state, loading: false, error: action.payload };
+        
         default:
             return state;
     }
 };
+
