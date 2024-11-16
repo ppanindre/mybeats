@@ -5,9 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  PermissionsAndroid,
-  Platform,
-  Alert
+  Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { launchImageLibrary } from "react-native-image-picker";
@@ -28,24 +26,27 @@ const UploadPrescription = () => {
   const route = useRoute();
   const { appointmentId, patientId } = route.params;
 
-  const { loading, imageUrls } = useSelector(
+  const { loading: fetchLoading, imageUrls } = useSelector(
     (state) => state.prescriptionImageGetReducer
   );
-
-
+  const { loading: submitLoading } = useSelector(
+    (state) => state.prescriptionImageCreateReducer
+  );
   const [showCamera, setShowCamera] = useState(false);
   const navigation = useNavigation();
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState([]); // all images 
+  const [newImages, setNewImages] = useState([]); 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
 
+  //  existing prescription images from the backend
   useEffect(() => {
     dispatch(getPrescriptionImageActionCreator(appointmentId));
   }, [dispatch, appointmentId]);
 
   useEffect(() => {
-    if (imageUrls !== undefined) {
-      setImages(imageUrls || []);
+    if (imageUrls) {
+      setImages(imageUrls.map((uri) => ({ uri }))); // exsting backend images
       setIsSubmitEnabled(false);
     }
   }, [imageUrls]);
@@ -61,132 +62,149 @@ const UploadPrescription = () => {
         if (response.assets) {
           const selectedImages = response.assets.map((asset) => ({
             uri: asset.uri,
+            fileName: asset.fileName || `gallery_${Date.now()}_${Math.random()}`,
           }));
 
-          const newImages = selectedImages.filter(
-            (img) => !imageUrls.includes(img.uri)
+          const existingUris = images.map((img) => img.uri);
+          const newGalleryImages = selectedImages.filter(
+            (img) => !existingUris.includes(img.uri)
           );
 
-          if (newImages.length > 0) {
-            setIsSubmitEnabled(true); 
+          if (newGalleryImages.length > 0) {
+            setIsSubmitEnabled(true);
+            setNewImages((prevNewImages) => [...prevNewImages, ...newGalleryImages]);
           }
-          setImages((prevImages) => [...prevImages, ...selectedImages]);
+          setImages((prevImages) => [...prevImages, ...newGalleryImages]);
         }
       }
     );
   };
 
-  const checkIfSubmitEnabled = (updatedImages) => {
-    const hasNewImages = updatedImages.some((img) => !imageUrls.includes(img.uri));
-    setIsSubmitEnabled(hasNewImages);
+  // image captured by the camera
+  const handleCapture = (uri) => {
+    const newImage = { uri, fileName: `camera_${Date.now()}_${Math.random()}` };
+    setNewImages((prevNewImages) => [...prevNewImages, newImage]);
+    setImages((prevImages) => [...prevImages, newImage]);
+    setIsSubmitEnabled(true);
+    setShowCamera(false);
   };
 
-  const handleNextImage = () => {
-    if (currentIndex < images.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    }
-  };
-
-  const handlePreviousImage = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    }
-  };
-
+  // Remove an image
   const removeImage = (index) => {
+    const imageToRemove = images[index];
     const updatedImages = images.filter((_, i) => i !== index);
-    setImages(updatedImages);    
+    setImages(updatedImages);
+
+    //  removing from newImages if it's a new image
+    if (newImages.some((img) => img.uri === imageToRemove.uri)) {
+      setNewImages((prevNewImages) =>
+        prevNewImages.filter((img) => img.uri !== imageToRemove.uri)
+      );
+    }
+
     if (currentIndex >= updatedImages.length) {
       setCurrentIndex(Math.max(updatedImages.length - 1, 0));
     }
+    setIsSubmitEnabled(newImages.length > 0);
   };
 
-  const handleSubmit =  async () => {
-    dispatch(createPrescriptionImageActionCreator(appointmentId, images));
-    Alert.alert("Your prescription images have been submitted.");
-    navigation.goBack();
-    await dispatch(getPrescriptionImageActionCreator(appointmentId));
+  const handleSubmit = async () => {
+      await dispatch(createPrescriptionImageActionCreator(appointmentId, newImages));
+      Alert.alert("Your prescription images have been submitted.");
+      dispatch(getPrescriptionImageActionCreator(appointmentId));
+      setNewImages([]);
+      navigation.goBack();
   };
-
-  if (loading) return <Loader />;
-
-
-  if (showCamera) {
-    return (
-      <PrescriptionCamera
-        onCapture={(uri) => {
-          const newImage = { uri };
-          setImages((prevImages) => [...prevImages, newImage]);
-          checkIfSubmitEnabled([...images, newImage]);
-          setShowCamera(false);
-        }}
-        onCancel={() => setShowCamera(false)}
-      />
-    );
-  }
 
   const isBackendImage = (imageUri) => {
     return imageUrls.includes(imageUri);
   };
 
+  if (fetchLoading || submitLoading) return <Loader />;
+
+  if (showCamera) {
+    return (
+      <PrescriptionCamera
+        onCapture={handleCapture}
+        onCancel={() => setShowCamera(false)}
+      />
+    );
+  }
+
   return (
     <ScreenContainer>
       <ScrollView>
-
         <View className="rounded-2xl">
           {/* Upload file section */}
           <View className="p-2 border-dashed border-2 rounded-lg flex justify-center items-center h-[320px] border-primary">
             {images.length > 0 ? (
               <View className="relative w-full h-full">
                 <Image
-                  source={{
-                    uri:
-                      images[currentIndex]?.uri ||
-                      images[currentIndex],
-                  }}
+                  source={{ uri: images[currentIndex]?.uri }}
                   className="w-full h-full object-cover rounded-lg"
                   resizeMode="cover"
                 />
-               {!isBackendImage(images[currentIndex]) && (
+                {!isBackendImage(images[currentIndex]?.uri) && (
                   <TouchableOpacity
                     onPress={() => removeImage(currentIndex)}
                     className="absolute right-0 bg-white rounded-full"
                   >
-                    <Ionicons name="close-circle" size={25} color={theme.colors.primary} />
+                    <Ionicons
+                      name="close-circle"
+                      size={25}
+                      color={theme.colors.primary}
+                    />
                   </TouchableOpacity>
                 )}
                 <TouchableOpacity
                   onPress={pickImagesFromGallery}
                   className="absolute -bottom-11 right-0"
                 >
-                  <Ionicons name="add-circle" size={30} color={theme.colors.primary} />
+                  <Ionicons
+                    name="add-circle"
+                    size={30}
+                    color={theme.colors.primary}
+                  />
                 </TouchableOpacity>
                 {/* Image Navigation */}
                 <TouchableOpacity
-                  onPress={handlePreviousImage}
+                  onPress={() => setCurrentIndex(currentIndex - 1)}
                   className="absolute left-0 top-1/2 transform -translate-y-1/2 p-1"
                   disabled={currentIndex === 0}
                 >
                   <Ionicons
                     name="chevron-back-circle"
                     size={40}
-                    style={{ color: currentIndex === 0 ? theme.colors.darkSecondary : theme.colors.primary }}
+                    style={{
+                      color:
+                        currentIndex === 0
+                          ? theme.colors.darkSecondary
+                          : theme.colors.primary,
+                    }}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={handleNextImage}
+                  onPress={() => setCurrentIndex(currentIndex + 1)}
                   className="absolute right-0 top-1/2 transform -translate-y-1/2 p-1"
                   disabled={currentIndex === images.length - 1}
                 >
                   <Ionicons
                     name="chevron-forward-circle"
                     size={40}
-                    style={{ color: currentIndex === images.length - 1 ? theme.colors.darkSecondary : theme.colors.primary }}
+                    style={{
+                      color:
+                        currentIndex === images.length - 1
+                          ? theme.colors.darkSecondary
+                          : theme.colors.primary,
+                    }}
                   />
                 </TouchableOpacity>
               </View>
             ) : (
-              <TouchableOpacity className="items-center" onPress={pickImagesFromGallery}>
+              <TouchableOpacity
+                className="items-center"
+                onPress={pickImagesFromGallery}
+              >
                 <Ionicons
                   name="document-attach"
                   size={30}
@@ -200,7 +218,6 @@ const UploadPrescription = () => {
           </View>
         </View>
       </ScrollView>
-
 
       {images.length > 0 ? (
         <View className="flex-row justify-between space-x-3">
@@ -238,7 +255,12 @@ const UploadPrescription = () => {
           <View className="flex-1">
             <AppButton
               btnLabel="Give Prescription"
-              onPress={() => navigation.navigate('doctorMedicine', { appointmentId, patientId })}
+              onPress={() =>
+                navigation.navigate("doctorMedicine", {
+                  appointmentId,
+                  patientId,
+                })
+              }
               variant="light"
             />
           </View>
