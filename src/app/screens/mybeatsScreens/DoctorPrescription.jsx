@@ -9,8 +9,11 @@ import { Calendar } from 'react-native-calendars';
 import MedicineSelector from '../../components/UploadPrescriptionComponents/MedicineSelector';
 import { setNewMedicine } from '../../../../store/actions/medicineActions';
 import { useDispatch } from 'react-redux';
+import { useRoute } from '@react-navigation/native';
+
 
 const DoctorPrescription = ({ route }) => {
+    const { appointmentId, patientId } = route.params;  
     const navigation = useNavigation()
     const dispatch = useDispatch();
     const { selectedMedicine: initialSelectedMedicine } = route.params || {};
@@ -55,7 +58,6 @@ const DoctorPrescription = ({ route }) => {
         { id: 2, name: 'Amoxicillin' },
         { id: 3, name: 'Ibuprofen' },
         { id: 4, name: 'Penicillin' },
-        { id: 5, name: "Dolo" }
     ];
 
 
@@ -104,7 +106,7 @@ const DoctorPrescription = ({ route }) => {
     const handleSubmit = () => {
         if (isFormComplete()) {
             const newMedicine = {
-                id: Date.now(), // Generate a new unique id
+                id: Date.now(), 
                 name: selectedMedicine.name,
                 type: selectedType,
                 period: selectedPeriod,
@@ -115,7 +117,7 @@ const DoctorPrescription = ({ route }) => {
                 endDate,
             };
             dispatch(setNewMedicine(newMedicine));  
-            navigation.navigate('doctorMedicine');
+            navigation.navigate('doctorMedicine', { appointmentId, patientId });
         }
     };
 

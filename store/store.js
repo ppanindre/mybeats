@@ -57,6 +57,10 @@ import {
   prescriptionGetReducer,
   prescriptionListReducer
 } from "./reducers/prescriptionReducers"
+import { 
+    prescriptionImageGetReducer,
+    prescriptionImageCreateReducer
+ } from "./reducers/prescriptionImageReducers";
 import imageReducer from "./reducers/imageReducer";
 import medicineReducer from "./reducers/medicineReducer";
 
@@ -100,6 +104,8 @@ const reducers = combineReducers({
     prescriptionCreate: prescriptionCreateReducer,
     prescriptionGet: prescriptionGetReducer,
     prescriptionList: prescriptionListReducer,
+    prescriptionImageGetReducer: prescriptionImageGetReducer,
+    prescriptionImageCreateReducer: prescriptionImageCreateReducer,
     patientStoriesListByDoctorReducer: patientStoriesListByDoctorReducer,
     patientStoryCreateReducer: patientStoryCreateReducer,
     patientStoryGetReducer: patientStoryGetReducer,

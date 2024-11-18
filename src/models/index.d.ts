@@ -213,6 +213,8 @@ type EagerAppointment = {
   readonly patientStory?: PatientStory | null;
   readonly doctorNotes?: string | null;
   readonly imagePaths?: (string | null)[] | null;
+  readonly prescriptions?: (Prescription | null)[] | null;
+  readonly prescriptionImagePaths?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -234,6 +236,8 @@ type LazyAppointment = {
   readonly patientStory: AsyncItem<PatientStory | undefined>;
   readonly doctorNotes?: string | null;
   readonly imagePaths?: (string | null)[] | null;
+  readonly prescriptions: AsyncCollection<Prescription>;
+  readonly prescriptionImagePaths?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -261,6 +265,8 @@ type EagerPrescription = {
   readonly doctor?: Doctor | null;
   readonly patientID: string;
   readonly patient?: Patient | null;
+  readonly appointmentID: string;
+  readonly appointment?: Appointment | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -282,6 +288,8 @@ type LazyPrescription = {
   readonly doctor: AsyncItem<Doctor | undefined>;
   readonly patientID: string;
   readonly patient: AsyncItem<Patient | undefined>;
+  readonly appointmentID: string;
+  readonly appointment: AsyncItem<Appointment | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

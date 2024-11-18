@@ -576,6 +576,12 @@ export const onCreateAppointment = /* GraphQL */ `
       }
       doctorNotes
       imagePaths
+      prescriptions {
+        nextToken
+        startedAt
+        __typename
+      }
+      prescriptionImagePaths
       createdAt
       updatedAt
       _version
@@ -662,6 +668,12 @@ export const onUpdateAppointment = /* GraphQL */ `
       }
       doctorNotes
       imagePaths
+      prescriptions {
+        nextToken
+        startedAt
+        __typename
+      }
+      prescriptionImagePaths
       createdAt
       updatedAt
       _version
@@ -748,6 +760,12 @@ export const onDeleteAppointment = /* GraphQL */ `
       }
       doctorNotes
       imagePaths
+      prescriptions {
+        nextToken
+        startedAt
+        __typename
+      }
+      prescriptionImagePaths
       createdAt
       updatedAt
       _version
@@ -812,6 +830,25 @@ export const onCreatePrescription = /* GraphQL */ `
         height
         profession
         underlyingCondition
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      appointmentID
+      appointment {
+        id
+        doctorID
+        patientId
+        startTime
+        endTime
+        type
+        isBooked
+        doctorNotes
+        imagePaths
+        prescriptionImagePaths
         createdAt
         updatedAt
         _version
@@ -890,6 +927,25 @@ export const onUpdatePrescription = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      appointmentID
+      appointment {
+        id
+        doctorID
+        patientId
+        startTime
+        endTime
+        type
+        isBooked
+        doctorNotes
+        imagePaths
+        prescriptionImagePaths
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -961,6 +1017,25 @@ export const onDeletePrescription = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      appointmentID
+      appointment {
+        id
+        doctorID
+        patientId
+        startTime
+        endTime
+        type
+        isBooked
+        doctorNotes
+        imagePaths
+        prescriptionImagePaths
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -1020,6 +1095,7 @@ export const onCreatePatientStory = /* GraphQL */ `
         isBooked
         doctorNotes
         imagePaths
+        prescriptionImagePaths
         createdAt
         updatedAt
         _version
@@ -1086,6 +1162,7 @@ export const onUpdatePatientStory = /* GraphQL */ `
         isBooked
         doctorNotes
         imagePaths
+        prescriptionImagePaths
         createdAt
         updatedAt
         _version
@@ -1152,6 +1229,7 @@ export const onDeletePatientStory = /* GraphQL */ `
         isBooked
         doctorNotes
         imagePaths
+        prescriptionImagePaths
         createdAt
         updatedAt
         _version

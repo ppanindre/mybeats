@@ -13,6 +13,7 @@ import {
     listAppointmentsByPatientActionCreators,
 } from '../../../../store/actions/appointmentActions';
 import { createPatientStoryActionCreator, getPatientStoryActionCreator } from '../../../../store/actions/patientStoriesAction';
+import { getPrescriptionImageActionCreator } from '../../../../store/actions/prescriptionImageActions';
 import { Rating } from 'react-native-ratings';
 import { theme } from "../../../../tailwind.config";
 import Loader from '../Utils/Loader';
@@ -38,6 +39,9 @@ const PatientAppointmentInfoScreen = () => {
     const { loading, success, error } = useSelector((state) => state.patientStoryCreateReducer);
     const isPastAppointment = moment(appointment.startTime).isBefore(moment());
 
+    const prescriptionImageState = useSelector((state) => state.prescriptionImageGetReducer);
+    const { loading: imageLoading, imageUrls } = prescriptionImageState;
+
     const [showModal, setShowModal] = useState(false);
     const [reason, setReason] = useState("");
 
@@ -53,6 +57,7 @@ const PatientAppointmentInfoScreen = () => {
     useEffect(() => {
         if (appointment.id) {
             dispatch(getPatientStoryActionCreator(appointment.id));
+            dispatch(getPrescriptionImageActionCreator(appointment.id));
         }
     }, [success, appointment.id, dispatch]);
 
@@ -76,6 +81,14 @@ const PatientAppointmentInfoScreen = () => {
         }
         setshowReviewModal(true);
     };
+
+    const ViewPrescription = () => {
+        if (imageUrls && imageUrls.length > 0) {
+            navigation.replace('prescritionImages', { appointmentId: appointment.id });
+        } else {
+            navigation.replace('prescriptionList', { appointmentId: appointment.id });
+        }
+    }
 
     const onSubmitReview = async () => {
 
@@ -218,7 +231,7 @@ const PatientAppointmentInfoScreen = () => {
                         <AppButton
                             variant="primary"
                             btnLabel="View Prescription"
-                            // onPress={handleShowReviewModal}
+                            onPress={ViewPrescription}
                         />
                     </View>
                 </View>

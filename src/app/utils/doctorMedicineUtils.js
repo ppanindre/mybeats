@@ -65,36 +65,40 @@ export const normalizeText = (text) => {
 
 //  format days to get it displayed user friendly 
 export const formatDays = (days) => {
-    if (Array.isArray(days) && days.length === 7) {
+    if (typeof days === 'string') {
+        return days.replace(/[\[\]"]/g, '').split(', ').join(', ');
+    } else if (Array.isArray(days) && days.length === 7) {
         return "Whole week";
+    } else if (Array.isArray(days)) {
+        return days.join(', ');
     }
-    return days ? days.join(', ') : "Days not specified";
+    return "Days not specified";
 };
 
 // creating and submitting prescriptions
-export const createAndSubmitPrescriptions = async (allMedicines, dispatch, navigation) => {
-    const prescriptions = allMedicines.map(medicine => ({
-        medicineName: medicine.name,
-        type: medicine.type,
-        dosage: medicine.period,
-        days: Array.from(medicine.days).join(', '),
-        dosageQuantity: JSON.stringify(medicine.meals),
-        startDate: medicine.startDate,
-        endDate: medicine.endDate,
-        patientID: '5' // Update the patient ID
-    }));
+// export const createAndSubmitPrescriptions = async (allMedicines, dispatch, navigation) => {
+//     const prescriptions = allMedicines.map(medicine => ({
+//         medicineName: medicine.name,
+//         type: medicine.type,
+//         dosage: medicine.period,
+//         days: Array.from(medicine.days).join(', '),
+//         dosageQuantity: JSON.stringify(medicine.meals),
+//         startDate: medicine.startDate,
+//         endDate: medicine.endDate,
+//         patientID: '5' // Update the patient ID
+//     }));
 
-    try {
-        await Promise.all(prescriptions.map(prescription =>
-            dispatch(createPrescriptionActionCreator(prescription))
-        ));
-        alert('Prescriptions sent to Patient');
-        dispatch(clearImageUri());
-        dispatch(clearNewMedicine());
-        navigation.navigate('doctorMedicine');
-    } catch (error) {
-        console.error('Error creating prescriptions:', error);
-        Sentry.captureException(error);
-        alert('Error creating prescriptions');
-    }
-};
+//     try {
+//         await Promise.all(prescriptions.map(prescription =>
+//             dispatch(createPrescriptionActionCreator(prescription))
+//         ));
+//         alert('Prescriptions sent to Patient');
+//         dispatch(clearImageUri());
+//         dispatch(clearNewMedicine());
+//         navigation.navigate('doctorMedicine');
+//     } catch (error) {
+//         console.error('Error creating prescriptions:', error);
+//         Sentry.captureException(error);
+//         alert('Error creating prescriptions');
+//     }
+// };

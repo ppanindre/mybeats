@@ -12,7 +12,9 @@ import {
     deleteAppointmentActionCreator,
     listAppointmentsByDoctorActionCreators,
 } from '../../../../store/actions/appointmentActions';
+import { listDoctorPrescriptionsByAppointmentActionCreator } from '../../../../store/actions/prescriptionActions';
 import { getDoctorNoteActionCreator } from '../../../../store/actions/doctorNoteActions';
+import { getPrescriptionImageActionCreator } from '../../../../store/actions/prescriptionImageActions';
 
 
 const DoctorAppointmentDetailScreen = () => {
@@ -38,18 +40,44 @@ const DoctorAppointmentDetailScreen = () => {
     // doctors notes from Redux
     const doctorNotes = useSelector((state) => state.doctorNoteGetReducer.doctorNote);
     const doctorImages = useSelector((state) => state.doctorNoteGetReducer.imageUrls);
+    const prescription = useSelector((state) => state.prescriptionList)
+    const prescriptionImages = useSelector((state) => state.prescriptionImageGetReducer.imageUrls);
+
+    // console.log(prescription)
+    // console.log(prescriptionImages)
 
     useEffect(() => {
         if (appointment.id) {
             dispatch(getDoctorNoteActionCreator(appointment.id));
+            dispatch(listDoctorPrescriptionsByAppointmentActionCreator(appointment.id));
+            dispatch(getPrescriptionImageActionCreator(appointment.id));
         }
     }, [dispatch, appointment.id]);
 
     const handleWriteNotesPress = () => {
-        navigation.navigate('doctorAppointmentNotes', { 
+        navigation.navigate('doctorAppointmentNotes', {
             appointmentId: appointment.id
         });
     };
+
+    const handlePrescriptionPress = () => {
+        if (prescription.prescriptions && prescription.prescriptions.length > 0) {
+            navigation.navigate('doctorMedicine', { appointmentId: appointment.id, patientId: appointment.patientId });
+        }
+        else if (prescriptionImages && prescriptionImages.length > 0) {
+            navigation.navigate('uploadPrescription', { appointmentId: appointment.id, patientId: appointment.patientId });
+        }
+        else {
+            navigation.navigate('uploadPrescription', { appointmentId: appointment.id, patientId: appointment.patientId });
+        }
+    };
+
+    const hasManualPrescription = prescription.prescriptions && prescription.prescriptions.length > 0;
+    const hasPrescriptionImages = prescriptionImages && prescriptionImages.length > 0;
+
+    // console.log("Manual Prescriptions:", prescription.prescriptions);
+    console.log("Prescription Images:", prescriptionImages);
+
     return (
         <ScreenContainer>
             <ScrollView
@@ -132,11 +160,18 @@ const DoctorAppointmentDetailScreen = () => {
                     </View>
                 </View>
             ) : (
-                <View className="flex-row">
+                <View className="flex-row space-x-5">
                     <View className="flex-1">
                         <AppButton
-                            btnLabel={(doctorNotes !== "" || (doctorImages && doctorImages.length > 0)) ? "View or edit your notes" : "Write Doctor's notes"}
+                            btnLabel={(doctorNotes !== "" || (doctorImages && doctorImages.length > 0)) ? "View/edit your notes" : "Write Doctor's notes"}
                             onPress={handleWriteNotesPress}
+                            variant="primary"
+                        />
+                    </View>
+                    <View className="flex-1">
+                        <AppButton
+                            btnLabel={hasManualPrescription ? "View Prescription" : hasPrescriptionImages ? "View Prescription" : "Give Prescription"}
+                            onPress={handlePrescriptionPress}
                             variant="primary"
                         />
                     </View>

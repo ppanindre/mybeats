@@ -787,6 +787,30 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": true
                 },
+                "prescriptions": {
+                    "name": "prescriptions",
+                    "isArray": true,
+                    "type": {
+                        "model": "Prescription"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "appointment"
+                        ]
+                    }
+                },
+                "prescriptionImagePaths": {
+                    "name": "prescriptionImagePaths",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -962,6 +986,28 @@ export const schema = {
                         ]
                     }
                 },
+                "appointmentID": {
+                    "name": "appointmentID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "appointment": {
+                    "name": "appointment",
+                    "isArray": false,
+                    "type": {
+                        "model": "Appointment"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "appointmentID"
+                        ]
+                    }
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1009,6 +1055,15 @@ export const schema = {
                         "name": "byPatient",
                         "fields": [
                             "patientID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byAppointment",
+                        "fields": [
+                            "appointmentID"
                         ]
                     }
                 },
@@ -1317,5 +1372,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "01eb413e441ea3c5310dc538464efffa"
+    "version": "f37b310fcf8285b28f171379b16473d5"
 };
