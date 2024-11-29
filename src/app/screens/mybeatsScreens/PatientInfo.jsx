@@ -78,7 +78,7 @@ const Patient = ({ route }) => {
                     <PatientHistoryCard
                         title="Health Tracking"
                         iconName="heart-outline"
-                        onPress={() => navigation.navigate('healthTracking')}
+                        onPress={() => navigation.navigate('healthTracking', {patientId})}
                     />
                     <PatientHistoryCard
                         title="Medications"
@@ -104,14 +104,6 @@ const Patient = ({ route }) => {
                     <AppButton
                         btnLabel="Request lab test"
                         variant="light"
-                    />
-                </View>
-                <View className="flex-1">
-                    <AppButton
-                        btnLabel="Give Prescription"
-                        onPress={() => navigation.navigate('doctorPrescription')}
-                        variant="primary"
-                    // btnLeftIcon={<Ionicons name="pencil" size={20} style={{ color: theme.colors.light }} />}
                     />
                 </View>
             </View>

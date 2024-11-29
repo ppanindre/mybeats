@@ -18,6 +18,7 @@ import {
 import { createPatient, updatePatient } from "../../src/graphql/mutations";
 import { getPatient } from "../../src/graphql/queries";
 import { listPatients } from "../../src/graphql/queries";
+import { listAppointments } from "../../src/graphql/queries";
 
 const client = generateClient();
 
@@ -167,21 +168,44 @@ export const getPatientActionCreator = () => async (dispatch, getState) => {
     }
 };
 
-export const listPatientsActionCreator = () => async (dispatch) => {
+export const listPatientsActionCreator = () => async (dispatch, getState) => {
     dispatch({ type: PATIENT_LIST_REQUEST });
     try {
-        const response = await client.graphql({
-            query: listPatients
+        const state = getState();
+        const doctorID = state.UserReducer.userId; // current doctor's ID
+
+        // all appointments for the doctor
+        const appointmentsResponse = await client.graphql({
+            query: listAppointments,
+            variables: { filter: { doctorID: { eq: doctorID }, isBooked: { eq: true } } },
         });
+
+        const appointments = appointmentsResponse.data.listAppointments.items;
+
+        //  unique patient IDs from appointments
+        const patientIds = [...new Set(appointments.map((appointment) => appointment.patientId))];
+
+        // all patients
+        const allPatientsResponse = await client.graphql({
+            query: listPatients,
+        });
+
+        const allPatients = allPatientsResponse.data.listPatients.items;
+
+        // Step 4: filtering patients having appointments with the current doctor
+        const filteredPatients = allPatients.filter((patient) =>
+            patientIds.includes(patient.id)
+        );
+
         dispatch({
             type: PATIENT_LIST_SUCCESS,
-            payload: response.data.listPatients.items
+            payload: filteredPatients,
         });
     } catch (error) {
         console.error("Error while getting patients", error);
         dispatch({
             type: PATIENT_LIST_FAILURE,
-            payload: error.message || "Error while getting patients"
+            payload: error.message || "Error while getting patients",
         });
     }
 };
