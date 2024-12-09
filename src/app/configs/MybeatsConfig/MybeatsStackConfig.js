@@ -34,6 +34,7 @@ import AllPatientStories from "../../screens/mybeatsScreens/AllPatientStories";
 import AppointmentImagesScreen from "../../components/PatientAppointmentsComponents/AppointmentImagesScreen";
 import PrescriptionList from "../../components/UploadPrescriptionComponents/PrescriptionList";
 import PatientPrscriptionImagesScreen from "../../components/PatientAppointmentsComponents/PatientPrescriptionImagesScreen";
+import Medications from "../../components/PatientInfo/Medications";
 
 export const mybeatsStackConfig = {
     screens: [
@@ -201,6 +202,11 @@ export const mybeatsStackConfig = {
             headerTitle: "Health History",
             name: "healthHistory",
             component: HealthHistory,
+        },
+        {
+            headerTitle: "Medications",
+            name: "medications",
+            component: Medications,
         },
         {
             headerTitle: "Image Analyzer",

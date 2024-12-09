@@ -83,6 +83,7 @@ const Patient = ({ route }) => {
                     <PatientHistoryCard
                         title="Medications"
                         iconName="bandage-outline"
+                        onPress={() => navigation.navigate('medications', { patientId })}
                     />
                     <PatientHistoryCard
                         title="Lab Test Results"
