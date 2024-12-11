@@ -577,16 +577,29 @@ export const listAppointments = /* GraphQL */ `
         doctorNotes
         imagePaths
         prescriptionImagePaths
+        prescriptions {
+          items {
+            id
+            medicineName
+            type
+            dosage
+            days
+            dosageQuantity
+            startDate
+            endDate
+            doctorID
+            patientID
+            appointmentID
+          }
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
-        __typename
       }
       nextToken
       startedAt
-      __typename
     }
   }
 `;

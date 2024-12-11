@@ -7,13 +7,13 @@ import CollapsibleItem from '../../../../components/CollapsibleItem';
 import moment from 'moment';
 import { ScrollView } from 'react-native-gesture-handler';
 import ScreenContainer from '../Containers/ScreenContainer';
+import Loader from '../Utils/Loader';
 
 const PrescriptionList = () => {
     const route = useRoute();
     const { appointmentId } = route.params;
     const dispatch = useDispatch();
-    const medicines = useSelector((state) => state.prescriptionList);
-    console.log(medicines);
+    const {loading, prescriptions} = useSelector((state) => state.prescriptionList);
 
     useEffect(() => {
         if (appointmentId) {
@@ -35,11 +35,13 @@ const PrescriptionList = () => {
             .join('\n');
     };
 
+    if (loading) return <Loader/>
+
     return (
         <ScreenContainer>
             <ScrollView showsVerticalScrollIndicator={false}>
-                {medicines.prescriptions && medicines.prescriptions.length > 0 ? (
-                    medicines.prescriptions.map((item) => (
+                {prescriptions && prescriptions.length > 0 ? (
+                    prescriptions.map((item) => (
                         <View key={item.id} className="p-3 border-b border-darkSecondary">
                             <View className="flex-row items-center justify-between">
                                 <View className="flex-row items-center">
