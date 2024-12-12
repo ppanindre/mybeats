@@ -1,4 +1,4 @@
-package com.nyu.mybeats
+package com.mybeats
 
 import android.os.Build
 import android.os.Bundle
