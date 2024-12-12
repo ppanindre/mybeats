@@ -28,7 +28,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.nyu.mybeats"
+      "package": "com.mybeats"
     },
     "web": {
       "favicon": "./assets/favicon.png"
