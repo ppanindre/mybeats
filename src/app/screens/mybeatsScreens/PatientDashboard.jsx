@@ -48,20 +48,20 @@ const PatientDashboard = () => {
                         <View>
                             <TouchableOpacity
                                 className="flex-row items-center justify-between p-5 rounded-lg shadow-md bg-primary"
-                                onPress={() => navigation.navigate("medicines")}
+                                onPress={() => navigation.navigate("labTestResults")}
                             >
                                 <View className="flex-1">
                                     <Text className="text-lg font-[appfont-semi] text-light">
-                                        Pharma
+                                        Lab Test Results
                                     </Text>
                                     <Text className="text-sm font-[appfont-semi] text-light">
-                                        Order via uploading prescription
+                                        View/Add your submitted tests here
                                     </Text>
                                 </View>
 
                                 {/* Upload Prescription */}
                                 <TouchableOpacity
-                                    onPress={() => navigation.navigate("uploadPrescription")}
+                                    onPress={() => navigation.navigate("uploadLabTestResult")}
                                     className="py-3 px-6 rounded-full shadow-md bg-light"
                                 >
                                     <Text className="font-[appfont-semi] text-dark">

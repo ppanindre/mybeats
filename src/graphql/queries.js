@@ -265,6 +265,11 @@ export const getPatient = /* GraphQL */ `
         startedAt
         __typename
       }
+      labTestResults {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -943,6 +948,112 @@ export const syncPatientStories = /* GraphQL */ `
     }
   }
 `;
+export const getLabTestResult = /* GraphQL */ `
+  query GetLabTestResult($id: ID!) {
+    getLabTestResult(id: $id) {
+      id
+      title
+      description
+      testDate
+      labResultImages
+      patientID
+      patient {
+        id
+        firstname
+        lastname
+        email
+        phoneNumber
+        address
+        zipcode
+        age
+        weight
+        height
+        profession
+        underlyingCondition
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listLabTestResults = /* GraphQL */ `
+  query ListLabTestResults(
+    $id: ID
+    $filter: ModelLabTestResultFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listLabTestResults(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        title
+        description
+        testDate
+        labResultImages
+        patientID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncLabTestResults = /* GraphQL */ `
+  query SyncLabTestResults(
+    $filter: ModelLabTestResultFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncLabTestResults(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        title
+        description
+        testDate
+        labResultImages
+        patientID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
 export const getDoctorSpecialties = /* GraphQL */ `
   query GetDoctorSpecialties($id: ID!) {
     getDoctorSpecialties(id: $id) {
@@ -1515,6 +1626,41 @@ export const storiesByAppointment = /* GraphQL */ `
         date
         story
         appointmentID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const labTestsByPatient = /* GraphQL */ `
+  query LabTestsByPatient(
+    $patientID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelLabTestResultFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    labTestsByPatient(
+      patientID: $patientID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        title
+        description
+        testDate
+        labResultImages
+        patientID
         createdAt
         updatedAt
         _version

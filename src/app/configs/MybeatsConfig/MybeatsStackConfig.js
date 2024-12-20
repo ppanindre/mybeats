@@ -35,6 +35,10 @@ import AppointmentImagesScreen from "../../components/PatientAppointmentsCompone
 import PrescriptionList from "../../components/UploadPrescriptionComponents/PrescriptionList";
 import PatientPrscriptionImagesScreen from "../../components/PatientAppointmentsComponents/PatientPrescriptionImagesScreen";
 import Medications from "../../components/PatientInfo/Medications";
+import LabTestResults from "../../components/PatientLabTestResults/LabTestResults";
+import UploadLabTestResult from "../../components/PatientLabTestResults/UploadLabTestResult";
+import ViewLabTestResults from "../../components/PatientLabTestResults/ViewLabTestResults";
+import DoctorLabTestResults from "../../components/DoctorLabTestView/DoctorLabTestResults";
 
 export const mybeatsStackConfig = {
     screens: [
@@ -227,6 +231,26 @@ export const mybeatsStackConfig = {
             headerTitle: "Prescribed Medicines",
             name: "prescritionImages",
             component: PatientPrscriptionImagesScreen,
+        },
+        {
+            headerTitle: "Lab Tests",
+            name: "labTestResults",
+            component: LabTestResults,
+        },
+        {
+            headerTitle: "Upload Test Results",
+            name: "uploadLabTestResult",
+            component: UploadLabTestResult,
+        },
+        {
+            headerTitle: "View Result",
+            name: "viewLabTestResults",
+            component: ViewLabTestResults,
+        },
+        {
+            headerTitle: "Patient Lab Test Results",
+            name: "doctorLabTestResults",
+            component: DoctorLabTestResults,
         },
     ],
 };

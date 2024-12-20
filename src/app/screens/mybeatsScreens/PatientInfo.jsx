@@ -88,6 +88,7 @@ const Patient = ({ route }) => {
                     <PatientHistoryCard
                         title="Lab Test Results"
                         iconName="flask-outline"
+                        onPress={() => navigation.navigate('doctorLabTestResults', { patientId })}
                     />
                     <PatientHistoryCard
                         title="Health history"

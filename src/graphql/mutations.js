@@ -302,6 +302,11 @@ export const createPatient = /* GraphQL */ `
         startedAt
         __typename
       }
+      labTestResults {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -339,6 +344,11 @@ export const updatePatient = /* GraphQL */ `
         startedAt
         __typename
       }
+      labTestResults {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -372,6 +382,11 @@ export const deletePatient = /* GraphQL */ `
       profession
       underlyingCondition
       prescriptions {
+        nextToken
+        startedAt
+        __typename
+      }
+      labTestResults {
         nextToken
         startedAt
         __typename
@@ -1263,6 +1278,129 @@ export const deletePatientStory = /* GraphQL */ `
         doctorNotes
         imagePaths
         prescriptionImagePaths
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createLabTestResult = /* GraphQL */ `
+  mutation CreateLabTestResult(
+    $input: CreateLabTestResultInput!
+    $condition: ModelLabTestResultConditionInput
+  ) {
+    createLabTestResult(input: $input, condition: $condition) {
+      id
+      title
+      description
+      testDate
+      labResultImages
+      patientID
+      patient {
+        id
+        firstname
+        lastname
+        email
+        phoneNumber
+        address
+        zipcode
+        age
+        weight
+        height
+        profession
+        underlyingCondition
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateLabTestResult = /* GraphQL */ `
+  mutation UpdateLabTestResult(
+    $input: UpdateLabTestResultInput!
+    $condition: ModelLabTestResultConditionInput
+  ) {
+    updateLabTestResult(input: $input, condition: $condition) {
+      id
+      title
+      description
+      testDate
+      labResultImages
+      patientID
+      patient {
+        id
+        firstname
+        lastname
+        email
+        phoneNumber
+        address
+        zipcode
+        age
+        weight
+        height
+        profession
+        underlyingCondition
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteLabTestResult = /* GraphQL */ `
+  mutation DeleteLabTestResult(
+    $input: DeleteLabTestResultInput!
+    $condition: ModelLabTestResultConditionInput
+  ) {
+    deleteLabTestResult(input: $input, condition: $condition) {
+      id
+      title
+      description
+      testDate
+      labResultImages
+      patientID
+      patient {
+        id
+        firstname
+        lastname
+        email
+        phoneNumber
+        address
+        zipcode
+        age
+        weight
+        height
+        profession
+        underlyingCondition
         createdAt
         updatedAt
         _version

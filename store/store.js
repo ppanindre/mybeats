@@ -63,6 +63,11 @@ import {
  } from "./reducers/prescriptionImageReducers";
 import imageReducer from "./reducers/imageReducer";
 import medicineReducer from "./reducers/medicineReducer";
+import { 
+    labTestResultCreateReducer, 
+    labTestResultGetReducer,
+    labTestResultsByPatientReducer
+} from "./reducers/labTestResultReducers";
 
 
 // Combining every reducer
@@ -110,6 +115,9 @@ const reducers = combineReducers({
     patientStoryCreateReducer: patientStoryCreateReducer,
     patientStoryGetReducer: patientStoryGetReducer,
     doctorNoteGetReducer: doctorNoteGetReducer,
+    labTestResultCreateReducer: labTestResultCreateReducer,
+    labTestResultGetReducer: labTestResultGetReducer,
+    labTestResultsByPatientReducer: labTestResultsByPatientReducer,
 });
 
 // Redux store containing reducers and the middleware
