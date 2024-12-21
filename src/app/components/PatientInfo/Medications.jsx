@@ -29,7 +29,7 @@ const Medications = ({ route }) => {
       // filtering appointments
       const appointmentsWithMedications = appointmentsByPatient.filter(
         (appointment) =>
-          (appointment.prescriptions.items?.length > 0) || 
+          (appointment.prescriptions?.items?.length > 0) || 
           (appointment.prescriptionImagePaths?.length > 0)
       );
       setFilteredAppointments(appointmentsWithMedications);

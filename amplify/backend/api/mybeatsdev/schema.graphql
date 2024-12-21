@@ -59,6 +59,8 @@ type Patient @model @auth(rules: [{ allow: public }]) {
     underlyingCondition: String
      prescriptions: [Prescription] 
         @hasMany(indexName: "byPatient", fields: ["id"])
+     labTestResults: [LabTestResult]
+        @hasMany(indexName: "byPatient", fields: ["id"])
 }
 
 type Availability @model @auth(rules: [{ allow: public }]) {
@@ -129,4 +131,14 @@ type PatientStory @model @auth(rules: [{ allow: public }]) {
     story: String
     appointmentID: ID! @index(name: "byAppointment", queryField: "storiesByAppointment")
     appointment: Appointment @belongsTo(fields: ["appointmentID"])
+}
+
+type LabTestResult @model @auth(rules: [{ allow: public }]) {
+    id: ID! @primaryKey
+    title: String! 
+    description: String 
+    testDate: AWSDateTime
+    labResultImages: [String] 
+    patientID: ID! @index(name: "byPatient", queryField: "labTestsByPatient")
+    patient: Patient @belongsTo(fields: ["patientID"])
 }

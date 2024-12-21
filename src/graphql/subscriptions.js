@@ -287,6 +287,11 @@ export const onCreatePatient = /* GraphQL */ `
         startedAt
         __typename
       }
+      labTestResults {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -321,6 +326,11 @@ export const onUpdatePatient = /* GraphQL */ `
         startedAt
         __typename
       }
+      labTestResults {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -351,6 +361,11 @@ export const onDeletePatient = /* GraphQL */ `
       profession
       underlyingCondition
       prescriptions {
+        nextToken
+        startedAt
+        __typename
+      }
+      labTestResults {
         nextToken
         startedAt
         __typename
@@ -1230,6 +1245,126 @@ export const onDeletePatientStory = /* GraphQL */ `
         doctorNotes
         imagePaths
         prescriptionImagePaths
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onCreateLabTestResult = /* GraphQL */ `
+  subscription OnCreateLabTestResult(
+    $filter: ModelSubscriptionLabTestResultFilterInput
+  ) {
+    onCreateLabTestResult(filter: $filter) {
+      id
+      title
+      description
+      testDate
+      labResultImages
+      patientID
+      patient {
+        id
+        firstname
+        lastname
+        email
+        phoneNumber
+        address
+        zipcode
+        age
+        weight
+        height
+        profession
+        underlyingCondition
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateLabTestResult = /* GraphQL */ `
+  subscription OnUpdateLabTestResult(
+    $filter: ModelSubscriptionLabTestResultFilterInput
+  ) {
+    onUpdateLabTestResult(filter: $filter) {
+      id
+      title
+      description
+      testDate
+      labResultImages
+      patientID
+      patient {
+        id
+        firstname
+        lastname
+        email
+        phoneNumber
+        address
+        zipcode
+        age
+        weight
+        height
+        profession
+        underlyingCondition
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteLabTestResult = /* GraphQL */ `
+  subscription OnDeleteLabTestResult(
+    $filter: ModelSubscriptionLabTestResultFilterInput
+  ) {
+    onDeleteLabTestResult(filter: $filter) {
+      id
+      title
+      description
+      testDate
+      labResultImages
+      patientID
+      patient {
+        id
+        firstname
+        lastname
+        email
+        phoneNumber
+        address
+        zipcode
+        age
+        weight
+        height
+        profession
+        underlyingCondition
         createdAt
         updatedAt
         _version

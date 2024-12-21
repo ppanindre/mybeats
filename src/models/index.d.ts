@@ -129,6 +129,7 @@ type EagerPatient = {
   readonly profession?: string | null;
   readonly underlyingCondition?: string | null;
   readonly prescriptions?: (Prescription | null)[] | null;
+  readonly labTestResults?: (LabTestResult | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -152,6 +153,7 @@ type LazyPatient = {
   readonly profession?: string | null;
   readonly underlyingCondition?: string | null;
   readonly prescriptions: AsyncCollection<Prescription>;
+  readonly labTestResults: AsyncCollection<LabTestResult>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -342,6 +344,44 @@ export declare type PatientStory = LazyLoading extends LazyLoadingDisabled ? Eag
 
 export declare const PatientStory: (new (init: ModelInit<PatientStory>) => PatientStory) & {
   copyOf(source: PatientStory, mutator: (draft: MutableModel<PatientStory>) => MutableModel<PatientStory> | void): PatientStory;
+}
+
+type EagerLabTestResult = {
+  readonly [__modelMeta__]: {
+    identifier: OptionallyManagedIdentifier<LabTestResult, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly title: string;
+  readonly description?: string | null;
+  readonly testDate?: string | null;
+  readonly labResultImages?: (string | null)[] | null;
+  readonly patientID: string;
+  readonly patient?: Patient | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyLabTestResult = {
+  readonly [__modelMeta__]: {
+    identifier: OptionallyManagedIdentifier<LabTestResult, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly title: string;
+  readonly description?: string | null;
+  readonly testDate?: string | null;
+  readonly labResultImages?: (string | null)[] | null;
+  readonly patientID: string;
+  readonly patient: AsyncItem<Patient | undefined>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type LabTestResult = LazyLoading extends LazyLoadingDisabled ? EagerLabTestResult : LazyLabTestResult
+
+export declare const LabTestResult: (new (init: ModelInit<LabTestResult>) => LabTestResult) & {
+  copyOf(source: LabTestResult, mutator: (draft: MutableModel<LabTestResult>) => MutableModel<LabTestResult> | void): LabTestResult;
 }
 
 type EagerDoctorSpecialties = {
