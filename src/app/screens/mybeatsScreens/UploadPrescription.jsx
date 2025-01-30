@@ -151,18 +151,18 @@ const UploadPrescription = () => {
                   >
                     <Ionicons
                       name="close-circle"
-                      size={25}
+                      size={35}
                       color={theme.colors.primary}
                     />
                   </TouchableOpacity>
                 )}
                 <TouchableOpacity
                   onPress={pickImagesFromGallery}
-                  className="absolute -bottom-11 right-0"
+                  className="absolute bottom-0 right-0"
                 >
                   <Ionicons
                     name="add-circle"
-                    size={30}
+                    size={35}
                     color={theme.colors.primary}
                   />
                 </TouchableOpacity>

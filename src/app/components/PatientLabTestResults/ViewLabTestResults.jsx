@@ -15,6 +15,7 @@ import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { Ionicons } from "@expo/vector-icons";
 import ScreenContainer from "../Containers/ScreenContainer";
 import { theme } from "../../../../tailwind.config";
+import { handleDelete } from "../../utils/doctorMedicineUtils";
 
 const ViewLabTestResults = ({ route }) => {
   const { labTestResult } = route.params;
@@ -134,9 +135,9 @@ const ViewLabTestResults = ({ route }) => {
               />
               <TouchableOpacity
                 onPress={handleDownloadImage}
-                className="absolute right-2 top-2"
+                className="absolute right-0 top-0"
               >
-                <Ionicons name="download" size={28} color={theme.colors.primary} />
+                <Ionicons name="download" size={35} color={theme.colors.primary} />
               </TouchableOpacity>
 
               {/* Image Navigation */}

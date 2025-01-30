@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { launchImageLibrary } from "react-native-image-picker";
@@ -15,15 +15,15 @@ import ScreenContainer from "../Containers/ScreenContainer";
 import { useSelector, useDispatch } from "react-redux";
 import { theme } from "../../../../tailwind.config";
 import AppButton from "../Buttons/AppButton";
-import MultiLineInput from "../Inputs/MultiLineInput";
 import PrescriptionCamera from "../../screens/mybeatsScreens/PrescriptionCamera";
 import {
   createOrUpdateLabTestResultActionCreator,
   getLabTestResultsActionCreator,
 } from "../../../../store/actions/labTestResultsActions";
 import Loader from "../Utils/Loader";
+import CustomInput from "../../../../components/CustomInput";
 
-const UploadLabTestResult = ({route}) => {
+const UploadLabTestResult = ({ route }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -38,7 +38,7 @@ const UploadLabTestResult = ({route}) => {
       uri,
       isBackend: true,
     })) || []
-  );  // all images (existing + new)
+  ); // all images (existing + new)
   const [newImages, setNewImages] = useState([]); // newly added images
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
@@ -99,7 +99,7 @@ const UploadLabTestResult = ({route}) => {
     );
   };
 
-  // camera 
+  // camera
   const handleCapture = (uri) => {
     const newImage = { uri, fileName: `camera_${Date.now()}` };
     setNewImages((prev) => [...prev, newImage]);
@@ -130,7 +130,7 @@ const UploadLabTestResult = ({route}) => {
       Alert.alert("Error", "Please provide a title for the lab test result.");
       return;
     }
-  
+
     try {
       await dispatch(
         createOrUpdateLabTestResultActionCreator(
@@ -146,7 +146,6 @@ const UploadLabTestResult = ({route}) => {
       Alert.alert("Error", error.message || "An error occurred.");
     }
   };
-  
 
   if (submitLoading) return <Loader />;
 
@@ -164,17 +163,18 @@ const UploadLabTestResult = ({route}) => {
       <ScrollView>
         <View className="space-y-8 p-4">
           {/* Title Input */}
-            <MultiLineInput
-              label="Enter Test Title"
-              value={title}
-              onChangeText={setTitle}
-              editable={true}
-            />
+          <CustomInput
+            label="Enter Test Title"
+            placeholder="Lab Test Title"
+            value={title}
+            onChangeText={setTitle}
+            editable={true}
+          />
 
           {/* Images Container */}
           <View className="rounded-2xl">
-            <View className="p-2 border-dashed border-2 rounded-lg flex justify-center items-center h-[320px] border-primary">
-            {isImageLoading && images.length > 0 && (
+            <View className="p-2 border-dashed border-2 rounded-lg flex justify-center items-center h-[450px] w-full border-primary">
+              {isImageLoading && images.length > 0 && (
                 <ActivityIndicator
                   size="medium"
                   color={theme.colors.primary}
@@ -192,11 +192,25 @@ const UploadLabTestResult = ({route}) => {
                   {!images[currentIndex]?.isBackend && (
                     <TouchableOpacity
                       onPress={() => removeImage(currentIndex)}
-                      className="absolute right-2 top-2 bg-white rounded-full p-1"
+                      className="absolute right-0 top-0 bg-white rounded-full"
                     >
                       <Ionicons
                         name="close-circle"
-                        size={25}
+                        size={35}
+                        color={theme.colors.primary}
+                      />
+                    </TouchableOpacity>
+                  )}
+
+                  {/* Plus Icon for adding more images */}
+                  {images.length > 0 && (
+                    <TouchableOpacity
+                      onPress={pickImagesFromGallery}
+                      className="flex items-center absolute right-0 bottom-0"
+                    >
+                      <Ionicons
+                        name="add-circle"
+                        size={35}
                         color={theme.colors.primary}
                       />
                     </TouchableOpacity>
@@ -256,20 +270,6 @@ const UploadLabTestResult = ({route}) => {
                 </TouchableOpacity>
               )}
             </View>
-
-            {/* Plus Icon for adding more images */}
-            {images.length > 0 && (
-              <TouchableOpacity
-                onPress={pickImagesFromGallery}
-                className="flex items-center absolute right-0 bottom-0"
-              >
-                <Ionicons
-                  name="add-circle"
-                  size={40}
-                  color={theme.colors.primary}
-                />
-              </TouchableOpacity>
-            )}
           </View>
         </View>
       </ScrollView>

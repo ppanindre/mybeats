@@ -17,7 +17,7 @@ const TextInputBoxWithIcon = ({ placeholder, icon, onFocus, onChangeText, onSubm
         <View
             className="flex-row items-center p-2 rounded-lg flex-1 bg-light shadow-lg h-[100%]"
             style={{
-                borderWidth: 0,
+                borderWidth: 1.5,
                 // if input box is focused, change the color to blue
                 borderColor: isFocused
                     ? theme.colors.primary

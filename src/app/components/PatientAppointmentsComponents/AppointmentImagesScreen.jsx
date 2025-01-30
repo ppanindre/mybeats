@@ -126,11 +126,11 @@ const PatientAppointmentNotesScreen = ({ route }) => {
                                 />
                                 <TouchableOpacity
                                     onPress={handleDownloadImage}
-                                    className="absolute right-2 top-2"
+                                    className="absolute right-0 top-0"
                                 >
                                     <Ionicons
                                         name="download"
-                                        size={28}
+                                        size={35}
                                         color={theme.colors.primary}
                                     />
                                 </TouchableOpacity>
