@@ -173,7 +173,7 @@ const UploadLabTestResult = ({ route }) => {
 
           {/* Images Container */}
           <View className="rounded-2xl">
-            <View className="p-2 border-dashed border-2 rounded-lg flex justify-center items-center h-[450px] w-full border-primary">
+            <View className="p-2 border-dashed border-2 rounded-lg flex justify-center items-center h-[475px] w-full border-primary">
               {isImageLoading && images.length > 0 && (
                 <ActivityIndicator
                   size="medium"
@@ -182,11 +182,11 @@ const UploadLabTestResult = ({ route }) => {
                 />
               )}
               {images.length > 0 ? (
-                <View className="relative w-full h-full">
+                <View className="relative w-full h-full bg-darkSecondary">
                   <Image
                     source={{ uri: images[currentIndex]?.uri }}
-                    className="w-full h-full object-cover rounded-lg"
-                    resizeMode="cover"
+                    className="w-full h-full rounded-lg"
+                    resizeMode="contain"
                     onLoad={() => setIsImageLoading(false)}
                   />
                   {!images[currentIndex]?.isBackend && (

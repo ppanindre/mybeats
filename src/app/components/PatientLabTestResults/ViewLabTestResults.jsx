@@ -114,7 +114,7 @@ const ViewLabTestResults = ({ route }) => {
           <View>
             <Text className="font-[appfont-semi] text-lg">Images</Text>
             <View
-              className="border-dashed border-2 rounded-lg p-2 justify-center items-center h-[350px]"
+              className="border-dashed border-2 rounded-lg p-2 justify-center items-center h-[475px] bg-darkSecondary"
               style={{ borderColor: theme.colors.primary }}
             >
               {isImageLoading && (
@@ -126,7 +126,8 @@ const ViewLabTestResults = ({ route }) => {
               )}
               <Image
                 source={{ uri: labResultImages[currentImageIndex] }}
-                className="w-full h-full object-contain"
+                className="w-full h-full"
+                resizeMode="contain"
                 onLoad={() => setIsImageLoading(false)}
                 onError={(error) => {
                   setIsImageLoading(false);

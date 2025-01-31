@@ -116,13 +116,14 @@ const PatientAppointmentNotesScreen = ({ route }) => {
                 {imageUrls && imageUrls.length > 0 && (
                     <View className="space-y-2">
                         <Text className="font-[appfont-semi] text-lg">Pictures</Text>
-                        <View className="border-dashed border-2 rounded-lg p-2 justify-center items-center h-[320px]"
+                        <View className="border-dashed border-2 rounded-lg p-2 justify-center items-center h-[430px] bg-darkSecondary"
                             style={{ borderColor: theme.colors.primary }}
                         >
-                            <View className="relative flex-1 w-full justify-center items-center">
+                            <View className="relative w-full h-full">
                                 <Image
                                     source={{ uri: imageUrls[currentImageIndex]?.uri || imageUrls[currentImageIndex]?.url || imageUrls[currentImageIndex] }}
-                                    className="w-full h-full object-contain"
+                                    className="w-full h-full"
+                                    resizeMode="contain"
                                 />
                                 <TouchableOpacity
                                     onPress={handleDownloadImage}

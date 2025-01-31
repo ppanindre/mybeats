@@ -135,13 +135,14 @@ const DoctorAppointmentNotesScreen = () => {
             <View className="space-y-2">
               <Text className="font-[appfont-semi] text-lg">Pictures</Text>
               <View
-                className="border-dashed border-2 rounded-lg p-2 justify-center items-center h-[320px]"
+                className="border-dashed border-2 rounded-lg p-2 justify-center items-center h-[360px]"
                 style={{ borderColor: theme.colors.primary }}
               >
-                <View className="relative flex-1 w-full justify-center items-center">
+                <View className="relative flex-1 w-full justify-center items-center bg-darkSecondary">
                   <Image
                     source={{ uri: images[currentImageIndex]?.uri }}
-                    className="w-full h-full object-contain"
+                    className="w-full h-full"
+                    resizeMode="contain"
                   />
                   {/* Show remove button only for newly added images */}
                   {!images[currentImageIndex]?.isBackend && (
@@ -209,7 +210,7 @@ const DoctorAppointmentNotesScreen = () => {
             <View className="space-y-2">
               <Text className="font-[appfont-semi] text-lg">Pictures</Text>
               <View
-                className="border-dashed border-2 rounded-lg p-2 justify-center items-center h-[320px]"
+                className="border-dashed border-2 rounded-lg p-2 justify-center items-center h-[360px]"
                 style={{ borderColor: theme.colors.primary }}
               >
                 <TouchableOpacity className="items-center" onPress={addImageFromGallery}>
