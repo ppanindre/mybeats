@@ -15,6 +15,7 @@ import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import { Ionicons } from "@expo/vector-icons";
 import ScreenContainer from "../Containers/ScreenContainer";
 import { theme } from "../../../../tailwind.config";
+import { handleDelete } from "../../utils/doctorMedicineUtils";
 
 const ViewLabTestResults = ({ route }) => {
   const { labTestResult } = route.params;
@@ -113,7 +114,7 @@ const ViewLabTestResults = ({ route }) => {
           <View>
             <Text className="font-[appfont-semi] text-lg">Images</Text>
             <View
-              className="border-dashed border-2 rounded-lg p-2 justify-center items-center h-[350px]"
+              className="border-dashed border-2 rounded-lg p-2 justify-center items-center h-[475px] bg-darkSecondary"
               style={{ borderColor: theme.colors.primary }}
             >
               {isImageLoading && (
@@ -125,7 +126,8 @@ const ViewLabTestResults = ({ route }) => {
               )}
               <Image
                 source={{ uri: labResultImages[currentImageIndex] }}
-                className="w-full h-full object-contain"
+                className="w-full h-full"
+                resizeMode="contain"
                 onLoad={() => setIsImageLoading(false)}
                 onError={(error) => {
                   setIsImageLoading(false);
@@ -134,9 +136,9 @@ const ViewLabTestResults = ({ route }) => {
               />
               <TouchableOpacity
                 onPress={handleDownloadImage}
-                className="absolute right-2 top-2"
+                className="absolute right-0 top-0"
               >
-                <Ionicons name="download" size={28} color={theme.colors.primary} />
+                <Ionicons name="download" size={35} color={theme.colors.primary} />
               </TouchableOpacity>
 
               {/* Image Navigation */}

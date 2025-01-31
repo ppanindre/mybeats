@@ -136,13 +136,13 @@ const UploadPrescription = () => {
       <ScrollView>
         <View className="rounded-2xl">
           {/* Upload file section */}
-          <View className="p-2 border-dashed border-2 rounded-lg flex justify-center items-center h-[320px] border-primary">
+          <View className="p-2 border-dashed border-2 rounded-lg flex justify-center items-center h-[475px] border-primary">
             {images.length > 0 ? (
-              <View className="relative w-full h-full">
+              <View className="relative w-full h-full bg-darkSecondary">
                 <Image
                   source={{ uri: images[currentIndex]?.uri }}
-                  className="w-full h-full object-cover rounded-lg"
-                  resizeMode="cover"
+                  className="w-full h-full rounded-lg"
+                  resizeMode="contain"
                 />
                 {!isBackendImage(images[currentIndex]?.uri) && (
                   <TouchableOpacity
@@ -151,18 +151,18 @@ const UploadPrescription = () => {
                   >
                     <Ionicons
                       name="close-circle"
-                      size={25}
+                      size={35}
                       color={theme.colors.primary}
                     />
                   </TouchableOpacity>
                 )}
                 <TouchableOpacity
                   onPress={pickImagesFromGallery}
-                  className="absolute -bottom-11 right-0"
+                  className="absolute bottom-0 right-0"
                 >
                   <Ionicons
                     name="add-circle"
-                    size={30}
+                    size={35}
                     color={theme.colors.primary}
                   />
                 </TouchableOpacity>
