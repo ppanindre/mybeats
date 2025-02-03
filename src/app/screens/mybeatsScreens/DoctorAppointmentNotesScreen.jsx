@@ -120,9 +120,9 @@ const DoctorAppointmentNotesScreen = () => {
 
   return (
     <ScreenContainer>
-      <ScrollView>
+      {/* <ScrollView> */}
         <View className="flex-1 space-y-5">
-          <View className="space-y-2">
+          <View className="flex-[0.3] space-y-2">
             <MultiLineInput
               label={doctorNote ? "Doctor's Notes" : "Write your notes here"}
               value={notes}
@@ -132,10 +132,10 @@ const DoctorAppointmentNotesScreen = () => {
           </View>
 
           {images.length > 0 ? (
-            <View className="space-y-2">
+            <View className="space-y-2 flex-[0.7]">
               <Text className="font-[appfont-semi] text-lg">Pictures</Text>
               <View
-                className="border-dashed border-2 rounded-lg p-2 justify-center items-center h-[360px]"
+                className="border-dashed border-2 rounded-lg p-2 justify-center items-center flex-1"
                 style={{ borderColor: theme.colors.primary }}
               >
                 <View className="relative flex-1 w-full justify-center items-center bg-darkSecondary">
@@ -207,10 +207,10 @@ const DoctorAppointmentNotesScreen = () => {
               </View>
             </View>
           ) : (
-            <View className="space-y-2">
+            <View className="flex-[0.6] space-y-2">
               <Text className="font-[appfont-semi] text-lg">Pictures</Text>
               <View
-                className="border-dashed border-2 rounded-lg p-2 justify-center items-center h-[360px]"
+                className="border-dashed border-2 rounded-lg p-2 justify-center items-center h-full w-full"
                 style={{ borderColor: theme.colors.primary }}
               >
                 <TouchableOpacity className="items-center" onPress={addImageFromGallery}>
@@ -227,7 +227,7 @@ const DoctorAppointmentNotesScreen = () => {
             </View>
           )}
         </View>
-      </ScrollView>
+      {/* </ScrollView> */}
 
       {/* {(!doctorNote || !imageUrls) && ( */}
       <View className="flex-row space-x-3">

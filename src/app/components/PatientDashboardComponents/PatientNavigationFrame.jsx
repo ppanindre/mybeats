@@ -20,11 +20,15 @@ const PatientNavigationFrame = () => {
             </View>
             <View className="flex-1">
                 {/* Second Card: Diagnostics */}
-                <NavigationCard
+                {/* <NavigationCard
                     cardTitle="Diagnostics"
                     cardContent="Request a lab test"
                     onPress={() => navigation.navigate("diagnostics")}
-                />
+                /> */}
+                 <NavigationCard
+                    cardTitle="Payments"
+                    cardContent="Manage Payments"
+                    onPress={() => navigation.navigate("payment")}                />
             </View>
         </View>
     );

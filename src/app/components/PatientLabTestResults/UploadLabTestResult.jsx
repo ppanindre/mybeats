@@ -160,8 +160,8 @@ const UploadLabTestResult = ({ route }) => {
 
   return (
     <ScreenContainer>
-      <ScrollView>
-        <View className="space-y-8 p-4">
+      <View className="flex-1">
+        <View className="space-y-8 p-4 flex-1">
           {/* Title Input */}
           <CustomInput
             label="Enter Test Title"
@@ -172,8 +172,8 @@ const UploadLabTestResult = ({ route }) => {
           />
 
           {/* Images Container */}
-          <View className="rounded-2xl">
-            <View className="p-2 border-dashed border-2 rounded-lg flex justify-center items-center h-[475px] w-full border-primary">
+          <View className="rounded-2xl flex-1">
+            <View className="p-2 border-dashed border-2 rounded-lg flex justify-center items-center w-full border-primary">
               {isImageLoading && images.length > 0 && (
                 <ActivityIndicator
                   size="medium"
@@ -255,24 +255,24 @@ const UploadLabTestResult = ({ route }) => {
                   </TouchableOpacity>
                 </View>
               ) : (
-                <TouchableOpacity
-                  className="items-center"
-                  onPress={pickImagesFromGallery}
-                >
-                  <Ionicons
-                    name="document-attach"
-                    size={30}
-                    style={{ color: theme.colors.primary }}
-                  />
-                  <Text className="font-[appfont-bold] mt-2 text-primary">
-                    Upload file here
-                  </Text>
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    className="items-center justify-center h-full w-full"
+                    onPress={pickImagesFromGallery}
+                  >
+                    <Ionicons
+                      name="document-attach"
+                      size={30}
+                      style={{ color: theme.colors.primary }}
+                    />
+                    <Text className="font-[appfont-bold] mt-2 text-primary">
+                      Upload file here
+                    </Text>
+                  </TouchableOpacity>
               )}
             </View>
           </View>
         </View>
-      </ScrollView>
+      </View>
 
       {/* Action Buttons */}
       <View className="flex-row justify-between px-4 mt-4 space-x-3">

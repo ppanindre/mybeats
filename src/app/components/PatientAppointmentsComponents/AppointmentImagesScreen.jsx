@@ -103,9 +103,9 @@ const PatientAppointmentNotesScreen = ({ route }) => {
 
     return (
         <ScreenContainer>
-            <ScrollView showsVerticalScrollIndicator={false} className="flex-1 space-y-10">
+            <View className="flex-1 space-y-3">
                 {/* Doctor's Notes */}
-                <View className="space-y-2">
+                <View className="flex-[0.3] space-y-2">
                     <MultiLineInput
                         label="Doctor's Notes"
                         value={doctorNote || 'No notes available'}
@@ -114,9 +114,9 @@ const PatientAppointmentNotesScreen = ({ route }) => {
                 </View>
 
                 {imageUrls && imageUrls.length > 0 && (
-                    <View className="space-y-2">
+                    <View className="space-y-2 flex-[0.6]">
                         <Text className="font-[appfont-semi] text-lg">Pictures</Text>
-                        <View className="border-dashed border-2 rounded-lg p-2 justify-center items-center h-[430px] bg-darkSecondary"
+                        <View className="border-dashed border-2 rounded-lg p-2 justify-center items-center bg-darkSecondary"
                             style={{ borderColor: theme.colors.primary }}
                         >
                             <View className="relative w-full h-full">
@@ -162,7 +162,7 @@ const PatientAppointmentNotesScreen = ({ route }) => {
                         </View>
                     </View>
                 )}
-            </ScrollView>
+            </View>
         </ScreenContainer>
     );
 };

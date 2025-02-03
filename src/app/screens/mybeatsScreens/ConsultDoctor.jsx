@@ -36,7 +36,7 @@ const ConsultDoctor = () => {
         { key: "Pediatrics", icon: appicon, specialization: "Pediatrics" },
         { key: "Digestion", icon: appicon, specialization: "Digestion" },
         { key: "Psychiatry", icon: appicon, specialization: "Psychiatry" },
-        { key: "View All", icon: appicon, specialization: null },
+        { key: "View All", icon: appicon, specialization: "null" },
     ]
 
     useEffect(() => {
@@ -54,7 +54,7 @@ const ConsultDoctor = () => {
                     <View className="flex-row items-center justify-between w-full h-[50]">
                         {/* Search Container */}
                         <TextInputBoxWithIcon
-                            onFocus={() => navigation.navigate("searchDoctors")}
+                            onFocus={() => navigation.navigate("SearchDoctors")}
                             icon={
                                 <Ionicons
                                     name="search-outline"
@@ -81,7 +81,7 @@ const ConsultDoctor = () => {
                             renderItem={({ item }) => (
                                 <TouchableOpacity
                                     className="flex-1 items-center p-3"
-                                    onPress={() => navigation.navigate("searchDoctors", { specialization: item.specialization })}
+                                    onPress={() => navigation.navigate("SearchDoctors", { specialization: item.specialization })}
                                 >
                                     <Image
                                         source={item.icon}

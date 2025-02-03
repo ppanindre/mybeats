@@ -101,9 +101,9 @@ const ViewLabTestResults = ({ route }) => {
 
   return (
     <ScreenContainer>
-      <ScrollView showsVerticalScrollIndicator={false} className="space-y-8">
+      <View className="space-y-5 flex-1">
         {/* Title */}
-        <View>
+        <View className="flex-[0.1]">
           <Text className="font-[appfont-semi] text-lg">Test Title</Text>
           <Text>{title}</Text>
         </View>
@@ -111,10 +111,10 @@ const ViewLabTestResults = ({ route }) => {
 
         {/* Images */}
         {labResultImages?.length > 0 && (
-          <View>
+          <View className="flex-[0.8]">
             <Text className="font-[appfont-semi] text-lg">Images</Text>
             <View
-              className="border-dashed border-2 rounded-lg p-2 justify-center items-center h-[475px] bg-darkSecondary"
+              className="border-dashed border-2 rounded-lg p-2 justify-center items-center bg-darkSecondary"
               style={{ borderColor: theme.colors.primary }}
             >
               {isImageLoading && (
@@ -181,7 +181,7 @@ const ViewLabTestResults = ({ route }) => {
             </View>
           </View>
         )}
-      </ScrollView>
+      </View>
     </ScreenContainer>
   );
 };

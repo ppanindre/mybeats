@@ -72,7 +72,7 @@ const PatientDashboard = () => {
                         </View>
 
                         {/* Payments */}
-                        <View>
+                        {/* <View>
                             <TouchableOpacity
                                 className="flex-row items-center justify-between p-5 rounded-lg shadow-md bg-lightPrimary"
                                 onPress={() => navigation.navigate("payment")}
@@ -87,7 +87,7 @@ const PatientDashboard = () => {
                                 </View>
 
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
 
                         <View>
                             <DoctorScrollView />
