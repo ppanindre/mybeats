@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const apiKey = 'AIzaSyC1hiS3sXkvQPqEodYESWOLBYkUsyR8Tv4'; // Google Maps API key
 
-export const geocodeAddress = (address, city, state, zipcode) => async (dispatch) => {
+export const geocodeAddress = (address, city, state, zipcode, doctorID) => async (dispatch) => {
     dispatch({ type: GEOCODING_GET_REQUEST });
 
     try {
@@ -22,7 +22,7 @@ export const geocodeAddress = (address, city, state, zipcode) => async (dispatch
             const { lat, lng } = response.data.results[0].geometry.location;
             dispatch({
                 type: GEOCODING_GET_SUCCESS,
-                payload: { latitude: lat, longitude: lng },
+                payload: { latitude: lat, longitude: lng, doctorID },
             });
         } else {
             dispatch({

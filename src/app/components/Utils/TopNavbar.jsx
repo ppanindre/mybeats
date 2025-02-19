@@ -296,7 +296,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                     )}
 
                     {/* Continue Button */}
-                    <View className="flex justify-center items-center mt-4 mb-5">
+                    <View className="flex mt-4 mb-5">
                         <AppButton
                             variant={`${selectedRole ? "primary" : "disabled"}`}
                             btnLabel="Confirm"

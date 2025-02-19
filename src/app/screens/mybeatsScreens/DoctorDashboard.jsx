@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import {
-    View,
-    FlatList,
-    Text,
-    TouchableOpacity,
-    ScrollView,
+  View,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
@@ -22,83 +22,98 @@ import ScreenContainer from "../../components/Containers/ScreenContainer";
 import Loader from "../../components/Utils/Loader";
 
 const DoctorDashboard = () => {
-    const { loading, doctor, error } = useSelector(
-        (state) => state.doctorGetReducer
-    );
+  const { loading, doctor, error } = useSelector(
+    (state) => state.doctorGetReducer
+  );
 
-    // Declare navigation instance
-    const navigation = useNavigation();
-    const dispatch = useDispatch();
+  // Declare navigation instance
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(getDoctorActionCreator());
-    }, []);
+  useEffect(() => {
+    dispatch(getDoctorActionCreator());
+  }, []);
 
-    if (loading) {
-        return <Loader />;
-    };
+  if (loading) {
+    return <Loader />;
+  }
 
-    if (error || doctor === null) {
-        navigation.navigate("doctorProfile");
-    }
+  if (error || doctor === null) {
+    navigation.navigate("doctorProfile");
+  }
 
+  return (
+    <CustomSafeView>
+      {/* Top navbar */}
+      <TopNavbar isMyBeats={true} showSync={false} />
+      <ScreenContainer>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 100 }}
+        >
+          <View className="space-y-5">
+            <View>
+              <FormInput
+                label="Search Patient"
+                onFocus={() => navigation.navigate("searchPatients")}
+              />
+            </View>
 
-    return (
-        <CustomSafeView>
-            {/* Top navbar */}
-            <TopNavbar isMyBeats={true} showSync={false} />
-            <ScreenContainer>
-                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 100}}>
-                    <View className="space-y-5">
-                        <View>
-                            <FormInput label="Search Patient"
-                             onFocus={() => navigation.navigate("searchPatients")}/>
-                        </View>
+            {/* Image slider component */}
+            <View>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("appointments")}
+                className="h-[150] bg-primary rounded-lg justify-center p-5 shadow-lg"
+              >
+                <Text className="font-[appfont-bold] text-xl text-light">
+                  Appointments
+                </Text>
+                <Text className="font-[appfont] text-lg text-light">
+                  Manage Your Appointments
+                </Text>
+              </TouchableOpacity>
+            </View>
 
-                        {/* Image slider component */}
-                        <View>
-                            <TouchableOpacity
-                                onPress={() =>
-                                    navigation.navigate("appointments")
-                                }
-                                className="h-[150] bg-primary rounded-lg justify-center p-5 shadow-lg"
-                            >
-                                <Text className="font-[appfont-bold] text-xl text-light">
-                                    Appointments
-                                </Text>
-                                <Text className="font-[appfont] text-lg text-light">
-                                    Manage Your Appointments
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
+            {/* Cards View */}
+            <View className="flex-row justify-around space-x-5">
+              {/* First Card: Telehealth */}
+              <View className="flex-1">
+                <NavigationCard
+                  cardTitle="Profile"
+                  cardContent="Upate your Information"
+                  onPress={() => navigation.navigate("doctorProfile")}
+                />
+              </View>
 
-                        {/* Cards View */}
-                        <View className="flex-row justify-around space-x-5">
-                            {/* First Card: Telehealth */}
-                            <View className="flex-1">
-                                <NavigationCard
-                                    cardTitle="Profile"
-                                    cardContent="Upate your Information"
-                                    onPress={() =>
-                                        navigation.navigate("doctorProfile")
-                                    }
-                                />
-                            </View>
+              <View className="flex-1">
+                {/* Second Card: Patients */}
+                <NavigationCard
+                  cardTitle="Patients"
+                  cardContent="Know your patients"
+                  onPress={() => navigation.navigate("patients")}
+                />
+              </View>
+            </View>
 
-                            <View className="flex-1">
-                                {/* Second Card: Patients */}
-                                <NavigationCard
-                                    cardTitle="Patients"
-                                    cardContent="Know your patients"
-                                    onPress={() =>
-                                        navigation.navigate("patients")
-                                    }
-                                />
-                            </View>
-                        </View>
+            {/* Image slider component */}
+            <View>
+              <TouchableOpacity
+                className="flex-row items-center justify-between p-5 rounded-lg shadow-md bg-primary"
+                onPress={() => navigation.navigate("payment")}
+              >
+                <View className="flex-1">
+                  <Text className="text-lg font-[appfont-semi] text-light">
+                    Payments
+                  </Text>
+                  <Text className="text-sm font-[appfont-semi] text-light">
+                    Manage payments
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
 
-                        {/* Pharma card */}
-                        <View>
+            {/* Pharma card */}
+            {/* <View>
                             <TouchableOpacity
                                 className="bg-primary flex-row items-center justify-between p-5 rounded-lg"
                                 onPress={() => navigation.navigate("medicines")}
@@ -112,7 +127,6 @@ const DoctorDashboard = () => {
                                     </Text>
                                 </View>
 
-                                {/* Upload Prescription */}
                                 <TouchableOpacity
                                     onPress={() =>
                                         navigation.navigate(
@@ -126,10 +140,10 @@ const DoctorDashboard = () => {
                                     </Text>
                                 </TouchableOpacity>
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
 
-                        {/* Pharmacy based on the zip codes */}
-                        <View className="flex-row justify-between items-center">
+            {/* Pharmacy based on the zip codes */}
+            {/* <View className="flex-row justify-between items-center">
                             <Text className="text-lg font-[appfont-semi]">
                                 Pharmacy near you
                             </Text>
@@ -138,10 +152,10 @@ const DoctorDashboard = () => {
                                     See all
                                 </Text>
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
 
-                        {/* Pharmacy Data */}
-                        <FlatList
+            {/* Pharmacy Data */}
+            {/* <FlatList
                             data={pharmacyData}
                             keyExtractor={(item, index) =>
                                 item.id.toString() || index.toString()
@@ -167,10 +181,10 @@ const DoctorDashboard = () => {
                                 </View>
                             )}
                             contentContainerStyle={{ gap: 10 }}
-                        />
+                        /> */}
 
-                        {/* Labs based on the zipcode */}
-                        <View className="flex-row justify-between items-center">
+            {/* Labs based on the zipcode */}
+            {/* <View className="flex-row justify-between items-center">
                             <Text className="text-lg font-[appfont-semi]">
                                 Labs near you
                             </Text>
@@ -179,10 +193,10 @@ const DoctorDashboard = () => {
                                     See all
                                 </Text>
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
 
-                        {/* Lab Data */}
-                        <FlatList
+            {/* Lab Data */}
+            {/* <FlatList
                             data={LabData}
                             keyExtractor={(item, index) =>
                                 item.id.toString() || index.toString()
@@ -206,12 +220,12 @@ const DoctorDashboard = () => {
                                 </View>
                             )}
                             contentContainerStyle={{ gap: 10 }}
-                        />
-                    </View>
-                </ScrollView>
-            </ScreenContainer>
-        </CustomSafeView>
-    );
+                        /> */}
+          </View>
+        </ScrollView>
+      </ScreenContainer>
+    </CustomSafeView>
+  );
 };
 
 export default DoctorDashboard;

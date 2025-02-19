@@ -8,11 +8,12 @@ import AppButton from "../Buttons/AppButton";
 
 const DoctorFilters = ({ isVisible, onClose, onApply, selectedFilters, setSelectedFilters }) => {
     const filterNames = {
-        "Experience": "experience",
+        "Years of Experience": "experience",
         "Video Consultation": "videoConsultation",
         "In Person": "inPerson",
         "Distance": "distance",
-        "Ratings": "ratings"
+        "Ratings": "ratings",
+        "Consultation Fee" : "consultationFee"
     };
 
     const handleFilterSelect = (filter) => {
@@ -57,7 +58,7 @@ const DoctorFilters = ({ isVisible, onClose, onApply, selectedFilters, setSelect
                         containerStyle={{ marginTop: 10, marginLeft: 0 }}
                     />
                 ))}
-                <View className="flex justify-center items-center">
+                <View className="flex">
                     <AppButton
                         btnLabel="Apply"
                         onPress={applyFilters}
