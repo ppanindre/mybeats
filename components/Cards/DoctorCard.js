@@ -75,7 +75,7 @@ const DoctorCard = ({
                     <Text
                         className="text-md font-[appfont-bold] text-dark"
                     >
-                        {doctor.address} {doctor.city} {doctor.state} {doctor.zipcode}
+                        {doctor.city}, {doctor.state}
                     </Text>
 
                     <Text

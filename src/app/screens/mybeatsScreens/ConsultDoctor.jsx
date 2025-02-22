@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import {
-    View,
-    Text,
-    TouchableOpacity,
-    ScrollView,
-    Image,
-    FlatList,
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  FlatList,
 } from "react-native";
 import appicon from "../../assets/app-icon.png";
 import { Ionicons } from "@expo/vector-icons";
@@ -20,131 +20,174 @@ import { useDispatch, useSelector } from "react-redux";
 import { listDoctorsActionCreator } from "../../../../store/actions/doctorActions";
 
 const ConsultDoctor = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
 
-    const { loading, error, doctors } = useSelector(
-        (state) => state.doctorsListReducer
-    );
+  const { loading, error, doctors } = useSelector(
+    (state) => state.doctorsListReducer
+  );
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    medical_specialities = [
-        { key: "Women’s Health", icon: appicon, specialization: "Women’s Health" },
-        { key: "Skin & Hair", icon: appicon, specialization: "Skin & Hair" },
-        { key: "Child Specialist", icon: appicon, specialization: "Child Specialist" },
-        { key: "General Medicine", icon: appicon, specialization: "General Medicine" },
-        { key: "Pediatrics", icon: appicon, specialization: "Pediatrics" },
-        { key: "Digestion", icon: appicon, specialization: "Digestion" },
-        { key: "Psychiatry", icon: appicon, specialization: "Psychiatry" },
-        { key: "View All", icon: appicon, specialization: "null" },
-    ]
+  medical_specialities = [
+    { key: "Women’s Health", icon: appicon, specialization: "Women’s Health" },
+    { key: "Skin & Hair", icon: appicon, specialization: "Skin & Hair" },
+    {
+      key: "Child Specialist",
+      icon: appicon,
+      specialization: "Child Specialist",
+    },
+    {
+      key: "General Medicine",
+      icon: appicon,
+      specialization: "General Medicine",
+    },
+    { key: "Pediatrics", icon: appicon, specialization: "Pediatrics" },
+    { key: "Digestion", icon: appicon, specialization: "Digestion" },
+    { key: "Psychiatry", icon: appicon, specialization: "Psychiatry" },
+    { key: "View All", icon: appicon, specialization: null },
+  ];
 
-    useEffect(() => {
-        dispatch(listDoctorsActionCreator());
-    }, []);
+  const medicalSpecialtyMap = {
+    "Women’s Health": ["Obstetrics", "Gynecology", "Neonatology"],
+    "Skin & Hair": ["Dermatology", "Cosmetology"],
+    "Child Specialist": ["Pediatrics", "Neonatology"],
+    "General Medicine": ["Internal Medicine", "General Physician"],
+    "Pediatrics": ["Pediatrics", "Neonatology"],
+    "Digestion": ["Gastroenterology"],
+    "Psychiatry": ["Psychiatry", "Mental Health"],
+  };
 
-    return (
-        <ScreenContainer>
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 50 }}
-            >
+  const healthIssueToSpecialtyMap = {
+    "Cold & Cough": ["Pulmonology", "Internal Medicine"],
+    "Headache": ["Neurology", "Neurosurgery"],
+    "Throat Pain": ["Otolaryngology", "ENT Specialist"],
+  };
 
-                <View className="space-y-5">
-                    <View className="flex-row items-center justify-between w-full h-[50]">
-                        {/* Search Container */}
-                        <TextInputBoxWithIcon
-                            onFocus={() => navigation.navigate("SearchDoctors")}
-                            icon={
-                                <Ionicons
-                                    name="search-outline"
-                                    color={theme.colors.darkSecondary}
-                                    size={24}
-                                />
-                            }
-                            placeholder="Search Doctor, Condition, Pincode"
-                        />
-                    </View>
+  useEffect(() => {
+    dispatch(listDoctorsActionCreator());
+  }, []);
 
-                    {/* Slider section */}
-                    <View>
-                        <Slider />
-                    </View>
+  return (
+    <ScreenContainer>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 50 }}
+      >
+        <View className="space-y-5">
+          <View className="flex-row items-center justify-between w-full h-[50]">
+            {/* Search Container */}
+            <TextInputBoxWithIcon
+              onFocus={() => navigation.navigate("searchDoctors")}
+              icon={
+                <Ionicons
+                  name="search-outline"
+                  color={theme.colors.darkSecondary}
+                  size={24}
+                />
+              }
+              placeholder="Search Doctor, Condition, Pincode"
+            />
+          </View>
 
-                    <View>
-                        <Text className="text-lg font-[appfont-semi]">
-                            Medical Specialties
-                        </Text>
-                        <FlatList
-                            data={medical_specialities}
-                            numColumns={4}
-                            renderItem={({ item }) => (
-                                <TouchableOpacity
-                                    className="flex-1 items-center p-3"
-                                    onPress={() => navigation.navigate("SearchDoctors", { specialization: item.specialization })}
-                                >
-                                    <Image
-                                        source={item.icon}
-                                        className="w-16 h-16 mb-2 rounded-md"
-                                    />
-                                    <Text className="text-xs font-[appfont-semi] text-center">
-                                        {item.key}
-                                    </Text>
-                                </TouchableOpacity>
-                            )}
-                            keyExtractor={(item) => item.key}
-                        />
+          {/* Slider section */}
+          <View>
+            <Slider />
+          </View>
 
-                    </View>
+          <View>
+            <Text className="text-lg font-[appfont-semi]">
+              Medical Specialties
+            </Text>
+            <FlatList
+              data={medical_specialities}
+              numColumns={4}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  className="flex-1 items-center p-3"
+                  onPress={() => {
+                    if (item.specialization === null) {
+                      navigation.navigate("searchDoctors", {
+                        specialization: null,
+                      }); // handling 'view all'
+                    } else {
+                      const mappedSpecialization = medicalSpecialtyMap[
+                        item.specialization
+                      ] || [item.specialization];
+                      navigation.navigate("searchDoctors", {
+                        specialization: mappedSpecialization,
+                      });
+                    }
+                  }}
+                >
+                  <Image
+                    source={item.icon}
+                    className="w-16 h-16 mb-2 rounded-md"
+                  />
+                  <Text className="text-xs font-[appfont-semi] text-center">
+                    {item.key}
+                  </Text>
+                </TouchableOpacity>
+              )}
+              keyExtractor={(item) => item.key}
+            />
+          </View>
 
-                    <View>
-                        <Text className="text-lg font-[appfont-semi]">
-                            Common Health Issues
-                        </Text>
-                        <FlatList
-                            data={commonHealthIssues}
-                            horizontal={true}
-                            showsHorizontalScrollIndicator={false}
-                            contentContainerStyle={{
-                                paddingVertical: 20,
-                                gap: 10,
-                            }}
-                            renderItem={({ item }) => (
-                                <TouchableOpacity
-                                    className="p-4 rounded-lg shadow-md justify-end"
-                                    style={{ width: 160, height: 200, backgroundColor: theme.colors.lightPrimary }}
-                                >
-                                    <Text className="text-lg font-[appfont-semi]">
-                                        {item.title}
-                                    </Text>
-                                </TouchableOpacity>
-                            )}
-                            keyExtractor={(item) => item.id}
-                        />
-                    </View>
+          <View>
+            <Text className="text-lg font-[appfont-semi]">
+              Common Health Issues
+            </Text>
+            <FlatList
+              data={commonHealthIssues}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                paddingVertical: 20,
+                gap: 10,
+              }}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  className="p-4 rounded-lg shadow-md justify-end"
+                  style={{
+                    width: 160,
+                    height: 200,
+                    backgroundColor: theme.colors.lightPrimary,
+                  }}
+                  onPress={() => {
+                    const mappedSpecialization = healthIssueToSpecialtyMap[
+                      item.title
+                    ] || ["General Physician"];
+                    navigation.navigate("searchDoctors", {
+                      specialization: mappedSpecialization,
+                    });
+                  }}
+                >
+                  <Text className="text-lg font-[appfont-semi]">
+                    {item.title}
+                  </Text>
+                </TouchableOpacity>
+              )}
+              keyExtractor={(item) => item.id}
+            />
+          </View>
 
-                    <Text className="text-lg font-[appfont-semi]">
-                        Available Doctors
-                    </Text>
-                    <FlatList
-                        data={doctors}
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        renderItem={({ item: doctor }) => (
-                            <View className="w-[300]">
-                                <TouchableOpacity>
-                                    <DoctorCard
-                                        doctor={doctor}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                        contentContainerStyle={{ gap: 10 }}
-                    />
-                </View>
-            </ScrollView>
-        </ScreenContainer>
-    );
+          <Text className="text-lg font-[appfont-semi]">Available Doctors</Text>
+          <FlatList
+            data={doctors}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item: doctor }) => (
+              <View className="w-[300]">
+                <TouchableOpacity>
+                  <DoctorCard doctor={doctor} />
+                </TouchableOpacity>
+              </View>
+            )}
+            contentContainerStyle={{ gap: 10 }}
+          />
+        </View>
+      </ScrollView>
+    </ScreenContainer>
+  );
 };
 
 export default ConsultDoctor;
