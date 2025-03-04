@@ -1,11 +1,5 @@
 // constants.js
 
-export const secondarySpecializationList = [
-    { _id: "1", value: "Surgery" },
-    { _id: "2", value: "Pediatrics" },
-    { _id: "3", value: "General Medicine" },
-    { _id: "4", value: "Others" },
-];
 
 export const countryStatesList = [
     { _id: "1", value: "Andhra Pradesh" },

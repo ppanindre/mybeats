@@ -34,7 +34,12 @@ export const createDoctor = /* GraphQL */ `
       city
       state
       experience
-      secondarySpecialization
+      secondarySpecializationIds
+      secondarySpecializations {
+        nextToken
+        startedAt
+        __typename
+      }
       availableForVideoConsultation
       feeForVideoConsultation
       educationExperience
@@ -103,7 +108,12 @@ export const updateDoctor = /* GraphQL */ `
       city
       state
       experience
-      secondarySpecialization
+      secondarySpecializationIds
+      secondarySpecializations {
+        nextToken
+        startedAt
+        __typename
+      }
       availableForVideoConsultation
       feeForVideoConsultation
       educationExperience
@@ -172,7 +182,12 @@ export const deleteDoctor = /* GraphQL */ `
       city
       state
       experience
-      secondarySpecialization
+      secondarySpecializationIds
+      secondarySpecializations {
+        nextToken
+        startedAt
+        __typename
+      }
       availableForVideoConsultation
       feeForVideoConsultation
       educationExperience
@@ -221,6 +236,21 @@ export const createSpecialty = /* GraphQL */ `
         startedAt
         __typename
       }
+      secondaryDoctors {
+        nextToken
+        startedAt
+        __typename
+      }
+      primaryToSecondaryLinks {
+        nextToken
+        startedAt
+        __typename
+      }
+      secondaryToPrimaryLinks {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -239,6 +269,21 @@ export const updateSpecialty = /* GraphQL */ `
       id
       name
       doctors {
+        nextToken
+        startedAt
+        __typename
+      }
+      secondaryDoctors {
+        nextToken
+        startedAt
+        __typename
+      }
+      primaryToSecondaryLinks {
+        nextToken
+        startedAt
+        __typename
+      }
+      secondaryToPrimaryLinks {
         nextToken
         startedAt
         __typename
@@ -263,6 +308,135 @@ export const deleteSpecialty = /* GraphQL */ `
       doctors {
         nextToken
         startedAt
+        __typename
+      }
+      secondaryDoctors {
+        nextToken
+        startedAt
+        __typename
+      }
+      primaryToSecondaryLinks {
+        nextToken
+        startedAt
+        __typename
+      }
+      secondaryToPrimaryLinks {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createPrimaryToSecondary = /* GraphQL */ `
+  mutation CreatePrimaryToSecondary(
+    $input: CreatePrimaryToSecondaryInput!
+    $condition: ModelPrimaryToSecondaryConditionInput
+  ) {
+    createPrimaryToSecondary(input: $input, condition: $condition) {
+      id
+      primarySpecialtyID
+      secondarySpecialtyID
+      primarySpecialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      secondarySpecialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updatePrimaryToSecondary = /* GraphQL */ `
+  mutation UpdatePrimaryToSecondary(
+    $input: UpdatePrimaryToSecondaryInput!
+    $condition: ModelPrimaryToSecondaryConditionInput
+  ) {
+    updatePrimaryToSecondary(input: $input, condition: $condition) {
+      id
+      primarySpecialtyID
+      secondarySpecialtyID
+      primarySpecialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      secondarySpecialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deletePrimaryToSecondary = /* GraphQL */ `
+  mutation DeletePrimaryToSecondary(
+    $input: DeletePrimaryToSecondaryInput!
+    $condition: ModelPrimaryToSecondaryConditionInput
+  ) {
+    deletePrimaryToSecondary(input: $input, condition: $condition) {
+      id
+      primarySpecialtyID
+      secondarySpecialtyID
+      primarySpecialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      secondarySpecialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
       createdAt
@@ -423,7 +597,7 @@ export const createAvailability = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -469,7 +643,7 @@ export const updateAvailability = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -515,7 +689,7 @@ export const deleteAvailability = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -564,7 +738,7 @@ export const createAppointment = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -657,7 +831,7 @@ export const updateAppointment = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -750,7 +924,7 @@ export const deleteAppointment = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -845,7 +1019,7 @@ export const createPrescription = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -936,7 +1110,7 @@ export const updatePrescription = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -1027,7 +1201,7 @@ export const deletePrescription = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -1111,7 +1285,7 @@ export const createPatientStory = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -1179,7 +1353,7 @@ export const updatePatientStory = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -1247,7 +1421,7 @@ export const deletePatientStory = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -1439,7 +1613,7 @@ export const createDoctorSpecialties = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -1494,7 +1668,7 @@ export const updateDoctorSpecialties = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -1549,7 +1723,172 @@ export const deleteDoctorSpecialties = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createDoctorSecondarySpecialties = /* GraphQL */ `
+  mutation CreateDoctorSecondarySpecialties(
+    $input: CreateDoctorSecondarySpecialtiesInput!
+    $condition: ModelDoctorSecondarySpecialtiesConditionInput
+  ) {
+    createDoctorSecondarySpecialties(input: $input, condition: $condition) {
+      id
+      doctorDoctorID
+      specialtyId
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecializationIds
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateDoctorSecondarySpecialties = /* GraphQL */ `
+  mutation UpdateDoctorSecondarySpecialties(
+    $input: UpdateDoctorSecondarySpecialtiesInput!
+    $condition: ModelDoctorSecondarySpecialtiesConditionInput
+  ) {
+    updateDoctorSecondarySpecialties(input: $input, condition: $condition) {
+      id
+      doctorDoctorID
+      specialtyId
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecializationIds
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteDoctorSecondarySpecialties = /* GraphQL */ `
+  mutation DeleteDoctorSecondarySpecialties(
+    $input: DeleteDoctorSecondarySpecialtiesInput!
+    $condition: ModelDoctorSecondarySpecialtiesConditionInput
+  ) {
+    deleteDoctorSecondarySpecialties(input: $input, condition: $condition) {
+      id
+      doctorDoctorID
+      specialtyId
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience

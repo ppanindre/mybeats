@@ -31,7 +31,12 @@ export const onCreateDoctor = /* GraphQL */ `
       city
       state
       experience
-      secondarySpecialization
+      secondarySpecializationIds
+      secondarySpecializations {
+        nextToken
+        startedAt
+        __typename
+      }
       availableForVideoConsultation
       feeForVideoConsultation
       educationExperience
@@ -97,7 +102,12 @@ export const onUpdateDoctor = /* GraphQL */ `
       city
       state
       experience
-      secondarySpecialization
+      secondarySpecializationIds
+      secondarySpecializations {
+        nextToken
+        startedAt
+        __typename
+      }
       availableForVideoConsultation
       feeForVideoConsultation
       educationExperience
@@ -163,7 +173,12 @@ export const onDeleteDoctor = /* GraphQL */ `
       city
       state
       experience
-      secondarySpecialization
+      secondarySpecializationIds
+      secondarySpecializations {
+        nextToken
+        startedAt
+        __typename
+      }
       availableForVideoConsultation
       feeForVideoConsultation
       educationExperience
@@ -211,6 +226,21 @@ export const onCreateSpecialty = /* GraphQL */ `
         startedAt
         __typename
       }
+      secondaryDoctors {
+        nextToken
+        startedAt
+        __typename
+      }
+      primaryToSecondaryLinks {
+        nextToken
+        startedAt
+        __typename
+      }
+      secondaryToPrimaryLinks {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -228,6 +258,21 @@ export const onUpdateSpecialty = /* GraphQL */ `
       id
       name
       doctors {
+        nextToken
+        startedAt
+        __typename
+      }
+      secondaryDoctors {
+        nextToken
+        startedAt
+        __typename
+      }
+      primaryToSecondaryLinks {
+        nextToken
+        startedAt
+        __typename
+      }
+      secondaryToPrimaryLinks {
         nextToken
         startedAt
         __typename
@@ -251,6 +296,132 @@ export const onDeleteSpecialty = /* GraphQL */ `
       doctors {
         nextToken
         startedAt
+        __typename
+      }
+      secondaryDoctors {
+        nextToken
+        startedAt
+        __typename
+      }
+      primaryToSecondaryLinks {
+        nextToken
+        startedAt
+        __typename
+      }
+      secondaryToPrimaryLinks {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onCreatePrimaryToSecondary = /* GraphQL */ `
+  subscription OnCreatePrimaryToSecondary(
+    $filter: ModelSubscriptionPrimaryToSecondaryFilterInput
+  ) {
+    onCreatePrimaryToSecondary(filter: $filter) {
+      id
+      primarySpecialtyID
+      secondarySpecialtyID
+      primarySpecialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      secondarySpecialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdatePrimaryToSecondary = /* GraphQL */ `
+  subscription OnUpdatePrimaryToSecondary(
+    $filter: ModelSubscriptionPrimaryToSecondaryFilterInput
+  ) {
+    onUpdatePrimaryToSecondary(filter: $filter) {
+      id
+      primarySpecialtyID
+      secondarySpecialtyID
+      primarySpecialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      secondarySpecialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeletePrimaryToSecondary = /* GraphQL */ `
+  subscription OnDeletePrimaryToSecondary(
+    $filter: ModelSubscriptionPrimaryToSecondaryFilterInput
+  ) {
+    onDeletePrimaryToSecondary(filter: $filter) {
+      id
+      primarySpecialtyID
+      secondarySpecialtyID
+      primarySpecialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      secondarySpecialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
       createdAt
@@ -401,7 +572,7 @@ export const onCreateAvailability = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -446,7 +617,7 @@ export const onUpdateAvailability = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -491,7 +662,7 @@ export const onDeleteAvailability = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -539,7 +710,7 @@ export const onCreateAppointment = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -631,7 +802,7 @@ export const onUpdateAppointment = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -723,7 +894,7 @@ export const onDeleteAppointment = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -817,7 +988,7 @@ export const onCreatePrescription = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -907,7 +1078,7 @@ export const onUpdatePrescription = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -997,7 +1168,7 @@ export const onDeletePrescription = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -1080,7 +1251,7 @@ export const onCreatePatientStory = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -1147,7 +1318,7 @@ export const onUpdatePatientStory = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -1214,7 +1385,7 @@ export const onDeletePatientStory = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -1402,7 +1573,7 @@ export const onCreateDoctorSpecialties = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -1456,7 +1627,7 @@ export const onUpdateDoctorSpecialties = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -1510,7 +1681,169 @@ export const onDeleteDoctorSpecialties = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onCreateDoctorSecondarySpecialties = /* GraphQL */ `
+  subscription OnCreateDoctorSecondarySpecialties(
+    $filter: ModelSubscriptionDoctorSecondarySpecialtiesFilterInput
+  ) {
+    onCreateDoctorSecondarySpecialties(filter: $filter) {
+      id
+      doctorDoctorID
+      specialtyId
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecializationIds
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateDoctorSecondarySpecialties = /* GraphQL */ `
+  subscription OnUpdateDoctorSecondarySpecialties(
+    $filter: ModelSubscriptionDoctorSecondarySpecialtiesFilterInput
+  ) {
+    onUpdateDoctorSecondarySpecialties(filter: $filter) {
+      id
+      doctorDoctorID
+      specialtyId
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecializationIds
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteDoctorSecondarySpecialties = /* GraphQL */ `
+  subscription OnDeleteDoctorSecondarySpecialties(
+    $filter: ModelSubscriptionDoctorSecondarySpecialtiesFilterInput
+  ) {
+    onDeleteDoctorSecondarySpecialties(filter: $filter) {
+      id
+      doctorDoctorID
+      specialtyId
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience

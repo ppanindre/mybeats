@@ -121,12 +121,29 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "secondarySpecialization": {
-                    "name": "secondarySpecialization",
-                    "isArray": false,
-                    "type": "String",
+                "secondarySpecializationIds": {
+                    "name": "secondarySpecializationIds",
+                    "isArray": true,
+                    "type": "ID",
                     "isRequired": false,
-                    "attributes": []
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "secondarySpecializations": {
+                    "name": "secondarySpecializations",
+                    "isArray": true,
+                    "type": {
+                        "model": "DoctorSecondarySpecialties"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "doctor"
+                        ]
+                    }
                 },
                 "availableForVideoConsultation": {
                     "name": "availableForVideoConsultation",
@@ -336,6 +353,54 @@ export const schema = {
                         ]
                     }
                 },
+                "secondaryDoctors": {
+                    "name": "secondaryDoctors",
+                    "isArray": true,
+                    "type": {
+                        "model": "DoctorSecondarySpecialties"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "specialty"
+                        ]
+                    }
+                },
+                "primaryToSecondaryLinks": {
+                    "name": "primaryToSecondaryLinks",
+                    "isArray": true,
+                    "type": {
+                        "model": "PrimaryToSecondary"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "primarySpecialty"
+                        ]
+                    }
+                },
+                "secondaryToPrimaryLinks": {
+                    "name": "secondaryToPrimaryLinks",
+                    "isArray": true,
+                    "type": {
+                        "model": "PrimaryToSecondary"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "secondarySpecialty"
+                        ]
+                    }
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -375,6 +440,128 @@ export const schema = {
                         "queryField": "specialtyByName",
                         "fields": [
                             "name"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "PrimaryToSecondary": {
+            "name": "PrimaryToSecondary",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "primarySpecialtyID": {
+                    "name": "primarySpecialtyID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "secondarySpecialtyID": {
+                    "name": "secondarySpecialtyID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "primarySpecialty": {
+                    "name": "primarySpecialty",
+                    "isArray": false,
+                    "type": {
+                        "model": "Specialty"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "primarySpecialtyID"
+                        ]
+                    }
+                },
+                "secondarySpecialty": {
+                    "name": "secondarySpecialty",
+                    "isArray": false,
+                    "type": {
+                        "model": "Specialty"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "secondarySpecialtyID"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "PrimaryToSecondaries",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "fields": [
+                            "id"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byPrimarySpecialty",
+                        "fields": [
+                            "primarySpecialtyID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "bySecondarySpecialty",
+                        "fields": [
+                            "secondarySpecialtyID"
                         ]
                     }
                 },
@@ -1504,10 +1691,124 @@ export const schema = {
                     }
                 }
             ]
+        },
+        "DoctorSecondarySpecialties": {
+            "name": "DoctorSecondarySpecialties",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "doctorDoctorID": {
+                    "name": "doctorDoctorID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "specialtyId": {
+                    "name": "specialtyId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "doctor": {
+                    "name": "doctor",
+                    "isArray": false,
+                    "type": {
+                        "model": "Doctor"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "doctorDoctorID"
+                        ]
+                    }
+                },
+                "specialty": {
+                    "name": "specialty",
+                    "isArray": false,
+                    "type": {
+                        "model": "Specialty"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "specialtyId"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "DoctorSecondarySpecialties",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byDoctor",
+                        "fields": [
+                            "doctorDoctorID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "bySpecialty",
+                        "fields": [
+                            "specialtyId"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
         }
     },
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "086c6d12c81808b2e5fc5f7cda455cf0"
+    "version": "a340b41df6236282fba6758d3c453cac"
 };

@@ -19,7 +19,10 @@ type Doctor @model @auth(rules: [{ allow: public }]) {
     city: String
     state: String
     experience: String
-    secondarySpecialization: String
+
+    secondarySpecializationIds: [ID]
+    secondarySpecializations: [Specialty] @manyToMany(relationName: "DoctorSecondarySpecialties")
+
     availableForVideoConsultation: Boolean!
     feeForVideoConsultation: String!
     educationExperience: String
@@ -40,6 +43,18 @@ type Specialty @model @auth(rules: [{ allow: public }]) {
     id: ID! @primaryKey
     name: String! @index(name: "byName", queryField: "specialtyByName")
     doctors: [Doctor] @manyToMany(relationName: "DoctorSpecialties")
+    secondaryDoctors: [Doctor] @manyToMany(relationName: "DoctorSecondarySpecialties")
+
+    primaryToSecondaryLinks: [PrimaryToSecondary] @hasMany(indexName: "byPrimarySpecialty", fields: ["id"])
+    secondaryToPrimaryLinks: [PrimaryToSecondary] @hasMany(indexName: "bySecondarySpecialty", fields: ["id"])
+}
+
+type PrimaryToSecondary @model @auth(rules: [{ allow: public }]) {
+    id: ID! @primaryKey
+    primarySpecialtyID: ID! @index(name: "byPrimarySpecialty")
+    secondarySpecialtyID: ID! @index(name: "bySecondarySpecialty")
+    primarySpecialty: Specialty @belongsTo(fields: ["primarySpecialtyID"])
+    secondarySpecialty: Specialty @belongsTo(fields: ["secondarySpecialtyID"])
 }
 
 type Patient @model @auth(rules: [{ allow: public }]) {

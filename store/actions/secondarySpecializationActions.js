@@ -1,16 +1,17 @@
 import {
-    PRIMARY_SPECIALIZATION_REQUEST,
-    PRIMARY_SPECIALIZATION_SUCCESS,
-    PRIMARY_SPECIALIZATION_FAILURE,
-} from "../types/primarySpecializationActionTypes";
+    SECONDARY_SPECIALIZATION_REQUEST,
+    SECONDARY_SPECIALIZATION_SUCCESS,
+    SECONDARY_SPECIALIZATION_FAILURE,
+} from "../types/secondarySpecializationActionTypes";
+
 import { listSpecialties, listPrimaryToSecondaries } from "../../src/graphql/queries";
 import { generateClient } from "aws-amplify/api";
 
 const client = generateClient();
 
-export const fetchPrimarySpecializations = () => async (dispatch) => {
+export const fetchSecondarySpecializations = () => async (dispatch) => {
     try {
-        dispatch({ type: PRIMARY_SPECIALIZATION_REQUEST });
+        dispatch({ type: SECONDARY_SPECIALIZATION_REQUEST });
 
         // Fetch all specializations
         const specialtiesResponse = await client.graphql({
@@ -30,25 +31,21 @@ export const fetchPrimarySpecializations = () => async (dispatch) => {
             primaryToSecondaryMappings.map((entry) => entry.secondarySpecialtyID)
         );
 
-        console.log("Filtered Secondary Specialization IDs:", secondarySpecializationIDs);
-
-        // Filter out secondary specializations from primary list
-        const filteredPrimarySpecializations = specialties.filter(
-            (spec) => !secondarySpecializationIDs.has(spec.id)
+        // Filter only secondary specializations
+        const filteredSecondarySpecializations = specialties.filter((spec) =>
+            secondarySpecializationIDs.has(spec.id)
         );
 
-        console.log("Updated Filtered Primary Specializations:", filteredPrimarySpecializations);
-
         dispatch({
-            type: PRIMARY_SPECIALIZATION_SUCCESS,
-            payload: filteredPrimarySpecializations,
+            type: SECONDARY_SPECIALIZATION_SUCCESS,
+            payload: filteredSecondarySpecializations,
         });
 
     } catch (error) {
-        console.error("Error while fetching specializations", error);
+        console.error("Error while fetching secondary specializations", error);
         dispatch({
-            type: PRIMARY_SPECIALIZATION_FAILURE,
-            payload: error.message || "Error while fetching specializations",
+            type: SECONDARY_SPECIALIZATION_FAILURE,
+            payload: error.message || "Error while fetching secondary specializations",
         });
     }
 };
