@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-const DoctorInfo = ({ doctor }) => {
+const DoctorInfo = ({ doctor, primarySpecialization }) => {
     return (
         <View>
             <View className="flex-row items-center">
@@ -13,7 +13,7 @@ const DoctorInfo = ({ doctor }) => {
                 <View style={{ flex: 1 }} className="ml-6">
                     <Text className="text-xl font-[appfont-semi]">{`${doctor.firstname} ${doctor.lastname}`}</Text>
                     <Text className="text-sm text-gray-500 font-[appfont] text-dark">
-                        {doctor.secondarySpecialization}
+                        {primarySpecialization}
                     </Text>
                     <View className="flex-row items-center mt-1">
                         <Ionicons name="star" size={15} color="#ffd700" />

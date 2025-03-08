@@ -3,17 +3,27 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { listDoctorsActionCreator } from "../../../../store/actions/doctorActions";
 import DoctorCard from "../Cards/DoctorCard";
+import { fetchPrimarySpecializations } from "../../../../store/actions/primarySpecializationActions";
+import Loader from "../Utils/Loader";
 
 const DoctorScrollView = () => {
     const { loading, error, doctors } = useSelector(
         (state) => state.doctorsListReducer
     );
 
+    const { loading: primaryLoading, specializations } = useSelector(
+            (state) => state.primarySpecializationReducer || {}
+     );
+    
+
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(listDoctorsActionCreator());
+        dispatch(fetchPrimarySpecializations());
     }, []);
+
+    if (loading) return <Loader />;
 
     return (
         <View className="space-y-3">
@@ -33,7 +43,7 @@ const DoctorScrollView = () => {
                     {doctors &&
                         doctors.map((doctor) => (
                             <View key={doctor.doctorID}> 
-                                <DoctorCard doctor={doctor} />
+                                <DoctorCard doctor={doctor} specializations={specializations}/>
                             </View>
                         ))}
                 </View>

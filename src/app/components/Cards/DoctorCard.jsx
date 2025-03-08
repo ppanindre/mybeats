@@ -6,8 +6,13 @@ import { useNavigation } from "@react-navigation/native";
 
 const ICON_SIZE = 20;
 
-const DoctorCard = ({ doctor }) => {
+const DoctorCard = ({ doctor, specializations }) => {
     const navigation = useNavigation();
+
+      //primarySpecialization
+      const primarySpecialization = specializations?.find(
+        (spec) => String(spec.id) === String(doctor?.primarySpecializationId)
+      )?.name;
 
     return (
         <TouchableOpacity
@@ -16,7 +21,7 @@ const DoctorCard = ({ doctor }) => {
                     doctorId: doctor.doctorID,
                 })
             }
-            className="rounded-lg  bg-white p-5 h-[150] w-[300] justify-center shadow-lg bg-lightPrimary"
+            className="rounded-lg  bg-white p-5 h-[150] w-[350] justify-center shadow-lg bg-lightPrimary"
         >
             <View className="space-y-3">
                 {/* Doctor Information */}
@@ -33,7 +38,7 @@ const DoctorCard = ({ doctor }) => {
                         </Text>
                         <View className="flex-row justify-between items-center">
                             <Text className="text-md font-[appfont-bold] text-dark">
-                                {doctor.secondarySpecialization}
+                                {primarySpecialization}
                             </Text>
                             {doctor.availableForVideoConsultation && (
                                 <Ionicons
