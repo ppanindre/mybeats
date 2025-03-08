@@ -25,7 +25,8 @@ type EagerDoctor = {
   readonly city?: string | null;
   readonly state?: string | null;
   readonly experience?: string | null;
-  readonly secondarySpecialization?: string | null;
+  readonly secondarySpecializationIds?: (string | null)[] | null;
+  readonly secondarySpecializations?: (DoctorSecondarySpecialties | null)[] | null;
   readonly availableForVideoConsultation: boolean;
   readonly feeForVideoConsultation: string;
   readonly educationExperience?: string | null;
@@ -59,7 +60,8 @@ type LazyDoctor = {
   readonly city?: string | null;
   readonly state?: string | null;
   readonly experience?: string | null;
-  readonly secondarySpecialization?: string | null;
+  readonly secondarySpecializationIds?: (string | null)[] | null;
+  readonly secondarySpecializations: AsyncCollection<DoctorSecondarySpecialties>;
   readonly availableForVideoConsultation: boolean;
   readonly feeForVideoConsultation: string;
   readonly educationExperience?: string | null;
@@ -88,6 +90,9 @@ type EagerSpecialty = {
   readonly id: string;
   readonly name: string;
   readonly doctors?: (DoctorSpecialties | null)[] | null;
+  readonly secondaryDoctors?: (DoctorSecondarySpecialties | null)[] | null;
+  readonly primaryToSecondaryLinks?: (PrimaryToSecondary | null)[] | null;
+  readonly secondaryToPrimaryLinks?: (PrimaryToSecondary | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -100,6 +105,9 @@ type LazySpecialty = {
   readonly id: string;
   readonly name: string;
   readonly doctors: AsyncCollection<DoctorSpecialties>;
+  readonly secondaryDoctors: AsyncCollection<DoctorSecondarySpecialties>;
+  readonly primaryToSecondaryLinks: AsyncCollection<PrimaryToSecondary>;
+  readonly secondaryToPrimaryLinks: AsyncCollection<PrimaryToSecondary>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -108,6 +116,40 @@ export declare type Specialty = LazyLoading extends LazyLoadingDisabled ? EagerS
 
 export declare const Specialty: (new (init: ModelInit<Specialty>) => Specialty) & {
   copyOf(source: Specialty, mutator: (draft: MutableModel<Specialty>) => MutableModel<Specialty> | void): Specialty;
+}
+
+type EagerPrimaryToSecondary = {
+  readonly [__modelMeta__]: {
+    identifier: OptionallyManagedIdentifier<PrimaryToSecondary, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly primarySpecialtyID: string;
+  readonly secondarySpecialtyID: string;
+  readonly primarySpecialty?: Specialty | null;
+  readonly secondarySpecialty?: Specialty | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyPrimaryToSecondary = {
+  readonly [__modelMeta__]: {
+    identifier: OptionallyManagedIdentifier<PrimaryToSecondary, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly primarySpecialtyID: string;
+  readonly secondarySpecialtyID: string;
+  readonly primarySpecialty: AsyncItem<Specialty | undefined>;
+  readonly secondarySpecialty: AsyncItem<Specialty | undefined>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type PrimaryToSecondary = LazyLoading extends LazyLoadingDisabled ? EagerPrimaryToSecondary : LazyPrimaryToSecondary
+
+export declare const PrimaryToSecondary: (new (init: ModelInit<PrimaryToSecondary>) => PrimaryToSecondary) & {
+  copyOf(source: PrimaryToSecondary, mutator: (draft: MutableModel<PrimaryToSecondary>) => MutableModel<PrimaryToSecondary> | void): PrimaryToSecondary;
 }
 
 type EagerPatient = {
@@ -416,4 +458,38 @@ export declare type DoctorSpecialties = LazyLoading extends LazyLoadingDisabled 
 
 export declare const DoctorSpecialties: (new (init: ModelInit<DoctorSpecialties>) => DoctorSpecialties) & {
   copyOf(source: DoctorSpecialties, mutator: (draft: MutableModel<DoctorSpecialties>) => MutableModel<DoctorSpecialties> | void): DoctorSpecialties;
+}
+
+type EagerDoctorSecondarySpecialties = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<DoctorSecondarySpecialties, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly doctorDoctorID?: string | null;
+  readonly specialtyId?: string | null;
+  readonly doctor: Doctor;
+  readonly specialty: Specialty;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyDoctorSecondarySpecialties = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<DoctorSecondarySpecialties, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly doctorDoctorID?: string | null;
+  readonly specialtyId?: string | null;
+  readonly doctor: AsyncItem<Doctor>;
+  readonly specialty: AsyncItem<Specialty>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type DoctorSecondarySpecialties = LazyLoading extends LazyLoadingDisabled ? EagerDoctorSecondarySpecialties : LazyDoctorSecondarySpecialties
+
+export declare const DoctorSecondarySpecialties: (new (init: ModelInit<DoctorSecondarySpecialties>) => DoctorSecondarySpecialties) & {
+  copyOf(source: DoctorSecondarySpecialties, mutator: (draft: MutableModel<DoctorSecondarySpecialties>) => MutableModel<DoctorSecondarySpecialties> | void): DoctorSecondarySpecialties;
 }

@@ -31,7 +31,12 @@ export const getDoctor = /* GraphQL */ `
       city
       state
       experience
-      secondarySpecialization
+      secondarySpecializationIds
+      secondarySpecializations {
+        nextToken
+        startedAt
+        __typename
+      }
       availableForVideoConsultation
       feeForVideoConsultation
       educationExperience
@@ -95,7 +100,7 @@ export const listDoctors = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -141,7 +146,7 @@ export const syncDoctors = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -167,6 +172,21 @@ export const getSpecialty = /* GraphQL */ `
       id
       name
       doctors {
+        nextToken
+        startedAt
+        __typename
+      }
+      secondaryDoctors {
+        nextToken
+        startedAt
+        __typename
+      }
+      primaryToSecondaryLinks {
+        nextToken
+        startedAt
+        __typename
+      }
+      secondaryToPrimaryLinks {
         nextToken
         startedAt
         __typename
@@ -227,6 +247,103 @@ export const syncSpecialties = /* GraphQL */ `
       items {
         id
         name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const getPrimaryToSecondary = /* GraphQL */ `
+  query GetPrimaryToSecondary($id: ID!) {
+    getPrimaryToSecondary(id: $id) {
+      id
+      primarySpecialtyID
+      secondarySpecialtyID
+      primarySpecialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      secondarySpecialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listPrimaryToSecondaries = /* GraphQL */ `
+  query ListPrimaryToSecondaries(
+    $id: ID
+    $filter: ModelPrimaryToSecondaryFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listPrimaryToSecondaries(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        primarySpecialtyID
+        secondarySpecialtyID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncPrimaryToSecondaries = /* GraphQL */ `
+  query SyncPrimaryToSecondaries(
+    $filter: ModelPrimaryToSecondaryFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncPrimaryToSecondaries(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        primarySpecialtyID
+        secondarySpecialtyID
         createdAt
         updatedAt
         _version
@@ -379,7 +496,7 @@ export const getAvailability = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -489,7 +606,7 @@ export const getAppointment = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -582,29 +699,16 @@ export const listAppointments = /* GraphQL */ `
         doctorNotes
         imagePaths
         prescriptionImagePaths
-        prescriptions {
-          items {
-            id
-            medicineName
-            type
-            dosage
-            days
-            dosageQuantity
-            startDate
-            endDate
-            doctorID
-            patientID
-            appointmentID
-          }
-        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        __typename
       }
       nextToken
       startedAt
+      __typename
     }
   }
 `;
@@ -670,7 +774,7 @@ export const getPrescription = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -829,7 +933,7 @@ export const getPatientStory = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -1073,7 +1177,7 @@ export const getDoctorSpecialties = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -1164,6 +1268,116 @@ export const syncDoctorSpecialties = /* GraphQL */ `
     }
   }
 `;
+export const getDoctorSecondarySpecialties = /* GraphQL */ `
+  query GetDoctorSecondarySpecialties($id: ID!) {
+    getDoctorSecondarySpecialties(id: $id) {
+      id
+      doctorDoctorID
+      specialtyId
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecializationIds
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listDoctorSecondarySpecialties = /* GraphQL */ `
+  query ListDoctorSecondarySpecialties(
+    $filter: ModelDoctorSecondarySpecialtiesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listDoctorSecondarySpecialties(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        doctorDoctorID
+        specialtyId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncDoctorSecondarySpecialties = /* GraphQL */ `
+  query SyncDoctorSecondarySpecialties(
+    $filter: ModelDoctorSecondarySpecialtiesFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncDoctorSecondarySpecialties(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        doctorDoctorID
+        specialtyId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
 export const doctorsByPrimarySpecializationId = /* GraphQL */ `
   query DoctorsByPrimarySpecializationId(
     $primarySpecializationId: ID!
@@ -1192,7 +1406,7 @@ export const doctorsByPrimarySpecializationId = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -1240,7 +1454,7 @@ export const doctorByZipcode = /* GraphQL */ `
         city
         state
         experience
-        secondarySpecialization
+        secondarySpecializationIds
         availableForVideoConsultation
         feeForVideoConsultation
         educationExperience
@@ -1278,6 +1492,70 @@ export const specialtyByName = /* GraphQL */ `
       items {
         id
         name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const primaryToSecondariesByPrimarySpecialtyID = /* GraphQL */ `
+  query PrimaryToSecondariesByPrimarySpecialtyID(
+    $primarySpecialtyID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelPrimaryToSecondaryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    primaryToSecondariesByPrimarySpecialtyID(
+      primarySpecialtyID: $primarySpecialtyID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        primarySpecialtyID
+        secondarySpecialtyID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const primaryToSecondariesBySecondarySpecialtyID = /* GraphQL */ `
+  query PrimaryToSecondariesBySecondarySpecialtyID(
+    $secondarySpecialtyID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelPrimaryToSecondaryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    primaryToSecondariesBySecondarySpecialtyID(
+      secondarySpecialtyID: $secondarySpecialtyID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        primarySpecialtyID
+        secondarySpecialtyID
         createdAt
         updatedAt
         _version
@@ -1715,6 +1993,70 @@ export const doctorSpecialtiesBySpecialtyId = /* GraphQL */ `
     $nextToken: String
   ) {
     doctorSpecialtiesBySpecialtyId(
+      specialtyId: $specialtyId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        doctorDoctorID
+        specialtyId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const doctorSecondarySpecialtiesByDoctorDoctorID = /* GraphQL */ `
+  query DoctorSecondarySpecialtiesByDoctorDoctorID(
+    $doctorDoctorID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelDoctorSecondarySpecialtiesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    doctorSecondarySpecialtiesByDoctorDoctorID(
+      doctorDoctorID: $doctorDoctorID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        doctorDoctorID
+        specialtyId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const doctorSecondarySpecialtiesBySpecialtyId = /* GraphQL */ `
+  query DoctorSecondarySpecialtiesBySpecialtyId(
+    $specialtyId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelDoctorSecondarySpecialtiesFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    doctorSecondarySpecialtiesBySpecialtyId(
       specialtyId: $specialtyId
       sortDirection: $sortDirection
       filter: $filter

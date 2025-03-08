@@ -4,10 +4,10 @@
     "slug": "mybeats",
     "version": "1.1.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icons/firebeats_icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/icons/firebeats_icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

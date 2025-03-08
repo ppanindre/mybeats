@@ -18,6 +18,8 @@ import Loader from "../../components/Utils/Loader";
 import VideoAppointmentFrame from "../../components/PatientAppointmentCO/VideoAppointmentFrame";
 import DoctorInfo from "../../components/PatientDashboardComponents/DoctorInfo";
 import { useNavigation } from "@react-navigation/native";
+import { fetchPrimarySpecializations } from "../../../../store/actions/primarySpecializationActions";
+import { fetchSecondarySpecializations } from "../../../../store/actions/secondarySpecializationActions";
 
 const CollapsibleItem = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -48,6 +50,14 @@ const Appointment = ({ route }) => {
     const doctor = useSelector((state) => state.doctorsListReducer.doctors.find(doc => doc.doctorID === doctorId));
     const { loading: patientStoriesloading, patientStories, error: patientStriesError } = useSelector((state) => state.patientStoriesListByDoctorReducer);  // Select the patient stories
 
+    const { loading: primaryLoading, specializations } = useSelector(
+        (state) => state.primarySpecializationReducer || {}
+    );
+
+    const { loading: secondaryLoading, secondarySpecializations } = useSelector(
+        (state) => state.secondarySpecializationReducer || {}
+    );
+
     const [videoDate, setVideoDate] = useState();
     const [videoTime, setVideoTime] = useState();
 
@@ -58,9 +68,24 @@ const Appointment = ({ route }) => {
 
     useEffect(() => {
         dispatch(patientStoriesListByDoctorsActionCreators(doctorId));
+        dispatch(fetchPrimarySpecializations());
+        dispatch(fetchSecondarySpecializations());
     }, [doctorId]);
 
 
+ 
+    //primarySpecialization
+     const primarySpecialization = specializations?.find(
+        (spec) => String(spec.id) === String(doctor?.primarySpecializationId)
+    )?.name;
+    
+    //secondarySpecializations
+    const secondarySpecializationNames =
+    doctor?.secondarySpecializationIds?.map((secId) => {
+        const specialization = secondarySpecializations?.find((s) => s.id === secId);
+        return specialization ? specialization.name : null;
+    }).filter(Boolean) || [];
+    
 
     const bookAppointment = async () => {
         dispatch(
@@ -80,13 +105,13 @@ const Appointment = ({ route }) => {
     };
 
     if (patientStoriesloading) return <Loader />;
-    if (loading) return <Loader />;
+    if (loading || primaryLoading || secondaryLoading) return <Loader />;
 
     return (
         <ScreenContainer>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View className="space-y-5">
-                    <DoctorInfo doctor={doctor} />
+                    <DoctorInfo doctor={doctor} primarySpecialization={primarySpecialization}/>
                     <View>
                         <ActionButton excludeId2={true} doctor={doctor} />
                     </View>
@@ -155,7 +180,9 @@ const Appointment = ({ route }) => {
 
                     <View className="mt-4 mb-24 p-4 bg-white rounded-lg">
                         <CollapsibleItem title="Secondary Specializations">
-                            {doctor.secondarySpecialization}
+                            {secondarySpecializationNames.length > 0
+                            ? secondarySpecializationNames.join("; ") 
+                            : "None"}
                         </CollapsibleItem>
                         <CollapsibleItem title="Education">
                             {doctor.educationExperience}

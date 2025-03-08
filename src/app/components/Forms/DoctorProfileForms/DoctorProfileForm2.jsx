@@ -1,12 +1,12 @@
 import { View, ScrollView } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { z } from "zod";
 import MultiSelectInput from "../../Inputs/MultiSelectInput";
 import FormInput from "../../Inputs/FormInput";
 import AppButton from "../../Buttons/AppButton";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { secondarySpecializationList, countryStatesList } from "../../../../../constants/doctorProfileform2Constants";
+import { countryStatesList } from "../../../../../constants/doctorProfileform2Constants";
 
 // Form Schema for validation
 const formSchema = z.object({
@@ -16,18 +16,35 @@ const formSchema = z.object({
     website: z.string().optional(),
 });
 
-const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, initialData = {}, specializations = [] }) => {
+const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, initialData = {}, specializations = [], secondarySpecializations = [] }) => {
     // STATES
     const [otherCondition, setOtherCondition] = useState(""); // State to hold the "other" condition if specified
     const [toggleOthers, setToggleOthers] = useState(false); // State to toggle the additional input field
     const [primarySpecializationErrorMessage, setPrimarySpecializationErrorMessage] = useState(null);
+    // const [secondarySpecialization, setSecondarySpecialization] = useState({
+    //     value: initialData.secondarySpecialization || "",
+    //     list: [
+    //         ...secondarySpecializations.map((spec) => ({ _id: spec.id, value: spec.name })),
+    //         // { _id: "others", value: "Others" }, // Add "Others" option
+    //     ],
+    //     selectedList: (initialData.secondarySpecialization || "").split("; ").map((name) => {
+    //         return secondarySpecializations.find((spec) => spec.name === name) || (name === "Others" ? { _id: "others", value: "Others" } : null);
+    //     }).filter(Boolean),
+    // });
+
+     // Convert stored secondary specialization IDs to names for pre-selection
+     const selectedSecondarySpecializations = initialData.secondarySpecializationIds
+     ? initialData.secondarySpecializationIds.map(id => 
+         secondarySpecializations.find(spec => spec.id === id) || null
+     ).filter(Boolean) // Remove null values
+     : [];
+ 
     const [secondarySpecialization, setSecondarySpecialization] = useState({
-        value: initialData.secondarySpecialization || "",
-        list: secondarySpecializationList,
-        selectedList: (initialData.secondarySpecialization || "").split("; ").map(name => {
-            return secondarySpecializationList.find(specialty => specialty.value === name);
-        }).filter(Boolean),
+     value: selectedSecondarySpecializations.map(spec => spec.name).join("; "),  // Use "name" instead of "value"
+     list: secondarySpecializations.map((spec) => ({ _id: spec.id, value: spec.name })), // Ensure correct mapping
+     selectedList: selectedSecondarySpecializations.map(spec => ({ _id: spec.id, value: spec.name })), // Fix selectedList
     });
+    
     const [countryStates, setCountryStates] = useState({
         value: initialData.state || "",
         list: countryStatesList,
@@ -63,25 +80,24 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, initialData = {}
 
     const handleSecondarySelection = (value) => {
         let selectedList = value.selectedList;
-
+    
         // Handling "Select All"
         if (selectedList.some((item) => item.value === "Select all")) {
-            selectedList = secondarySpecializationList.filter(
-                (item) => item.value !== "Others"
-            );
+            selectedList = secondarySpecializations.map((item) => ({ _id: item.id, value: item.name }));
         }
-
+    
         setSecondarySpecialization({
             value: selectedList.map((item) => item.value).join("; "),
             selectedList: selectedList,
-            list: secondarySpecializationList,
+            list: secondarySpecializations.map((spec) => ({ _id: spec.id, value: spec.name })),
+            // list: [
+            //     ...secondarySpecializations.map((spec) => ({ _id: spec.id, value: spec.name })),
+            //     { _id: "others", value: "Others" }, // Keep "Others" in the list
+            // ],
         });
-
-        // if "Others" is selected
-        const isOthersSelected = selectedList.some(
-            (item) => item.value === "Others"
-        );
-        setToggleOthers(isOthersSelected);
+    
+        // Check if "Others" is selected
+        setToggleOthers(selectedList.some((item) => item.value === "Others"));
     };
 
     const handleCountryStateSelection = (value) => {
@@ -99,9 +115,10 @@ const DoctorProfileForm2 = ({ handlePressNext, handlePressBack, initialData = {}
             ...data,
             primarySpecializationId: primarySpecialization.selectedList[0]?._id,
             state: countryStates.value,
-            secondarySpecialization: toggleOthers
-                ? otherCondition
-                : secondarySpecialization.selectedList.map((item) => item.value).join("; "),
+            secondarySpecializationIds: secondarySpecialization.selectedList.map((item) => item._id),
+            // secondarySpecialization: toggleOthers
+            //     ? otherCondition
+            //     : secondarySpecialization.selectedList.map((item) => item.value).join("; "),
         };
         return combinedData;
     };

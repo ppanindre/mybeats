@@ -25,6 +25,39 @@ export const createDoctorActionCreator =
             const user = getState().UserReducer;
             const doctorId = user.userId;
 
+            // latest version of the doctor
+            const fetchResponse = await client.graphql({
+                query: getDoctor,
+                variables: { doctorID: doctorId },
+            });
+            const latestDoctor = fetchResponse.data.getDoctor;
+            const latestVersion = latestDoctor._version;
+
+             //  existing specializations from Redux 
+             const { secondarySpecializations } = getState().secondarySpecializationReducer;
+
+             let secondarySpecializationIds = [];
+ 
+             if (Array.isArray(doctorDetails.secondarySpecialization)) {
+                 // converting names to IDs using redux
+                 secondarySpecializationIds = doctorDetails.secondarySpecialization
+                     .map(specName => {
+                         const matchingSpec = secondarySpecializations.find(spec => spec.name === specName);
+                         return matchingSpec ? matchingSpec.id : null;
+                     })
+                     .filter(id => id !== null); // to remve invalid/missing IDs
+             } else if (typeof doctorDetails.secondarySpecialization === "string") {
+                 // Handle semicolon-separated string of names 
+                 secondarySpecializationIds = doctorDetails.secondarySpecialization
+                     .split(";")
+                     .map(specName => {
+                         const matchingSpec = secondarySpecializations.find(spec => spec.name.trim() === specName.trim());
+                         return matchingSpec ? matchingSpec.id : null;
+                     })
+                     .filter(id => id !== null);
+             }
+
+
             dispatch({ type: DOCTOR_CREATE_REQUEST });
 
             const response = await client.graphql({
@@ -42,8 +75,7 @@ export const createDoctorActionCreator =
                         state: doctorDetails.state,
                         experience: doctorDetails.experience,
                         primarySpecializationId: doctorDetails.primarySpecializationId,
-                        secondarySpecialization:
-                            doctorDetails.secondarySpecialization,
+                        secondarySpecializationIds: secondarySpecializationIds.length > 0 ? secondarySpecializationIds : null,
                         upiId: doctorDetails.upiId,
                         availableForVideoConsultation:
                             doctorDetails.availableForVideoConsultation,
@@ -53,6 +85,7 @@ export const createDoctorActionCreator =
                         awardsRecognition: doctorDetails.awardsRecognition,
                         website: doctorDetails.website,
                         zipcode: doctorDetails.zipcode,
+                        _version: latestVersion,
                     },
                 },
             });
@@ -70,13 +103,41 @@ export const createDoctorActionCreator =
         }
     };
 
-export const updateDoctorActionCreator =
+    export const updateDoctorActionCreator =
     (doctorDetails, imageData, version) => async (dispatch, getState) => {
         try {
             dispatch({ type: DOCTOR_UPDATE_REQUEST });
 
             const user = getState().UserReducer;
             const doctorId = user.userId;
+
+            // latest version of the doctor
+            const fetchResponse = await client.graphql({
+                query: getDoctor,
+                variables: { doctorID: doctorId },
+            });
+            const latestDoctor = fetchResponse.data.getDoctor;
+            const latestVersion = latestDoctor._version;
+
+            // Convert secondary specialization names to IDs
+            const { secondarySpecializations } = getState().secondarySpecializationReducer;
+
+            let secondarySpecializationIds = doctorDetails.secondarySpecializationIds || [];
+            if (Array.isArray(doctorDetails.secondarySpecialization)) {
+                secondarySpecializationIds = doctorDetails.secondarySpecialization
+                    .map(specName => {
+                        const matchingSpec = secondarySpecializations.find(spec => spec.name === specName);
+                        return matchingSpec ? matchingSpec.id : null;
+                    })
+                    .filter(id => id !== null);
+            }
+
+            console.log("🟢 Final Data Sent to AWS:", {
+                doctorID: doctorId,
+                primarySpecializationId: doctorDetails.primarySpecializationId,
+                secondarySpecializationIds: secondarySpecializationIds.length > 0 ? secondarySpecializationIds : [],
+                _version: latestVersion,
+            });
 
             const response = await client.graphql({
                 query: updateDoctor,
@@ -93,44 +154,30 @@ export const updateDoctorActionCreator =
                         state: doctorDetails.state,
                         experience: doctorDetails.experience,
                         primarySpecializationId: doctorDetails.primarySpecializationId,
-                        secondarySpecialization:
-                            doctorDetails.secondarySpecialization,
+                        secondarySpecializationIds: secondarySpecializationIds.length > 0 ? secondarySpecializationIds : [],
                         upiId: doctorDetails.upiId,
-                        availableForVideoConsultation:
-                            doctorDetails.availableForVideoConsultation,
-                        feeForVideoConsultation:
-                            doctorDetails.feeForVideoConsultation,
+                        availableForVideoConsultation: doctorDetails.availableForVideoConsultation,
+                        feeForVideoConsultation: doctorDetails.feeForVideoConsultation,
                         educationExperience: doctorDetails.educationExperience,
                         awardsRecognition: doctorDetails.awardsRecognition,
                         website: doctorDetails.website,
                         zipcode: doctorDetails.zipcode,
-                        _version: version,
+                        _version: latestVersion,
                     },
                 },
             });
 
-            const result = await uploadData({
-                path: "public/album/2024/1.jpg",
-                data: imageData,
-            }).result;
-
-            console.log("result", result);
 
             dispatch({
                 type: DOCTOR_UPDATE_SUCCESS,
                 payload: response.data.updateDoctor,
             });
         } catch (error) {
-            if (error.errors && error.errors[0] && error.errors[0].errorType === "ConflictUnhandled") {
-                // Handling conflict
-                console.error("Conflict error while updating doctor. Refetching data.", error);
-                dispatch(getDoctorActionCreator());
-            } else {
-                console.error("Error while updating doctor", error);
-                dispatch({ type: DOCTOR_UPDATE_FAILURE, payload: error });
-            }
+            console.error("AWS UpdateDoctor Error:", error);
+            dispatch({ type: DOCTOR_UPDATE_FAILURE, payload: error });
         }
     };
+
 
 export const listDoctorsActionCreator = () => async (dispatch) => {
     try {
@@ -159,15 +206,35 @@ export const getDoctorActionCreator = () => async (dispatch, getState) => {
 
         const response = await client.graphql({
             query: getDoctor,
-            variables: {
-                doctorID: doctorId,
-            },
+            variables: { doctorID: doctorId },
         });
+
+        const doctorData = response.data.getDoctor;
+
+        console.log("🟢 Fetched Doctor Data:", doctorData);
+
+        // Fetch all specializations from Redux
+        const { secondarySpecializations } = getState().secondarySpecializationReducer;
+
+        // Map secondary specialization IDs to names
+        const mappedSecondarySpecializations = (doctorData.secondarySpecializationIds || []).map(id => {
+            const matchedSpec = secondarySpecializations.find(spec => spec.id === id);
+            return matchedSpec ? { id, name: matchedSpec.name } : { id, name: "Unknown" };
+        });
+
+        // Updated doctor data with mapped secondary specializations
+        const updatedDoctorData = {
+            ...doctorData,
+            secondarySpecializations: mappedSecondarySpecializations, // Replace IDs with name objects
+        };
+
+        console.log("🟢 Updated Doctor Data with Mapped Secondary Specializations:", updatedDoctorData);
 
         dispatch({
             type: DOCTOR_GET_SUCCESS,
-            payload: response.data.getDoctor,
+            payload: updatedDoctorData,
         });
+
     } catch (error) {
         console.error("Error while fetching doctor details", error);
         dispatch({
