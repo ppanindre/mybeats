@@ -2,6 +2,10 @@ import {
     PRIMARY_SPECIALIZATION_REQUEST,
     PRIMARY_SPECIALIZATION_SUCCESS,
     PRIMARY_SPECIALIZATION_FAILURE,
+
+    PRIMARY_TO_SECONDARY_REQUEST,
+    PRIMARY_TO_SECONDARY_SUCCESS,
+    PRIMARY_TO_SECONDARY_FAILURE,
 } from "../types/primarySpecializationActionTypes";
 import { listSpecialties, listPrimaryToSecondaries } from "../../src/graphql/queries";
 import { generateClient } from "aws-amplify/api";
@@ -49,6 +53,29 @@ export const fetchPrimarySpecializations = () => async (dispatch) => {
         dispatch({
             type: PRIMARY_SPECIALIZATION_FAILURE,
             payload: error.message || "Error while fetching specializations",
+        });
+    }
+};
+
+export const fetchPrimaryToSecondaryMappings = () => async (dispatch) => {
+    try {
+        dispatch({ type: PRIMARY_TO_SECONDARY_REQUEST });
+
+        // Fetch primary to secondary mappings
+        const response = await client.graphql({ query: listPrimaryToSecondaries });
+        const mappings = response.data.listPrimaryToSecondaries.items;
+
+        console.log("Loaded Primary-to-Secondary Mappings:", mappings);
+
+        dispatch({
+            type: PRIMARY_TO_SECONDARY_SUCCESS,
+            payload: mappings,
+        });
+    } catch (error) {
+        console.error("Error fetching primary-to-secondary mappings", error);
+        dispatch({
+            type: PRIMARY_TO_SECONDARY_FAILURE,
+            payload: error.message || "Error fetching primary-to-secondary mappings",
         });
     }
 };

@@ -10,7 +10,7 @@ const DoctorList = ({ doctors, searchText, onDoctorPress, onFilterPress }) => {
   return (
     <View className="space-y-3 px-4">
       <View className="flex-row items-center justify-between">
-        <Text className="font-[appfont-bold] text-lg">
+        <Text className="font-[appfont-bold] text-md">
           Results for "{searchText}"
         </Text>
         <TouchableOpacity onPress={onFilterPress}>
