@@ -179,11 +179,17 @@ const Appointment = ({ route }) => {
                     )}
 
                     <View className="mt-4 mb-24 p-4 bg-white rounded-lg">
-                        <CollapsibleItem title="Secondary Specializations">
-                            {secondarySpecializationNames.length > 0
-                            ? secondarySpecializationNames.join("; ") 
-                            : "None"}
-                        </CollapsibleItem>
+                    <CollapsibleItem title="Secondary Specializations">
+                        {secondarySpecializationNames.length > 0 ? (
+                            <View>
+                                {secondarySpecializationNames.map((specialization, index) => (
+                                    <Text className="text-md font-[appfont]" key={index}>• {specialization}</Text>
+                                ))}
+                            </View>
+                        ) : (
+                            <Text>None</Text>
+                        )}
+                    </CollapsibleItem>
                         <CollapsibleItem title="Education">
                             {doctor.educationExperience}
                         </CollapsibleItem>
