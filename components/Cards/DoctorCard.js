@@ -3,10 +3,24 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { theme } from "../../tailwind.config";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useSelector } from "react-redux";
+import Loader from "../../src/app/components/Utils/Loader";
 
 const DoctorCard = ({
     doctor
 }) => {
+
+    const { loading: primaryLoading, specializations } = useSelector(
+        (state) => state.primarySpecializationReducer || {}
+      );
+    
+      //primarySpecialization
+      const primarySpecialization = specializations?.find(
+        (spec) => String(spec.id) === String(doctor?.primarySpecializationId)
+    )?.name;
+
+    if (primaryLoading) return <Loader/>;
+
     return (
         <View className="rounded-lg p-5 h-[215] w-[100%] justify-center shadow-md"
             style={{ backgroundColor: theme.colors.lightPrimary }}>
@@ -29,7 +43,7 @@ const DoctorCard = ({
                                 style={{ color: theme.colors.dark }}
                                 className="text-md font-[appfont-bold]"
                             >
-                                {doctor.secondarySpecialization || "No specialization"}
+                                        {primarySpecialization || "Not Available"}
                             </Text>
                             {doctor.availableForVideoConsultation && (
                                 <Ionicons name="videocam" size={24} style={{ color: theme.colors.light }} />

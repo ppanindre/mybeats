@@ -45,7 +45,7 @@ import {
   patientStoryGetReducer,
 } from "./reducers/patientStoriesReducers";
 import { patientListReducer } from "./reducers/patientReducers";
-import { primarySpecializationReducer } from "./reducers/primarySpecializationReducers";
+import { primarySpecializationReducer, primaryToSecondaryReducer } from "./reducers/primarySpecializationReducers";
 import { secondarySpecializationReducer } from "./reducers/secondarySpecializationReducer";
 import geocodingGetReducer from "./reducers/geocodingGetReducer";
 import imageRecognitionGetReducer from "./reducers/imageRecognitionGetReducer";
@@ -102,6 +102,7 @@ const reducers = combineReducers({
   availabilitiesDeleteReducer: availabilitiesDeleteReducer,
   patientListReducer: patientListReducer,
   primarySpecializationReducer,
+  primaryToSecondaryReducer,
   secondarySpecializationReducer,
   prescriptionCreate: prescriptionCreateReducer,
   prescriptionGet: prescriptionGetReducer,
