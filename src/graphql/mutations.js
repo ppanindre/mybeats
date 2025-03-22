@@ -251,6 +251,11 @@ export const createSpecialty = /* GraphQL */ `
         startedAt
         __typename
       }
+      healthConditions {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -288,6 +293,11 @@ export const updateSpecialty = /* GraphQL */ `
         startedAt
         __typename
       }
+      healthConditions {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -321,6 +331,77 @@ export const deleteSpecialty = /* GraphQL */ `
         __typename
       }
       secondaryToPrimaryLinks {
+        nextToken
+        startedAt
+        __typename
+      }
+      healthConditions {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createHealthCondition = /* GraphQL */ `
+  mutation CreateHealthCondition(
+    $input: CreateHealthConditionInput!
+    $condition: ModelHealthConditionConditionInput
+  ) {
+    createHealthCondition(input: $input, condition: $condition) {
+      id
+      name
+      specialties {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateHealthCondition = /* GraphQL */ `
+  mutation UpdateHealthCondition(
+    $input: UpdateHealthConditionInput!
+    $condition: ModelHealthConditionConditionInput
+  ) {
+    updateHealthCondition(input: $input, condition: $condition) {
+      id
+      name
+      specialties {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteHealthCondition = /* GraphQL */ `
+  mutation DeleteHealthCondition(
+    $input: DeleteHealthConditionInput!
+    $condition: ModelHealthConditionConditionInput
+  ) {
+    deleteHealthCondition(input: $input, condition: $condition) {
+      id
+      name
+      specialties {
         nextToken
         startedAt
         __typename
@@ -1903,6 +1984,120 @@ export const deleteDoctorSecondarySpecialties = /* GraphQL */ `
         __typename
       }
       specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createSpecialtyHealthConditions = /* GraphQL */ `
+  mutation CreateSpecialtyHealthConditions(
+    $input: CreateSpecialtyHealthConditionsInput!
+    $condition: ModelSpecialtyHealthConditionsConditionInput
+  ) {
+    createSpecialtyHealthConditions(input: $input, condition: $condition) {
+      id
+      specialtyId
+      healthConditionId
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      healthCondition {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateSpecialtyHealthConditions = /* GraphQL */ `
+  mutation UpdateSpecialtyHealthConditions(
+    $input: UpdateSpecialtyHealthConditionsInput!
+    $condition: ModelSpecialtyHealthConditionsConditionInput
+  ) {
+    updateSpecialtyHealthConditions(input: $input, condition: $condition) {
+      id
+      specialtyId
+      healthConditionId
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      healthCondition {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteSpecialtyHealthConditions = /* GraphQL */ `
+  mutation DeleteSpecialtyHealthConditions(
+    $input: DeleteSpecialtyHealthConditionsInput!
+    $condition: ModelSpecialtyHealthConditionsConditionInput
+  ) {
+    deleteSpecialtyHealthConditions(input: $input, condition: $condition) {
+      id
+      specialtyId
+      healthConditionId
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      healthCondition {
         id
         name
         createdAt

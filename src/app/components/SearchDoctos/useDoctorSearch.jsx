@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchPrimaryToSecondaryMappings } from "../../../../store/actions/primarySpecializationActions";
 import { fetchPrimarySpecializations } from "../../../../store/actions/primarySpecializationActions";
 import { fetchSecondarySpecializations } from "../../../../store/actions/secondarySpecializationActions";
+import { fetchHealthConditionsActionCreator, fetchSecondarySpecializationsByHealthCondition, fetchDoctorsBySecondarySpecializations } from "../../../../store/actions/healthConditionActions";
 
 const useDoctorSearch = (doctors) => {
   const dispatch = useDispatch();
@@ -11,11 +12,23 @@ const useDoctorSearch = (doctors) => {
   const [searchText, setSearchText] = useState("");
   const [results, setResults] = useState([]);
   const [originalResults, setOriginalResults] = useState([]);
+  const [isHealthConditionSearch, setIsHealthConditionSearch] = useState(false);
+  const [showRecommendations, setShowRecommendations] = useState(true);
 
-  // fetching specializations from redux store
+  // fetching specializations nd health conditions from redux store
   const { specializations = [] } = useSelector((state) => state.primarySpecializationReducer || {});
   const { secondarySpecializations = [] } = useSelector((state) => state.secondarySpecializationReducer || {});
   const { mappings: primaryToSecondaryMap = [] } = useSelector((state) => state.primaryToSecondaryReducer || {});
+  const { healthConditions = [] } = useSelector((state) => state.healthConditionReducer || {});
+
+  // to get doctors fetched based on health condition
+  const doctorsByHealthCondition = useSelector(
+    (state) => state.doctorsBySecondarySpecializationReducer?.doctors || []
+  );
+
+  const isLoading = useSelector((state) => state.doctorsBySecondarySpecializationReducer?.isLoading);
+  const isSpeciazationLoading = useSelector((state) => state.secondarySpecializationByHealthConditionReducer?.isLoading);
+
 
   useEffect(() => {
     if (doctors) {
@@ -27,84 +40,136 @@ const useDoctorSearch = (doctors) => {
     dispatch(fetchPrimaryToSecondaryMappings());
     dispatch(fetchPrimarySpecializations());
     dispatch(fetchSecondarySpecializations());
+    dispatch(fetchHealthConditionsActionCreator());
   }, [dispatch]);
+
+  // updating search recommendations when health condition doctors are found
+  useEffect(() => {
+    if (isHealthConditionSearch) {
+      if (isLoading) {
+        setShowRecommendations(true)
+        setSearchRecommendations([]); 
+      } else if (doctorsByHealthCondition.length > 0) {  
+        if (showRecommendations) {
+          setSearchRecommendations(doctorsByHealthCondition);
+        } else {
+          setSearchRecommendations([]); // clearing reccomendations after search submission
+        }
+      }
+    }
+  }, [doctorsByHealthCondition, isHealthConditionSearch, isLoading, showRecommendations]);
+  
 
   const handleSearchInput = (input) => {
     setSearchInput(input);
     setResults([]);
     setOriginalResults([]);
+    setIsHealthConditionSearch(false);
+    setShowRecommendations(true);
+    
 
-    if (input) {
-      const lowerCaseSearchInput = input.toLowerCase();
-
-      // chcking if the input matches a primary specialization
-      const matchedPrimarySpecialization = specializations.find(
-        (spec) => spec.name.toLowerCase() === lowerCaseSearchInput
-      );
-
-      // if a primary spec is matched, return only doctors with that primary spec
-      if (matchedPrimarySpecialization) {
-        const filteredData = doctors.filter(
-          (doctor) => String(doctor.primarySpecializationId) === String(matchedPrimarySpecialization.id)
-        );
-
-        setSearchRecommendations(filteredData.slice(0, 5));
-        return;
-      }
-
-      // or find related primary spec for searched secondary spec
-      const relatedPrimarySpecializationIds = primaryToSecondaryMap
-        .filter((entry) =>
-          secondarySpecializations?.find((s) =>
-            String(s.id) === String(entry.secondarySpecialtyID) &&
-            s.name.toLowerCase().includes(lowerCaseSearchInput)
-          )
-        )
-        .map((entry) => entry.primarySpecialtyID);
-
-      const filteredData = doctors.filter((doctor) => {
-        const fullName = `${doctor.firstname ?? ""} ${doctor.lastname ?? ""}`.toLowerCase();
-        const zipcode = doctor.zipcode ? doctor.zipcode.toLowerCase() : "";
-
-        // Get Primary Specialization Name
-        // const primarySpecialization = specializations?.find(
-        //   (spec) => String(spec.id) === String(doctor?.primarySpecializationId)
-        // )?.name?.toLowerCase() || "";
-
-        // Get Secondary Specialization Names
-        const secondarySpecializationArray = doctor?.secondarySpecializationIds?.map((secId) => {
-          const specialization = secondarySpecializations?.find((s) => String(s.id) === String(secId));
-          return specialization ? specialization.name.toLowerCase() : null;
-        }).filter(Boolean) || [];
-
-        // chcking if the doctor's primary specialization matches a mapped primary specialization
-        const doctorHasRelatedPrimarySpecialization = relatedPrimarySpecializationIds.includes(
-          String(doctor.primarySpecializationId)
-        );
-
-        return (
-          fullName.includes(lowerCaseSearchInput) ||
-          zipcode.includes(lowerCaseSearchInput) ||
-          secondarySpecializationArray.some((spec) => spec.includes(lowerCaseSearchInput)) ||
-          doctorHasRelatedPrimarySpecialization
-        );
-      });
-
-      setSearchRecommendations(filteredData.slice(0, 5));
-    } else {
+    if (!input) {
       setSearchRecommendations([]);
+      return;
     }
-  };
 
-  const handleSearchSubmit = () => {
-    const lowerCaseSearchInput = searchInput.toLowerCase();
+    const lowerCaseSearchInput = input.toLowerCase();
 
-    // checking if the input matches a primary specialization
+    // checking if input matches a health condition ,if yes fetch doctors for recommendations
+    const matchedHealthCondition = healthConditions.find(
+      (hc) => hc.name.toLowerCase() === lowerCaseSearchInput
+    );
+
+    if (matchedHealthCondition) {
+      // console.log(`Found Health Condition: ${matchedHealthCondition.name} - fetching doctors for recommendations`);
+      setIsHealthConditionSearch(true);
+      setShowRecommendations(false)
+      setSearchRecommendations([]);
+      dispatch(fetchSecondarySpecializationsByHealthCondition(matchedHealthCondition.name));
+      return;
+    }
+
+    // checking if input matches a primary specialization
     const matchedPrimarySpecialization = specializations.find(
       (spec) => spec.name.toLowerCase() === lowerCaseSearchInput
     );
 
-    // If a primary spec is matched, return only doctors with that primary spec
+    if (matchedPrimarySpecialization) {
+      const filteredData = doctors.filter(
+        (doctor) => String(doctor.primarySpecializationId) === String(matchedPrimarySpecialization.id)
+      );
+
+      setSearchRecommendations(filteredData.slice(0, 5));
+      return;
+    }
+
+    // cheking if input matches a secondary specialization
+    const relatedPrimarySpecializationIds = primaryToSecondaryMap
+      .filter((entry) =>
+        secondarySpecializations.find(
+          (s) =>
+            String(s.id) === String(entry.secondarySpecialtyID) &&
+            s.name.toLowerCase().includes(lowerCaseSearchInput)
+        )
+      )
+      .map((entry) => entry.primarySpecialtyID);
+
+    const filteredData = doctors.filter((doctor) => {
+      const fullName = `${doctor.firstname ?? ""} ${doctor.lastname ?? ""}`.toLowerCase();
+      const zipcode = doctor.zipcode ? doctor.zipcode.toLowerCase() : "";
+
+      // Get Secondary Specialization Names
+      const secondarySpecializationArray =
+        doctor?.secondarySpecializationIds
+          ?.map((secId) => {
+            const specialization = secondarySpecializations.find((s) => String(s.id) === String(secId));
+            return specialization ? specialization.name.toLowerCase() : null;
+          })
+          .filter(Boolean) || [];
+
+      const doctorHasRelatedPrimarySpecialization = relatedPrimarySpecializationIds.includes(
+        String(doctor.primarySpecializationId)
+      );
+
+      return (
+        fullName.includes(lowerCaseSearchInput) ||
+        zipcode.includes(lowerCaseSearchInput) ||
+        secondarySpecializationArray.some((spec) => spec.includes(lowerCaseSearchInput)) ||
+        doctorHasRelatedPrimarySpecialization
+      );
+    });
+
+    setSearchRecommendations(filteredData.slice(0, 5));
+  };
+
+  const handleSearchSubmit = () => {
+    if (isLoading || isSpeciazationLoading) {
+      return; // to prevent conflict
+    }
+    const lowerCaseSearchInput = searchInput.toLowerCase();
+
+    setSearchRecommendations([]);
+    setShowRecommendations(false); 
+
+    // to check if input matches a health condition & display results
+    const matchedHealthCondition = healthConditions.find(
+      (hc) => hc.name.toLowerCase() === lowerCaseSearchInput
+    );
+
+    if (matchedHealthCondition) {
+      // console.log(`fetching doctors for Health Condition: ${matchedHealthCondition.name}`);
+      setSearchText(matchedHealthCondition.name);
+      setSearchRecommendations([]);
+      setResults(doctorsByHealthCondition);
+      setOriginalResults(doctorsByHealthCondition);
+      return;
+    }
+
+    // checking if input matches a primary specialization for submit
+    const matchedPrimarySpecialization = specializations.find(
+      (spec) => spec.name.toLowerCase() === lowerCaseSearchInput
+    );
+
     if (matchedPrimarySpecialization) {
       const filteredData = doctors.filter(
         (doctor) => String(doctor.primarySpecializationId) === String(matchedPrimarySpecialization.id)
@@ -117,12 +182,13 @@ const useDoctorSearch = (doctors) => {
       return;
     }
 
-    // or find related primary specializations for searched secondary specialization
+    // checking if input matches a secondary specialization
     const relatedPrimarySpecializationIds = primaryToSecondaryMap
       .filter((entry) =>
-        secondarySpecializations?.find((s) =>
-          String(s.id) === String(entry.secondarySpecialtyID) &&
-          s.name.toLowerCase().includes(lowerCaseSearchInput)
+        secondarySpecializations.find(
+          (s) =>
+            String(s.id) === String(entry.secondarySpecialtyID) &&
+            s.name.toLowerCase().includes(lowerCaseSearchInput)
         )
       )
       .map((entry) => entry.primarySpecialtyID);
@@ -131,18 +197,15 @@ const useDoctorSearch = (doctors) => {
       const fullName = `${doctor.firstname ?? ""} ${doctor.lastname ?? ""}`.toLowerCase();
       const zipcode = doctor.zipcode ? doctor.zipcode.toLowerCase() : "";
 
-      // get Primary Specialization Name
-      // const primarySpecialization = specializations?.find(
-      //   (spec) => String(spec.id) === String(doctor?.primarySpecializationId)
-      // )?.name?.toLowerCase() || "";
+      // Get Secondary Specialization Names
+      const secondarySpecializationArray =
+        doctor?.secondarySpecializationIds
+          ?.map((secId) => {
+            const specialization = secondarySpecializations.find((s) => String(s.id) === String(secId));
+            return specialization ? specialization.name.toLowerCase() : null;
+          })
+          .filter(Boolean) || [];
 
-      // get Secondary Specialization Names
-      const secondarySpecializationArray = doctor?.secondarySpecializationIds?.map((secId) => {
-        const specialization = secondarySpecializations?.find((s) => String(s.id) === String(secId));
-        return specialization ? specialization.name.toLowerCase() : null;
-      }).filter(Boolean) || [];
-
-      // checking if the doctor's primary specialization matches a mapped primary specialization
       const doctorHasRelatedPrimarySpecialization = relatedPrimarySpecializationIds.includes(
         String(doctor.primarySpecializationId)
       );
@@ -161,13 +224,6 @@ const useDoctorSearch = (doctors) => {
     setSearchText(searchInput);
   };
 
-  const handleDoctorSelect = (doctor) => {
-    setResults([doctor]);
-    setOriginalResults([doctor]);
-    setSearchText(`${doctor.firstname} ${doctor.lastname}`);
-    setSearchRecommendations([]);
-  };
-
   return {
     searchInput,
     searchText,
@@ -180,7 +236,8 @@ const useDoctorSearch = (doctors) => {
     setOriginalResults,
     handleSearchInput,
     handleSearchSubmit,
-    handleDoctorSelect,
+    isLoading,
+    isSpeciazationLoading,
   };
 };
 

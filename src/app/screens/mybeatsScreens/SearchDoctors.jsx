@@ -41,6 +41,8 @@ const SearchDoctors = () => {
     handleSearchInput,
     handleSearchSubmit,
     handleDoctorSelect,
+    isLoading,
+    isSpeciazationLoading,
   } = useDoctorSearch(doctors);
   
 
@@ -205,10 +207,12 @@ const SearchDoctors = () => {
       />
 
       <ScrollView className="py-5 h-[100%]">
+      {isLoading || isSpeciazationLoading ? <Loader /> : (
         <SearchRecommendations
           recommendations={searchRecommendations}
           onSelect={handleDoctorSelect}
         />
+      )}
         <DoctorList
           doctors={results}
           searchText={searchText}
