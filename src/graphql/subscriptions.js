@@ -241,6 +241,11 @@ export const onCreateSpecialty = /* GraphQL */ `
         startedAt
         __typename
       }
+      healthConditions {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -277,6 +282,11 @@ export const onUpdateSpecialty = /* GraphQL */ `
         startedAt
         __typename
       }
+      healthConditions {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -309,6 +319,74 @@ export const onDeleteSpecialty = /* GraphQL */ `
         __typename
       }
       secondaryToPrimaryLinks {
+        nextToken
+        startedAt
+        __typename
+      }
+      healthConditions {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onCreateHealthCondition = /* GraphQL */ `
+  subscription OnCreateHealthCondition(
+    $filter: ModelSubscriptionHealthConditionFilterInput
+  ) {
+    onCreateHealthCondition(filter: $filter) {
+      id
+      name
+      specialties {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateHealthCondition = /* GraphQL */ `
+  subscription OnUpdateHealthCondition(
+    $filter: ModelSubscriptionHealthConditionFilterInput
+  ) {
+    onUpdateHealthCondition(filter: $filter) {
+      id
+      name
+      specialties {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteHealthCondition = /* GraphQL */ `
+  subscription OnDeleteHealthCondition(
+    $filter: ModelSubscriptionHealthConditionFilterInput
+  ) {
+    onDeleteHealthCondition(filter: $filter) {
+      id
+      name
+      specialties {
         nextToken
         startedAt
         __typename
@@ -1858,6 +1936,117 @@ export const onDeleteDoctorSecondarySpecialties = /* GraphQL */ `
         __typename
       }
       specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onCreateSpecialtyHealthConditions = /* GraphQL */ `
+  subscription OnCreateSpecialtyHealthConditions(
+    $filter: ModelSubscriptionSpecialtyHealthConditionsFilterInput
+  ) {
+    onCreateSpecialtyHealthConditions(filter: $filter) {
+      id
+      specialtyId
+      healthConditionId
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      healthCondition {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateSpecialtyHealthConditions = /* GraphQL */ `
+  subscription OnUpdateSpecialtyHealthConditions(
+    $filter: ModelSubscriptionSpecialtyHealthConditionsFilterInput
+  ) {
+    onUpdateSpecialtyHealthConditions(filter: $filter) {
+      id
+      specialtyId
+      healthConditionId
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      healthCondition {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteSpecialtyHealthConditions = /* GraphQL */ `
+  subscription OnDeleteSpecialtyHealthConditions(
+    $filter: ModelSubscriptionSpecialtyHealthConditionsFilterInput
+  ) {
+    onDeleteSpecialtyHealthConditions(filter: $filter) {
+      id
+      specialtyId
+      healthConditionId
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      healthCondition {
         id
         name
         createdAt

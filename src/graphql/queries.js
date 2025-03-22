@@ -191,6 +191,11 @@ export const getSpecialty = /* GraphQL */ `
         startedAt
         __typename
       }
+      healthConditions {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -239,6 +244,85 @@ export const syncSpecialties = /* GraphQL */ `
     $lastSync: AWSTimestamp
   ) {
     syncSpecialties(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const getHealthCondition = /* GraphQL */ `
+  query GetHealthCondition($id: ID!) {
+    getHealthCondition(id: $id) {
+      id
+      name
+      specialties {
+        nextToken
+        startedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listHealthConditions = /* GraphQL */ `
+  query ListHealthConditions(
+    $id: ID
+    $filter: ModelHealthConditionFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listHealthConditions(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncHealthConditions = /* GraphQL */ `
+  query SyncHealthConditions(
+    $filter: ModelHealthConditionFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncHealthConditions(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -1378,6 +1462,99 @@ export const syncDoctorSecondarySpecialties = /* GraphQL */ `
     }
   }
 `;
+export const getSpecialtyHealthConditions = /* GraphQL */ `
+  query GetSpecialtyHealthConditions($id: ID!) {
+    getSpecialtyHealthConditions(id: $id) {
+      id
+      specialtyId
+      healthConditionId
+      specialty {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      healthCondition {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listSpecialtyHealthConditions = /* GraphQL */ `
+  query ListSpecialtyHealthConditions(
+    $filter: ModelSpecialtyHealthConditionsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSpecialtyHealthConditions(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        specialtyId
+        healthConditionId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncSpecialtyHealthConditions = /* GraphQL */ `
+  query SyncSpecialtyHealthConditions(
+    $filter: ModelSpecialtyHealthConditionsFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncSpecialtyHealthConditions(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        specialtyId
+        healthConditionId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
 export const doctorsByPrimarySpecializationId = /* GraphQL */ `
   query DoctorsByPrimarySpecializationId(
     $primarySpecializationId: ID!
@@ -1483,6 +1660,37 @@ export const specialtyByName = /* GraphQL */ `
     $nextToken: String
   ) {
     specialtyByName(
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const healthConditionByName = /* GraphQL */ `
+  query HealthConditionByName(
+    $name: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelHealthConditionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    healthConditionByName(
       name: $name
       sortDirection: $sortDirection
       filter: $filter
@@ -2067,6 +2275,70 @@ export const doctorSecondarySpecialtiesBySpecialtyId = /* GraphQL */ `
         id
         doctorDoctorID
         specialtyId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const specialtyHealthConditionsBySpecialtyId = /* GraphQL */ `
+  query SpecialtyHealthConditionsBySpecialtyId(
+    $specialtyId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelSpecialtyHealthConditionsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    specialtyHealthConditionsBySpecialtyId(
+      specialtyId: $specialtyId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        specialtyId
+        healthConditionId
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const specialtyHealthConditionsByHealthConditionId = /* GraphQL */ `
+  query SpecialtyHealthConditionsByHealthConditionId(
+    $healthConditionId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelSpecialtyHealthConditionsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    specialtyHealthConditionsByHealthConditionId(
+      healthConditionId: $healthConditionId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        specialtyId
+        healthConditionId
         createdAt
         updatedAt
         _version

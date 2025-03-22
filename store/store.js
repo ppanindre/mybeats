@@ -65,6 +65,11 @@ import {
   labTestResultGetReducer,
   labTestResultsByPatientReducer,
 } from "./reducers/labTestResultReducers";
+import { 
+  healthConditionReducer,
+  secondarySpecializationByHealthConditionReducer,
+  doctorsBySecondarySpecializationReducer,
+ } from "./reducers/healthConditionReducer";
 
 // Combining every reducer
 const reducers = combineReducers({
@@ -104,6 +109,9 @@ const reducers = combineReducers({
   primarySpecializationReducer,
   primaryToSecondaryReducer,
   secondarySpecializationReducer,
+  healthConditionReducer,
+  secondarySpecializationByHealthConditionReducer,
+  doctorsBySecondarySpecializationReducer,
   prescriptionCreate: prescriptionCreateReducer,
   prescriptionGet: prescriptionGetReducer,
   prescriptionList: prescriptionListReducer,

@@ -47,6 +47,14 @@ type Specialty @model @auth(rules: [{ allow: public }]) {
 
     primaryToSecondaryLinks: [PrimaryToSecondary] @hasMany(indexName: "byPrimarySpecialty", fields: ["id"])
     secondaryToPrimaryLinks: [PrimaryToSecondary] @hasMany(indexName: "bySecondarySpecialty", fields: ["id"])
+
+    healthConditions: [HealthCondition] @manyToMany(relationName: "SpecialtyHealthConditions")
+}
+
+type HealthCondition @model @auth(rules: [{ allow: public }]) {
+    id: ID! @primaryKey
+    name: String! @index(name: "byName", queryField: "healthConditionByName")
+    specialties: [Specialty] @manyToMany(relationName: "SpecialtyHealthConditions")
 }
 
 type PrimaryToSecondary @model @auth(rules: [{ allow: public }]) {

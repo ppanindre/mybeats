@@ -93,6 +93,7 @@ type EagerSpecialty = {
   readonly secondaryDoctors?: (DoctorSecondarySpecialties | null)[] | null;
   readonly primaryToSecondaryLinks?: (PrimaryToSecondary | null)[] | null;
   readonly secondaryToPrimaryLinks?: (PrimaryToSecondary | null)[] | null;
+  readonly healthConditions?: (SpecialtyHealthConditions | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -108,6 +109,7 @@ type LazySpecialty = {
   readonly secondaryDoctors: AsyncCollection<DoctorSecondarySpecialties>;
   readonly primaryToSecondaryLinks: AsyncCollection<PrimaryToSecondary>;
   readonly secondaryToPrimaryLinks: AsyncCollection<PrimaryToSecondary>;
+  readonly healthConditions: AsyncCollection<SpecialtyHealthConditions>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -116,6 +118,36 @@ export declare type Specialty = LazyLoading extends LazyLoadingDisabled ? EagerS
 
 export declare const Specialty: (new (init: ModelInit<Specialty>) => Specialty) & {
   copyOf(source: Specialty, mutator: (draft: MutableModel<Specialty>) => MutableModel<Specialty> | void): Specialty;
+}
+
+type EagerHealthCondition = {
+  readonly [__modelMeta__]: {
+    identifier: OptionallyManagedIdentifier<HealthCondition, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name: string;
+  readonly specialties?: (SpecialtyHealthConditions | null)[] | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyHealthCondition = {
+  readonly [__modelMeta__]: {
+    identifier: OptionallyManagedIdentifier<HealthCondition, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name: string;
+  readonly specialties: AsyncCollection<SpecialtyHealthConditions>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type HealthCondition = LazyLoading extends LazyLoadingDisabled ? EagerHealthCondition : LazyHealthCondition
+
+export declare const HealthCondition: (new (init: ModelInit<HealthCondition>) => HealthCondition) & {
+  copyOf(source: HealthCondition, mutator: (draft: MutableModel<HealthCondition>) => MutableModel<HealthCondition> | void): HealthCondition;
 }
 
 type EagerPrimaryToSecondary = {
@@ -492,4 +524,38 @@ export declare type DoctorSecondarySpecialties = LazyLoading extends LazyLoading
 
 export declare const DoctorSecondarySpecialties: (new (init: ModelInit<DoctorSecondarySpecialties>) => DoctorSecondarySpecialties) & {
   copyOf(source: DoctorSecondarySpecialties, mutator: (draft: MutableModel<DoctorSecondarySpecialties>) => MutableModel<DoctorSecondarySpecialties> | void): DoctorSecondarySpecialties;
+}
+
+type EagerSpecialtyHealthConditions = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<SpecialtyHealthConditions, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly specialtyId?: string | null;
+  readonly healthConditionId?: string | null;
+  readonly specialty: Specialty;
+  readonly healthCondition: HealthCondition;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazySpecialtyHealthConditions = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<SpecialtyHealthConditions, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly specialtyId?: string | null;
+  readonly healthConditionId?: string | null;
+  readonly specialty: AsyncItem<Specialty>;
+  readonly healthCondition: AsyncItem<HealthCondition>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type SpecialtyHealthConditions = LazyLoading extends LazyLoadingDisabled ? EagerSpecialtyHealthConditions : LazySpecialtyHealthConditions
+
+export declare const SpecialtyHealthConditions: (new (init: ModelInit<SpecialtyHealthConditions>) => SpecialtyHealthConditions) & {
+  copyOf(source: SpecialtyHealthConditions, mutator: (draft: MutableModel<SpecialtyHealthConditions>) => MutableModel<SpecialtyHealthConditions> | void): SpecialtyHealthConditions;
 }
