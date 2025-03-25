@@ -176,7 +176,7 @@ const ConsultDoctor = () => {
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item: doctor }) => (
-              <View className="w-[300]">
+              <View className="w-[350]">
                 <TouchableOpacity>
                   <DoctorCard doctor={doctor} />
                 </TouchableOpacity>
