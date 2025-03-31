@@ -70,6 +70,7 @@ import {
   secondarySpecializationByHealthConditionReducer,
   doctorsBySecondarySpecializationReducer,
  } from "./reducers/healthConditionReducer";
+ import umaChatReducer from "./reducers/umaChatReducer";
 
 // Combining every reducer
 const reducers = combineReducers({
@@ -110,6 +111,7 @@ const reducers = combineReducers({
   primaryToSecondaryReducer,
   secondarySpecializationReducer,
   healthConditionReducer,
+  umaChatReducer,
   secondarySpecializationByHealthConditionReducer,
   doctorsBySecondarySpecializationReducer,
   prescriptionCreate: prescriptionCreateReducer,
