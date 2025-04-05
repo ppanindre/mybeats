@@ -17,9 +17,14 @@ import ChatBubble from "../../../../components/ChatBubble";
 import { Ionicons } from "@expo/vector-icons";
 import { customTheme } from "../../../../constants/themeConstants";
 import { useDispatch, useSelector } from "react-redux";
-import { setUmaMessages } from "../../../../store/actions/umaChatActions";
+import {
+  listUmaMessagesAction,
+  createUmaMessageAction,
+  sendUmaMessageAction,
+} from "../../../../store/actions/umaChatActions";
+import { v4 as uuidv4 } from "uuid";
 import { useMemo } from "react";
-import axios from "axios";
+import Loader from "../Utils/Loader";
 
 let shouldShowNotice = true;
 
@@ -27,6 +32,7 @@ const UmaChatBot = () => {
   const dispatch = useDispatch();
   const route = useRoute();
   const patient = route?.params?.patientId;
+  const doctorId = useSelector((state) => state.UserReducer?.userId);
   const contextKey = patient ? `patient_${patient.id}` : "general";
   const rawMessages = useSelector((state) => state.umaChatReducer.chats);
   const messages = useMemo(
@@ -35,159 +41,78 @@ const UmaChatBot = () => {
   );
   const scrollRef = useRef();
   const [showNotice, setShowNotice] = useState(shouldShowNotice);
+  const { loadingMessages, sendingMessage } = useSelector((state) => state.umaChatReducer);
 
   const cameFromDoctorDashboard = route?.params?.from === "patientDashboard";
 
-  const calculateBMI = (height, weight) => {
-    if (!height || !weight) return null;
-    const h = height / 100;
-    return (weight / (h * h)).toFixed(2);
-  };
+  const hasFetchedOnce = useRef(false);
 
   useEffect(() => {
-    if (messages.length === 0) {
-      const welcome = {
-        id: "uma-welcome",
-        sender: "uma",
-        body: patient?.firstname
-          ? `Hi, I’m Uma! I’m here to help with patient ${patient.firstname} ${patient.lastname}.`
-          : "Hi, I’m Uma! I’m here to help you with any medical questions 🤖",
-        timeStamp: Date.now(),
-      };
-      dispatch(setUmaMessages(contextKey, [welcome]));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (patient) {
-      console.log("Patient Details:", {
-        id: patient.id,
-        firstname: patient.firstname,
-        lastname: patient.lastname,
-        age: patient.age,
-        height: patient.height,
-        weight: patient.weight,
+    if (doctorId) {
+      dispatch(listUmaMessagesAction(doctorId, patient?.id || null)).then(() => {
+        hasFetchedOnce.current = true;
       });
     }
-  }, [patient]);
+  }, [doctorId, patient]);
   
-
-  const handleSendMessage = async (text) => {
-    if (!text.trim()) return;
+  useEffect(() => {
+    if (!hasFetchedOnce.current || !doctorId) return;
   
-    const userMessage = {
-      id: Date.now().toString(),
-      sender: "user",
-      body: text,
-      timeStamp: Date.now(),
-    };
+    const welcomeText = patient?.firstname
+      ? `Hi, I’m Uma! I’m here to help with patient ${patient.firstname} ${patient.lastname}.`
+      : "Hi, I’m Uma! I’m here to help you with any medical questions 🤖";
   
-    const updatedMessages = [...messages, userMessage];
-    dispatch(setUmaMessages(contextKey, updatedMessages));
+    const hasWelcomeMessage = messages.some(
+      (msg) =>
+        msg.sender === "uma" &&
+        msg.messageType === "text" &&
+        msg.content?.trim() === welcomeText.trim()
+    );
   
-    setTimeout(async () => {
-      const typingMessage = {
-        id: "uma-typing",
+    if (!hasWelcomeMessage) {
+      const welcomeMessage = {
+        chatSessionId: contextKey,
+        messageID: uuidv4(),
+        timestamp: new Date().toISOString(),
         sender: "uma",
-        body: "Uma is typing...",
-        timeStamp: Date.now(),
-        isTyping: true,
+        content: welcomeText,
+        messageType: "text",
+        status: "sent",
+        doctorID: doctorId,
+        ...(patient?.id && { patientID: patient.id }),
       };
   
-      dispatch(setUmaMessages(contextKey, [...updatedMessages, typingMessage]));
+      dispatch(createUmaMessageAction(welcomeMessage));
+    }
+  }, [messages, doctorId]);
   
-      try {
-        let prompt = text;
+  const handleSendMessage = (text) => {
+    if (!text.trim()) return;
   
-        if (patient) {
-          const name = `${patient.firstname} ${patient.lastname}`;
-          const age = patient.age || "";
-          const height = patient.height || "";
-          const weight = patient.weight || "";
-          const bmi = calculateBMI(height, weight) || "";
-  
-          prompt += `
-  
-          Patient details:
-          - Name: ${name}
-          - Age: ${age}
-          - Height: ${height} cm
-          - Weight: ${weight} kg
-          - BMI: ${bmi}
-          
-          Based on the above patient details, provide a direct interpretation or answer related to the user's question.`;
-                } 
-          // else {
-          //         prompt += `
-          
-          // Remember your name is Uma, a friendly AI medical assistant. If the user greets with "hi" or similar, respond with: "Hi, Uma here to help. How can I assist you today?"`;
-          //       }
-  
-        const payload = { prompt };
-        console.log("Sending Payload:", payload);
-  
-        const response = await axios.post(
-          {apiUrl},
-          payload,
-          { headers: { "Content-Type": "application/json" } }
-        );
-  
-        console.log("Uma API raw response:", response.data);
-  
-        let resultText = response.data?.result || "";
-  
-        if (response.data?.prompt) {
-          const promptEscaped = response.data.prompt.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
-          const promptRegex = new RegExp(`^${promptEscaped}[\\s\\?\\.:-]*`, "i");
-          resultText = resultText.replace(promptRegex, "").trim();
-        }
-  
-        resultText = resultText.replace(/\[[^\]]*\]/g, "").trim(); // removing [Reviewed...], [+], [–]
-        resultText = resultText.replace(/^[\?\s:;.-]+/, "").trim(); // removing leading punctuation
-  
-        const botReply = {
-          id: (Date.now() + 1).toString(),
-          sender: "uma",
-          body: resultText || "Here’s some helpful information.",
-          timeStamp: Date.now(),
-        };
-  
-        const finalMessages = [...updatedMessages, botReply].filter(
-          (msg) => msg.id !== "uma-typing"
-        );
-  
-        dispatch(setUmaMessages(contextKey, finalMessages));
-      } catch (err) {
-        console.error("Uma API error:", err);
-        const fallback = {
-          id: (Date.now() + 1).toString(),
-          sender: "uma",
-          body: "Sorry, I couldn’t get an answer right now. Please try again later.",
-          timeStamp: Date.now(),
-        };
-  
-        const finalMessages = [...updatedMessages, fallback].filter(
-          (msg) => msg.id !== "uma-typing"
-        );
-  
-        dispatch(setUmaMessages(contextKey, finalMessages));
-      }
-    }, 1000);
+    dispatch(sendUmaMessageAction(text, doctorId, patient));
   };
   
   
   // Group messages by date
+  const sortedMessages = [...messages].sort(
+    (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
+  );
+  
   const groupMessagesByDate = () => {
     const grouped = {};
-    messages.forEach((msg) => {
-      const dateKey = moment(msg.timeStamp).format("D MMM, YYYY");
+    sortedMessages.forEach((msg) => {
+      const dateKey = moment(msg.timestamp).format("D MMM, YYYY");
       if (!grouped[dateKey]) grouped[dateKey] = [];
       grouped[dateKey].push(msg);
     });
     return grouped;
   };
-
+  
   const groupedMessages = groupMessagesByDate();
+
+  if (loadingMessages) {
+    return <Loader />;
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -231,7 +156,7 @@ const UmaChatBot = () => {
                   </View>
                 )}
 
-                {Object.keys(groupedMessages).map((date, idx) => (
+                {!loadingMessages && Object.keys(groupedMessages).map((date, idx) => (
                   <View className="space-y-5" key={idx}>
                     {/* Date Bubble */}
                     <View className="items-center">
@@ -246,8 +171,8 @@ const UmaChatBot = () => {
                         <ChatBubble
                           key={index}
                           sender={msg.sender === "uma" ? "admin" : "user"}
-                          message={msg.body}
-                          time={moment(msg.timeStamp).format("h:mm A")}
+                          message={msg.content}
+                          time={moment(msg.timestamp).format("h:mm A")}
                         />
                       ))}
                     </View>

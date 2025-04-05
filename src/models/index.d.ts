@@ -37,6 +37,7 @@ type EagerDoctor = {
   readonly availability?: (Availability | null)[] | null;
   readonly prescriptions?: (Prescription | null)[] | null;
   readonly patientStories?: (PatientStory | null)[] | null;
+  readonly chatMessages?: (ChatMessage | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -72,6 +73,7 @@ type LazyDoctor = {
   readonly availability: AsyncCollection<Availability>;
   readonly prescriptions: AsyncCollection<Prescription>;
   readonly patientStories: AsyncCollection<PatientStory>;
+  readonly chatMessages: AsyncCollection<ChatMessage>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -204,6 +206,7 @@ type EagerPatient = {
   readonly underlyingCondition?: string | null;
   readonly prescriptions?: (Prescription | null)[] | null;
   readonly labTestResults?: (LabTestResult | null)[] | null;
+  readonly chatMessages?: (ChatMessage | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -228,6 +231,7 @@ type LazyPatient = {
   readonly underlyingCondition?: string | null;
   readonly prescriptions: AsyncCollection<Prescription>;
   readonly labTestResults: AsyncCollection<LabTestResult>;
+  readonly chatMessages: AsyncCollection<ChatMessage>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -456,6 +460,54 @@ export declare type LabTestResult = LazyLoading extends LazyLoadingDisabled ? Ea
 
 export declare const LabTestResult: (new (init: ModelInit<LabTestResult>) => LabTestResult) & {
   copyOf(source: LabTestResult, mutator: (draft: MutableModel<LabTestResult>) => MutableModel<LabTestResult> | void): LabTestResult;
+}
+
+type EagerChatMessage = {
+  readonly [__modelMeta__]: {
+    identifier: OptionallyManagedIdentifier<ChatMessage, 'id'>;
+  };
+  readonly id: string;
+  readonly chatSessionId: string;
+  readonly doctorID: string;
+  readonly doctor?: Doctor | null;
+  readonly patientID?: string | null;
+  readonly patient?: Patient | null;
+  readonly messageID: string;
+  readonly sender: string;
+  readonly content: string;
+  readonly messageType?: string | null;
+  readonly status?: string | null;
+  readonly timestamp: string;
+  readonly ttl?: number | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyChatMessage = {
+  readonly [__modelMeta__]: {
+    identifier: OptionallyManagedIdentifier<ChatMessage, 'id'>;
+  };
+  readonly id: string;
+  readonly chatSessionId: string;
+  readonly doctorID: string;
+  readonly doctor: AsyncItem<Doctor | undefined>;
+  readonly patientID?: string | null;
+  readonly patient: AsyncItem<Patient | undefined>;
+  readonly messageID: string;
+  readonly sender: string;
+  readonly content: string;
+  readonly messageType?: string | null;
+  readonly status?: string | null;
+  readonly timestamp: string;
+  readonly ttl?: number | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type ChatMessage = LazyLoading extends LazyLoadingDisabled ? EagerChatMessage : LazyChatMessage
+
+export declare const ChatMessage: (new (init: ModelInit<ChatMessage>) => ChatMessage) & {
+  copyOf(source: ChatMessage, mutator: (draft: MutableModel<ChatMessage>) => MutableModel<ChatMessage> | void): ChatMessage;
 }
 
 type EagerDoctorSpecialties = {

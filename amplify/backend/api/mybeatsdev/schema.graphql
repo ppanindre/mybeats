@@ -37,6 +37,8 @@ type Doctor @model @auth(rules: [{ allow: public }]) {
         @hasMany(indexName: "byDoctor", fields: ["doctorID"])
     patientStories: [PatientStory] 
         @hasMany(indexName: "byDoctor", fields: ["doctorID"]) 
+    chatMessages: [ChatMessage] 
+        @hasMany(indexName: "byDoctor", fields: ["doctorID"])
 }
 
 type Specialty @model @auth(rules: [{ allow: public }]) {
@@ -83,6 +85,8 @@ type Patient @model @auth(rules: [{ allow: public }]) {
      prescriptions: [Prescription] 
         @hasMany(indexName: "byPatient", fields: ["id"])
      labTestResults: [LabTestResult]
+        @hasMany(indexName: "byPatient", fields: ["id"])
+    chatMessages: [ChatMessage] 
         @hasMany(indexName: "byPatient", fields: ["id"])
 }
 
@@ -164,4 +168,25 @@ type LabTestResult @model @auth(rules: [{ allow: public }]) {
     labResultImages: [String] 
     patientID: ID! @index(name: "byPatient", queryField: "labTestsByPatient")
     patient: Patient @belongsTo(fields: ["patientID"])
+}
+
+type ChatMessage @model @auth(rules: [{ allow: public }]) {
+  id: ID! @primaryKey
+  chatSessionId: String! @index(name: "byChatSessionId", queryField: "messagesBySession")
+  doctorID: ID! @index(name: "byDoctor")
+  doctor: Doctor @belongsTo(fields: ["doctorID"])
+  patientID: ID @index(name: "byPatient") 
+  patient: Patient @belongsTo(fields: ["patientID"])
+  
+  messageID: String! 
+  sender: String! 
+  content: String!
+  messageType: String # optional: "text", "image", "file", etc.
+  status: String # optional: "sent", "delivered", "read"
+  timestamp: AWSDateTime!
+  ttl: Int 
+
+  # 0ptional indexing for time based queries
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
 }

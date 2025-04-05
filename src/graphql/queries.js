@@ -63,6 +63,11 @@ export const getDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
+      chatMessages {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -467,6 +472,11 @@ export const getPatient = /* GraphQL */ `
         __typename
       }
       labTestResults {
+        nextToken
+        startedAt
+        __typename
+      }
+      chatMessages {
         nextToken
         startedAt
         __typename
@@ -1229,6 +1239,154 @@ export const syncLabTestResults = /* GraphQL */ `
         testDate
         labResultImages
         patientID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const getChatMessage = /* GraphQL */ `
+  query GetChatMessage($id: ID!) {
+    getChatMessage(id: $id) {
+      id
+      chatSessionId
+      doctorID
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecializationIds
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      patientID
+      patient {
+        id
+        firstname
+        lastname
+        email
+        phoneNumber
+        address
+        zipcode
+        age
+        weight
+        height
+        profession
+        underlyingCondition
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      messageID
+      sender
+      content
+      messageType
+      status
+      timestamp
+      ttl
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listChatMessages = /* GraphQL */ `
+  query ListChatMessages(
+    $id: ID
+    $filter: ModelChatMessageFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listChatMessages(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        chatSessionId
+        doctorID
+        patientID
+        messageID
+        sender
+        content
+        messageType
+        status
+        timestamp
+        ttl
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncChatMessages = /* GraphQL */ `
+  query SyncChatMessages(
+    $filter: ModelChatMessageFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncChatMessages(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        chatSessionId
+        doctorID
+        patientID
+        messageID
+        sender
+        content
+        messageType
+        status
+        timestamp
+        ttl
         createdAt
         updatedAt
         _version
@@ -2147,6 +2305,126 @@ export const labTestsByPatient = /* GraphQL */ `
         testDate
         labResultImages
         patientID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const messagesBySession = /* GraphQL */ `
+  query MessagesBySession(
+    $chatSessionId: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelChatMessageFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    messagesBySession(
+      chatSessionId: $chatSessionId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        chatSessionId
+        doctorID
+        patientID
+        messageID
+        sender
+        content
+        messageType
+        status
+        timestamp
+        ttl
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const chatMessagesByDoctorID = /* GraphQL */ `
+  query ChatMessagesByDoctorID(
+    $doctorID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelChatMessageFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    chatMessagesByDoctorID(
+      doctorID: $doctorID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        chatSessionId
+        doctorID
+        patientID
+        messageID
+        sender
+        content
+        messageType
+        status
+        timestamp
+        ttl
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const chatMessagesByPatientID = /* GraphQL */ `
+  query ChatMessagesByPatientID(
+    $patientID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelChatMessageFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    chatMessagesByPatientID(
+      patientID: $patientID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        chatSessionId
+        doctorID
+        patientID
+        messageID
+        sender
+        content
+        messageType
+        status
+        timestamp
+        ttl
         createdAt
         updatedAt
         _version
