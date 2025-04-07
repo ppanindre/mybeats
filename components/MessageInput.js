@@ -17,7 +17,7 @@ const MessageInput = ({ onSubmit }) => {
       style={{ width: "100%" }}
     >
       <TextInput
-        className="flex-1 p-5 bg-darkSecondary rounded-full"
+        className="flex-1 p-5 bg-light rounded-full border border-primary"
         placeholder="Enter your message"
         onChangeText={(message) => setMessage(message)}
         value={message}

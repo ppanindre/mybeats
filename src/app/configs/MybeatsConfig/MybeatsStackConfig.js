@@ -39,6 +39,7 @@ import LabTestResults from "../../components/PatientLabTestResults/LabTestResult
 import UploadLabTestResult from "../../components/PatientLabTestResults/UploadLabTestResult";
 import ViewLabTestResults from "../../components/PatientLabTestResults/ViewLabTestResults";
 import DoctorLabTestResults from "../../components/DoctorLabTestView/DoctorLabTestResults";
+import UmaChatBot from "../../components/ChatBot/UmaChatBot";
 
 export const mybeatsStackConfig = {
     screens: [
@@ -252,5 +253,10 @@ export const mybeatsStackConfig = {
             name: "doctorLabTestResults",
             component: DoctorLabTestResults,
         },
+        {
+            headerTitle: "Ask Uma - Your AI Assistant!",
+            name: "umaChatBot",
+            component: UmaChatBot,
+        }
     ],
 };

@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "myhealth",
+    "name": "MyHealth",
     "slug": "mybeats",
     "version": "1.1.0",
     "orientation": "portrait",
-    "icon": "./assets/icons/firebeats_icon.png",
+    "icon": "./assets/icons/myhealth.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/icons/firebeats_icon.png",
+      "image": "./assets/icons/myhealth_splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

@@ -104,8 +104,20 @@ const Patient = ({ route }) => {
             <View className="flex-row justify-around space-x-3">
                 <View className="flex-1">
                     <AppButton
-                        btnLabel="Request lab test"
-                        variant="light"
+                        onPress={() =>
+                            navigation.navigate("umaChatBot", {
+                            patientId: patient,
+                            })
+                        }
+                        btnLabel={`Ask Uma about ${patient.firstname}`}
+                        variant="primary"
+                        btnRightIcon={
+                            <Image
+                              source={require('../../assets/uma_ai.png')}
+                              className="w-10 h-10 ml-2"
+                              resizeMode="cover"
+                            />
+                          }
                     />
                 </View>
             </View>

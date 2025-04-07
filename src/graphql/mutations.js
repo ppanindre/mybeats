@@ -66,6 +66,11 @@ export const createDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
+      chatMessages {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -140,6 +145,11 @@ export const updateDoctor = /* GraphQL */ `
         startedAt
         __typename
       }
+      chatMessages {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -210,6 +220,11 @@ export const deleteDoctor = /* GraphQL */ `
         __typename
       }
       patientStories {
+        nextToken
+        startedAt
+        __typename
+      }
+      chatMessages {
         nextToken
         startedAt
         __typename
@@ -562,6 +577,11 @@ export const createPatient = /* GraphQL */ `
         startedAt
         __typename
       }
+      chatMessages {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -604,6 +624,11 @@ export const updatePatient = /* GraphQL */ `
         startedAt
         __typename
       }
+      chatMessages {
+        nextToken
+        startedAt
+        __typename
+      }
       createdAt
       updatedAt
       _version
@@ -642,6 +667,11 @@ export const deletePatient = /* GraphQL */ `
         __typename
       }
       labTestResults {
+        nextToken
+        startedAt
+        __typename
+      }
+      chatMessages {
         nextToken
         startedAt
         __typename
@@ -1663,6 +1693,225 @@ export const deleteLabTestResult = /* GraphQL */ `
         _lastChangedAt
         __typename
       }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createChatMessage = /* GraphQL */ `
+  mutation CreateChatMessage(
+    $input: CreateChatMessageInput!
+    $condition: ModelChatMessageConditionInput
+  ) {
+    createChatMessage(input: $input, condition: $condition) {
+      id
+      chatSessionId
+      doctorID
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecializationIds
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      patientID
+      patient {
+        id
+        firstname
+        lastname
+        email
+        phoneNumber
+        address
+        zipcode
+        age
+        weight
+        height
+        profession
+        underlyingCondition
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      messageID
+      sender
+      content
+      messageType
+      status
+      timestamp
+      ttl
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateChatMessage = /* GraphQL */ `
+  mutation UpdateChatMessage(
+    $input: UpdateChatMessageInput!
+    $condition: ModelChatMessageConditionInput
+  ) {
+    updateChatMessage(input: $input, condition: $condition) {
+      id
+      chatSessionId
+      doctorID
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecializationIds
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      patientID
+      patient {
+        id
+        firstname
+        lastname
+        email
+        phoneNumber
+        address
+        zipcode
+        age
+        weight
+        height
+        profession
+        underlyingCondition
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      messageID
+      sender
+      content
+      messageType
+      status
+      timestamp
+      ttl
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteChatMessage = /* GraphQL */ `
+  mutation DeleteChatMessage(
+    $input: DeleteChatMessageInput!
+    $condition: ModelChatMessageConditionInput
+  ) {
+    deleteChatMessage(input: $input, condition: $condition) {
+      id
+      chatSessionId
+      doctorID
+      doctor {
+        doctorID
+        firstname
+        lastname
+        email
+        phoneNumber
+        licenseNumber
+        upiId
+        primarySpecializationId
+        address
+        city
+        state
+        experience
+        secondarySpecializationIds
+        availableForVideoConsultation
+        feeForVideoConsultation
+        educationExperience
+        awardsRecognition
+        website
+        zipcode
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      patientID
+      patient {
+        id
+        firstname
+        lastname
+        email
+        phoneNumber
+        address
+        zipcode
+        age
+        weight
+        height
+        profession
+        underlyingCondition
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      messageID
+      sender
+      content
+      messageType
+      status
+      timestamp
+      ttl
       createdAt
       updatedAt
       _version

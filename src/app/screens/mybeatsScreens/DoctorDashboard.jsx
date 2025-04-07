@@ -5,10 +5,10 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  Image,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-
 import { getDoctorActionCreator } from "../../../../store/actions/doctorActions";
 import CustomSafeView from "../../../../components/CustomSafeView";
 import NavigationCard from "../../../../components/Cards/NavigationCard";
@@ -20,6 +20,7 @@ import TopNavbar from "../../components/Utils/TopNavbar";
 import FormInput from "../../components/Inputs/FormInput";
 import ScreenContainer from "../../components/Containers/ScreenContainer";
 import Loader from "../../components/Utils/Loader";
+import HorizontalLine from "../../../../MyCharts/Components/HorizontalLine";
 
 const DoctorDashboard = () => {
   const { loading, doctor, error } = useSelector(
@@ -51,7 +52,7 @@ const DoctorDashboard = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 100 }}
         >
-          <View className="space-y-5">
+          <View className="space-y-6">
             <View>
               <FormInput
                 label="Search Patient"
@@ -59,16 +60,48 @@ const DoctorDashboard = () => {
               />
             </View>
 
+            <View className="relative h-[220] justify-end">
+              <TouchableOpacity
+                className="p-5 w-10/12 rounded-lg shadow-md bg-primary flex-row relative pr-6"
+                onPress={() =>
+                  navigation.navigate("umaChatBot", {
+                    from: "patientDashboard",
+                  })
+                }
+              >
+                <View className="w-10/12 h-[110]">
+                  <Text className="text-lg font-[appfont-semi] text-light mb-5">
+                    UMA - Your AI Assistant!
+                  </Text>
+                  
+                  <View className="w-9/10">
+                  <Text className="text-sm font-[appfont-semi] text-light pr-3">
+                    Ask me any medical questions or queries related to a specific patient.
+                  </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+
+              <View className="absolute right-0 bottom-0 w-[46%] h-full pl-2">
+                <Image
+                  source={require("../../assets/uma_ai.png")}
+                  className="w-full h-full"
+                  resizeMode="contain"
+                  style={{ aspectRatio: 1 }}
+                />
+              </View>
+            </View>
+
             {/* Image slider component */}
             <View>
               <TouchableOpacity
                 onPress={() => navigation.navigate("appointments")}
-                className="h-[150] bg-primary rounded-lg justify-center p-5 shadow-lg"
+                className="h-[100] bg-primary rounded-lg justify-center p-5 shadow-lg"
               >
                 <Text className="font-[appfont-bold] text-xl text-light">
                   Appointments
                 </Text>
-                <Text className="font-[appfont] text-lg text-light">
+                <Text className="font-[appfont-semi] text-sm text-light">
                   Manage Your Appointments
                 </Text>
               </TouchableOpacity>
@@ -80,7 +113,7 @@ const DoctorDashboard = () => {
               <View className="flex-1">
                 <NavigationCard
                   cardTitle="Profile"
-                  cardContent="Upate your Information"
+                  cardContent="Update Information"
                   onPress={() => navigation.navigate("doctorProfile")}
                 />
               </View>
@@ -98,7 +131,7 @@ const DoctorDashboard = () => {
             {/* Image slider component */}
             <View>
               <TouchableOpacity
-                className="flex-row items-center justify-between p-5 rounded-lg shadow-md bg-primary"
+                className="h-[100] flex-row items-center justify-between p-5 rounded-lg shadow-md bg-primary"
                 onPress={() => navigation.navigate("payment")}
               >
                 <View className="flex-1">
