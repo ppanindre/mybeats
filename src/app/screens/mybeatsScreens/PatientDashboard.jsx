@@ -19,9 +19,31 @@ import PatientBanner from "../../components/PatientDashboardComponents/PatientBa
 import PatientNavigationFrame from "../../components/PatientDashboardComponents/PatientNavigationFrame";
 import DoctorScrollView from "../../components/PatientDashboardComponents/DoctorScrollView";
 import { theme } from "../../../../tailwind.config";
+import { useDispatch, useSelector } from "react-redux";
+import { listDoctorsActionCreator } from "../../../../store/actions/doctorActions";
+import { fetchPrimarySpecializations } from "../../../../store/actions/primarySpecializationActions";
+import Loader from "../../components/Utils/Loader";
 
 const PatientDashboard = () => {
     const navigation = useNavigation();
+
+     const { loading, error, doctors } = useSelector(
+            (state) => state.doctorsListReducer
+        );
+    
+        const { loading: primaryLoading, specializations } = useSelector(
+                (state) => state.primarySpecializationReducer || {}
+         );
+        
+    
+        const dispatch = useDispatch();
+    
+        useEffect(() => {
+            dispatch(listDoctorsActionCreator());
+            dispatch(fetchPrimarySpecializations());
+        }, []);
+    
+        if (loading || primaryLoading) return <Loader />;
 
     return (
         <CustomSafeView>

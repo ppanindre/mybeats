@@ -1,5 +1,6 @@
 import auth from "@react-native-firebase/auth";
 import { generateClient } from "aws-amplify/api";
+import { uploadData, getUrl } from "aws-amplify/storage";
 
 import {
     PATIENT_CREATE_REQUEST,
@@ -21,6 +22,15 @@ import { listPatients } from "../../src/graphql/queries";
 import { listAppointments } from "../../src/graphql/queries";
 
 const client = generateClient();
+const uriToBlob = async (uri) => {
+    try {
+        const response = await fetch(uri);
+        return await response.blob();
+    } catch (error) {
+        console.error("URI to Blob error", error);
+        throw error;
+    }
+};
 
 export const createPatientActionCreator =
     (patientDetails) => async (dispatch) => {
@@ -29,6 +39,21 @@ export const createPatientActionCreator =
 
             const patientId = auth().currentUser.uid;
             const email = auth().currentUser.email;
+
+            let profileImageUrl = null;
+            if (patientDetails.profileImageUri) {
+                const blob = await uriToBlob(patientDetails.profileImageUri);
+                const extension = patientDetails.profileImageUri.split(".").pop();
+                const fileName = `patients/${patientId}/profile_${Date.now()}.${extension}`;
+                const result = await uploadData({
+                    key: fileName,
+                    data: blob,
+                    options: { accessLevel: "public" },
+                }).result;
+
+                console.log("Upload success:", result.key);
+                profileImageUrl = `https://mybeats-profile-images21f51-stabledev.s3.amazonaws.com/public/${result.key}`;
+            }
 
             const response = await client.graphql({
                 query: createPatient,
@@ -44,11 +69,11 @@ export const createPatientActionCreator =
                         age: patientDetails.age,
                         weight: patientDetails.weight,
                         height: patientDetails.height,
+                        profileImage: profileImageUrl,
                     },
                 },
             });
 
-            console.log("response", response.data.createPatient);
 
             dispatch({
                 type: PATIENT_CREATE_SUCCESS,
@@ -69,19 +94,29 @@ export const updatePatientActionCreator =
             dispatch({ type: PATIENT_UPDATE_REQUEST });
 
             const patientId = auth().currentUser.uid;
-
-            // Checking if the patient exists
             const existingPatientResponse = await client.graphql({
                 query: getPatient,
                 variables: { id: patientId },
             });
 
             const existingPatient = existingPatientResponse.data.getPatient;
+            let profileImageUrl = existingPatient.profileImage;
+
+            if (patientDetails.profileImageUri) {
+                const blob = await uriToBlob(patientDetails.profileImageUri);
+                const extension = patientDetails.profileImageUri.split(".").pop();
+                const fileName = `patients/${patientId}/profile_${Date.now()}.${extension}`;
+                const result = await uploadData({
+                    key: fileName,
+                    data: blob,
+                    options: { accessLevel: "public" },
+                }).result;
+                profileImageUrl = `https://mybeats-profile-images21f51-stabledev.s3.amazonaws.com/public/${result.key}`;
+            }
 
             let response;
 
             if (existingPatient) {
-                // If patient exists, update the details 
                 response = await client.graphql({
                     query: updatePatient,
                     variables: {
@@ -96,7 +131,8 @@ export const updatePatientActionCreator =
                             age: patientDetails.age,
                             weight: patientDetails.weight,
                             height: patientDetails.height,
-                            _version: existingPatient._version, 
+                            profileImage: profileImageUrl,
+                            _version: existingPatient._version,
                         },
                     },
                 });
@@ -104,32 +140,6 @@ export const updatePatientActionCreator =
                 dispatch({
                     type: PATIENT_UPDATE_SUCCESS,
                     payload: response.data.updatePatient,
-                });
-            } else {
-                // If the patient does not exist, create the patient
-                response = await client.graphql({
-                    query: createPatient,
-                    variables: {
-                        input: {
-                            id: patientId,
-                            firstname: patientDetails.firstName,
-                            lastname: patientDetails.lastName,
-                            email: auth().currentUser.email,
-                            phoneNumber: "123-456-7890",
-                            address: "123 Main St",
-                            zipcode: "12345",
-                            age: patientDetails.age,
-                            weight: patientDetails.weight,
-                            height: patientDetails.height,
-                            profession: patientDetails.profession,
-                            underlyingCondition: patientDetails.underlyingCondition,
-                        },
-                    },
-                });
-
-                dispatch({
-                    type: PATIENT_CREATE_SUCCESS,
-                    payload: response.data.createPatient,
                 });
             }
         } catch (error) {
@@ -141,33 +151,41 @@ export const updatePatientActionCreator =
         }
     };
 
-export const getPatientActionCreator = () => async (dispatch, getState) => {
-    try {
-        const user = getState().UserReducer;
-        const patientId = user.userId;
-
-        dispatch({ type: PATIENT_GET_REQUEST });
-
-        const response = await client.graphql({
-            query: getPatient,
-            variables: {
-                id: patientId,
-            },
-        });
-
-        dispatch({
-            type: PATIENT_GET_SUCCESS,
-            payload: response.data.getPatient,
-        });
-    } catch (error) {
-        console.error("Error while fetching patient details", error);
-        dispatch({
-            type: PATIENT_GET_FAILURE,
-            payload: error.message || "Error while fetching patient details",
-        });
-    }
-};
-
+    export const getPatientActionCreator = () => async (dispatch, getState) => {
+        try {
+            const user = getState().UserReducer;
+            const patientId = user.userId;
+    
+            dispatch({ type: PATIENT_GET_REQUEST });
+    
+            const response = await client.graphql({
+                query: getPatient,
+                variables: { id: patientId },
+            });
+    
+            const patient = response.data.getPatient;
+    
+            if (!patient) {
+                dispatch({
+                    type: PATIENT_GET_SUCCESS,
+                    payload: null,
+                });
+                return;
+            }
+    
+            dispatch({
+                type: PATIENT_GET_SUCCESS,
+                payload: patient,
+            });
+        } catch (error) {
+            console.error("Error while fetching patient details", error);
+            dispatch({
+                type: PATIENT_GET_FAILURE,
+                payload: error.message || "Error while fetching patient details",
+            });
+        }
+    };
+    
 export const listPatientsActionCreator = () => async (dispatch, getState) => {
     dispatch({ type: PATIENT_LIST_REQUEST });
     try {

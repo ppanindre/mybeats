@@ -192,6 +192,7 @@ type EagerPatient = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly profileImage?: string | null;
   readonly firstname: string;
   readonly lastname: string;
   readonly email?: string | null;
@@ -217,6 +218,7 @@ type LazyPatient = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly profileImage?: string | null;
   readonly firstname: string;
   readonly lastname: string;
   readonly email?: string | null;

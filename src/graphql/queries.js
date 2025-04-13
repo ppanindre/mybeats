@@ -450,6 +450,7 @@ export const getPatient = /* GraphQL */ `
   query GetPatient($id: ID!) {
     getPatient(id: $id) {
       id
+      profileImage
       firstname
       lastname
       email
@@ -507,6 +508,7 @@ export const listPatients = /* GraphQL */ `
     ) {
       items {
         id
+        profileImage
         firstname
         lastname
         email
@@ -546,6 +548,7 @@ export const syncPatients = /* GraphQL */ `
     ) {
       items {
         id
+        profileImage
         firstname
         lastname
         email
@@ -716,6 +719,7 @@ export const getAppointment = /* GraphQL */ `
       }
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -885,6 +889,7 @@ export const getPrescription = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1157,6 +1162,7 @@ export const getLabTestResult = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1288,6 +1294,7 @@ export const getChatMessage = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email

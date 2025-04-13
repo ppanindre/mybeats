@@ -7,13 +7,15 @@ import { useSelector } from "react-redux";
 import PatientHistoryCard from '../../components/Cards/PatientHistoryCard';
 import AppButton from '../../components/Buttons/AppButton';
 import ScreenContainer from '../../components/Containers/ScreenContainer';
+import Loader from '../../components/Utils/Loader';
 
 
 const Patient = ({ route }) => {
     const navigation = useNavigation();
     const { patientId } = route.params;
-    const patient = useSelector((state) => state.patientListReducer.patients?.find(patient => patient.id === patientId));
-
+    const { patients, loading } = useSelector((state) => state.patientListReducer);
+    const patient = patients?.find((p) => p.id === patientId);
+    
     const calculateBMI = (height, weight) => {
         if (!height || !weight) return 'N/A';
         const heightInMeters = height / 100;
@@ -31,6 +33,8 @@ const Patient = ({ route }) => {
         immunizations: ['Hepatitis B', 'Influenza']
     };
 
+    if (loading) return <Loader />;
+
     return (
         <ScreenContainer>
             <ScrollView
@@ -38,10 +42,15 @@ const Patient = ({ route }) => {
                 className="flex-1 space-y-5" contentContainerStyle={{ paddingBottom: 20 }}>
                 <View >
                     <Image
-                        source={require('../../assets/patient.avif')}
+                        source={
+                            patient.profileImage
+                            ? { uri: patient.profileImage }
+                            : require('../../assets/patient.avif')
+                        }
                         className="w-full h-72"
-                    //   resizeMode="contain"
+                        resizeMode="cover"
                     />
+
                     <View className="flex-row justify-around space-x-12 items-center mt-[-29] bg-lightPrimary rounded-full py-4 shadow-md">
                         <View className="flex-row items-center justify-start space-x-2">
                             <Ionicons name="person" size={24} className="font-[appfont-semi]" />

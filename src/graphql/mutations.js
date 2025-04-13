@@ -551,6 +551,7 @@ export const createPatient = /* GraphQL */ `
   ) {
     createPatient(input: $input, condition: $condition) {
       id
+      profileImage
       firstname
       lastname
       email
@@ -598,6 +599,7 @@ export const updatePatient = /* GraphQL */ `
   ) {
     updatePatient(input: $input, condition: $condition) {
       id
+      profileImage
       firstname
       lastname
       email
@@ -645,6 +647,7 @@ export const deletePatient = /* GraphQL */ `
   ) {
     deletePatient(input: $input, condition: $condition) {
       id
+      profileImage
       firstname
       lastname
       email
@@ -865,6 +868,7 @@ export const createAppointment = /* GraphQL */ `
       }
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -958,6 +962,7 @@ export const updateAppointment = /* GraphQL */ `
       }
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1051,6 +1056,7 @@ export const deleteAppointment = /* GraphQL */ `
       }
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1147,6 +1153,7 @@ export const createPrescription = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1238,6 +1245,7 @@ export const updatePrescription = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1329,6 +1337,7 @@ export const deletePrescription = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1593,6 +1602,7 @@ export const createLabTestResult = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1634,6 +1644,7 @@ export const updateLabTestResult = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1675,6 +1686,7 @@ export const deleteLabTestResult = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1741,6 +1753,7 @@ export const createChatMessage = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1814,6 +1827,7 @@ export const updateChatMessage = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1887,6 +1901,7 @@ export const deleteChatMessage = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
