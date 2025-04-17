@@ -9,7 +9,14 @@ const PatientCard = (patient) => {
         <TouchableOpacity className="bg-lightPrimary flex flex-row p-5 m-2 rounded-lg shadow justify-between items-center"
             onPress={() => navigation.navigate('patientInfo', { patientId: patient.id })}>
             <View className="flex flex-row items-center space-x-5">
-                <Image source={require('../../src/app/assets/doc1.webp')} className="h-16 w-16 rounded-xl" />
+                <Image
+                    source={
+                        patient.profileImage
+                            ? { uri: patient.profileImage }
+                            : require('../../src/app/assets/add-avatar.png')
+                    }
+                    className="h-16 w-16 rounded-xl bg-lightPrimary"
+                />
                 <View>
                     <Text className="text-lg font-[appfont-bold]">{patient.firstname} {patient.lastname}</Text>
                     <View className="flex flex-row items-center space-x-1">

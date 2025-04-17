@@ -551,6 +551,7 @@ export const createPatient = /* GraphQL */ `
   ) {
     createPatient(input: $input, condition: $condition) {
       id
+      profileImage
       firstname
       lastname
       email
@@ -565,8 +566,9 @@ export const createPatient = /* GraphQL */ `
       age
       weight
       height
-      profession
-      underlyingCondition
+      professionList
+      underlyingConditionsList
+      otherCondition
       prescriptions {
         nextToken
         startedAt
@@ -598,6 +600,7 @@ export const updatePatient = /* GraphQL */ `
   ) {
     updatePatient(input: $input, condition: $condition) {
       id
+      profileImage
       firstname
       lastname
       email
@@ -612,8 +615,9 @@ export const updatePatient = /* GraphQL */ `
       age
       weight
       height
-      profession
-      underlyingCondition
+      professionList
+      underlyingConditionsList
+      otherCondition
       prescriptions {
         nextToken
         startedAt
@@ -645,6 +649,7 @@ export const deletePatient = /* GraphQL */ `
   ) {
     deletePatient(input: $input, condition: $condition) {
       id
+      profileImage
       firstname
       lastname
       email
@@ -659,8 +664,9 @@ export const deletePatient = /* GraphQL */ `
       age
       weight
       height
-      profession
-      underlyingCondition
+      professionList
+      underlyingConditionsList
+      otherCondition
       prescriptions {
         nextToken
         startedAt
@@ -865,6 +871,7 @@ export const createAppointment = /* GraphQL */ `
       }
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -874,8 +881,9 @@ export const createAppointment = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -958,6 +966,7 @@ export const updateAppointment = /* GraphQL */ `
       }
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -967,8 +976,9 @@ export const updateAppointment = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1051,6 +1061,7 @@ export const deleteAppointment = /* GraphQL */ `
       }
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1060,8 +1071,9 @@ export const deleteAppointment = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1147,6 +1159,7 @@ export const createPrescription = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1156,8 +1169,9 @@ export const createPrescription = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1238,6 +1252,7 @@ export const updatePrescription = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1247,8 +1262,9 @@ export const updatePrescription = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1329,6 +1345,7 @@ export const deletePrescription = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1338,8 +1355,9 @@ export const deletePrescription = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1593,6 +1611,7 @@ export const createLabTestResult = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1602,8 +1621,9 @@ export const createLabTestResult = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1634,6 +1654,7 @@ export const updateLabTestResult = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1643,8 +1664,9 @@ export const updateLabTestResult = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1675,6 +1697,7 @@ export const deleteLabTestResult = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1684,8 +1707,9 @@ export const deleteLabTestResult = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1741,6 +1765,7 @@ export const createChatMessage = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1750,8 +1775,9 @@ export const createChatMessage = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1814,6 +1840,7 @@ export const updateChatMessage = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1823,8 +1850,9 @@ export const updateChatMessage = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1887,6 +1915,7 @@ export const deleteChatMessage = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1896,8 +1925,9 @@ export const deleteChatMessage = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version

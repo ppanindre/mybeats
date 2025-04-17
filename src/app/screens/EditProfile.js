@@ -26,16 +26,33 @@ import DatePicker from "../../../components/DatePicker";
 import CustomButton from "../../../components/CustomButton";
 import MultiSelect from "../../../components/MultiSelect";
 import { patientService } from "../api/services/patientService";
-import { updatePatientActionCreator } from "../../../store/actions/patientActions";
+import { generateClient } from "aws-amplify/api";
+import { getPatient } from "../../graphql/queries";
+import { launchImageLibrary } from "react-native-image-picker";
+import { createPatientActionCreator, updatePatientActionCreator, getPatientActionCreator } from "../../../store/actions/patientActions";
+import Loader from "../components/Utils/Loader";
 
 const EditProfile = () => {
   const user = useSelector((state) => state.UserReducer); // get user listener
+  
+  const { patient, loading } = useSelector((state) => state.patientGetReducer);
+  const currentPatient = patient?.id === user.userId ? patient : null;
+  
+
+  const dispatch = useDispatch();
+  const client = generateClient(); 
+
+  useEffect(() => {
+    dispatch(getPatientActionCreator());
+  }, [dispatch]);
+  
 
   // define navigation instance
   const navigation = useNavigation();
   const [toggleOthers, setToggleOthers] = useState(false);
   const [firstName, setFirstName] = useState(user.profileData?.firstName); // first name
   const [lastName, setLastName] = useState(user.profileData?.lastName); // last name
+  const [pickedImage, setPickedImage] = useState(null);
   const [otherCondition, setOtherCondition] = useState(
     user.profileData?.otherCondition
   );
@@ -117,8 +134,98 @@ const EditProfile = () => {
     };
 
     await setProfileDataOnFirebase(profile);
+
+
+    const calculateAge = (dob) => {
+      if (!dob) return null;
+    
+      const parsedDate = new Date(dob);
+      if (isNaN(parsedDate)) {
+        // parsing manually from known formats
+        try {
+          const parts = dob.split(" ");
+          const months = {
+            Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+            Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
+          };
+          const month = months[parts[0]];
+          const day = parseInt(parts[1]);
+          const year = parseInt(parts[2]);
+          if (month != null && !isNaN(day) && !isNaN(year)) {
+            return calculateAge(new Date(year, month, day));
+          }
+        } catch (e) {
+          console.warn("Failed fallback parsing DOB:", dob);
+        }
+        return null;
+      }
+    
+      const today = new Date();
+      let age = today.getFullYear() - parsedDate.getFullYear();
+      const m = today.getMonth() - parsedDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < parsedDate.getDate())) age--;
+    
+      return age;
+    };
+    
+    
+  
+    const reduxPayload = {
+      firstName,
+      lastName,
+      weight,
+      height,
+      age: calculateAge(dob),
+      profileImageUri: pickedImage ?? null,
+      professionList: profession.selectedList.map((item) => item.value),
+      underlyingConditionsList: conditions.selectedList
+      .filter((item) => item.value !== "Other")
+      .map((item) => item.value),
+      otherCondition: otherCondition ?? "",
+    };
+  
+    try {
+      const patientId = auth().currentUser.uid;
+  
+      const response = await client.graphql({
+        query: getPatient,
+        variables: { id: patientId },
+      });
+  
+      if (response.data.getPatient) {
+        dispatch(updatePatientActionCreator(reduxPayload));
+      } else {
+        dispatch(createPatientActionCreator(reduxPayload));
+      }
+    } catch (err) {
+      if (err.errors && err.errors[0]?.message.includes("not found")) {
+        dispatch(createPatientActionCreator(reduxPayload));
+      } else {
+        console.error("Error checking patient existence in AWS", err);
+      }
+    }
   };
 
+  const pickImageFromGallery = () => {
+    const options = {
+      mediaType: "photo",
+      quality: 0.7,
+      maxWidth: 500,
+      maxHeight: 500,
+    };
+  
+    launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log("User cancelled image picker");
+      } else if (response.errorCode) {
+        console.log("Image Picker Error: ", response.errorMessage);
+      } else if (response.assets && response.assets.length > 0) {
+        const uri = response.assets[0].uri;
+        setPickedImage(uri);
+      }
+    });
+  };
+  
   useEffect(() => {
     let toShowOthers = false;
 
@@ -138,6 +245,8 @@ const EditProfile = () => {
     }
   }, [conditions]);
 
+  if (loading) return <Loader />;
+  
   return (
     <CustomSafeView sentry-label="edit-profile">
       <TouchableWithoutFeedback
@@ -166,47 +275,48 @@ const EditProfile = () => {
               <View className="p-5" style={{ width: "100%" }}>
                 {/* Avatar Selection */}
                 <View className="items-center justify-center mb-3">
-                  <TouchableOpacity
-                    sentry-label="edit-profile-add-avatar-btn"
-                    onPress={() => navigation.navigate("addAvatar")}
-                  >
-                    {/* if user has selected avatar, show avatar, otherwise an icon with add avatar button */}
-                    {user.avatar ? (
-                      <View className="p-5 border border-dark rounded-full ">
+                  {/* Display image */}
+                  {(pickedImage || currentPatient?.profileImage || user.avatar) ? (
+                      <View
+                        className="border border-dark rounded-full overflow-hidden"
+                        style={{ height: 150, width: 150 }}
+                      >
                         <Image
-                          source={user.avatar.imgSrc}
-                          style={{
-                            height: 120,
-                            width: 120,
-                          }}
+                          source={
+                            pickedImage
+                              ? { uri: pickedImage }
+                              : currentPatient?.profileImage
+                              ? { uri: currentPatient.profileImage }
+                              : user.avatar?.imgSrc
+                          }
+                          style={{ height: 150, width: 150 }}
+                          resizeMode="cover"
                         />
                       </View>
                     ) : (
-                      <View
-                        className="relative"
-                        style={{
-                          height: 120,
-                          width: 120,
-                        }}
+                      <TouchableOpacity
+                        sentry-label="edit-profile-add-avatar-btn"
+                        onPress={() => navigation.navigate("addAvatar")}
+                        className="border border-dark rounded-full overflow-hidden"
+                        style={{ height: 150, width: 150 }}
                       >
                         <Image
                           source={require("../assets/add-avatar.png")}
-                          style={{
-                            height: 120,
-                            width: 120,
-                          }}
+                          style={{ height: 150, width: 150 }}
+                          resizeMode="cover"
                         />
-                        <View
-                          className="absolute z-30 bg-primary rounded-md p-1"
-                          style={{
-                            top: 48,
-                            left: 20,
-                          }}
-                        >
-                          <Text className="text-light">Add Avatar</Text>
+                        <View className="absolute z-30 bg-primary rounded-md p-1 top-[60px] left-[35px]">
+                          <Text className="text-light text-xs">Add Avatar</Text>
                         </View>
-                      </View>
-                    )}
+                      </TouchableOpacity>
+                  )}
+                  {/* Button */}
+                  <TouchableOpacity
+                      sentry-label="edit-profile-upload-image-btn"
+                      onPress={pickImageFromGallery}
+                      className="mt-3 bg-primary px-4 py-2 rounded-md"
+                    >
+                      <Text className="text-light font-semibold">Upload Image</Text>
                   </TouchableOpacity>
                 </View>
 

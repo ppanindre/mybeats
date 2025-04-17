@@ -450,6 +450,7 @@ export const getPatient = /* GraphQL */ `
   query GetPatient($id: ID!) {
     getPatient(id: $id) {
       id
+      profileImage
       firstname
       lastname
       email
@@ -464,8 +465,9 @@ export const getPatient = /* GraphQL */ `
       age
       weight
       height
-      profession
-      underlyingCondition
+      professionList
+      underlyingConditionsList
+      otherCondition
       prescriptions {
         nextToken
         startedAt
@@ -507,6 +509,7 @@ export const listPatients = /* GraphQL */ `
     ) {
       items {
         id
+        profileImage
         firstname
         lastname
         email
@@ -516,8 +519,9 @@ export const listPatients = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -546,6 +550,7 @@ export const syncPatients = /* GraphQL */ `
     ) {
       items {
         id
+        profileImage
         firstname
         lastname
         email
@@ -555,8 +560,9 @@ export const syncPatients = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -716,6 +722,7 @@ export const getAppointment = /* GraphQL */ `
       }
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -725,8 +732,9 @@ export const getAppointment = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -885,6 +893,7 @@ export const getPrescription = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -894,8 +903,9 @@ export const getPrescription = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1157,6 +1167,7 @@ export const getLabTestResult = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1166,8 +1177,9 @@ export const getLabTestResult = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1288,6 +1300,7 @@ export const getChatMessage = /* GraphQL */ `
       patientID
       patient {
         id
+        profileImage
         firstname
         lastname
         email
@@ -1297,8 +1310,9 @@ export const getChatMessage = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version

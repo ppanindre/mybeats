@@ -718,6 +718,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "profileImage": {
+                    "name": "profileImage",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "firstname": {
                     "name": "firstname",
                     "isArray": false,
@@ -797,15 +804,24 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "profession": {
-                    "name": "profession",
-                    "isArray": false,
+                "professionList": {
+                    "name": "professionList",
+                    "isArray": true,
                     "type": "String",
                     "isRequired": false,
-                    "attributes": []
+                    "attributes": [],
+                    "isArrayNullable": true
                 },
-                "underlyingCondition": {
-                    "name": "underlyingCondition",
+                "underlyingConditionsList": {
+                    "name": "underlyingConditionsList",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "otherCondition": {
+                    "name": "otherCondition",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -2251,5 +2267,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "11e7b95e1498c297863f9d405d4725fe"
+    "version": "7888389360911edef98874a587f27078"
 };

@@ -1,9 +1,7 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { listDoctorsActionCreator } from "../../../../store/actions/doctorActions";
 import DoctorCard from "../Cards/DoctorCard";
-import { fetchPrimarySpecializations } from "../../../../store/actions/primarySpecializationActions";
 import Loader from "../Utils/Loader";
 
 const DoctorScrollView = () => {
@@ -12,18 +10,10 @@ const DoctorScrollView = () => {
     );
 
     const { loading: primaryLoading, specializations } = useSelector(
-            (state) => state.primarySpecializationReducer || {}
-     );
-    
+        (state) => state.primarySpecializationReducer || {}
+    );
 
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(listDoctorsActionCreator());
-        dispatch(fetchPrimarySpecializations());
-    }, []);
-
-    if (loading) return <Loader />;
+    if (loading || primaryLoading) return <Loader />;
 
     return (
         <View className="space-y-3">

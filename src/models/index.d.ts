@@ -192,6 +192,7 @@ type EagerPatient = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly profileImage?: string | null;
   readonly firstname: string;
   readonly lastname: string;
   readonly email?: string | null;
@@ -202,8 +203,9 @@ type EagerPatient = {
   readonly age?: string | null;
   readonly weight?: string | null;
   readonly height?: string | null;
-  readonly profession?: string | null;
-  readonly underlyingCondition?: string | null;
+  readonly professionList?: (string | null)[] | null;
+  readonly underlyingConditionsList?: (string | null)[] | null;
+  readonly otherCondition?: string | null;
   readonly prescriptions?: (Prescription | null)[] | null;
   readonly labTestResults?: (LabTestResult | null)[] | null;
   readonly chatMessages?: (ChatMessage | null)[] | null;
@@ -217,6 +219,7 @@ type LazyPatient = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly profileImage?: string | null;
   readonly firstname: string;
   readonly lastname: string;
   readonly email?: string | null;
@@ -227,8 +230,9 @@ type LazyPatient = {
   readonly age?: string | null;
   readonly weight?: string | null;
   readonly height?: string | null;
-  readonly profession?: string | null;
-  readonly underlyingCondition?: string | null;
+  readonly professionList?: (string | null)[] | null;
+  readonly underlyingConditionsList?: (string | null)[] | null;
+  readonly otherCondition?: string | null;
   readonly prescriptions: AsyncCollection<Prescription>;
   readonly labTestResults: AsyncCollection<LabTestResult>;
   readonly chatMessages: AsyncCollection<ChatMessage>;

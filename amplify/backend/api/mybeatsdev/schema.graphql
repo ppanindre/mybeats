@@ -69,6 +69,7 @@ type PrimaryToSecondary @model @auth(rules: [{ allow: public }]) {
 
 type Patient @model @auth(rules: [{ allow: public }]) {
     id: ID! @primaryKey
+    profileImage: String
     firstname: String!
     lastname: String!
     email: String
@@ -80,8 +81,9 @@ type Patient @model @auth(rules: [{ allow: public }]) {
     age: String
     weight: String
     height: String
-    profession: String
-    underlyingCondition: String
+    professionList: [String]
+    underlyingConditionsList: [String]
+    otherCondition: String
      prescriptions: [Prescription] 
         @hasMany(indexName: "byPatient", fields: ["id"])
      labTestResults: [LabTestResult]
