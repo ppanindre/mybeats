@@ -16,12 +16,18 @@ const Patient = ({ route }) => {
     const { patients, loading } = useSelector((state) => state.patientListReducer);
     const patient = patients?.find((p) => p.id === patientId);
     
-    const calculateBMI = (height, weight) => {
-        if (!height || !weight) return 'N/A';
-        const heightInMeters = height / 100;
-        const bmi = weight / (heightInMeters * heightInMeters);
+    const calculateBMI = (heightInFeetDecimal, weightInPounds) => {
+        if (!heightInFeetDecimal || !weightInPounds) return 'N/A';
+    
+        // Convert feet.decimal to inches
+        const feet = Math.floor(heightInFeetDecimal); 
+        const inches = (heightInFeetDecimal - feet) * 12;
+        const totalInches = (feet * 12) + inches;
+    
+        const bmi = (weightInPounds / (totalInches * totalInches)) * 703;
         return bmi.toFixed(2);
     };
+      
 
     const healthHistory = {
         conditions: ['Hypertension', 'Diabetes'],
@@ -45,10 +51,10 @@ const Patient = ({ route }) => {
                         source={
                             patient.profileImage
                             ? { uri: patient.profileImage }
-                            : require('../../assets/patient.avif')
+                            : require('../../assets/add-avatar.png')
                         }
                         className="w-full h-72"
-                        resizeMode="cover"
+                        resizeMode="contain"
                     />
 
                     <View className="flex-row justify-around space-x-12 items-center mt-[-29] bg-lightPrimary rounded-full py-4 shadow-md">
@@ -102,7 +108,19 @@ const Patient = ({ route }) => {
                     <PatientHistoryCard
                         title="Health history"
                         iconName="medkit-outline"
-                        onPress={() => navigation.navigate('healthHistory', { history: healthHistory })}
+                        onPress={() =>
+                            navigation.navigate('healthHistory', {
+                              history: {
+                                conditions: [
+                                  ...(patient.underlyingConditionsList || []),
+                                  ...(patient.otherCondition ? [patient.otherCondition] : [])
+                                ],
+                                procedures: [],
+                                allergies: [],
+                                immunizations: []
+                              }
+                            })
+                          }                          
                     />
                     <PatientHistoryCard
                         title="Payments"

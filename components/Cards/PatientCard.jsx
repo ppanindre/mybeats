@@ -13,9 +13,9 @@ const PatientCard = (patient) => {
                     source={
                         patient.profileImage
                             ? { uri: patient.profileImage }
-                            : require('../../src/app/assets/doc1.webp')
+                            : require('../../src/app/assets/add-avatar.png')
                     }
-                    className="h-16 w-16 rounded-xl"
+                    className="h-16 w-16 rounded-xl bg-lightPrimary"
                 />
                 <View>
                     <Text className="text-lg font-[appfont-bold]">{patient.firstname} {patient.lastname}</Text>

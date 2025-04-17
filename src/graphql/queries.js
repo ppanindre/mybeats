@@ -465,8 +465,9 @@ export const getPatient = /* GraphQL */ `
       age
       weight
       height
-      profession
-      underlyingCondition
+      professionList
+      underlyingConditionsList
+      otherCondition
       prescriptions {
         nextToken
         startedAt
@@ -518,8 +519,9 @@ export const listPatients = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -558,8 +560,9 @@ export const syncPatients = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -729,8 +732,9 @@ export const getAppointment = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -899,8 +903,9 @@ export const getPrescription = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1172,8 +1177,9 @@ export const getLabTestResult = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1304,8 +1310,9 @@ export const getChatMessage = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version

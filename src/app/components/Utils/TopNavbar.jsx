@@ -14,30 +14,30 @@ import SyncButton from "../../../../components/SyncButton";
 import { userAuthActionTypes } from "../../../../store/UserAuthReducer/UserAuthActionTypes";
 import { customTheme } from "../../../../constants/themeConstants";
 import { CheckBox } from "react-native-elements";
+import { getPatientActionCreator } from "../../../../store/actions/patientActions";
 import { Ionicons } from "@expo/vector-icons";
+import Loader from "./Loader";
 
 const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
     // Get profile data from the user reducer
     const user = useSelector((state) => state.UserReducer);
+    
 
+    const { patient, loading } = useSelector((state) => state.patientGetReducer);
+    const currentPatient = patient?.id === user.userId ? patient : null;
+    
+    useEffect(() => {
+        if (!patient && !loading) {
+          dispatch(getPatientActionCreator());
+        }
+    }, []);
+    
     const [isModalVisible, setModalVisible] = useState(false);
     const [selectedRole, setSelectedRole] = useState(null);
     const isFocused = useIsFocused();
     const route = useRoute();
-    const [displayedRole, setDisplayedRole] = useState("Patient");
-
-    useEffect(() => {
-        if (isFocused) {
-            // Check for params in the current route
-            if (route.params?.selectedRole) {
-                setDisplayedRole(route.params.selectedRole);
-            }
-            // Check for params in the current route
-            if (route.params?.selectedRole) {
-                setDisplayedRole(route.params.selectedRole);
-            }
-        }
-    }, [isFocused, route]);
+    const [displayedRole, setDisplayedRole] = useState("Patient"); 
+    
     const handleSelectRole = (role) => {
         setSelectedRole(role);
     };
@@ -168,6 +168,8 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
             : "Last sync: ".concat(deviceSyncTime);
     };
 
+    if (loading) return <Loader />;
+
     return (
         <View className="relative p-4 border-b border-darkSecondary flex-row items-center justify-between">
             <View className="flex-row items-center gap-2 ">
@@ -178,7 +180,7 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                     text="Access the settings"
                     shape="circle"
                 >
-                    {user.avatar ? (
+                    {/* {currentPatient?.profileImageUri || user.avatar ? (
                         // if user has an avatar render the image
                         <TouchableOpacity
                             disabled={startTourGuide} // if tour guide is running disable the button
@@ -188,6 +190,31 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
                             <Image
                                 source={user.avatar.imgSrc}
                                 style={{ height: 30, width: 30 }}
+                            />
+                        />
+                    </TouchableOpacity> */}
+                    {currentPatient?.profileImage ? (
+                        <TouchableOpacity
+                            disabled={startTourGuide}
+                            onPress={() => navigation.navigate("profile")}
+                            >
+                            <Image
+                                style={{ height: 40, width: 40, borderRadius:10 }}
+                                resizeMode="cover"
+                                source={{ uri: currentPatient.profileImage }}
+                            />
+                            </TouchableOpacity>
+                        ) : user.avatar?.imgSrc ? (
+                            // Avatar image with padded wrapper
+                            <TouchableOpacity
+                            disabled={startTourGuide}
+                            onPress={() => navigation.navigate("profile")}
+                            className="bg-darkSecondary h-10 w-10 rounded-lg items-center justify-center"
+                            >
+                            <Image
+                                style={{ height: 30, width: 30 }}
+                                resizeMode="cover"
+                                source={user.avatar.imgSrc}
                             />
                         </TouchableOpacity>
                     ) : (

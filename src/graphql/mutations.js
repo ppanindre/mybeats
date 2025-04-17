@@ -566,8 +566,9 @@ export const createPatient = /* GraphQL */ `
       age
       weight
       height
-      profession
-      underlyingCondition
+      professionList
+      underlyingConditionsList
+      otherCondition
       prescriptions {
         nextToken
         startedAt
@@ -614,8 +615,9 @@ export const updatePatient = /* GraphQL */ `
       age
       weight
       height
-      profession
-      underlyingCondition
+      professionList
+      underlyingConditionsList
+      otherCondition
       prescriptions {
         nextToken
         startedAt
@@ -662,8 +664,9 @@ export const deletePatient = /* GraphQL */ `
       age
       weight
       height
-      profession
-      underlyingCondition
+      professionList
+      underlyingConditionsList
+      otherCondition
       prescriptions {
         nextToken
         startedAt
@@ -878,8 +881,9 @@ export const createAppointment = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -972,8 +976,9 @@ export const updateAppointment = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1066,8 +1071,9 @@ export const deleteAppointment = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1163,8 +1169,9 @@ export const createPrescription = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1255,8 +1262,9 @@ export const updatePrescription = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1347,8 +1355,9 @@ export const deletePrescription = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1612,8 +1621,9 @@ export const createLabTestResult = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1654,8 +1664,9 @@ export const updateLabTestResult = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1696,8 +1707,9 @@ export const deleteLabTestResult = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1763,8 +1775,9 @@ export const createChatMessage = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1837,8 +1850,9 @@ export const updateChatMessage = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version
@@ -1911,8 +1925,9 @@ export const deleteChatMessage = /* GraphQL */ `
         age
         weight
         height
-        profession
-        underlyingCondition
+        professionList
+        underlyingConditionsList
+        otherCondition
         createdAt
         updatedAt
         _version

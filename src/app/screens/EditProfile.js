@@ -34,7 +34,7 @@ import Loader from "../components/Utils/Loader";
 
 const EditProfile = () => {
   const user = useSelector((state) => state.UserReducer); // get user listener
-
+  
   const { patient, loading } = useSelector((state) => state.patientGetReducer);
   const currentPatient = patient?.id === user.userId ? patient : null;
   
@@ -43,8 +43,9 @@ const EditProfile = () => {
   const client = generateClient(); 
 
   useEffect(() => {
-          dispatch(getPatientActionCreator());
+    dispatch(getPatientActionCreator());
   }, [dispatch]);
+  
 
   // define navigation instance
   const navigation = useNavigation();
@@ -176,6 +177,11 @@ const EditProfile = () => {
       height,
       age: calculateAge(dob),
       profileImageUri: pickedImage ?? null,
+      professionList: profession.selectedList.map((item) => item.value),
+      underlyingConditionsList: conditions.selectedList
+      .filter((item) => item.value !== "Other")
+      .map((item) => item.value),
+      otherCondition: otherCondition ?? "",
     };
   
     try {
@@ -218,12 +224,7 @@ const EditProfile = () => {
         setPickedImage(uri);
       }
     });
-  };  
-
-  useEffect(() => {
-    console.log("Picked Image URI:", pickedImage);
-    console.log("AWS Profile Image URI:", currentPatient?.profileImage);
-  }, [pickedImage, currentPatient]);
+  };
   
   useEffect(() => {
     let toShowOthers = false;
