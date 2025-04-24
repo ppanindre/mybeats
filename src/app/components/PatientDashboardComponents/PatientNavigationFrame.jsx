@@ -11,14 +11,14 @@ const PatientNavigationFrame = () => {
 
     return (
         <View className="flex-row justify-around space-x-3">
-            <View className="flex-1">
+            <View className="flex-1 h-full">
                 <NavigationCard
                     cardTitle="Appointments"
                     cardContent="Manage Appointments"
                     onPress={() => navigation.navigate('patientAppointments', { patientId })}
                     />
             </View>
-            <View className="flex-1">
+            <View className="flex-1 h-full">
                 {/* Second Card: Diagnostics */}
                 {/* <NavigationCard
                     cardTitle="Diagnostics"

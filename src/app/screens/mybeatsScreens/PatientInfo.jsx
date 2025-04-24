@@ -93,8 +93,11 @@ const Patient = ({ route }) => {
                     <PatientHistoryCard
                         title="Health Tracking"
                         iconName="heart-outline"
-                        onPress={() => navigation.navigate('healthTracking', {patientId})}
-                    />
+                        onPress={() => {
+                            const bmi = calculateBMI(patient.height, patient.weight);
+                            navigation.navigate('healthTracking', { patient, bmi });
+                          }}
+                                              />
                     <PatientHistoryCard
                         title="Medications"
                         iconName="bandage-outline"

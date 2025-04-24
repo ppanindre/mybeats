@@ -70,8 +70,8 @@ export const createPatientActionCreator =
                         weight: patientDetails.weight,
                         height: patientDetails.height,
                         profileImage: profileImageUrl,
-                        ProfessionList: patientDetails.selectedProfessionList || [],
-                        underlyingConditionsList: patientDetails.selectedConditionsList || [],
+                        professionList: patientDetails.professionList || [],
+                        underlyingConditionsList: patientDetails.underlyingConditionsList || [],    
                         otherCondition: patientDetails.otherCondition || null,
                     },
                 },
@@ -147,6 +147,7 @@ export const updatePatientActionCreator =
                     type: PATIENT_UPDATE_SUCCESS,
                     payload: response.data.updatePatient,
                 });
+                // return Promise.resolve();
             }
         } catch (error) {
             console.error("Error while updating or creating patient", error);

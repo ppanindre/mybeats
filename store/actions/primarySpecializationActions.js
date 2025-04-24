@@ -12,36 +12,51 @@ import { generateClient } from "aws-amplify/api";
 
 const client = generateClient();
 
+const fetchAllSpecialties = async () => {
+    let nextToken = null;
+    let allSpecialties = [];
+
+    do {
+        const response = await client.graphql({
+            query: listSpecialties,
+            variables: { nextToken },
+        });
+
+        allSpecialties = [...allSpecialties, ...response.data.listSpecialties.items];
+        nextToken = response.data.listSpecialties.nextToken; // Get next page token
+    } while (nextToken);
+
+    return allSpecialties;
+};
+
 export const fetchPrimarySpecializations = () => async (dispatch) => {
     try {
         dispatch({ type: PRIMARY_SPECIALIZATION_REQUEST });
 
-        // Fetch all specializations
-        const specialtiesResponse = await client.graphql({
-            query: listSpecialties,
-        });
-        const specialties = specialtiesResponse.data.listSpecialties.items;
+        const specialties = await fetchAllSpecialties();
 
-        // Fetch primary-to-secondary mappings
-        const primaryToSecondaryResponse = await client.graphql({
-            query: listPrimaryToSecondaries,
-        });
+        // primary-to-secondary mappings
+        const primaryToSecondaryResponse = await client.graphql({ query: listPrimaryToSecondaries });
+        const primaryToSecondaryMappings = primaryToSecondaryResponse.data.listPrimaryToSecondaries.items || [];
 
-        const primaryToSecondaryMappings = primaryToSecondaryResponse.data.listPrimaryToSecondaries.items;
-
-        // Extract all secondary specialization IDs
-        const secondarySpecializationIDs = new Set(
-            primaryToSecondaryMappings.map((entry) => entry.secondarySpecialtyID)
+        // Extract unique IDs for primary specializations
+        const primarySpecializationIDs = new Set(
+            primaryToSecondaryMappings.map((entry) => entry.primarySpecialtyID)
         );
 
-        console.log("Filtered Secondary Specialization IDs:", secondarySpecializationIDs);
-
-        // Filter out secondary specializations from primary list
         const filteredPrimarySpecializations = specialties.filter(
-            (spec) => !secondarySpecializationIDs.has(spec.id)
+            (spec) => primarySpecializationIDs.has(spec.id) && !spec._deleted // excluding deleted records
         );
 
-        console.log("Updated Filtered Primary Specializations:", filteredPrimarySpecializations);
+        // missing primary specializations that were expected but not found in specialties
+        const missingSpecialties = [...primarySpecializationIDs].filter(
+            (id) => !specialties.some((spec) => spec.id === id)
+        );
+
+        console.log("Final Primary Specializations:", filteredPrimarySpecializations);
+        if (missingSpecialties.length > 0) {
+            console.warn("Missing Specialties (Expected but not found):", missingSpecialties);
+        }
 
         dispatch({
             type: PRIMARY_SPECIALIZATION_SUCCESS,
@@ -49,10 +64,10 @@ export const fetchPrimarySpecializations = () => async (dispatch) => {
         });
 
     } catch (error) {
-        console.error("Error while fetching specializations", error);
+        console.error("Error while fetching primary specializations", error);
         dispatch({
             type: PRIMARY_SPECIALIZATION_FAILURE,
-            payload: error.message || "Error while fetching specializations",
+            payload: error.message || "Error while fetching primary specializations",
         });
     }
 };

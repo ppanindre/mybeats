@@ -42,9 +42,15 @@ const EditProfile = () => {
   const dispatch = useDispatch();
   const client = generateClient(); 
 
+  const [hasFetchedPatient, setHasFetchedPatient] = useState(false);
+
   useEffect(() => {
-    dispatch(getPatientActionCreator());
-  }, [dispatch]);
+    if (!hasFetchedPatient) {
+      dispatch(getPatientActionCreator());
+      setHasFetchedPatient(true);
+    }
+  }, [dispatch, hasFetchedPatient]);
+
   
 
   // define navigation instance
@@ -168,7 +174,6 @@ const EditProfile = () => {
       return age;
     };
     
-    
   
     const reduxPayload = {
       firstName,
@@ -197,6 +202,8 @@ const EditProfile = () => {
       } else {
         dispatch(createPatientActionCreator(reduxPayload));
       }
+      // await dispatch(getPatientActionCreator());
+      dispatch({ type: "PATIENT_SHOULD_REFRESH", payload: true });
     } catch (err) {
       if (err.errors && err.errors[0]?.message.includes("not found")) {
         dispatch(createPatientActionCreator(reduxPayload));

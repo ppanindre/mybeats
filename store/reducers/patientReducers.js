@@ -11,6 +11,7 @@ import {
     PATIENT_LIST_REQUEST,
     PATIENT_LIST_SUCCESS,
     PATIENT_LIST_FAILURE,
+    PATIENT_SHOULD_REFRESH
 } from "../types/patientActionTypes";
 
 export const patientCreateReducer = (state = {}, action) => {
@@ -71,32 +72,41 @@ export const patientUpdateReducer = (state = {}, action) => {
     }
 };
 
-export const patientGetReducer = (state = {}, action) => {
+const initialState = {
+    shouldRefreshPatient: false,
+};
+
+export const patientGetReducer = (state = initialState, action) => {
     switch (action.type) {
-        case PATIENT_GET_REQUEST: {
+        case PATIENT_GET_REQUEST:
             return {
+                ...state,
                 loading: true,
             };
-        }
 
-        case PATIENT_GET_SUCCESS: {
+        case PATIENT_GET_SUCCESS:
             return {
+                ...state,
                 loading: false,
                 success: true,
                 patient: action.payload,
             };
-        }
 
-        case PATIENT_GET_FAILURE: {
+        case PATIENT_GET_FAILURE:
             return {
+                ...state,
                 loading: false,
                 error: action.payload,
             };
-        }
 
-        default: {
+        case PATIENT_SHOULD_REFRESH:
+            return {
+                ...state,
+                shouldRefreshPatient: action.payload,
+            };
+
+        default:
             return state;
-        }
     }
 };
 
