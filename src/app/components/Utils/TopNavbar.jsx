@@ -1,5 +1,5 @@
 import { View, Text, Image, Platform, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
     useNavigation,
@@ -17,6 +17,7 @@ import { CheckBox } from "react-native-elements";
 import { getPatientActionCreator } from "../../../../store/actions/patientActions";
 import { Ionicons } from "@expo/vector-icons";
 import Loader from "./Loader";
+import { PATIENT_SHOULD_REFRESH } from "../../../../store/types/patientActionTypes";
 
 const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
     // Get profile data from the user reducer
@@ -25,13 +26,8 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
 
     const { patient, loading } = useSelector((state) => state.patientGetReducer);
     const currentPatient = patient?.id === user.userId ? patient : null;
-    
-    useEffect(() => {
-        if (!patient && !loading) {
-          dispatch(getPatientActionCreator());
-        }
-    }, []);
-    
+    const { shouldRefreshPatient } = useSelector(state => state.patientGetReducer);
+
     const [isModalVisible, setModalVisible] = useState(false);
     const [selectedRole, setSelectedRole] = useState(null);
     const isFocused = useIsFocused();
@@ -41,6 +37,14 @@ const TopNavbar = ({ showSync = true, isMyBeats = false }) => {
     const handleSelectRole = (role) => {
         setSelectedRole(role);
     };
+
+    useEffect(() => {
+        if (isFocused && shouldRefreshPatient) {
+            dispatch(getPatientActionCreator(user.userId));
+            dispatch({ type: PATIENT_SHOULD_REFRESH, payload: false }); 
+        }
+    }, [isFocused, shouldRefreshPatient, user.userId]);
+    
 
     // Handle continue for change role
     const handleContinue = () => {

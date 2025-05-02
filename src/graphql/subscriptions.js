@@ -537,6 +537,7 @@ export const onCreatePatient = /* GraphQL */ `
       phoneNumber
       address
       zipcode
+      gender
       appointments {
         nextToken
         startedAt
@@ -583,6 +584,7 @@ export const onUpdatePatient = /* GraphQL */ `
       phoneNumber
       address
       zipcode
+      gender
       appointments {
         nextToken
         startedAt
@@ -629,6 +631,7 @@ export const onDeletePatient = /* GraphQL */ `
       phoneNumber
       address
       zipcode
+      gender
       appointments {
         nextToken
         startedAt
@@ -847,6 +850,7 @@ export const onCreateAppointment = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        gender
         age
         weight
         height
@@ -941,6 +945,7 @@ export const onUpdateAppointment = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        gender
         age
         weight
         height
@@ -1035,6 +1040,7 @@ export const onDeleteAppointment = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        gender
         age
         weight
         height
@@ -1132,6 +1138,7 @@ export const onCreatePrescription = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        gender
         age
         weight
         height
@@ -1224,6 +1231,7 @@ export const onUpdatePrescription = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        gender
         age
         weight
         height
@@ -1316,6 +1324,7 @@ export const onDeletePrescription = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        gender
         age
         weight
         height
@@ -1578,6 +1587,7 @@ export const onCreateLabTestResult = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        gender
         age
         weight
         height
@@ -1620,6 +1630,7 @@ export const onUpdateLabTestResult = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        gender
         age
         weight
         height
@@ -1662,6 +1673,7 @@ export const onDeleteLabTestResult = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        gender
         age
         weight
         height
@@ -1729,6 +1741,7 @@ export const onCreateChatMessage = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        gender
         age
         weight
         height
@@ -1803,6 +1816,7 @@ export const onUpdateChatMessage = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        gender
         age
         weight
         height
@@ -1877,6 +1891,7 @@ export const onDeleteChatMessage = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        gender
         age
         weight
         height

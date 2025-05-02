@@ -73,10 +73,16 @@ const Patient = ({ route }) => {
 
                 <View className="">
                     <Text className="text-xl font-[appfont-bold]">{patient.firstname} {patient.lastname}</Text>
-                    <View className="flex-row items-center">
-                        {/* <Ionicons name={gender === 'Male' ? 'male' : 'female'} size={16} className="mx-2 font-[appfont-semi]" /> */}
-                        {/* <Text className="text-lg font-[appfont-semi]">{gender}</Text> */}
-                    </View>
+                    {patient.gender && (
+                        <View className="flex-row items-center">
+                            <Ionicons
+                            name={patient.gender === 'Male' ? 'male' : patient.gender === 'Female' ? 'female' : 'transgender'}
+                            size={16}
+                            className="mx-2 font-[appfont-semi]"
+                            />
+                            <Text className="text-lg font-[appfont-semi]"> {patient.gender}</Text>
+                        </View>
+                    )}
                     <View className="flex-row items-center space-x-2">
                         <Ionicons name="call" size={16} className="font-[appfont-semi]" />
                         <Text className="text-lg font-[appfont-semi]">{patient.phoneNumber}</Text>
@@ -93,8 +99,11 @@ const Patient = ({ route }) => {
                     <PatientHistoryCard
                         title="Health Tracking"
                         iconName="heart-outline"
-                        onPress={() => navigation.navigate('healthTracking', {patientId})}
-                    />
+                        onPress={() => {
+                            const bmi = calculateBMI(patient.height, patient.weight);
+                            navigation.navigate('healthTracking', { patient, bmi });
+                          }}
+                                              />
                     <PatientHistoryCard
                         title="Medications"
                         iconName="bandage-outline"

@@ -199,6 +199,7 @@ type EagerPatient = {
   readonly phoneNumber?: string | null;
   readonly address?: string | null;
   readonly zipcode?: string | null;
+  readonly gender?: string | null;
   readonly appointments?: (Appointment | null)[] | null;
   readonly age?: string | null;
   readonly weight?: string | null;
@@ -226,6 +227,7 @@ type LazyPatient = {
   readonly phoneNumber?: string | null;
   readonly address?: string | null;
   readonly zipcode?: string | null;
+  readonly gender?: string | null;
   readonly appointments: AsyncCollection<Appointment>;
   readonly age?: string | null;
   readonly weight?: string | null;

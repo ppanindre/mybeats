@@ -457,6 +457,7 @@ export const getPatient = /* GraphQL */ `
       phoneNumber
       address
       zipcode
+      gender
       appointments {
         nextToken
         startedAt
@@ -516,6 +517,7 @@ export const listPatients = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        gender
         age
         weight
         height
@@ -557,6 +559,7 @@ export const syncPatients = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        gender
         age
         weight
         height
@@ -729,6 +732,7 @@ export const getAppointment = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        gender
         age
         weight
         height
@@ -900,6 +904,7 @@ export const getPrescription = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        gender
         age
         weight
         height
@@ -1174,6 +1179,7 @@ export const getLabTestResult = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        gender
         age
         weight
         height
@@ -1307,6 +1313,7 @@ export const getChatMessage = /* GraphQL */ `
         phoneNumber
         address
         zipcode
+        gender
         age
         weight
         height

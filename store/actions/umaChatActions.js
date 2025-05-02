@@ -101,14 +101,31 @@ export const sendUmaMessageAction =
         const h = patient.height / 100;
         const bmi = (patient.weight / (h * h)).toFixed(2);
 
+        const underlyingConditions = patient.underlyingConditionsList?.length
+          ? patient.underlyingConditionsList.join(", ")
+          : "None";
+
+        const professions = patient.professionList?.length
+          ? patient.professionList.join(", ")
+          : "None";
+        
+        const gender= patient.gender ?? "Not specified"
+        // console.log("Patient underlying conditions:", underlyingConditions);
+        // console.log("Patient profession list:", professions);
+        // console.log("Patient gender:", gender); 
+        
+
         prompt += `
-Patient details:
-- Name: ${patient.firstname} ${patient.lastname}
-- Age: ${patient.age}
-- Height: ${patient.height} cm
-- Weight: ${patient.weight} kg
-- BMI: ${bmi}
-Based on the above patient details, provide a direct interpretation or answer related to the user's question.`;
+          Patient details:
+          - Name: ${patient.firstname} ${patient.lastname}
+          - Age: ${patient.age}
+          - Gender: ${gender}
+          - Height: ${patient.height} cm
+          - Weight: ${patient.weight} kg
+          - BMI: ${bmi}
+          - Professions: ${professions}
+          - Underlying Conditions: ${underlyingConditions}
+          Based on the above patient details, provide a direct interpretation or answer related to the user's question.`;
       }
 
       const res = await axios.post(
