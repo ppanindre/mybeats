@@ -1,175 +1,420 @@
-import { View, ScrollView, Dimensions, Text, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
+import {
+  View,
+  ScrollView,
+  Text,
+  ActivityIndicator,
+  Dimensions,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
-import * as Sentry from "@sentry/react-native";
-import firestore from '@react-native-firebase/firestore';
 
-import HeartRateDayChart from "../../../../components/HeartRateDayChart";
 import TrendCardComponent from "../../../../components/TrendCardComponent";
-import CustomDayChartComponent from "../../../../components/CustomDayChartComponent";
-import CustomTrendDatePicker from "../../../../components/CustomTrendDatePicker";
 import HeartRateTrend from "../../../../components/HeartRateTrend";
+import SleepTrend from "../../../../components/SleepTrend";
 import FoodTrends from "../../../../components/FoodTrends";
-
-import {
-  getHeartRateIntraday,
-  getHeartRateTrendCardData,
-  getHeartRateTrendChartData,
-} from "../../../../apis/heartRateQueries";
-import { FoodActionCreators } from "../../../../store/FoodReducer/FoodActionCreators";
+import ActivityTrends from "../../../../components/ActivityTrends";
+import CustomTrendDatePicker from "../../../../components/CustomTrendDatePicker";
 import { WEEK_LABELS, YEAR_LABLES } from "../../../../constants/dateConstants";
-
-const { height, width } = Dimensions.get("window");
+import {
+  getHeartRateTrendChartData,
+  getHeartRateTrendCardData,
+} from "../../../../apis/heartRateQueries";
+import {
+  getSleepTrendChartData,
+  getSleepTrendCardData,
+} from "../../../../apis/sleepQueries";
+import {
+  getActivityTrendChartData,
+  getActivityTrendCardData,
+} from "../../../../apis/activityQueries";
+import {
+  FoodActionCreators,
+  getDataForFoodTrendCard,
+} from "../../../../store/FoodReducer/FoodActionCreators";
+import firestore from "@react-native-firebase/firestore";
+import ScreenContainer from "../../components/Containers/ScreenContainer";
+import HeartRateDayChart from "../../../../components/HeartRateDayChart";
+import MyChartsLineChart from "./MyChartsLineChart";
 
 const getUserIdFromPatientId = async (patientId) => {
   try {
-    const doc = await firestore().collection('Patients').doc(patientId).get();
-    if (doc.exists) {
-      return doc.data().userId;
+    const usersRef = firestore().collection("Users");
+    const snapshot = await usersRef.where("patientId", "==", patientId).get();
+    if (!snapshot.empty) {
+      const doc = snapshot.docs[0];
+      const userId = doc.id;
+      console.log("Retrieved Firebase userId:", userId);
+      return userId;
+    } else {
+      console.log("No userId found for patientId:", patientId);
     }
   } catch (err) {
-    console.error("Error fetching userId:", err);
-    Sentry.captureException(err);
+    console.error("Error fetching userId from patientId:", err);
   }
   return null;
 };
 
-const MyBeatsCharts = ({ route }) => {
+const AllTrendsDashboard = ({ route }) => {
   const dispatch = useDispatch();
-  const { heartRateIntradayStore, heartRateDataStore } = useSelector((state) => state.HeartRateReducer);
-  const { foodTrendCard, foodTrendChartData } = useSelector((state) => state.FoodReducer);
   const user = useSelector((state) => state.UserReducer);
+  const patientId = route?.params?.patientId || null;
+  const selectedType = route?.params?.type || "all";
 
-  const [currentDate, setCurrentDate] = useState(moment().format("YYYY-MM-DD"));
-  const [isHeartRateChartLoading, setIsHeartRateChartLoading] = useState(false);
-  const [isTrendChartLoading, setIsTrendChartLoading] = useState(false);
-  const [heartRateDailyChartData, setHeartRateDailyChartData] = useState([]);
-  const [heartRateTrendCardData, setHeartRateTrendCardData] = useState([]);
-  const [heartRateTrendChartData, setHeartRateTrendChartData] = useState([]);
-  const [heartRateTrendChartLabels, setHeartRateTrendChartLabels] = useState(WEEK_LABELS);
-  const [foodChartLabels, setFoodChartLabels] = useState(WEEK_LABELS);
+  const [hrvChartData, setHrvChartData] = useState([]);
+  const [stepsChartData, setStepsChartData] = useState([]);
+  const [selectedChartMode, setSelectedChartMode] = useState("week");
 
-  const [patientId, setPatientId] = useState(route?.params?.patientId || null);
+  const {
+    heartRateTrendChartData,
+    heartRateTrendCardData,
+    heartRateDataStore,
+    heartRateIntradayStore,
+  } = useSelector((state) => state.HeartRateReducer);
+  const { sleepTrendChartData, sleepTrendCardData } = useSelector(
+    (state) => state.SleepReducer
+  );
+  const { foodTrendChartData, foodTrendCardData } = useSelector(
+    (state) => state.FoodReducer
+  );
+  const {
+    activityTrendChartData,
+    activityTrendCardData,
+    activityIntradayStore,
+    activityDataStore,
+  } = useSelector((state) => state.ActivityReducer);
+
   const [firebaseUserId, setFirebaseUserId] = useState(null);
-  const type = route?.params?.type || "heart";
+  const [trendLabels, setTrendLabels] = useState(WEEK_LABELS);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const staticTrendLabels = {
+    heart: ["Resting", "Average", "High"],
+    food: ["Calories", "Water", "Protein"],
+    activity: ["Steps", "Idle", "Active"],
+    hrv: ["Low", "Average",  "High"],
+  };
+
+  const safeArray = (arr, fallback = []) =>
+    Array.isArray(arr) ? arr : fallback;
+
+  const changeDateRange = async (startDate, endDate, mode) => {
+    setIsLoading(true);
+    setSelectedChartMode(mode);
+    const uid = firebaseUserId || user.userId;
+    const device = user.vendor;
+    switch (mode) {
+      case "week":
+        setTrendLabels(WEEK_LABELS);
+        break;
+      case "month": {
+        const days = moment(startDate).daysInMonth();
+        setTrendLabels([...Array(days)].map((_, i) => i + 1));
+        break;
+      }
+      case "year":
+        setTrendLabels(YEAR_LABLES);
+        break;
+    }
+    const totalDays = moment(endDate).diff(moment(startDate), "days") + 1;
+    const generateMock = (count, unit) => {
+      return Array.from({ length: count }, () =>
+        unit === "HRV"
+          ? 40 + Math.floor(Math.random() * 20)
+          : 5000 + Math.floor(Math.random() * 4000)
+      );
+    };
+
+    setHrvChartData(generateMock(totalDays, "HRV"));
+    setStepsChartData(generateMock(totalDays, "steps"));
+
+    try {
+      const today = moment(endDate).format("YYYY-MM-DD");
+      const prevDay = moment(endDate).subtract(1, "days").format("YYYY-MM-DD");
+
+      if (selectedType === "heart" || selectedType === "all") {
+        await getHeartRateTrendChartData(startDate, endDate, uid, device);
+        await getHeartRateTrendCardData(
+          today,
+          prevDay,
+          heartRateIntradayStore,
+          heartRateDataStore,
+          dispatch,
+          device,
+          uid,
+          false
+        );
+      }
+      if (selectedType === "sleep" || selectedType === "all") {
+        await getSleepTrendChartData(startDate, endDate, user.vendor, uid).then(
+          (res) => {
+            console.log("Sleep Trend Chart Data:", res);
+          }
+        );
+      }
+      if (
+        ["walk", "exercise", "cycling", "activity", "all"].includes(
+          selectedType
+        )
+      ) {
+        await getActivityTrendChartData(startDate, endDate, uid, user.vendor);
+
+        await getActivityTrendCardData(
+          today,
+          prevDay,
+          activityIntradayStore,
+          activityDataStore,
+          dispatch,
+          user.vendor,
+          uid,
+          false
+        );
+      }
+      if (["calories", "food", "all"].includes(selectedType)) {
+        await dispatch(
+          FoodActionCreators.getDataForFoodTrendCard(moment(startDate))
+        );
+        console.log("Food Trend Chart Data:", foodTrendChartData);
+      }
+    } catch (err) {
+      console.error("Error fetching trends:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchUserIdAndData = async () => {
       if (!patientId) return;
+      console.log("Resolving Firebase UID for patientId:", patientId);
       const resolvedUserId = await getUserIdFromPatientId(patientId);
       if (resolvedUserId) {
+        console.log("Using Firebase UID:", resolvedUserId);
         setFirebaseUserId(resolvedUserId);
         const today = moment().format("YYYY-MM-DD");
         const start = moment().startOf("week").format("YYYY-MM-DD");
         const end = moment().endOf("week").format("YYYY-MM-DD");
-
-        if (type === "calories") {
-          dispatch(FoodActionCreators.getDataForFoodTrendCard(moment()));
-          dispatch(FoodActionCreators.getDataForFoodTrendChart(moment(start), moment(end)));
-        } else {
-          changeDate(today, true);
-          changeDateRange(start, end, "week");
-        }
+        changeDateRange(start, end, "week");
       }
     };
     fetchUserIdAndData();
   }, [patientId]);
 
-
-  useEffect(() => {
-    if (type === "calories" && Array.isArray(foodTrendChartData)) {
-      setIsTrendChartLoading(false);
-    }
-  }, [foodTrendChartData]);
-
-  const changeDate = async (queryDate, forceDataForToday = false) => {
-    setCurrentDate(queryDate);
-    try {
-      setIsHeartRateChartLoading(true);
-      const intradayData = await getHeartRateIntraday(queryDate, heartRateIntradayStore, dispatch, user.vendor, firebaseUserId, forceDataForToday);
-      setHeartRateDailyChartData(intradayData);
-      const prevDate = moment(queryDate).subtract(1, "days").format("YYYY-MM-DD");
-      const cardData = await getHeartRateTrendCardData(queryDate, prevDate, heartRateIntradayStore, heartRateDataStore, dispatch, user.vendor, firebaseUserId, forceDataForToday);
-      setHeartRateTrendCardData(cardData);
-      setIsHeartRateChartLoading(false);
-    } catch (err) {
-      Sentry.captureException(err, { extra: { message: `Error while fetching ${type} data` } });
-    }
-  };
-
-  const changeDateRange = async (startDate, endDate, mode) => {
-    setIsTrendChartLoading(true);
-    switch (mode) {
-      case "week":
-        setHeartRateTrendChartLabels(WEEK_LABELS);
-        setFoodChartLabels(WEEK_LABELS);
-        break;
-      case "month": {
-        const days = moment(startDate).daysInMonth();
-        const labels = [...Array(days)].map((_, i) => i + 1);
-        setHeartRateTrendChartLabels(labels);
-        setFoodChartLabels(labels);
-        break;
-      }
-      case "year":
-        setHeartRateTrendChartLabels(YEAR_LABLES);
-        setFoodChartLabels(YEAR_LABLES);
-        break;
-    }
-    try {
-      if (type === "calories") {
-        await dispatch(FoodActionCreators.getDataForFoodTrendChart(moment(startDate), moment(endDate)));
-      } else {
-        const trendData = await getHeartRateTrendChartData(startDate, endDate, firebaseUserId, user.vendor);
-        setHeartRateTrendChartData(trendData);
-        setIsTrendChartLoading(false);
-      }
-    } catch (err) {
-      Sentry.captureException(err, { extra: { message: `Error while fetching ${type} trend data` } });
-      setIsTrendChartLoading(false);
-    }
-  };
+  // Generate mock HRV intraday data every 5 minutes from 00:00 to 23:55
+  const mockHrvDayData = Array.from({ length: 288 }, (_, i) => {
+    const hour = Math.floor((i * 5) / 60);
+    const minute = (i * 5) % 60;
+    return {
+      time: `${hour.toString().padStart(2, "0")}:${minute
+        .toString()
+        .padStart(2, "0")}:00`,
+      value: 40 + Math.floor(Math.random() * 20), // mock HRV values
+    };
+  });
 
   return (
-    <View className="relative">
-      <View className="p-5" style={{ width: "100%" }}>
-        {isHeartRateChartLoading && currentDate === moment().format("YYYY-MM-DD") && (
-          <View style={{ height: height * 0.7, width: width }} className="bg-white items-center justify-center absolute top-0 left-0 z-10">
-            <Text className="text-md">Syncing your data with AI</Text>
-            <ActivityIndicator color="orange" />
-          </View>
+    <ScreenContainer>
+      <ScrollView className="space-y-10">
+        {(selectedType === "heart" || selectedType === "all") && (
+          <>
+            {/* <Text className="text-xl font-bold mb-2">Heart Rate</Text> */}
+            <TrendCardComponent
+              title="Heart Rate"
+              labels={trendLabels}
+              lastSyncDate={null}
+              date={null}
+              data={
+                safeArray(heartRateTrendCardData).length === 0
+                  ? staticTrendLabels.heart.map((label) => ({
+                      title: label,
+                      value: "-",
+                      arrow: "caretdown",
+                      color: "#D4d4d4",
+                    }))
+                  : safeArray(heartRateTrendCardData)
+              }
+            />
+            <CustomTrendDatePicker
+              isDataLoading={isLoading}
+              changeDateRange={changeDateRange}
+            />
+            <HeartRateTrend
+              labels={trendLabels}
+              data={safeArray(heartRateTrendChartData)}
+              isLoading={isLoading}
+            />
+          </>
         )}
-        <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 5, width: "100%" }}>
-          {type !== "calories" && (
-            <>
-              <CustomDayChartComponent changeDate={changeDate} />
-              <HeartRateDayChart chartData={heartRateDailyChartData} />
-              <TrendCardComponent title={type.charAt(0).toUpperCase() + type.slice(1)} lastSyncDate={null} date={null} data={heartRateTrendCardData ?? []} />
-            </>
-          )}
-          {type === "calories" && (
-            <TrendCardComponent title="Food" isFoodTrendCard={true} lastSyncDate={null} data={foodTrendCard} userIdFromAWS={firebaseUserId} />
-          )}
 
-          <View>
-            <CustomTrendDatePicker isDataLoading={isTrendChartLoading} changeDateRange={changeDateRange} />
-          </View>
+        {(selectedType === "sleep" || selectedType === "all") && (
+          <>
+            {/* <Text className="text-xl font-bold mt-5 mb-2">Sleep</Text> */}
+            <TrendCardComponent
+              title="Sleep"
+              lastSyncDate={null}
+              date={null}
+              data={
+                safeArray(sleepTrendCardData).length === 0
+                  ? staticTrendLabels.heart.map((label) => ({
+                      title: label,
+                      value: "-",
+                      arrow: "caretdown",
+                      color: "#D4d4d4",
+                    }))
+                  : safeArray(heartRateTrendCardData)
+              }
+            />
+            <CustomTrendDatePicker
+              isDataLoading={isLoading}
+              changeDateRange={changeDateRange}
+            />
+            <SleepTrend
+              labels={trendLabels}
+              data={safeArray(sleepTrendChartData)}
+              isLoading={isLoading}
+            />
+          </>
+        )}
 
-          <View>
-            {type === "calories" ? (
-              <FoodTrends
-                data={Array.isArray(foodTrendChartData) && foodTrendChartData.length ? foodTrendChartData : [[0, 0, 0, 0]]}
-                labels={Array.isArray(foodChartLabels) && foodChartLabels.length ? foodChartLabels : ["M", "T", "W", "T", "F", "S", "S"]}
-              />
-            ) : (
-              <HeartRateTrend isLoading={isTrendChartLoading} labels={heartRateTrendChartLabels} data={heartRateTrendChartData} />
-            )}
-          </View>
-        </ScrollView>
-      </View>
-    </View>
+        {(selectedType === "food" ||
+          selectedType === "calories" ||
+          selectedType === "all") && (
+          <>
+            {/* <Text className="text-xl font-bold mt-5 mb-2">Food & Calories</Text> */}
+            <TrendCardComponent
+              title="Food"
+              lastSyncDate={null}
+              date={null}
+              data={
+                safeArray(foodTrendCardData).length === 0
+                  ? staticTrendLabels.food.map((label) => ({
+                      title: label,
+                      value: "-",
+                      arrow: "caretdown",
+                      color: "#D4d4d4",
+                    }))
+                  : safeArray(foodTrendCardData)
+              }
+            />
+            <CustomTrendDatePicker
+              isDataLoading={isLoading}
+              changeDateRange={changeDateRange}
+            />
+            <FoodTrends
+              labels={trendLabels}
+              data={safeArray(foodTrendChartData, [[0, 0, 0, 0]])}
+            />
+          </>
+        )}
+
+        {["walk", "exercise", "cycling", "activity", "all"].includes(
+          selectedType
+        ) && (
+          <>
+            {/* <Text className="text-xl font-bold mt-5 mb-2">Activity</Text> */}
+            <TrendCardComponent
+              title="Activity"
+              lastSyncDate={null}
+              date={null}
+              data={
+                safeArray(activityTrendCardData).length === 0
+                  ? staticTrendLabels.activity.map((label) => ({
+                      title: label,
+                      value: "-",
+                      arrow: "caretdown",
+                      color: "#D4d4d4",
+                    }))
+                  : safeArray(activityTrendCardData)
+              }
+            />
+            <CustomTrendDatePicker
+              isDataLoading={isLoading}
+              changeDateRange={changeDateRange}
+            />
+            <ActivityTrends
+              labels={trendLabels}
+              data={safeArray(activityTrendChartData)}
+              isLoading={isLoading}
+            />
+          </>
+        )}
+
+        {selectedType === "hrv" && (
+          <>
+            {/* <Text className="text-xl font-bold mt-5 mb-2">
+              Heart Rate Variability
+            </Text> */}
+            <TrendCardComponent
+              title="HRV"
+              lastSyncDate={null}
+              date={null}
+              data={
+                safeArray(heartRateTrendCardData).length === 0
+                  ? staticTrendLabels.hrv.map((label) => ({
+                      title: label,
+                      value: "-",
+                      arrow: "caretdown",
+                      color: "#D4d4d4",
+                    }))
+                  : safeArray(heartRateTrendCardData)
+              }
+            />
+            <CustomTrendDatePicker
+              isDataLoading={isLoading}
+              changeDateRange={changeDateRange}
+            />
+            {/* <HeartRateTrend
+              labels={WEEK_LABELS} 
+              data={Array(7)
+                .fill(null)
+                .map(() => [
+                  42 + Math.floor(Math.random() * 5), // resting
+                  50 + Math.floor(Math.random() * 10), // min
+                  60 + Math.floor(Math.random() * 20), // max
+                ])}
+              isLoading={false}
+            /> */}
+            {/* <HeartRateDayChart chartData={mockHrvDayData} isLoading={false} /> */}
+            <MyChartsLineChart
+              data={hrvChartData}
+              unit="HRV"
+              mode={selectedChartMode}
+            />
+          </>
+        )}
+
+        {selectedType === "steps" && (
+          <>
+            {/* <Text className="text-xl font-bold mt-5 mb-2">Steps</Text> */}
+            <TrendCardComponent
+              title="Steps"
+              lastSyncDate={null}
+              date={null}
+              data={
+                safeArray(activityTrendCardData).length === 0
+                  ? staticTrendLabels.hrv.map((label) => ({
+                      title: label,
+                      value: "-",
+                      arrow: "caretdown",
+                      color: "#D4d4d4",
+                    }))
+                  : safeArray(activityTrendCardData)
+              }
+            />
+            <CustomTrendDatePicker
+              isDataLoading={isLoading}
+              changeDateRange={changeDateRange}
+            />
+            <MyChartsLineChart
+              data={stepsChartData}
+              unit="steps"
+              mode={selectedChartMode}
+            />
+          </>
+        )}
+      </ScrollView>
+    </ScreenContainer>
   );
 };
 
-export default MyBeatsCharts;
+export default AllTrendsDashboard;

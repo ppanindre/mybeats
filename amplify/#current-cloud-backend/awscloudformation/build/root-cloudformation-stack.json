@@ -208,7 +208,7 @@
           "DynamoDBBillingMode": "PAY_PER_REQUEST",
           "DynamoDBEnableServerSideEncryption": false,
           "S3DeploymentBucket": "amplify-mybeatsdev-stabledev-21f51-deployment",
-          "S3DeploymentRootKey": "amplify-appsync-files/ced1e39e7f49718bea12ce2994ce38758dec564e",
+          "S3DeploymentRootKey": "amplify-appsync-files/3c68ad8307611ff95f36352c948fbe850164063b",
           "env": "stabledev"
         }
       }

@@ -36,11 +36,11 @@ const Landing = () => {
                   <View className="items-center justify-center">
                       {/* Firebeats Logo */}
                       <Image
-                          source={require("../assets/firebeats-icon.png")}
+                          source={require("../../../assets/icons/myhealth.png")}
                           style={{ height: 170, width: 230 }}
                       />
                       <Text className="mb-3 text-center mt-3 font-bold text-l text-[#4a4a4a]">
-                          Track your health with AI!
+                          Track your health with AI! 
                       </Text>
                       <Text></Text>
                   </View>

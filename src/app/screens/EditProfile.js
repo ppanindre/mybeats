@@ -180,6 +180,7 @@ const EditProfile = () => {
       lastName,
       weight,
       height,
+      gender: gender.value ?? "",
       age: calculateAge(dob),
       profileImageUri: pickedImage ?? null,
       professionList: profession.selectedList.map((item) => item.value),
