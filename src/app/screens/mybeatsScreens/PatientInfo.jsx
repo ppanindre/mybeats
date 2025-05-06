@@ -83,10 +83,10 @@ const Patient = ({ route }) => {
                             <Text className="text-lg font-[appfont-semi]"> {patient.gender}</Text>
                         </View>
                     )}
-                    <View className="flex-row items-center space-x-2">
+                    {/* <View className="flex-row items-center space-x-2">
                         <Ionicons name="call" size={16} className="font-[appfont-semi]" />
                         <Text className="text-lg font-[appfont-semi]">{patient.phoneNumber}</Text>
-                    </View>
+                    </View> */}
                 </View>
 
                 {/* history card section */}
@@ -150,8 +150,8 @@ const Patient = ({ route }) => {
                         btnRightIcon={
                             <Image
                               source={require('../../assets/uma_ai.png')}
-                              className="w-10 h-10 ml-2"
-                              resizeMode="cover"
+                              className="w-10 h-7"
+                              resizeMode="contain"
                             />
                           }
                     />

@@ -93,6 +93,7 @@ const AllTrendsDashboard = ({ route }) => {
     food: ["Calories", "Water", "Protein"],
     activity: ["Steps", "Idle", "Active"],
     hrv: ["Low", "Average",  "High"],
+    sleepLabels: ["Deep", "Light", "Total"],
   };
 
   const safeArray = (arr, fallback = []) =>
@@ -255,7 +256,7 @@ const AllTrendsDashboard = ({ route }) => {
               date={null}
               data={
                 safeArray(sleepTrendCardData).length === 0
-                  ? staticTrendLabels.heart.map((label) => ({
+                  ? staticTrendLabels.sleepLabels.map((label) => ({
                       title: label,
                       value: "-",
                       arrow: "caretdown",
