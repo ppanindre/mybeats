@@ -25,10 +25,16 @@ const PatientNavigationFrame = () => {
                     cardContent="Request a lab test"
                     onPress={() => navigation.navigate("diagnostics")}
                 /> */}
-                 <NavigationCard
+                 {/* <NavigationCard
                     cardTitle="Payments"
                     cardContent="Manage Payments"
-                    onPress={() => navigation.navigate("payment")}                />
+                    onPress={() => navigation.navigate("payment")}                
+                 /> */}
+                  <NavigationCard
+                    cardTitle="Payments"
+                    cardContent="Payments History"
+                    onPress={() => navigation.navigate("patientPayments", { patientId })}                
+                 />
             </View>
         </View>
     );

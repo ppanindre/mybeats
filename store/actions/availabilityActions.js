@@ -147,7 +147,7 @@ export const getAvailabilitiesByDoctorActionCreator =
                 filter: {
                     _deleted: { ne: true },
                 },
-                limit: 5,
+                limit: 50,
             };
 
             // Conditionally add the limit parameter if it is provided

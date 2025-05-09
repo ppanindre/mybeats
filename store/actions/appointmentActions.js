@@ -103,14 +103,18 @@ export const listAppointmentsByDoctorActionCreators =
 
             const appointmentsWithPatientData = await Promise.all(
                 response.data.listAppointments.items.map(async (appointment) => {
-                    const patientResponse = await client.graphql({
-                        query: getPatient,
-                        variables: { id: appointment.patientId },
-                    });
-                    appointment.patient = patientResponse.data.getPatient;
-                    return appointment;
-                })
-            );
+                    const [patientResponse, doctorResponse] = await Promise.all([
+                        client.graphql({ query: getPatient, variables: { id: appointment.patientId } }),
+                        client.graphql({ query: getDoctor, variables: { doctorID: appointment.doctorID } }),
+                      ]);
+                  
+                      return {
+                        ...appointment,
+                        patient: patientResponse.data.getPatient,
+                        doctor: doctorResponse.data.getDoctor,
+                      };
+                    })
+                  );
 
             dispatch({
                 type: APPOINTMENT_LIST_BY_DOCTOR_SUCCESS,
