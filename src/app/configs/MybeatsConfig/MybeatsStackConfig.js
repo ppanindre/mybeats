@@ -40,7 +40,9 @@ import UploadLabTestResult from "../../components/PatientLabTestResults/UploadLa
 import ViewLabTestResults from "../../components/PatientLabTestResults/ViewLabTestResults";
 import DoctorLabTestResults from "../../components/DoctorLabTestView/DoctorLabTestResults";
 import UmaChatBot from "../../components/ChatBot/UmaChatBot";
-import MyBeatsCharts from "../../screens/mybeatsScreens/MyBeatsCharts";
+import MyBeatsCharts from "../../components/PatientInfo/MyBeatsCharts";
+import DoctorPaymentsHistory from "../../components/PatientInfo/DoctorPaymentsHistory";
+import PatientPaymentsHistory from "../../components/PatientDashboardComponents/PatientPaymentsHistory";
 
 export const mybeatsStackConfig = {
     screens: [
@@ -263,7 +265,16 @@ export const mybeatsStackConfig = {
             headerTitle: "Charts",
             name: "myBeatsCharts",
             component: MyBeatsCharts,
-        }
-        
+        },
+        {
+            headerTitle: "Payments",
+            name: "doctorPayments",
+            component: DoctorPaymentsHistory,
+        },
+        {
+            headerTitle: "Payments",
+            name: "patientPayments",
+            component: PatientPaymentsHistory,
+        }  
     ],
 };

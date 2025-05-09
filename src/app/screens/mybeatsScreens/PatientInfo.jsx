@@ -134,6 +134,10 @@ const Patient = ({ route }) => {
                     <PatientHistoryCard
                         title="Payments"
                         iconName="cash-outline"
+                        onPress={() => {
+                            const bmi = calculateBMI(patient.height, patient.weight);
+                            navigation.navigate('doctorPayments', { patient, bmi });
+                          }}
                     />
                 </View>
             </ScrollView>

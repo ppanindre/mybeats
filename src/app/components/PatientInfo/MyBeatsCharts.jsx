@@ -33,7 +33,7 @@ import {
   getDataForFoodTrendCard,
 } from "../../../../store/FoodReducer/FoodActionCreators";
 import firestore from "@react-native-firebase/firestore";
-import ScreenContainer from "../../components/Containers/ScreenContainer";
+import ScreenContainer from "../Containers/ScreenContainer";
 import HeartRateDayChart from "../../../../components/HeartRateDayChart";
 import MyChartsLineChart from "./MyChartsLineChart";
 
