@@ -71,6 +71,7 @@ import {
   doctorsBySecondarySpecializationReducer,
  } from "./reducers/healthConditionReducer";
  import umaChatReducer from "./reducers/umaChatReducer";
+ import { medicalMasterDataReducer } from "./reducers/medicalMasterDataReducer";
 
 // Combining every reducer
 const reducers = combineReducers({
@@ -126,6 +127,7 @@ const reducers = combineReducers({
   labTestResultCreateReducer: labTestResultCreateReducer,
   labTestResultGetReducer: labTestResultGetReducer,
   labTestResultsByPatientReducer: labTestResultsByPatientReducer,
+  medicalMasterData: medicalMasterDataReducer,
 });
 
 // Redux store containing reducers and the middleware

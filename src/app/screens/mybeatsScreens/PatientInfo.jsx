@@ -114,22 +114,31 @@ const Patient = ({ route }) => {
                         iconName="flask-outline"
                         onPress={() => navigation.navigate('doctorLabTestResults', { patientId })}
                     />
-                    <PatientHistoryCard
+                  <PatientHistoryCard
                         title="Health history"
                         iconName="medkit-outline"
                         onPress={() =>
                             navigation.navigate('healthHistory', {
-                              history: {
+                            history: {
                                 conditions: [
-                                  ...(patient.underlyingConditionsList || []),
-                                  ...(patient.otherCondition ? [patient.otherCondition] : [])
+                                ...(patient.underlyingConditionsList || []),
+                                ...(patient.otherCondition ? [patient.otherCondition] : [])
                                 ],
-                                procedures: [],
-                                allergies: [],
-                                immunizations: []
-                              }
+                                procedures: [
+                                ...(patient.proceduresList || []),
+                                ...(patient.otherProcedure ? [patient.otherProcedure] : [])
+                                ],
+                                allergies: [
+                                ...(patient.allergiesList || []),
+                                ...(patient.otherAllergy ? [patient.otherAllergy] : [])
+                                ],
+                                immunizations: [
+                                ...(patient.immunizationsList || []),
+                                ...(patient.otherImmunization ? [patient.otherImmunization] : [])
+                                ]
+                            }
                             })
-                          }                          
+                        }
                     />
                     <PatientHistoryCard
                         title="Payments"

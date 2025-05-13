@@ -469,6 +469,12 @@ export const getPatient = /* GraphQL */ `
       professionList
       underlyingConditionsList
       otherCondition
+      allergiesList
+      otherAllergy
+      proceduresList
+      otherProcedure
+      immunizationsList
+      otherImmunization
       prescriptions {
         nextToken
         startedAt
@@ -524,6 +530,12 @@ export const listPatients = /* GraphQL */ `
         professionList
         underlyingConditionsList
         otherCondition
+        allergiesList
+        otherAllergy
+        proceduresList
+        otherProcedure
+        immunizationsList
+        otherImmunization
         createdAt
         updatedAt
         _version
@@ -566,6 +578,12 @@ export const syncPatients = /* GraphQL */ `
         professionList
         underlyingConditionsList
         otherCondition
+        allergiesList
+        otherAllergy
+        proceduresList
+        otherProcedure
+        immunizationsList
+        otherImmunization
         createdAt
         updatedAt
         _version
@@ -739,6 +757,12 @@ export const getAppointment = /* GraphQL */ `
         professionList
         underlyingConditionsList
         otherCondition
+        allergiesList
+        otherAllergy
+        proceduresList
+        otherProcedure
+        immunizationsList
+        otherImmunization
         createdAt
         updatedAt
         _version
@@ -911,6 +935,12 @@ export const getPrescription = /* GraphQL */ `
         professionList
         underlyingConditionsList
         otherCondition
+        allergiesList
+        otherAllergy
+        proceduresList
+        otherProcedure
+        immunizationsList
+        otherImmunization
         createdAt
         updatedAt
         _version
@@ -1186,6 +1216,12 @@ export const getLabTestResult = /* GraphQL */ `
         professionList
         underlyingConditionsList
         otherCondition
+        allergiesList
+        otherAllergy
+        proceduresList
+        otherProcedure
+        immunizationsList
+        otherImmunization
         createdAt
         updatedAt
         _version
@@ -1320,6 +1356,12 @@ export const getChatMessage = /* GraphQL */ `
         professionList
         underlyingConditionsList
         otherCondition
+        allergiesList
+        otherAllergy
+        proceduresList
+        otherProcedure
+        immunizationsList
+        otherImmunization
         createdAt
         updatedAt
         _version
@@ -1408,6 +1450,228 @@ export const syncChatMessages = /* GraphQL */ `
         status
         timestamp
         ttl
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const getAllergy = /* GraphQL */ `
+  query GetAllergy($id: ID!) {
+    getAllergy(id: $id) {
+      id
+      name
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listAllergies = /* GraphQL */ `
+  query ListAllergies(
+    $id: ID
+    $filter: ModelAllergyFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listAllergies(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncAllergies = /* GraphQL */ `
+  query SyncAllergies(
+    $filter: ModelAllergyFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncAllergies(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const getProcedure = /* GraphQL */ `
+  query GetProcedure($id: ID!) {
+    getProcedure(id: $id) {
+      id
+      name
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listProcedures = /* GraphQL */ `
+  query ListProcedures(
+    $id: ID
+    $filter: ModelProcedureFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listProcedures(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncProcedures = /* GraphQL */ `
+  query SyncProcedures(
+    $filter: ModelProcedureFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncProcedures(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const getImmunization = /* GraphQL */ `
+  query GetImmunization($id: ID!) {
+    getImmunization(id: $id) {
+      id
+      name
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listImmunizations = /* GraphQL */ `
+  query ListImmunizations(
+    $id: ID
+    $filter: ModelImmunizationFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listImmunizations(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncImmunizations = /* GraphQL */ `
+  query SyncImmunizations(
+    $filter: ModelImmunizationFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncImmunizations(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
         createdAt
         updatedAt
         _version
@@ -2446,6 +2710,99 @@ export const chatMessagesByPatientID = /* GraphQL */ `
         status
         timestamp
         ttl
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const allergyByName = /* GraphQL */ `
+  query AllergyByName(
+    $name: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelAllergyFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    allergyByName(
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const procedureByName = /* GraphQL */ `
+  query ProcedureByName(
+    $name: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelProcedureFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    procedureByName(
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const immunizationByName = /* GraphQL */ `
+  query ImmunizationByName(
+    $name: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelImmunizationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    immunizationByName(
+      name: $name
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
         createdAt
         updatedAt
         _version

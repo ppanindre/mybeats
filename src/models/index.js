@@ -4,7 +4,7 @@ import { schema } from './schema';
 
 
 
-const { Doctor, Specialty, HealthCondition, PrimaryToSecondary, Patient, Availability, Appointment, Prescription, PatientStory, LabTestResult, ChatMessage, DoctorSpecialties, DoctorSecondarySpecialties, SpecialtyHealthConditions } = initSchema(schema);
+const { Doctor, Specialty, HealthCondition, PrimaryToSecondary, Patient, Availability, Appointment, Prescription, PatientStory, LabTestResult, ChatMessage, Allergy, Procedure, Immunization, DoctorSpecialties, DoctorSecondarySpecialties, SpecialtyHealthConditions } = initSchema(schema);
 
 export {
   Doctor,
@@ -18,6 +18,9 @@ export {
   PatientStory,
   LabTestResult,
   ChatMessage,
+  Allergy,
+  Procedure,
+  Immunization,
   DoctorSpecialties,
   DoctorSecondarySpecialties,
   SpecialtyHealthConditions

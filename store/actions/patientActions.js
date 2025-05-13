@@ -74,6 +74,15 @@ export const createPatientActionCreator =
                         professionList: patientDetails.professionList || [],
                         underlyingConditionsList: patientDetails.underlyingConditionsList || [],    
                         otherCondition: patientDetails.otherCondition || null,
+                        
+                        allergiesList: patientDetails.allergiesList || [],
+                        otherAllergy: patientDetails.otherAllergy || null,
+
+                        proceduresList: patientDetails.proceduresList || [],
+                        otherProcedure: patientDetails.otherProcedure || null,
+
+                        immunizationsList: patientDetails.immunizationsList || [],
+                        otherImmunization: patientDetails.otherImmunization || null,
                     },
                 },
             });
@@ -140,6 +149,15 @@ export const updatePatientActionCreator =
                             professionList: patientDetails.professionList || [],
                             underlyingConditionsList: patientDetails.underlyingConditionsList || [],                            
                             otherCondition: patientDetails.otherCondition || null,
+
+                            allergiesList: patientDetails.allergiesList || [],
+                            otherAllergy: patientDetails.otherAllergy || null,
+
+                            proceduresList: patientDetails.proceduresList || [],
+                            otherProcedure: patientDetails.otherProcedure || null,
+
+                            immunizationsList: patientDetails.immunizationsList || [],
+                            otherImmunization: patientDetails.otherImmunization || null,
                             _version: existingPatient._version,
                         },
                     },

@@ -207,6 +207,12 @@ type EagerPatient = {
   readonly professionList?: (string | null)[] | null;
   readonly underlyingConditionsList?: (string | null)[] | null;
   readonly otherCondition?: string | null;
+  readonly allergiesList?: (string | null)[] | null;
+  readonly otherAllergy?: string | null;
+  readonly proceduresList?: (string | null)[] | null;
+  readonly otherProcedure?: string | null;
+  readonly immunizationsList?: (string | null)[] | null;
+  readonly otherImmunization?: string | null;
   readonly prescriptions?: (Prescription | null)[] | null;
   readonly labTestResults?: (LabTestResult | null)[] | null;
   readonly chatMessages?: (ChatMessage | null)[] | null;
@@ -235,6 +241,12 @@ type LazyPatient = {
   readonly professionList?: (string | null)[] | null;
   readonly underlyingConditionsList?: (string | null)[] | null;
   readonly otherCondition?: string | null;
+  readonly allergiesList?: (string | null)[] | null;
+  readonly otherAllergy?: string | null;
+  readonly proceduresList?: (string | null)[] | null;
+  readonly otherProcedure?: string | null;
+  readonly immunizationsList?: (string | null)[] | null;
+  readonly otherImmunization?: string | null;
   readonly prescriptions: AsyncCollection<Prescription>;
   readonly labTestResults: AsyncCollection<LabTestResult>;
   readonly chatMessages: AsyncCollection<ChatMessage>;
@@ -514,6 +526,90 @@ export declare type ChatMessage = LazyLoading extends LazyLoadingDisabled ? Eage
 
 export declare const ChatMessage: (new (init: ModelInit<ChatMessage>) => ChatMessage) & {
   copyOf(source: ChatMessage, mutator: (draft: MutableModel<ChatMessage>) => MutableModel<ChatMessage> | void): ChatMessage;
+}
+
+type EagerAllergy = {
+  readonly [__modelMeta__]: {
+    identifier: OptionallyManagedIdentifier<Allergy, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyAllergy = {
+  readonly [__modelMeta__]: {
+    identifier: OptionallyManagedIdentifier<Allergy, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Allergy = LazyLoading extends LazyLoadingDisabled ? EagerAllergy : LazyAllergy
+
+export declare const Allergy: (new (init: ModelInit<Allergy>) => Allergy) & {
+  copyOf(source: Allergy, mutator: (draft: MutableModel<Allergy>) => MutableModel<Allergy> | void): Allergy;
+}
+
+type EagerProcedure = {
+  readonly [__modelMeta__]: {
+    identifier: OptionallyManagedIdentifier<Procedure, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyProcedure = {
+  readonly [__modelMeta__]: {
+    identifier: OptionallyManagedIdentifier<Procedure, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Procedure = LazyLoading extends LazyLoadingDisabled ? EagerProcedure : LazyProcedure
+
+export declare const Procedure: (new (init: ModelInit<Procedure>) => Procedure) & {
+  copyOf(source: Procedure, mutator: (draft: MutableModel<Procedure>) => MutableModel<Procedure> | void): Procedure;
+}
+
+type EagerImmunization = {
+  readonly [__modelMeta__]: {
+    identifier: OptionallyManagedIdentifier<Immunization, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyImmunization = {
+  readonly [__modelMeta__]: {
+    identifier: OptionallyManagedIdentifier<Immunization, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Immunization = LazyLoading extends LazyLoadingDisabled ? EagerImmunization : LazyImmunization
+
+export declare const Immunization: (new (init: ModelInit<Immunization>) => Immunization) & {
+  copyOf(source: Immunization, mutator: (draft: MutableModel<Immunization>) => MutableModel<Immunization> | void): Immunization;
 }
 
 type EagerDoctorSpecialties = {
