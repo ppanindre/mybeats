@@ -7,7 +7,7 @@
     "icon": "./assets/icons/myhealth.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/icons/myhealth_splash.png",
+      "image": "./assets/icons/my_health_splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
