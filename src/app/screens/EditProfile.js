@@ -31,6 +31,8 @@ import { getPatient } from "../../graphql/queries";
 import { launchImageLibrary } from "react-native-image-picker";
 import { createPatientActionCreator, updatePatientActionCreator, getPatientActionCreator } from "../../../store/actions/patientActions";
 import Loader from "../components/Utils/Loader";
+import { fetchMedicalMasterData } from "../../../store/actions/medicalMasterDataActions";
+import { conditionList } from "../../../constants/underlyingConditionsConstants";
 
 const EditProfile = () => {
   const user = useSelector((state) => state.UserReducer); // get user listener
@@ -43,14 +45,42 @@ const EditProfile = () => {
   const client = generateClient(); 
 
   const [hasFetchedPatient, setHasFetchedPatient] = useState(false);
+ 
+  const { allergies: allergiesRedux, procedures: proceduresRedux, immunizations: immunizationsRedux,   loading: loadingMedicalData,
+  } = useSelector(
+    (state) => state.medicalMasterData
+  );  
 
   useEffect(() => {
     if (!hasFetchedPatient) {
       dispatch(getPatientActionCreator());
+      dispatch(fetchMedicalMasterData());
       setHasFetchedPatient(true);
     }
   }, [dispatch, hasFetchedPatient]);
-
+  
+  useEffect(() => {
+    const appendOtherIfMissing = (list) => {
+      return list.some((item) => item.value === "Other")
+        ? list
+        : [...list, { _id: "other", value: "Other" }];
+    };
+  
+    setAllergies((prev) => ({
+      ...prev,
+      list: appendOtherIfMissing(allergiesRedux),
+    }));
+  
+    setProcedures((prev) => ({
+      ...prev,
+      list: appendOtherIfMissing(proceduresRedux),
+    }));
+  
+    setImmunizations((prev) => ({
+      ...prev,
+      list: appendOtherIfMissing(immunizationsRedux),
+    }));
+  }, [allergiesRedux, proceduresRedux, immunizationsRedux]);
   
 
   // define navigation instance
@@ -62,6 +92,12 @@ const EditProfile = () => {
   const [otherCondition, setOtherCondition] = useState(
     user.profileData?.otherCondition
   );
+  const [otherAllergy, setOtherAllergy] = useState("");
+  const [otherProcedure, setOtherProcedure] = useState("");
+  const [otherImmunization, setOtherImmunization] = useState("");
+  const [showOtherAllergy, setShowOtherAllergy] = useState(false);
+  const [showOtherProcedure, setShowOtherProcedure] = useState(false);
+  const [showOtherImmunization, setShowOtherImmunization] = useState(false);
   const [weight, setWeight] = useState(user.profileData?.weight); //  weight
   const [height, setHeight] = useState(user.profileData?.height); // height
   const [dob, setDob] = useState(user.profileData?.dob); // date of birth
@@ -84,7 +120,11 @@ const EditProfile = () => {
       { _id: "3", value: "Police Officer" },
       { _id: "4", value: "Military" },
       { _id: "5", value: "Hazmat" },
-      { _id: "6", value: "Other first responder" },
+      { _id: "6", value: "Search and Rescue" },
+      { _id: "7", value: "Public Health Worker" },
+      { _id: "8", value: "Emergency Dispatcher" },
+      { _id: "9", value: "Volunteer Responder" },
+      { _id: "10", value: "Other first responder" },
     ],
     selectedList: user.profileData?.selectedProfessionList ?? [],
     error: "",
@@ -92,17 +132,33 @@ const EditProfile = () => {
 
   const [conditions, setConditions] = useState({
     value: user.profileData?.selectedConditionsValue ?? "",
-    list: [
-      { _id: "1", value: "Cardiomegaly" },
-      { _id: "2", value: "Arrhythmia" },
-      { _id: "3", value: "Heart stroke" },
-      { _id: "4", value: "Atrial fibrillation" },
-      { _id: "5", value: "Other" },
-    ],
+    list: conditionList,
     selectedList: user.profileData?.selectedConditionsList ?? [],
     error: "",
   }); // conditions
 
+  const [allergies, setAllergies] = useState({
+    value: "",
+    list: allergiesRedux,
+    selectedList: [],
+    error: "",
+  });
+  
+  const [procedures, setProcedures] = useState({
+    value: "",
+    list: proceduresRedux,
+    selectedList: [],
+    error: "",
+  });
+  
+  const [immunizations, setImmunizations] = useState({
+    value: "",
+    list: immunizationsRedux,
+    selectedList: [],
+    error: "",
+  });
+   
+  
   const setProfileDataOnFirebase = async (profileData) => {
     const userId = auth().currentUser.uid;
 
@@ -188,6 +244,21 @@ const EditProfile = () => {
       .filter((item) => item.value !== "Other")
       .map((item) => item.value),
       otherCondition: otherCondition ?? "",
+     
+      allergiesList: allergies.selectedList
+      .filter((item) => item.value !== "Other")
+      .map((item) => item.value),
+      otherAllergy: otherAllergy ?? "",
+  
+      proceduresList: procedures.selectedList
+      .filter((item) => item.value !== "Other")
+      .map((item) => item.value),
+      otherProcedure: otherProcedure ?? "",
+  
+      immunizationsList: immunizations.selectedList
+      .filter((item) => item.value !== "Other")
+      .map((item) => item.value),
+      otherImmunization: otherImmunization ?? "",
     };
   
     try {
@@ -233,27 +304,147 @@ const EditProfile = () => {
       }
     });
   };
+
+  useEffect(() => {
+    if (
+      !currentPatient?.id ||
+      currentPatient.id !== user.userId ||
+      allergiesRedux.length === 0 ||
+      proceduresRedux.length === 0 ||
+      immunizationsRedux.length === 0
+    ) return;
+  
+    const getSelectedList = (values, reduxList, otherValue) => {
+      let selected = reduxList.filter((item) => values.includes(item.value));
+      const otherItem = reduxList.find((item) => item.value === "Other");
+  
+      if (otherValue?.trim() && otherItem && !selected.some((i) => i.value === "Other")) {
+        selected.push(otherItem); // object with id
+      }
+  
+      return selected;
+    };
+  
+    const getValueString = (values, otherValue) =>
+      [...values, ...(otherValue?.trim() ? ["Other"] : [])].join(", ");
+  
+    const allergyValues = currentPatient.allergiesList ?? [];
+    const procedureValues = currentPatient.proceduresList ?? [];
+    const immunizationValues = currentPatient.immunizationsList ?? [];
+  
+    setAllergies({
+      list: allergiesRedux,
+      selectedList: getSelectedList(allergyValues, allergiesRedux, currentPatient.otherAllergy),
+      value: getValueString(allergyValues, currentPatient.otherAllergy),
+      error: "",
+    });
+    setOtherAllergy(currentPatient.otherAllergy ?? "");
+  
+    setProcedures({
+      list: proceduresRedux,
+      selectedList: getSelectedList(procedureValues, proceduresRedux, currentPatient.otherProcedure),
+      value: getValueString(procedureValues, currentPatient.otherProcedure),
+      error: "",
+    });
+    setOtherProcedure(currentPatient.otherProcedure ?? "");
+  
+    setImmunizations({
+      list: immunizationsRedux,
+      selectedList: getSelectedList(immunizationValues, immunizationsRedux, currentPatient.otherImmunization),
+      value: getValueString(immunizationValues, currentPatient.otherImmunization),
+      error: "",
+    });
+    setOtherImmunization(currentPatient.otherImmunization ?? "");
+
+    const conditionValues = currentPatient.underlyingConditionsList ?? [];
+
+    const getSelectedConditions = (values, list, otherVal) => {
+      let selected = list.filter((item) => values.includes(item.value));
+      const otherItem = list.find((item) => item.value === "Other");
+
+      if (otherVal?.trim() && otherItem && !selected.some((i) => i.value === "Other")) {
+        selected.push(otherItem);
+      }
+
+      return selected;
+    };
+
+    const getConditionValueString = (values, otherVal) =>
+      [...values, ...(otherVal?.trim() ? ["Other"] : [])].join(", ");
+
+    setConditions((prev) => ({
+      ...prev,
+      selectedList: getSelectedConditions(conditionValues, prev.list, currentPatient.otherCondition),
+      value: getConditionValueString(conditionValues, currentPatient.otherCondition),
+    }));
+
+  }, [
+    currentPatient,
+    user.userId,
+    allergiesRedux,
+    proceduresRedux,
+    immunizationsRedux
+  ]);  
   
   useEffect(() => {
-    let toShowOthers = false;
+    const checkShowOther = (selectedList, otherValue) =>
+      selectedList.some((item) => item.value === "Other") ||
+      (otherValue && otherValue.trim() !== "");
+  
+    setToggleOthers(
+      checkShowOther(conditions.selectedList, otherCondition)
+    );
+    setShowOtherAllergy(
+      checkShowOther(allergies.selectedList, otherAllergy)
+    );
+    setShowOtherProcedure(
+      checkShowOther(procedures.selectedList, otherProcedure)
+    );
+    setShowOtherImmunization(
+      checkShowOther(immunizations.selectedList, otherImmunization)
+    );
+  }, [
+    conditions.selectedList,
+    allergies.selectedList,
+    procedures.selectedList,
+    immunizations.selectedList,
+    otherCondition,
+    otherAllergy,
+    otherProcedure,
+    otherImmunization,
+  ]);  
 
-    conditions.selectedList.forEach((item) => {
-      if (item.value === "Other") {
-        toShowOthers = true;
-        return;
-      } else {
-        toShowOthers = false;
-      }
-    });
-
-    if (toShowOthers) {
-      setToggleOthers(true);
-    } else {
-      setToggleOthers(false);
+  useEffect(() => {
+    if (user.profileData?.otherCondition && !conditions.selectedList.some(c => c.value === "Other")) {
+      setConditions(prev => ({
+        ...prev,
+        selectedList: [...prev.selectedList, { value: "Other" }],
+      }));
+      setToggleOthers(true); 
     }
-  }, [conditions]);
+  }, []);
+  
+  useEffect(() => {
+    const OtherIsVisible = (list, setList, otherValue, setOtherValue) => {
+      const hasOtherSelected = list.selectedList.some(item => item.value === "Other");
+      const isOtherValuePresent = otherValue && otherValue.trim() !== "";
+  
+      if (isOtherValuePresent && !hasOtherSelected) {
+        setList(prev => ({
+          ...prev,
+          selectedList: [...prev.selectedList, { value: "Other" }],
+        }));
+      }
+    };
+  
+    OtherIsVisible(conditions, setConditions, otherCondition, setOtherCondition);
+    OtherIsVisible(allergies, setAllergies, otherAllergy, setOtherAllergy);
+    OtherIsVisible(procedures, setProcedures, otherProcedure, setOtherProcedure);
+    OtherIsVisible(immunizations, setImmunizations, otherImmunization, setOtherImmunization);
+  }, []);
+  
 
-  if (loading) return <Loader />;
+  if (loading || loadingMedicalData) return <Loader />;
   
   return (
     <CustomSafeView sentry-label="edit-profile">
@@ -449,12 +640,100 @@ const EditProfile = () => {
                   {toggleOthers && (
                     <View className="mb-3 w-[325]">
                       <CustomInput
-                        placeholder="If other, please specify"
+                        placeholder="If other condition, please specify"
                         value={otherCondition}
                         onChangeText={(text) => setOtherCondition(text)}
                       />
                     </View>
                   )}
+
+                  {/* Allergies */}
+                    <View className="mb-3" style={{ width: 325 }}>
+                      <MultiSelect
+                        sentry-label="edit-profile-allergies"
+                        label="Allergies"
+                        value={allergies.value}
+                        onSelection={(value) =>
+                          setAllergies({
+                            ...allergies,
+                            value: value.text,
+                            selectedList: value.selectedList,
+                            error: "",
+                          })
+                        }
+                        arrayList={[...allergies.list]}
+                        selectedArrayList={allergies.selectedList}
+                        multiEnable={true}
+                      />
+                    </View>
+                    {showOtherAllergy && (
+                      <View className="mb-3 w-[325]">
+                        <CustomInput
+                          placeholder="If other allergy, please specify"
+                          value={otherAllergy}
+                          onChangeText={(text) => setOtherAllergy(text)}
+                        />
+                      </View>
+                    )}
+
+                    {/* Procedures */}
+                    <View className="mb-3" style={{ width: 325 }}>
+                      <MultiSelect
+                        sentry-label="edit-profile-procedures"
+                        label="Surgeries / Procedures"
+                        value={procedures.value}
+                        onSelection={(value) =>
+                          setProcedures({
+                            ...procedures,
+                            value: value.text,
+                            selectedList: value.selectedList,
+                            error: "",
+                          })
+                        }
+                        arrayList={[...procedures.list]}
+                        selectedArrayList={procedures.selectedList}
+                        multiEnable={true}
+                      />
+                    </View>
+                    {showOtherProcedure && (
+                      <View className="mb-3 w-[325]">
+                        <CustomInput
+                          placeholder="If other procedure, please specify"
+                          value={otherProcedure}
+                          onChangeText={(text) => setOtherProcedure(text)}
+                        />
+                      </View>
+                    )}
+
+                    {/* Immunizations */}
+                    <View className="mb-3" style={{ width: 325 }}>
+                      <MultiSelect
+                        sentry-label="edit-profile-immunizations"
+                        label="Immunizations"
+                        value={immunizations.value}
+                        onSelection={(value) =>
+                          setImmunizations({
+                            ...immunizations,
+                            value: value.text,
+                            selectedList: value.selectedList,
+                            error: "",
+                          })
+                        }
+                        arrayList={[...immunizations.list]}
+                        selectedArrayList={immunizations.selectedList}
+                        multiEnable={true}
+                      />
+                    </View>
+                    {showOtherImmunization && (
+                      <View className="mb-3 w-[325]">
+                        <CustomInput
+                          placeholder="If other immunization, please specify"
+                          value={otherImmunization}
+                          onChangeText={(text) => setOtherImmunization(text)}
+                        />
+                      </View>
+                    )}
+
                 </View>
               </View>
             </View>

@@ -549,6 +549,12 @@ export const onCreatePatient = /* GraphQL */ `
       professionList
       underlyingConditionsList
       otherCondition
+      allergiesList
+      otherAllergy
+      proceduresList
+      otherProcedure
+      immunizationsList
+      otherImmunization
       prescriptions {
         nextToken
         startedAt
@@ -596,6 +602,12 @@ export const onUpdatePatient = /* GraphQL */ `
       professionList
       underlyingConditionsList
       otherCondition
+      allergiesList
+      otherAllergy
+      proceduresList
+      otherProcedure
+      immunizationsList
+      otherImmunization
       prescriptions {
         nextToken
         startedAt
@@ -643,6 +655,12 @@ export const onDeletePatient = /* GraphQL */ `
       professionList
       underlyingConditionsList
       otherCondition
+      allergiesList
+      otherAllergy
+      proceduresList
+      otherProcedure
+      immunizationsList
+      otherImmunization
       prescriptions {
         nextToken
         startedAt
@@ -857,6 +875,12 @@ export const onCreateAppointment = /* GraphQL */ `
         professionList
         underlyingConditionsList
         otherCondition
+        allergiesList
+        otherAllergy
+        proceduresList
+        otherProcedure
+        immunizationsList
+        otherImmunization
         createdAt
         updatedAt
         _version
@@ -952,6 +976,12 @@ export const onUpdateAppointment = /* GraphQL */ `
         professionList
         underlyingConditionsList
         otherCondition
+        allergiesList
+        otherAllergy
+        proceduresList
+        otherProcedure
+        immunizationsList
+        otherImmunization
         createdAt
         updatedAt
         _version
@@ -1047,6 +1077,12 @@ export const onDeleteAppointment = /* GraphQL */ `
         professionList
         underlyingConditionsList
         otherCondition
+        allergiesList
+        otherAllergy
+        proceduresList
+        otherProcedure
+        immunizationsList
+        otherImmunization
         createdAt
         updatedAt
         _version
@@ -1145,6 +1181,12 @@ export const onCreatePrescription = /* GraphQL */ `
         professionList
         underlyingConditionsList
         otherCondition
+        allergiesList
+        otherAllergy
+        proceduresList
+        otherProcedure
+        immunizationsList
+        otherImmunization
         createdAt
         updatedAt
         _version
@@ -1238,6 +1280,12 @@ export const onUpdatePrescription = /* GraphQL */ `
         professionList
         underlyingConditionsList
         otherCondition
+        allergiesList
+        otherAllergy
+        proceduresList
+        otherProcedure
+        immunizationsList
+        otherImmunization
         createdAt
         updatedAt
         _version
@@ -1331,6 +1379,12 @@ export const onDeletePrescription = /* GraphQL */ `
         professionList
         underlyingConditionsList
         otherCondition
+        allergiesList
+        otherAllergy
+        proceduresList
+        otherProcedure
+        immunizationsList
+        otherImmunization
         createdAt
         updatedAt
         _version
@@ -1594,6 +1648,12 @@ export const onCreateLabTestResult = /* GraphQL */ `
         professionList
         underlyingConditionsList
         otherCondition
+        allergiesList
+        otherAllergy
+        proceduresList
+        otherProcedure
+        immunizationsList
+        otherImmunization
         createdAt
         updatedAt
         _version
@@ -1637,6 +1697,12 @@ export const onUpdateLabTestResult = /* GraphQL */ `
         professionList
         underlyingConditionsList
         otherCondition
+        allergiesList
+        otherAllergy
+        proceduresList
+        otherProcedure
+        immunizationsList
+        otherImmunization
         createdAt
         updatedAt
         _version
@@ -1680,6 +1746,12 @@ export const onDeleteLabTestResult = /* GraphQL */ `
         professionList
         underlyingConditionsList
         otherCondition
+        allergiesList
+        otherAllergy
+        proceduresList
+        otherProcedure
+        immunizationsList
+        otherImmunization
         createdAt
         updatedAt
         _version
@@ -1748,6 +1820,12 @@ export const onCreateChatMessage = /* GraphQL */ `
         professionList
         underlyingConditionsList
         otherCondition
+        allergiesList
+        otherAllergy
+        proceduresList
+        otherProcedure
+        immunizationsList
+        otherImmunization
         createdAt
         updatedAt
         _version
@@ -1823,6 +1901,12 @@ export const onUpdateChatMessage = /* GraphQL */ `
         professionList
         underlyingConditionsList
         otherCondition
+        allergiesList
+        otherAllergy
+        proceduresList
+        otherProcedure
+        immunizationsList
+        otherImmunization
         createdAt
         updatedAt
         _version
@@ -1898,6 +1982,12 @@ export const onDeleteChatMessage = /* GraphQL */ `
         professionList
         underlyingConditionsList
         otherCondition
+        allergiesList
+        otherAllergy
+        proceduresList
+        otherProcedure
+        immunizationsList
+        otherImmunization
         createdAt
         updatedAt
         _version
@@ -1912,6 +2002,144 @@ export const onDeleteChatMessage = /* GraphQL */ `
       status
       timestamp
       ttl
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onCreateAllergy = /* GraphQL */ `
+  subscription OnCreateAllergy($filter: ModelSubscriptionAllergyFilterInput) {
+    onCreateAllergy(filter: $filter) {
+      id
+      name
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateAllergy = /* GraphQL */ `
+  subscription OnUpdateAllergy($filter: ModelSubscriptionAllergyFilterInput) {
+    onUpdateAllergy(filter: $filter) {
+      id
+      name
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteAllergy = /* GraphQL */ `
+  subscription OnDeleteAllergy($filter: ModelSubscriptionAllergyFilterInput) {
+    onDeleteAllergy(filter: $filter) {
+      id
+      name
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onCreateProcedure = /* GraphQL */ `
+  subscription OnCreateProcedure(
+    $filter: ModelSubscriptionProcedureFilterInput
+  ) {
+    onCreateProcedure(filter: $filter) {
+      id
+      name
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateProcedure = /* GraphQL */ `
+  subscription OnUpdateProcedure(
+    $filter: ModelSubscriptionProcedureFilterInput
+  ) {
+    onUpdateProcedure(filter: $filter) {
+      id
+      name
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteProcedure = /* GraphQL */ `
+  subscription OnDeleteProcedure(
+    $filter: ModelSubscriptionProcedureFilterInput
+  ) {
+    onDeleteProcedure(filter: $filter) {
+      id
+      name
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onCreateImmunization = /* GraphQL */ `
+  subscription OnCreateImmunization(
+    $filter: ModelSubscriptionImmunizationFilterInput
+  ) {
+    onCreateImmunization(filter: $filter) {
+      id
+      name
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateImmunization = /* GraphQL */ `
+  subscription OnUpdateImmunization(
+    $filter: ModelSubscriptionImmunizationFilterInput
+  ) {
+    onUpdateImmunization(filter: $filter) {
+      id
+      name
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteImmunization = /* GraphQL */ `
+  subscription OnDeleteImmunization(
+    $filter: ModelSubscriptionImmunizationFilterInput
+  ) {
+    onDeleteImmunization(filter: $filter) {
+      id
+      name
       createdAt
       updatedAt
       _version

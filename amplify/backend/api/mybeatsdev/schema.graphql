@@ -85,6 +85,16 @@ type Patient @model @auth(rules: [{ allow: public }]) {
     professionList: [String]
     underlyingConditionsList: [String]
     otherCondition: String
+
+    allergiesList: [String]
+    otherAllergy: String
+
+    proceduresList: [String]
+    otherProcedure: String
+
+    immunizationsList: [String]
+    otherImmunization: String
+
      prescriptions: [Prescription] 
         @hasMany(indexName: "byPatient", fields: ["id"])
      labTestResults: [LabTestResult]
@@ -192,4 +202,19 @@ type ChatMessage @model @auth(rules: [{ allow: public }]) {
   # 0ptional indexing for time based queries
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
+}
+
+type Allergy @model @auth(rules: [{ allow: public }]) {
+  id: ID! @primaryKey
+  name: String! @index(name: "byName", queryField: "allergyByName")
+}
+
+type Procedure @model @auth(rules: [{ allow: public }]) {
+  id: ID! @primaryKey
+  name: String! @index(name: "byName", queryField: "procedureByName")
+}
+
+type Immunization @model @auth(rules: [{ allow: public }]) {
+  id: ID! @primaryKey
+  name: String! @index(name: "byName", queryField: "immunizationByName")
 }
