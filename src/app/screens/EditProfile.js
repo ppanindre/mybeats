@@ -32,6 +32,7 @@ import { launchImageLibrary } from "react-native-image-picker";
 import { createPatientActionCreator, updatePatientActionCreator, getPatientActionCreator } from "../../../store/actions/patientActions";
 import Loader from "../components/Utils/Loader";
 import { fetchMedicalMasterData } from "../../../store/actions/medicalMasterDataActions";
+import { conditionList } from "../../../constants/underlyingConditionsConstants";
 
 const EditProfile = () => {
   const user = useSelector((state) => state.UserReducer); // get user listener
@@ -53,13 +54,34 @@ const EditProfile = () => {
   useEffect(() => {
     if (!hasFetchedPatient) {
       dispatch(getPatientActionCreator());
+      dispatch(fetchMedicalMasterData());
       setHasFetchedPatient(true);
     }
   }, [dispatch, hasFetchedPatient]);
   
   useEffect(() => {
-    dispatch(fetchMedicalMasterData());
-  }, []);
+    const appendOtherIfMissing = (list) => {
+      return list.some((item) => item.value === "Other")
+        ? list
+        : [...list, { _id: "other", value: "Other" }];
+    };
+  
+    setAllergies((prev) => ({
+      ...prev,
+      list: appendOtherIfMissing(allergiesRedux),
+    }));
+  
+    setProcedures((prev) => ({
+      ...prev,
+      list: appendOtherIfMissing(proceduresRedux),
+    }));
+  
+    setImmunizations((prev) => ({
+      ...prev,
+      list: appendOtherIfMissing(immunizationsRedux),
+    }));
+  }, [allergiesRedux, proceduresRedux, immunizationsRedux]);
+  
 
   // define navigation instance
   const navigation = useNavigation();
@@ -98,7 +120,11 @@ const EditProfile = () => {
       { _id: "3", value: "Police Officer" },
       { _id: "4", value: "Military" },
       { _id: "5", value: "Hazmat" },
-      { _id: "6", value: "Other first responder" },
+      { _id: "6", value: "Search and Rescue" },
+      { _id: "7", value: "Public Health Worker" },
+      { _id: "8", value: "Emergency Dispatcher" },
+      { _id: "9", value: "Volunteer Responder" },
+      { _id: "10", value: "Other first responder" },
     ],
     selectedList: user.profileData?.selectedProfessionList ?? [],
     error: "",
@@ -106,13 +132,7 @@ const EditProfile = () => {
 
   const [conditions, setConditions] = useState({
     value: user.profileData?.selectedConditionsValue ?? "",
-    list: [
-      { _id: "1", value: "Cardiomegaly" },
-      { _id: "2", value: "Arrhythmia" },
-      { _id: "3", value: "Heart stroke" },
-      { _id: "4", value: "Atrial fibrillation" },
-      { _id: "5", value: "Other" },
-    ],
+    list: conditionList,
     selectedList: user.profileData?.selectedConditionsList ?? [],
     error: "",
   }); // conditions
@@ -286,45 +306,85 @@ const EditProfile = () => {
   };
 
   useEffect(() => {
-    if (currentPatient?.id === user.userId) {
-      const allergyValues = currentPatient.allergiesList ?? [];
-      const procedureValues = currentPatient.proceduresList ?? [];
-      const immunizationValues = currentPatient.immunizationsList ?? [];
-    
-      setAllergies((prev) => ({
-        ...prev,
-        selectedList: prev.list.filter(
-          (item) =>
-            allergyValues.includes(item.value) ||
-            (currentPatient.otherAllergy?.trim() && item.value === "Other")
-        ),
-        value: allergyValues.join(", "),
-      }));
-      setOtherAllergy(currentPatient.otherAllergy ?? "");
-    
-      setProcedures((prev) => ({
-        ...prev,
-        selectedList: prev.list.filter(
-          (item) =>
-            procedureValues.includes(item.value) ||
-            (currentPatient.otherProcedure?.trim() && item.value === "Other")
-        ),
-        value: procedureValues.join(", "),
-      }));
-      setOtherProcedure(currentPatient.otherProcedure ?? "");
-    
-      setImmunizations((prev) => ({
-        ...prev,
-        selectedList: prev.list.filter(
-          (item) =>
-            immunizationValues.includes(item.value) ||
-            (currentPatient.otherImmunization?.trim() && item.value === "Other")
-        ),
-        value: immunizationValues.join(", "),
-      }));
-      setOtherImmunization(currentPatient.otherImmunization ?? "");
-    }    
-  }, [currentPatient, user.userId]);  
+    if (
+      !currentPatient?.id ||
+      currentPatient.id !== user.userId ||
+      allergiesRedux.length === 0 ||
+      proceduresRedux.length === 0 ||
+      immunizationsRedux.length === 0
+    ) return;
+  
+    const getSelectedList = (values, reduxList, otherValue) => {
+      let selected = reduxList.filter((item) => values.includes(item.value));
+      const otherItem = reduxList.find((item) => item.value === "Other");
+  
+      if (otherValue?.trim() && otherItem && !selected.some((i) => i.value === "Other")) {
+        selected.push(otherItem); // object with id
+      }
+  
+      return selected;
+    };
+  
+    const getValueString = (values, otherValue) =>
+      [...values, ...(otherValue?.trim() ? ["Other"] : [])].join(", ");
+  
+    const allergyValues = currentPatient.allergiesList ?? [];
+    const procedureValues = currentPatient.proceduresList ?? [];
+    const immunizationValues = currentPatient.immunizationsList ?? [];
+  
+    setAllergies({
+      list: allergiesRedux,
+      selectedList: getSelectedList(allergyValues, allergiesRedux, currentPatient.otherAllergy),
+      value: getValueString(allergyValues, currentPatient.otherAllergy),
+      error: "",
+    });
+    setOtherAllergy(currentPatient.otherAllergy ?? "");
+  
+    setProcedures({
+      list: proceduresRedux,
+      selectedList: getSelectedList(procedureValues, proceduresRedux, currentPatient.otherProcedure),
+      value: getValueString(procedureValues, currentPatient.otherProcedure),
+      error: "",
+    });
+    setOtherProcedure(currentPatient.otherProcedure ?? "");
+  
+    setImmunizations({
+      list: immunizationsRedux,
+      selectedList: getSelectedList(immunizationValues, immunizationsRedux, currentPatient.otherImmunization),
+      value: getValueString(immunizationValues, currentPatient.otherImmunization),
+      error: "",
+    });
+    setOtherImmunization(currentPatient.otherImmunization ?? "");
+
+    const conditionValues = currentPatient.underlyingConditionsList ?? [];
+
+    const getSelectedConditions = (values, list, otherVal) => {
+      let selected = list.filter((item) => values.includes(item.value));
+      const otherItem = list.find((item) => item.value === "Other");
+
+      if (otherVal?.trim() && otherItem && !selected.some((i) => i.value === "Other")) {
+        selected.push(otherItem);
+      }
+
+      return selected;
+    };
+
+    const getConditionValueString = (values, otherVal) =>
+      [...values, ...(otherVal?.trim() ? ["Other"] : [])].join(", ");
+
+    setConditions((prev) => ({
+      ...prev,
+      selectedList: getSelectedConditions(conditionValues, prev.list, currentPatient.otherCondition),
+      value: getConditionValueString(conditionValues, currentPatient.otherCondition),
+    }));
+
+  }, [
+    currentPatient,
+    user.userId,
+    allergiesRedux,
+    proceduresRedux,
+    immunizationsRedux
+  ]);  
   
   useEffect(() => {
     const checkShowOther = (selectedList, otherValue) =>
