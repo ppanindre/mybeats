@@ -23,6 +23,7 @@ import Feedback from "../screens/Feedback";
 import TermsOfService from "../screens/TermsOfService";
 import PrivacyPolicy from "../screens/PrivacyPolicy";
 import Profile from "../screens/Profile";
+import CameraScreen from "../screens/firebeatsScreens/CameraScreen";
 
 // Create a Stack for the stack navigator
 const Stack = createStackNavigator();
@@ -67,6 +68,7 @@ const MainStack = () => {
                 />
                 <Stack.Screen name="privacyPolicy" component={PrivacyPolicy} />
                 <Stack.Screen name="profile" component={Profile} />
+                <Stack.Screen name="camera" component={CameraScreen} />
 
                 {/* Bottom Navigation Tabs. It is common across the application */}
                 <Stack.Screen
