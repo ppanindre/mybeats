@@ -36,6 +36,7 @@ import WrappedText from "../../../../components/Utilities/WrappedText";
 import { theme } from "../../../../tailwind.config";
 import { ChevronRightIcon } from "react-native-heroicons/outline";
 import PointsCard from "../../components/Cards/PointsCard";
+import { customTheme } from "../../../../constants/themeConstants";
 
 const Dashboard = () => {
   // Declare navigation & dispatch instance

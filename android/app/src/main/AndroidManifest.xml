@@ -39,6 +39,7 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="com.nyu.mybeats"/>
         <data android:scheme="com.mybeats"/>
+        <data android:scheme="com.vr1126.firebeats"/>
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>
