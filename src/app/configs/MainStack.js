@@ -24,6 +24,7 @@ import TermsOfService from "../screens/TermsOfService";
 import PrivacyPolicy from "../screens/PrivacyPolicy";
 import Profile from "../screens/Profile";
 import CameraScreen from "../screens/firebeatsScreens/CameraScreen";
+import YourScore from "../screens/YourScore";
 
 // Create a Stack for the stack navigator
 const Stack = createStackNavigator();
@@ -74,6 +75,11 @@ const MainStack = () => {
                 <Stack.Screen
                     component={BottomTabNavigator}
                     name="BottomTabNav"
+                    options={{ gestureEnabled: false }}
+                />
+                <Stack.Screen
+                    component={YourScore}
+                    name="yourScore"
                     options={{ gestureEnabled: false }}
                 />
             </Stack.Navigator>

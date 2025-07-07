@@ -55,11 +55,11 @@ const PointsCard = ({ openModal }) => {
   }
 
   return (
-    <View className="border-2 flex flex-row border-orange-400 p-5 py-2 rounded-lg">
+    <View className="border-2 flex flex-row border-primary p-5 py-2 rounded-lg">
       {/* Left Section: Today's Points */}
       <TouchableOpacity
         onPress={() => navigation.navigate("yourScore")}
-        className="flex flex-1 flex-row items-center justify-between border-r pr-5 border-orange-400"
+        className="flex flex-1 flex-row items-center justify-between border-r pr-5 border-primary"
       >
         <TouchableOpacity onPress={openModal}>
           {["gold", "silver", "bronze"].includes(user.todaysPoints?.currentMedal) && (
@@ -79,7 +79,7 @@ const PointsCard = ({ openModal }) => {
 
         <View className="flex items-center">
           <Text className="font-bold">{user.todaysPoints?.todayScore || 0}</Text>
-          <Text className="text-xs text-orange-400 font-bold">TODAY'S POINTS</Text>
+          <Text className="text-xs text-primary font-bold">TODAY'S POINTS</Text>
         </View>
       </TouchableOpacity>
 
@@ -102,7 +102,7 @@ const PointsCard = ({ openModal }) => {
             </View>
           ))}
         </View>
-        <Text className="text-orange-400 font-bold text-center text-xs">
+        <Text className="text-primary font-bold text-center text-xs">
           CHAMPIONS
         </Text>
       </TouchableOpacity>

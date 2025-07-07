@@ -29,14 +29,19 @@ import { deviceQueries } from "../../../apis/deviceQueries";
 import { userAuthActionTypes } from "../../../store/UserAuthReducer/UserAuthActionTypes";
 import { userQueries } from "../../../apis/userQueries";
 import { theme } from "../../../tailwind.config";
+import { customTheme } from "../../../constants/themeConstants";
 
 // route data
 const profileData = [
+  { label: "My Points", route: "yourScore" },
   { label: "Edit Profile", route: "editProfile" },
   { label: "Add Device", route: "addDevice" },
   { label: "Remove Device", route: "removeDevice" },
-  { label: "Message Us", route: "Message" },
+  { label: "Message Us", route: "chat" },
   { label: "Send Feedback", route: "feedback" },
+  { label: "Fill Survey", route: "survey" },
+  // { label: "Withdraw Participation", route: "removeConsent" },
+  // { label: "View Consent Approval", route: "showConsent" },
   { label: "Delete Account", route: "deleteAccount" },
 ];
 
@@ -51,6 +56,7 @@ const Profile = () => {
   // get user listener instance
   const user = useSelector((state) => state.UserReducer);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false); // loading for delete
+  const [showConsent, setShowConsent] = useState(false);
 
   // define navigation & dispatch
   const navigation = useNavigation();
@@ -77,7 +83,7 @@ const Profile = () => {
 
     // send delete otp
     await axios.get(
-      "https://us-central1-firebeats-43aaf.cloudfunctions.net/sendDeleteUserMailFunction?email=" +
+      "https://us-central1-firebeats-43aaf.cloudfunctions.net/sendDeleteUserMailFunctionMyBeats?email=" +
         email
     );
 
@@ -137,6 +143,26 @@ const Profile = () => {
         payload: { showSkip: false },
       });
       navigation.navigate(route); // navigate to add device route
+    } else if (route === "removeConsent") {
+      Alert.alert(
+        "",
+        "To withdraw participation, please delete your account.",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
+          },
+          {
+            text: "Delete Account",
+            onPress: () => {
+              deleteAccount();
+            },
+          },
+        ]
+      );
+    } else if (route === "showConsent") {
+      setShowConsent(true);
     } else {
       navigation.navigate(route); // navigate to route
     }
@@ -144,6 +170,11 @@ const Profile = () => {
 
   // function to handle removal of device
   const removeDevice = async () => {
+    if (deviceSelected === "apple") {
+      navigation.navigate("removeApple")
+      return
+    }
+
     setIsDeleteLoading(true);
 
     try {
@@ -164,7 +195,7 @@ const Profile = () => {
           payload: { updatedDevicesData, deviceSelected: null },
         }); // set device selected to be null if there are no devices
 
-        Alert.alert("", "Your Device has been removed"); // alert the user that their device has been removed
+        Alert.alert("", "Your device has been removed"); // alert the user that their device has been removed
       } else {
         const randomIndex = Math.floor(
           Math.random() * updatedDevicesData.length
@@ -203,6 +234,7 @@ const Profile = () => {
         },
       });
     }
+    setIsDeleteLoading(false);
   };
 
   // Go to the next device
@@ -230,22 +262,28 @@ const Profile = () => {
     navigation.navigate("addDevice");
   };
 
+  if (showConsent) {
+    return (
+      <ConsentForm goBack={() => setShowConsent(false)} alreadyConsented />
+    );
+  }
+
   return (
     <CustomSafeView sentry-label="profile">
       {/* if the delete is loading, show the activity indicator */}
       {isDeleteLoading && (
         <View
           style={{ height: height, width: "100%", opacity: 0.4 }}
-          className="bg-dark absolute top-0 left-0 items-center justify-center z-20"
+          className="bg-black absolute top-0 left-0 items-center justify-center z-20"
         >
-          <ActivityIndicator color={theme.colors.primary} size="large" />
+          <ActivityIndicator color={customTheme.colors.primary} size="large" />
         </View>
       )}
 
       {/* Header */}
-      <View className="p-5 border-b border-darkSecondary flex-row items-center gap-2">
+      <View className="p-5 border-b-2 border-darkGrey flex-row items-center gap-2">
         <TouchableOpacity sentry-label="profile-back-btn" onPress={goBack}>
-          <ChevronLeftIcon color={theme.colors.dark} />
+          <ChevronLeftIcon color={customTheme.colors.dark} />
         </TouchableOpacity>
         <Text className="text-2xl font-bold">Profile</Text>
       </View>
@@ -285,7 +323,10 @@ const Profile = () => {
                       sentry-label="profile-device-prev-btn"
                       onPress={goToPreviousDevice}
                     >
-                      <ChevronLeftIcon color={theme.colors.primary} size={30} />
+                      <ChevronLeftIcon
+                        color={customTheme.colors.primary}
+                        size={30}
+                      />
                     </TouchableOpacity>
                   )}
                   <View
@@ -313,7 +354,7 @@ const Profile = () => {
                       onPress={goToNextDevice}
                     >
                       <ChevronRightIcon
-                        color={theme.colors.primary}
+                        color={customTheme.colors.primary}
                         size={30}
                       />
                     </TouchableOpacity>
@@ -334,10 +375,10 @@ const Profile = () => {
                     {data.label === "Remove Device" ? (
                       // if user has registered devices, show the remove device icon
                       devicesData.length > 0 && (
-                        <View className="p-2 border-b-2 border-darkSecondary mb-5">
+                        <View className="p-2 border-b-2 border-darkGrey mb-5">
                           <Text
                             style={{
-                              color: theme.colors.dark,
+                              color: customTheme.colors.dark,
                             }}
                             className="text-lg"
                           >
@@ -346,10 +387,10 @@ const Profile = () => {
                         </View>
                       )
                     ) : (
-                      <View className="p-2 border-b-2 border-darkSecondary mb-5">
+                      <View className="p-2 border-b-2 border-darkGrey mb-5">
                         <Text
                           style={{
-                            color: theme.colors.dark,
+                            color: customTheme.colors.dark,
                           }}
                           className="text-lg"
                         >
