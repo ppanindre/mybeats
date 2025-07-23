@@ -34,6 +34,7 @@ const AppleButton = () => {
   const addAppleDevice = async () => {
     appleHealthKit.initHealthKit(permissions, async (error) => {
       if (error) {
+        console.log("error while giving apple permissions", error);
         // if error while giving permissions
         Sentry.captureException(error, {
           extra: { message: "Error while giving apple permissions" },
@@ -42,14 +43,13 @@ const AppleButton = () => {
 
       // vendor data
       const vendorData = {
-        vendor: "apple"
-      }
+        vendor: "apple",
+      };
 
-      await deviceQueries.addVendorToFirebase(user, vendorData) // add apple to firebase
+      await deviceQueries.addVendorToFirebase(user, vendorData); // add apple to firebase
       navigation.navigate("BottomTabNav"); // navigate to bottomtabnav
-      Alert.alert("", "Your device has been added successfully!") // alert user of device being added
+      Alert.alert("", "Your device has been added successfully!"); // alert user of device being added
     });
-
   };
 
   return (
