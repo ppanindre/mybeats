@@ -25,6 +25,7 @@ import PrivacyPolicy from "../screens/PrivacyPolicy";
 import Profile from "../screens/Profile";
 import CameraScreen from "../screens/firebeatsScreens/CameraScreen";
 import YourScore from "../screens/YourScore";
+import ConsentForm from "../screens/ConsentForm";
 
 // Create a Stack for the stack navigator
 const Stack = createStackNavigator();
@@ -70,6 +71,7 @@ const MainStack = () => {
                 <Stack.Screen name="privacyPolicy" component={PrivacyPolicy} />
                 <Stack.Screen name="profile" component={Profile} />
                 <Stack.Screen name="camera" component={CameraScreen} />
+                <Stack.Screen name="showConsent" component={ConsentForm} />
 
                 {/* Bottom Navigation Tabs. It is common across the application */}
                 <Stack.Screen

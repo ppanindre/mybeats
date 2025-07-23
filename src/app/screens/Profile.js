@@ -30,6 +30,7 @@ import { userAuthActionTypes } from "../../../store/UserAuthReducer/UserAuthActi
 import { userQueries } from "../../../apis/userQueries";
 import { theme } from "../../../tailwind.config";
 import { customTheme } from "../../../constants/themeConstants";
+import ConsentForm from "./ConsentForm";
 
 // route data
 const profileData = [
@@ -37,11 +38,11 @@ const profileData = [
   { label: "Edit Profile", route: "editProfile" },
   { label: "Add Device", route: "addDevice" },
   { label: "Remove Device", route: "removeDevice" },
-  { label: "Message Us", route: "chat" },
+  { label: "Message Us", route: "Message" },
   { label: "Send Feedback", route: "feedback" },
   { label: "Fill Survey", route: "survey" },
-  // { label: "Withdraw Participation", route: "removeConsent" },
-  // { label: "View Consent Approval", route: "showConsent" },
+  { label: "Withdraw Participation", route: "removeConsent" },
+  { label: "View Consent Approval", route: "showConsent" },
   { label: "Delete Account", route: "deleteAccount" },
 ];
 
@@ -281,7 +282,7 @@ const Profile = () => {
       )}
 
       {/* Header */}
-      <View className="p-5 border-b-2 border-darkGrey flex-row items-center gap-2">
+      <View className="p-5 border-b-2 border-darkSecondary flex-row items-center gap-2">
         <TouchableOpacity sentry-label="profile-back-btn" onPress={goBack}>
           <ChevronLeftIcon color={customTheme.colors.dark} />
         </TouchableOpacity>
@@ -375,7 +376,7 @@ const Profile = () => {
                     {data.label === "Remove Device" ? (
                       // if user has registered devices, show the remove device icon
                       devicesData.length > 0 && (
-                        <View className="p-2 border-b-2 border-darkGrey mb-5">
+                        <View className="p-2 border-b-2 border-darkSecondary mb-5">
                           <Text
                             style={{
                               color: customTheme.colors.dark,
@@ -387,7 +388,7 @@ const Profile = () => {
                         </View>
                       )
                     ) : (
-                      <View className="p-2 border-b-2 border-darkGrey mb-5">
+                      <View className="p-2 border-b-2 border-darkSecondary mb-5">
                         <Text
                           style={{
                             color: customTheme.colors.dark,

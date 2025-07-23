@@ -9,249 +9,139 @@ import moment from "moment";
 import { customTheme } from "../constants/themeConstants";
 
 const CustomTrendDatePicker = ({ changeDateRange, isDataLoading }) => {
-  // REDUX STORES
-  const user = useSelector((state) => state.UserReducer); // get user listener instance
+    // REDUX STORES
+    const user = useSelector((state) => state.UserReducer);
 
-  // STATES
-  const [selectedMode, setSelectedMode] = useState("week"); // get selected mode
-  const [startDate, setStartDate] = useState(
-      moment().startOf("week").format("MMM DD, YYYY").toString()
-  ); // start date
-  const [endDate, setEndDate] = useState(
-      moment().endOf("week").format("MMM DD, YYYY").toString()
-  ); // end date
-  const [isRightDisabled, setIsRightDisabled] = useState(false); // disable right arrow
-  const [isLeftDisabled, setIsLeftDisabled] = useState(false); // disable left arrow
+    // STATES
+    const [selectedMode, setSelectedMode] = useState("week");
+    const [startDate, setStartDate] = useState(
+        moment().startOf("week").format("MMM DD, YYYY")
+    );
+    const [endDate, setEndDate] = useState(
+        moment().endOf("week").format("MMM DD, YYYY")
+    );
+    const [isRightDisabled, setIsRightDisabled] = useState(false);
+    const [isLeftDisabled, setIsLeftDisabled] = useState(false);
 
-  useEffect(() => {
-      setStartAndEndDate(selectedMode); // set start and end date for the selected mode
-  }, [selectedMode]); // whenever mode is changed
+    // Whenever mode changes or user changes, reset range
+    useEffect(() => {
+        setStartAndEndDate(selectedMode);
+    }, [selectedMode, user]);
 
-  useEffect(() => {
-      changeDateRange(
-          moment(startDate, "MMM DD, YYYY").format("YYYY-MM-DD"),
-          moment(endDate, "MMM DD, YYYY").format("YYYY-MM-DD"),
-          selectedMode
-      );
-  }, [startDate, endDate]); // whenever start date and end date is changed
+    // Notify parent of any range change
+    useEffect(() => {
+        changeDateRange(
+            moment(startDate, "MMM DD, YYYY").format("YYYY-MM-DD"),
+            moment(endDate, "MMM DD, YYYY").format("YYYY-MM-DD"),
+            selectedMode
+        );
+    }, [startDate, endDate]);
 
-  useEffect(() => {
-      const currentDate = moment(); // get current date
-      const userJoinDate = moment(user.joinDate); // get user join date
-      const startDateMode = moment(startDate, "MMM DD, YYYY"); // get start date
-      const endDateMode = moment(endDate, "MMM DD, YYYY"); // get end date
-      if (currentDate.isBetween(startDateMode, endDateMode, 'day', '[]')) {
-          // disable the right arrow if the current date is between the range
-          setIsRightDisabled(true);
-      } else {
-          setIsRightDisabled(false);
-      }
+    // Disable/enable arrows
+    useEffect(() => {
+        const current = moment();
+        const start = moment(startDate, "MMM DD, YYYY");
+        const end = moment(endDate, "MMM DD, YYYY");
+        const join = moment(user.joinDate).startOf("day");
 
-      if (userJoinDate.isBetween(startDateMode, endDateMode)) {
-          // disable the left arrow if the join date is between the range
-          setIsLeftDisabled(true);
-      } else {
-          setIsLeftDisabled(false);
-      }
-  }, [startDate, endDate, selectedMode]);
+        // Right: can’t go into future
+        setIsRightDisabled(
+            current.isBetween(start, end, "day", "[]")
+        );
 
-  useEffect(() => {
-      setSelectedMode("week");
-      setStartAndEndDate("week");
-  }, [user]); // when user listener activates
+        // Left: look one “step” back and see if that start < join
+        const prevStart = start.clone().subtract(1, selectedMode);
+        setIsLeftDisabled(prevStart.isBefore(join, "day"));
+    }, [startDate, endDate, selectedMode, user.joinDate]);
 
-  // function to set start & end date based on the mode
-  const setStartAndEndDate = (mode) => {
-      setStartDate(moment().startOf(mode).format("MMM DD, YYYY").toString());
-      setEndDate(moment().endOf(mode).format("MMM DD, YYYY").toString());
-  };
+    const setStartAndEndDate = (mode) => {
+        setStartDate(moment().startOf(mode).format("MMM DD, YYYY"));
+        setEndDate(moment().endOf(mode).format("MMM DD, YYYY"));
+    };
 
-  // function to handle user clicking the left arrow
-  const goLeft = () => {
-      const userJoinDate = moment(user.joinDate); // get user join date
-      const startDateMode = moment(startDate, "MMM DD, YYYY"); // get start date
-      const endDateMode = moment(endDate, "MMM DD, YYYY"); // get end date
+    const goLeft = () => {
+        const start = moment(startDate, "MMM DD, YYYY");
+        const end = moment(endDate, "MMM DD, YYYY");
+        const join = moment(user.joinDate).startOf("day");
 
-      if (!userJoinDate.isBetween(startDateMode, endDateMode)) {
-          if (selectedMode === "week") {
-              setStartDate(
-                  moment(startDate, "MMM DD, YYYY")
-                      .subtract(1, "week")
-                      .format("MMM DD, YYYY")
-              );
-              setEndDate(
-                  moment(endDate, "MMM DD, YYYY")
-                      .subtract(1, "week")
-                      .format("MMM DD, YYYY")
-              );
-          } else if (selectedMode === "month") {
-              setStartDate(
-                  moment(startDate, "MMM DD, YYYY")
-                      .subtract(1, "month")
-                      .format("MMM DD, YYYY")
-              );
-              setEndDate(
-                  moment(endDate, "MMM DD, YYYY")
-                      .subtract(1, "month")
-                      .format("MMM DD, YYYY")
-              );
-          } else if (selectedMode === "year") {
-              setStartDate(
-                  moment(startDate, "MMM DD, YYYY")
-                      .subtract(1, "year")
-                      .format("MMM DD, YYYY")
-              );
-              setEndDate(
-                  moment(endDate, "MMM DD, YYYY")
-                      .subtract(1, "year")
-                      .format("MMM DD, YYYY")
-              );
-          }
-      }
-  };
+        // If moving left would start before join date, do nothing
+        const prevStart = start.clone().subtract(1, selectedMode);
+        if (prevStart.isBefore(join, "day")) return;
 
-  // function to handle user clicking the right arrow
-  const goRight = () => {
-      const currentDate = moment(); // get current date
-      const startDateMode = moment(startDate, "MMM DD, YYYY"); // get start date
-      const endDateMode = moment(endDate, "MMM DD, YYYY"); // get end date
+        // Otherwise shift
+        setStartDate(prevStart.format("MMM DD, YYYY"));
+        setEndDate(end.clone().subtract(1, selectedMode).format("MMM DD, YYYY"));
+    };
 
-      if (!currentDate.isBetween(startDateMode, endDateMode)) {
-          if (selectedMode === "week") {
-              setStartDate(
-                  moment(startDate, "MMM DD, YYYY")
-                      .add(1, "week")
-                      .format("MMM DD, YYYY")
-              );
-              setEndDate(
-                  moment(endDate, "MMM DD, YYYY")
-                      .add(1, "week")
-                      .format("MMM DD, YYYY")
-              );
-          } else if (selectedMode === "month") {
-              setStartDate(
-                  moment(startDate, "MMM DD, YYYY")
-                      .add(1, "month")
-                      .format("MMM DD, YYYY")
-              );
-              setEndDate(
-                  moment(endDate, "MMM DD, YYYY")
-                      .add(1, "month")
-                      .format("MMM DD, YYYY")
-              );
-          } else if (selectedMode === "year") {
-              setStartDate(
-                  moment(startDate, "MMM DD, YYYY")
-                      .add(1, "year")
-                      .format("MMM DD, YYYY")
-              );
-              setEndDate(
-                  moment(endDate, "MMM DD, YYYY")
-                      .add(1, "year")
-                      .format("MMM DD, YYYY")
-              );
-          }
-      }
-  };
+    const goRight = () => {
+        const current = moment();
+        const start = moment(startDate, "MMM DD, YYYY");
+        const end = moment(endDate, "MMM DD, YYYY");
 
-  return (
-      <View sentry-label="trend-date-picker" className="mt-5">
-          {/* Modes */}
-          <View className="flex-row items-center justify-between mx-10">
-              {/* Week mode */}
-              <TouchableOpacity
-                  sentry-label="trend-date-week-mode"
-                  onPress={() => setSelectedMode("week")}
-              >
-                  <Text
-                      style={{ fontSize: 16 }}
-                      className={`${
-                          selectedMode === "week"
-                              ? "text-primary font-bold underline"
-                              : "text-dark font-bold"
-                      } `}
-                  >
-                      Week
-                  </Text>
-              </TouchableOpacity>
+        // If moving right would go past today, do nothing
+        const nextEnd = end.clone().add(1, selectedMode);
+        if (nextEnd.isAfter(current, "day")) return;
 
-              {/* Month mode */}
-              <TouchableOpacity
-                  sentry-label="trend-date-month-mode"
-                  onPress={() => setSelectedMode("month")}
-              >
-                  <Text
-                      style={{ fontSize: 16 }}
-                      className={`${
-                          selectedMode === "month"
-                              ? "text-primary font-bold underline"
-                              : "text-dark font-bold"
-                      } `}
-                  >
-                      Month
-                  </Text>
-              </TouchableOpacity>
+        setStartDate(start.clone().add(1, selectedMode).format("MMM DD, YYYY"));
+        setEndDate(nextEnd.format("MMM DD, YYYY"));
+    };
 
-              {/* Year Mode */}
-              <TouchableOpacity
-                  sentry-label="trend-date-year-mode"
-                  onPress={() => setSelectedMode("year")}
-              >
-                  <Text
-                      style={{ fontSize: 16 }}
-                      className={`${
-                          selectedMode === "year"
-                              ? "text-primary font-bold underline"
-                              : "text-dark font-bold"
-                      } `}
-                  >
-                      Year
-                  </Text>
-              </TouchableOpacity>
-          </View>
+    return (
+        <View sentry-label="trend-date-picker" className="mt-5">
+            {/* Modes */}
+            <View className="flex-row items-center justify-between mx-10">
+                {["week", "month", "year"].map((mode) => (
+                    <TouchableOpacity
+                        key={mode}
+                        onPress={() => setSelectedMode(mode)}
+                    >
+                        <Text
+                            style={{ fontSize: 16 }}
+                            className={`${
+                                selectedMode === mode
+                                    ? "text-orange-400 font-bold underline"
+                                    : "text-gray-300 font-bold"
+                            }`}
+                        >
+                            {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                        </Text>
+                    </TouchableOpacity>
+                ))}
+            </View>
 
-          {/* trend-navigation */}
-          <View className="flex-row items-center justify-between mt-6">
-              {/* left arrow */}
-              <TouchableOpacity
-                  sentry-label="trend-date-left"
-                  disabled={isLeftDisabled || isDataLoading}
-                  onPress={goLeft}
-              >
-                  {/* Left arrow icon */}
-                  <ChevronLeftIcon
-                      color={
-                          isLeftDisabled
-                              ? customTheme.colors.light
-                              : customTheme.colors.primary
-                      }
-                  />
-              </TouchableOpacity>
+            {/* navigation */}
+            <View className="flex-row items-center justify-between mt-6">
+                <TouchableOpacity
+                    disabled={isLeftDisabled || isDataLoading}
+                    onPress={goLeft}
+                >
+                    <ChevronLeftIcon
+                        color={
+                            isLeftDisabled
+                                ? customTheme.colors.light
+                                : customTheme.colors.primary
+                        }
+                    />
+                </TouchableOpacity>
 
-              {/* Trend Chart label */}
-              <View>
-                  <Text className="text-lg font-bold text-dark">
-                      {startDate} - {endDate}
-                  </Text>
-              </View>
+                <Text className="text-lg font-bold text-gray-800">
+                    {startDate} - {endDate}
+                </Text>
 
-              {/* Right arrow icon */}
-              <TouchableOpacity
-                  sentry-label="trend-date-right"
-                  disabled={isRightDisabled || isDataLoading} // disable
-                  onPress={goRight}
-              >
-                  <ChevronRightIcon
-                      color={
-                          isRightDisabled
-                              ? customTheme.colors.light
-                              : customTheme.colors.primary
-                      }
-                  />
-              </TouchableOpacity>
-          </View>
-      </View>
-  );
+                <TouchableOpacity
+                    disabled={isRightDisabled || isDataLoading}
+                    onPress={goRight}
+                >
+                    <ChevronRightIcon
+                        color={
+                            isRightDisabled
+                                ? customTheme.colors.light
+                                : customTheme.colors.primary
+                        }
+                    />
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
 };
-
 export default CustomTrendDatePicker;

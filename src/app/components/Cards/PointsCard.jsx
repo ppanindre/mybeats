@@ -85,7 +85,7 @@ const PointsCard = ({ openModal }) => {
 
       {/* Right Section: Champions */}
       <TouchableOpacity
-        onPress={() => navigation.navigate("champions")}
+        // onPress={() => navigation.navigate("champions")}
         className="flex flex-1 pl-5"
       >
         <View className="flex-row items-center justify-around mb-1">

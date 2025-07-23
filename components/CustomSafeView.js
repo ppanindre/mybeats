@@ -14,7 +14,7 @@ const CustomSafeView = ({ children }) => {
             className="bg-light"
             style={
                 Platform.OS === "android"
-                    ? AndroidStyleSheet.AndroidSafeArea
+                    ? AndroidStyleSheet.AndroidSafeArea && {height: "100%"}
                     : { height: "100%" } // set style for ios systems
             }
         >
