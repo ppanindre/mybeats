@@ -98,7 +98,7 @@ export const deviceQueries = {
   addVendorToFirebase: async (user, vendorData) => {
       vendorData.devices = firestore.FieldValue.arrayUnion(vendorData.vendor); // add device to devices
 
-      console.log("vendor data", vendorData, user);
+      console.log("vendor data", vendorData.devices);
 
       try {
           // set vendor data
