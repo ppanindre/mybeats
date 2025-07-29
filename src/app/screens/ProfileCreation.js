@@ -7,6 +7,7 @@ import {
     Image,
     ScrollView,
     KeyboardAvoidingView,
+    Platform,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -135,7 +136,7 @@ const ProfileCreation = () => {
                                     sentry-label="profile-creation-skip-btn"
                                     onPress={createProfile}
                                 >
-                                    <Text className="text-lg text-orange-400 font-bold">
+                                    <Text className="text-lg text-primary font-bold">
                                         Skip
                                     </Text>
                                 </TouchableOpacity>
@@ -155,7 +156,7 @@ const ProfileCreation = () => {
                                     >
                                         {selectedAvatar ? (
                                             // if user has selected an avatar, show the avatar
-                                            <View className="p-5 bg-gray-100 rounded-full ">
+                                            <View className="p-5 bg-darkSecondary rounded-full ">
                                                 <Image
                                                     source={
                                                         selectedAvatar.imgSrc
@@ -183,7 +184,7 @@ const ProfileCreation = () => {
                                                     }}
                                                 />
                                                 <View
-                                                    className="absolute z-30 bg-orange-400 rounded-md p-1"
+                                                    className="absolute z-30 bg-primary rounded-md p-1"
                                                     style={{
                                                         top: 48,
                                                         left: 20,

@@ -2,7 +2,7 @@
   "expo": {
     "name": "MyHealth",
     "slug": "mybeats",
-    
+    "scheme": "com.vr1126.firebeats", 
     "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icons/myhealth.png",

@@ -12,13 +12,13 @@ const WelcomeScreens = () => {
   return (
     <CustomSafeView sentry-label="welcome">
       {/* Header */}
-      <View className="p-5 border-b-2 borderdarkSecondary flex-row items-center justify-end">
+      <View className="p-5 border-b-2 border-darkSecondary flex-row items-center justify-end">
         {/* Skip Button */}
         <TouchableOpacity
           onPress={() => navigation.navigate("addDevice")}
           sentry-label="welcome-screen-skip-btn"
         >
-          <Text className="text-lg text-orange-400 font-bold">Skip</Text>
+          <Text className="text-lg text-primary font-bold">Skip</Text>
         </TouchableOpacity>
       </View>
 
