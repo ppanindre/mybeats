@@ -31,12 +31,11 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync",
+      "lastPushTimeStamp": "2025-08-02T22:42:17.336Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-mybeatsdev-stabledev-21f51-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apimybeatsdev"
-      },
-      "lastPushTimeStamp": "2025-05-11T21:04:52.329Z",
-      "lastPushDirHash": "uJM0LpY1nLSCt9rkwxryMSwavFs="
+      }
     }
   },
   "auth": {
@@ -65,11 +64,6 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito",
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-mybeatsdev-stabledev-21f51-deployment/amplify-cfn-templates/auth/mybeatsdeve7dd89f9-cloudformation-template.json",
-        "logicalId": "authmybeatsdeve7dd89f9"
-      },
-      "lastPushTimeStamp": "2025-05-11T21:04:38.765Z",
       "output": {
         "UserPoolId": "us-east-1_T2bHaQctn",
         "AppClientIDWeb": "5mrg5e347aobijqs6kp5vmsebu",
@@ -79,7 +73,11 @@
         "IdentityPoolName": "mybeatsdeve7dd89f9_identitypool_e7dd89f9__stabledev",
         "UserPoolName": "mybeatsdeve7dd89f9_userpool_e7dd89f9"
       },
-      "lastPushDirHash": "9MI6fYd6X/s9y/hLbG+dVBJREbg="
+      "lastPushTimeStamp": "2025-08-02T22:42:17.338Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-mybeatsdev-stabledev-21f51-deployment/amplify-cfn-templates/auth/mybeatsdeve7dd89f9-cloudformation-template.json",
+        "logicalId": "authmybeatsdeve7dd89f9"
+      }
     }
   },
   "storage": {
@@ -87,16 +85,15 @@
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3",
-      "lastPushTimeStamp": "2025-05-11T21:04:38.767Z",
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-mybeatsdev-stabledev-21f51-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
-        "logicalId": "storageProfileImagesStorage"
-      },
       "output": {
         "BucketName": "mybeats-profile-images21f51-stabledev",
         "Region": "us-east-1"
       },
-      "lastPushDirHash": "q75KVBHQ54IA+d4aZBSJRiu3K44="
+      "lastPushTimeStamp": "2025-08-02T22:42:20.975Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-mybeatsdev-stabledev-21f51-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "logicalId": "storageProfileImagesStorage"
+      }
     }
   }
 }

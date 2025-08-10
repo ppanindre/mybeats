@@ -37,6 +37,7 @@ import { theme } from "../../../../tailwind.config";
 import { ChevronRightIcon } from "react-native-heroicons/outline";
 import PointsCard from "../../components/Cards/PointsCard";
 import { customTheme } from "../../../../constants/themeConstants";
+import SyncModal from "../../components/SyncModal";
 
 const Dashboard = () => {
   // Declare navigation & dispatch instance
