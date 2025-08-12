@@ -4,7 +4,7 @@ import React from "react";
 const NavigationCard = ({ onPress, cardTitle, cardContent }) => {
     return (
         <TouchableOpacity
-            className="bg-lightPrimary h-30 w-[100%] rounded-lg shadow-md justify-end p-5"
+            className="bg-lightPrimary h-30 flex-grow w-[100%] rounded-lg shadow-md p-5"
             onPress={onPress}
 
         >

@@ -5,39 +5,32 @@ import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 
 const PatientNavigationFrame = () => {
-    const navigation = useNavigation();
-    const user = useSelector((state) => state.UserReducer);
-    const patientId = user.userId;
+  const navigation = useNavigation();
+  const user = useSelector((state) => state.UserReducer);
+  const patientId = user.userId;
 
-    return (
-        <View className="flex-row justify-around space-x-3">
-            <View className="flex-1 h-full">
-                <NavigationCard
-                    cardTitle="Appointments"
-                    cardContent="Manage Appointments"
-                    onPress={() => navigation.navigate('patientAppointments', { patientId })}
-                    />
-            </View>
-            <View className="flex-1 h-full">
-                {/* Second Card: Diagnostics */}
-                {/* <NavigationCard
-                    cardTitle="Diagnostics"
-                    cardContent="Request a lab test"
-                    onPress={() => navigation.navigate("diagnostics")}
-                /> */}
-                 {/* <NavigationCard
-                    cardTitle="Payments"
-                    cardContent="Manage Payments"
-                    onPress={() => navigation.navigate("payment")}                
-                 /> */}
-                  <NavigationCard
-                    cardTitle="Payments"
-                    cardContent="Payments History"
-                    onPress={() => navigation.navigate("patientPayments", { patientId })}                
-                 />
-            </View>
-        </View>
-    );
+  return (
+    <View className="flex flex-row justify-around space-x-3">
+      <View className="flex-1">
+        <NavigationCard
+          className="h-full" // makes the card fill parent's height
+          cardTitle="Appointments"
+          cardContent="Manage Appointments"
+          onPress={() =>
+            navigation.navigate("patientAppointments", { patientId })
+          }
+        />
+      </View>
+      <View className="flex-1">
+        <NavigationCard
+          className="h-full" // makes the card fill parent's height
+          cardTitle="Payments"
+          cardContent="Payments History"
+          onPress={() => navigation.navigate("patientPayments", { patientId })}
+        />
+      </View>
+    </View>
+  );
 };
 
 export default PatientNavigationFrame;
