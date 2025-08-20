@@ -31,7 +31,10 @@ export const createDoctorActionCreator =
         variables: { doctorID: doctorId },
       });
       const latestDoctor = fetchResponse.data.getDoctor;
-      const latestVersion = latestDoctor._version;
+
+      // console.log("latest doctor", latestDoctor);
+
+      // const latestVersion = latestDoctor._version;
 
       //  existing specializations from Redux
       const { secondarySpecializations } =
@@ -91,7 +94,7 @@ export const createDoctorActionCreator =
             awardsRecognition: doctorDetails.awardsRecognition,
             website: doctorDetails.website,
             zipcode: doctorDetails.zipcode,
-            _version: latestVersion,
+            // _version: latestVersion,
           },
         },
       });
@@ -210,7 +213,7 @@ export const listDoctorsActionCreator = () => async (dispatch) => {
     //       query: `
     //         query ListDoctors {
     //           listDoctors {
-    //             items { id name } 
+    //             items { id name }
     //           }
     //         }
     //       `,
@@ -221,12 +224,12 @@ export const listDoctorsActionCreator = () => async (dispatch) => {
     // console.log("res", res);
 
     const response = await client.graphql({
-        query: listDoctors,
+      query: listDoctors,
     });
 
     dispatch({
-        type: DOCTOR_LIST_SUCCESS,
-        payload: response.data.listDoctors.items,
+      type: DOCTOR_LIST_SUCCESS,
+      payload: response.data.listDoctors.items,
     });
   } catch (error) {
     console.error("Error while getting doctors", error);

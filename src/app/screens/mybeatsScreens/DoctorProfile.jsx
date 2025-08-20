@@ -83,11 +83,15 @@ function DoctorProfile() {
 
     try {
         let message = "";
+        console.log("doctor", doctor)
+
         if (doctor) {
             message = await dispatch(
                 updateDoctorActionCreator(doctorDetails, imageData, doctor._version)
             );
         } else {
+
+
             message = await dispatch(
                 createDoctorActionCreator(doctorDetails, imageData)
             );
